@@ -1,0 +1,94 @@
+# Harness Workflow Context
+
+This context defines the language for the local Codex plugin that turns harness engineering practice into reusable workflow skills.
+
+## Language
+
+**Harness Builder**:
+The project-level skill that designs or repairs the agent workbench: project map, recovery surface, verification entry, local skills, hooks, subagents, MCP policy, and anti-entropy rules.
+_Avoid_: bootstrap as the canonical name; use bootstrap only as a historical alias or trigger word.
+
+**Skill Independence**:
+The design rule that each workflow skill can run for its own activity without requiring a fixed global sequence or a particular state backend.
+_Avoid_: making Harness Builder, planning, or three-file state a universal prerequisite.
+
+**Recovery Surface**:
+The durable project-local artifacts that let a future agent resume work without relying on chat history.
+_Avoid_: three files as a synonym, because three-file state is only one possible implementation.
+
+**Recovery Policy**:
+The project rule that tells agents how to reconstruct context from the recovery surface at session start or after interruption.
+_Avoid_: requiring a dedicated resume skill when AGENTS.md and living project documents already define recovery.
+
+**Knowledge Cleanup**:
+The end-of-work activity that reconciles code, README, AGENTS.md, docs, generated artifacts, and recovery surface so project knowledge does not rot.
+_Avoid_: treating cleanup as merely closing task state files.
+
+**Review**:
+The workflow activity that checks correctness, scope discipline, design risk, and missing tests before final evidence is claimed.
+_Avoid_: using review as a docs synchronization pass.
+
+**Verification**:
+The workflow activity that gathers fresh evidence for a concrete claim.
+_Avoid_: using verification to redesign scope or clean project knowledge.
+
+**Workflow Skill**:
+A focused reusable agent workflow that owns one activity such as brainstorming, planning, implementation, diagnosis, review, verification, handoff, or cleanup.
+_Avoid_: making every workflow skill responsible for choosing project state storage.
+
+**Workflow State Backend**:
+The chosen storage shape for execution contracts, evidence, decisions, risks, blockers, and next actions.
+_Avoid_: assuming the backend must be `task_plan.md`, `progress.md`, and `findings.md`.
+
+**Executable Plan**:
+A planning artifact that turns a clear goal or approved spec into ordered work, success criteria, verification path, and handoff guidance.
+_Avoid_: equating a plan with the three-file backend.
+
+**Spec**:
+A user-approved description of the problem, goals, non-goals, behavior, constraints, verification strategy, and plan handoff.
+_Avoid_: storing the full spec inside workflow state logs.
+
+**Three-File Backend**:
+A workflow state backend implemented with `task_plan.md`, `progress.md`, and `findings.md`.
+_Avoid_: treating it as the default dependency of every skill.
+
+## Relationships
+
+- A **Harness Builder** selects or repairs the **Recovery Surface** for a project.
+- A **Harness Builder** defines the **Recovery Policy** for a project.
+- A **Recovery Surface** may use a **Three-File Backend**, `.harness/*`, an issue tracker, a feature list, or an existing project status system.
+- A **Workflow Skill** reads and writes through the **Workflow State Backend** only when its own activity requires durable state.
+- A `brainstorm` workflow produces a **Spec** and does not default to writing workflow state.
+- An **Executable Plan** can be stored as a plan document, issue, feature-list entry, or a **Three-File Backend** contract, depending on the selected **Recovery Surface**.
+- The **Three-File Backend** is an implementation option, not the conceptual contract for all workflow skills.
+- **Skill Independence** means **Harness Builder** is invoked when project-level workbench or recovery design is needed, not because it occupies a mandatory position before or after `brainstorm` or `plan`.
+- `cleanup` performs **Knowledge Cleanup** against the current project, with special attention to stale docs, bloated AGENTS.md, missing reader-facing docs, and contradictions between code and documentation.
+- **Review**, **Verification**, and **Knowledge Cleanup** are separate gates: review judges correctness and risk, verification proves behavior with fresh evidence, and cleanup reconciles knowledge artifacts.
+
+## Example Dialogue
+
+> **Dev:** "Should `verify` refuse to run if `task_plan.md` is missing?"
+> **Domain expert:** "No. `verify` should verify a claim using available evidence. If durable state is needed but missing, that is a **Recovery Surface** gap for **Harness Builder**, not a reason for `verify` to depend on the **Three-File Backend**."
+
+> **Dev:** "Should every new task run **Harness Builder** before `plan`?"
+> **Domain expert:** "No. Use **Harness Builder** when the project workbench or **Recovery Surface** is unclear. If the task already has enough context, `brainstorm`, `plan`, or another **Workflow Skill** can run independently."
+
+> **Dev:** "Does `plan` always create `task_plan.md`, `progress.md`, and `findings.md`?"
+> **Domain expert:** "No. `plan` creates an **Executable Plan**. It writes the **Three-File Backend** only when the project has selected that backend."
+
+> **Dev:** "Should `brainstorm` append a summary to `findings.md`?"
+> **Domain expert:** "Only if the selected **Recovery Surface** asks for that. The core output of `brainstorm` is a **Spec**."
+
+> **Dev:** "Do we need separate `resume` and `save-session` skills?"
+> **Domain expert:** "No. The **Recovery Policy** belongs to **Harness Builder**, while closure and handoff hygiene belong to `cleanup` and the project documents."
+
+> **Dev:** "Is `cleanup` mainly about marking a task complete?"
+> **Domain expert:** "No. `cleanup` mainly prevents knowledge rot by reconciling code, docs, AGENTS.md, generated artifacts, and the selected **Recovery Surface**."
+
+> **Dev:** "Should `cleanup` decide whether the implementation is correct?"
+> **Domain expert:** "No. That belongs to **Review** and **Verification**. `cleanup` checks whether project knowledge now matches the verified state."
+
+## Flagged Ambiguities
+
+- "bootstrap" was used to mean the canonical project harness construction skill. Resolved: the canonical term is **Harness Builder**; "bootstrap" remains only a historical alias or trigger word.
+- "resume" and "save-session" were used as workflow skills. Resolved: recovery is a project-level policy generated by **Harness Builder**, not a dedicated skill lane.
