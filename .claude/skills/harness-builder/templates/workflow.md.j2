@@ -1,0 +1,24 @@
+# Agent Workflow
+
+## Startup
+
+1. Confirm repository root.
+2. Read `AGENTS.md`.
+3. Read `.harness/state.md`.
+4. Check `.harness/progress.md` and `.harness/session_handoff.md` if present.
+5. Understand the current task scope before editing.
+
+## During work
+
+- Make small, task-scoped changes.
+- Do not modify protected paths.
+- Prefer tests and deterministic checks over self-judgment.
+- Update project state for multi-session work.
+
+## Before claiming done
+
+1. Run `bash scripts/agent/check.sh` if safe.
+2. Summarize changed files.
+3. Report verification result.
+4. List remaining risks.
+5. Update `.harness/progress.md` or `.harness/session_handoff.md` if needed.

@@ -71,7 +71,7 @@ Follow this sequence unless the user asks for a narrower task.
 
 4. **Capability Discovery**
    - First decide what capability the current task actually needs.
-   - For skill capabilities, call `$find-skills` to search strongly relevant reusable skills beyond the current installed inventory.
+   - For skill capabilities, use Claude Code skill discovery first: ask Claude to list available skills, inspect project/personal skill folders, or invoke `/find-skills` if that skill is installed. Search strongly relevant reusable skills beyond the current installed inventory.
    - For MCP, hooks, or external agent capabilities, use targeted web search for official docs, mature implementations, or task-specific integrations.
    - Classify each candidate as `Required`, `Recommended`, `Deferred`, or `Rejected` by value, enablement, risk/cost, and fallback.
    - Do not install or recommend skills, MCP, hooks, or subagents merely because they might be useful.
@@ -102,7 +102,7 @@ Follow this sequence unless the user asks for a narrower task.
 
 9. **Install only approved project-local components**
    - Install `Required` only unless the user approved more.
-   - Prefer: `AGENTS.md`, `scripts/agent/check.sh`, `docs/agent/*`, `.harness/*`, `.agents/skills/*`, `.codex/*`.
+   - Prefer: `AGENTS.md`, `CLAUDE.md`, `scripts/agent/check.sh`, `docs/agent/*`, `.harness/*`, `.agents/skills/*`, `.claude/*`, `.codex/*`.
    - Use `references/install_policy.md`.
 
 10. **Verify**
