@@ -1,0 +1,20 @@
+{
+  "name": "harness-workflow",
+  "interface": {
+    "displayName": "Harness Workflow"
+  },
+  "plugins": [
+    {
+      "name": "harness-workflow",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+---
+description: Use review when meaningful changes are stable and need a correctness, scope, docs, entropy, and evidence check before ready.
+globs:
+alwaysApply: false
+---
+
+# Review
+
+Canonical source: `skills/review/SKILL.md`.
+
+## When To Use
+
+- A slice is implemented and stable enough for structural review.
+- The user asks for review, sanity check, commit readiness, or merge readiness.
+- Diagnose produced a fix and the work should rejoin the main flow.
+
+## Inputs
+
+- Diff, file list, accepted Spec or user request, Executable Plan, selected recovery surface, source, tests, docs, README, and current evidence.
+
+## Procedure
+
+1. Restate active slice, files reviewed, and completion claim.
+2. Check Spec coverage: goals met and non-goals not crossed.
+3. Check evidence freshness and missing validation.
+4. Check correctness and design risk around boundaries, errors, data, compatibility, and trust.
+5. Check docs, generated artifacts, and recovery surface for drift.
+6. Check entropy: debug leftovers, TODOs, unused code, unapproved dependencies, duplicate state.
+7. Classify findings as Critical, Important, or Minor.
+8. Conclude Pass, Conditional, or Block and route next.
+
+## Outputs
+
+- Findings-first review with file or command evidence.
+- Open questions, residual risks, and next skill.
+
+## Verification / Done Criteria
+
+- Critical and Important findings have concrete evidence.
+- Missing fresh evidence is treated as a gap and routed to `verify`.
+- Blocking findings route back to `implement`, `diagnose`, `plan`, or `brainstorm`.

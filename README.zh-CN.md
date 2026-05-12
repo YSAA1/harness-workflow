@@ -14,11 +14,11 @@
 
 | 端 | 运行形态 | 主入口 | 识别目标 |
 | --- | --- | --- | --- |
-| Codex | 原生 plugin + skills | `.codex-plugin/plugin.json` + `skills/` | 插件 `harness-workflow` 和 8 个 bundled skills |
-| Claude Code | Project skills + 本地 plugin | `.claude/skills/` 和 `.claude-plugin/plugin.json` | `/skill-name` 或 `/harness-workflow:skill-name` |
-| Cursor | Project Rules adapter | `.cursor/rules/*.mdc` | Cursor Project Rules 中的 Harness Workflow rules |
+| Codex | 全局 plugin marketplace + skills | `.agents/plugins/marketplace.json` + `.codex-plugin/plugin.json` | 插件 `harness-workflow` 和 8 个 bundled skills |
+| Claude Code | 全局 plugin marketplace + personal skills fallback | `.claude-plugin/marketplace.json` + `.claude-plugin/plugin.json` | `/harness-workflow:skill-name` 或 personal `/skill-name` |
+| Cursor | Cursor plugin + project adapter | `.cursor-plugin/plugin.json`、`skills/`、`rules/`、`.cursor/rules/*.mdc` | `/add-plugin harness-workflow` 或复制后的 Project Rules |
 
-Codex 是原生 plugin 目标。Claude Code 和 Cursor 是一等适配面，但它们有自己的安装和识别方式，不读取 Codex manifest。
+Codex 和 Claude Code 主路径都是全局 plugin marketplace 安装。Cursor 发布后走 Cursor plugin 形态；marketplace 不可用时，用项目适配脚本把 rules 和 skills 复制到目标项目。
 
 ## 为什么需要它
 
@@ -43,47 +43,47 @@ flowchart LR
 
 ### Codex
 
-公开发布或本地 clone 后，把仓库作为 Codex plugin source：
+通过 Codex marketplace flow 全局安装：
 
 ```bash
 codex plugin marketplace add <owner>/<repo>
-node scripts/check-plugin.mjs
 ```
 
-成功识别意味着 Codex 能看到插件 `harness-workflow` 和下方 8 个 active skills。详见 [docs/install/codex.md](docs/install/codex.md)。
+然后在 Codex plugin directory 中安装 `harness-workflow`。成功识别意味着 Codex 能看到插件 `harness-workflow` 和下方 8 个 active skills。详见 [docs/install/codex.md](docs/install/codex.md)。
 
 ### Claude Code
 
-用 Claude Code 打开仓库后，`.claude/skills/` 中的 project skills 可直接调用：
-
-```text
-/harness-builder
-/brainstorm
-/plan
-/implement
-/diagnose
-/review
-/verify
-/cleanup
-```
-
-本地 plugin 验证：
+从 Claude Code plugin marketplace 全局安装：
 
 ```bash
-claude --plugin-dir .
+claude plugin marketplace add <owner>/<repo>
+claude plugin install harness-workflow@harness-workflow
 ```
 
-然后调用 `/harness-workflow:harness-builder` 等 namespaced skills。详见 [docs/install/claude-code.md](docs/install/claude-code.md)。
+然后调用 namespaced skills：
+
+```text
+/harness-workflow:harness-builder
+```
+
+`~/.claude/skills/` personal skills 只作为用户级 fallback，不是本仓库主安装路径。详见 [docs/install/claude-code.md](docs/install/claude-code.md)。
 
 ### Cursor
 
-用 Cursor 打开仓库。`.cursor/rules/*.mdc` 会作为 Project Rules 随仓库生效：
+发布到 Cursor marketplace 后：
+
+```text
+/add-plugin harness-workflow
+```
+
+项目本地安装时，把 Cursor rules 和 canonical skills 复制到目标仓库：
 
 ```bash
+node scripts/install-cursor.mjs --target /path/to/target-project
 node scripts/check-cursor-install.mjs
 ```
 
-Cursor 支持是 rules adapter，不是 Codex plugin runtime。本仓库不把 legacy `.cursorrules` 作为主路径。详见 [docs/install/cursor.md](docs/install/cursor.md)。
+Cursor 支持不读取 Codex manifest。项目适配脚本会安装 `.cursor/rules/` 和 `.cursor/skills/`，并且不使用 legacy `.cursorrules`。详见 [docs/install/cursor.md](docs/install/cursor.md)。
 
 ## Workflow Skills
 
@@ -152,10 +152,13 @@ node scripts/check-plugin.mjs
 
 | 路径 | 作用 |
 | --- | --- |
+| `.agents/plugins/marketplace.json` | Codex 全局 plugin 安装的 marketplace entry |
 | `.codex-plugin/plugin.json` | Codex plugin metadata 和 default prompts |
-| `.claude-plugin/plugin.json` | Claude Code 本地 plugin metadata |
-| `.claude/skills/` | Claude Code project skills copy |
-| `.cursor/rules/` | Cursor Project Rules adapter |
+| `.claude-plugin/marketplace.json` | Claude Code 全局 plugin 安装的 marketplace entry |
+| `.claude-plugin/plugin.json` | Claude Code plugin metadata |
+| `.cursor-plugin/plugin.json` | Cursor plugin metadata |
+| `rules/` | Cursor plugin rules |
+| `.cursor/rules/` | Cursor project adapter 的 Project Rules source |
 | `skills/*/SKILL.md` | canonical workflow skill source |
 | `skills/*/references/` | 细节 policy 和 checklist |
 | `skills/plan/templates/` | 可选 three-file backend 模板 |
@@ -170,7 +173,7 @@ node scripts/check-plugin.mjs
 2. 确认 README 和 install docs 对三端的描述一致。
 3. 确认没有默认 MCP、hooks、用户级配置或隐藏安装副作用。
 4. 创建公开 GitHub 仓库并 push。
-5. 在可用环境中做 live recognition：Codex plugin list、Claude Code skill menu、Cursor Project Rules UI。
+5. 在可用环境中做 live recognition：Codex plugin list、Claude Code plugin/skill list、Cursor plugin search 或 Project Rules UI。
 
 ## License
 

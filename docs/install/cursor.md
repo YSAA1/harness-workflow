@@ -1,64 +1,133 @@
-# Cursor 安装与识别
+# Cursor Install And Recognition
 
-`harness-workflow` 的 Cursor 支持是 **Project Rules adapter**。Cursor 不会安装 Codex plugin，也不会读取 `.codex-plugin/plugin.json` 作为 runtime；它会把仓库中的 `.cursor/rules/*.mdc` 当作可版本控制的 Project Rules。
+`harness-workflow` supports Cursor in two ways:
 
-## 安装
+1. **Cursor plugin surface** for public marketplace usage after the repo is published.
+2. **Project adapter install** for teams that want the same rules and skills copied into a target project.
 
-1. Clone 或复制本仓库到目标项目。
-2. 确认仓库根目录存在 `.cursor/rules`。
-3. 用 Cursor 打开该仓库。
-4. 在 Cursor Settings > Rules 或 Agent 侧栏中查看 Project Rules。应能看到 Harness Workflow overview 和 8 个 workflow rules。
+Cursor does not install the Codex plugin and does not read `.codex-plugin/plugin.json`. Its durable project context is `.cursor/rules`, and the project adapter also copies canonical workflow skills into `.cursor/skills` so Cursor can see the same skill content without information loss.
 
-`AGENTS.md` 是简单 fallback；`.cursor/rules` 是 Cursor 主路径，因为它能提供更结构化、可拆分、可作用域的持久上下文。
+This follows the pattern used by mature agent-tooling repos: keep reusable agent capabilities in repo-native folders, then expose a Cursor-specific plugin or `.cursor/` adapter rather than pretending Cursor can consume another agent's manifest.
 
-## 识别验证
+## Cursor Plugin Install
 
-在 Cursor Agent 中输入测试 prompt：
+After the plugin is published to a Cursor marketplace, install it from Cursor chat:
+
+```text
+/add-plugin harness-workflow
+```
+
+Successful recognition means Cursor can see:
+
+- plugin: `harness-workflow`
+- bundled skills: `harness-builder`, `brainstorm`, `plan`, `implement`, `diagnose`, `review`, `verify`, `cleanup`
+- rules that carry the Harness Workflow operating model
+
+The Cursor plugin metadata lives in:
+
+- `.cursor-plugin/plugin.json`
+- `.cursor-plugin/marketplace.json`
+- `skills/`
+- `rules/`
+- `.cursor/rules/`
+
+## Project Adapter Install
+
+Use this when Cursor marketplace install is not available, or when you want the workflow pinned inside a specific target repo:
+
+```bash
+node scripts/install-cursor.mjs --target /path/to/target-project
+```
+
+On Windows PowerShell:
+
+```powershell
+node scripts\install-cursor.mjs --target C:\path\to\target-project
+```
+
+The installer copies:
+
+- `.cursor/rules/*.mdc` to `<target>/.cursor/rules/`
+- `skills/*` to `<target>/.cursor/skills/`
+
+It does not delete existing target rules or settings. If a file with the same name already exists, it is overwritten with this repository's current version. Preview without writing:
+
+```bash
+node scripts/install-cursor.mjs --target /path/to/target-project --dry-run
+```
+
+## Recognition
+
+For plugin install, use Cursor's plugin UI or chat command surface and confirm `harness-workflow` is installed.
+
+For project adapter install:
+
+1. Open the target project in Cursor.
+2. Open Cursor Settings > Rules or inspect active Project Rules in the Agent sidebar.
+3. Confirm Harness Workflow overview and 8 workflow rules are visible.
+4. Confirm `<target>/.cursor/skills/` contains the 8 skill directories.
+
+Test prompt:
 
 ```text
 Use Harness Workflow to plan a scoped implementation for a small README change.
 ```
 
-预期行为：
+Expected behavior:
 
-- Agent 识别应先选择 `plan` 或在任务足够小时说明可直接实现。
-- 如果进入实现，应保持 WIP=1。
-- 如果准备声明完成，应要求 fresh evidence。
-- 如果需要收尾，应提到 Knowledge Cleanup。
+- Agent selects `plan`, or explains why the task is small enough to implement directly.
+- If it implements, it keeps WIP=1.
+- If it claims ready, it asks for or provides fresh evidence.
+- If it closes the work, it mentions Knowledge Cleanup.
 
-命令行结构检查：
+## Repository-Side Validation
+
+Run:
 
 ```bash
 node scripts/check-cursor-install.mjs
+node scripts/install-cursor.mjs --target . --dry-run
 ```
 
-该脚本只能验证仓库规则文件、覆盖 token 和安装文档内容；Cursor UI 是否真正显示规则仍需要在 Cursor 中手动确认。
+These checks validate Cursor metadata, rule coverage, installer behavior, and documentation consistency. Cursor UI recognition still requires opening Cursor itself.
 
-## 更新
+## Update
 
-- 修改 canonical `skills/*/SKILL.md` 后，同步检查 `.cursor/rules/*.mdc` 是否仍保留触发条件、核心步骤、交付物和 done 标准。
-- 修改 Cursor rules 后运行：
+After changing canonical `skills/*/SKILL.md`, update `.cursor/rules/*.mdc` when the trigger, procedure, outputs, or done criteria changed. Then run:
 
 ```bash
 node scripts/check-cursor-install.mjs
 node scripts/check-plugin.mjs
 ```
 
-## 卸载
+For a target project adapter install, rerun:
 
-删除 `.cursor/rules` 即可移除 Cursor Project Rules。不要用 legacy `.cursorrules` 作为主路径。
+```bash
+node scripts/install-cursor.mjs --target /path/to/target-project
+```
 
-## 三端差异
+## Uninstall
 
-| 端 | 主入口 | 能力形态 | 安装含义 |
+For marketplace install, remove `harness-workflow` from Cursor's plugin UI.
+
+For project adapter install, delete only the installed Harness Workflow files from:
+
+- `<target>/.cursor/rules/`
+- `<target>/.cursor/skills/`
+
+Do not delete the whole `.cursor` directory unless that project has no other Cursor configuration.
+
+## Three-Surface Differences
+
+| Surface | Primary Entry | Capability Shape | Install Meaning |
 | --- | --- | --- | --- |
-| Codex | `.codex-plugin/plugin.json` + `skills/` | plugin runtime + skills | 安装本地 Codex plugin |
-| Claude Code | Claude 侧规则或技能适配 | agent instructions / skills adapter | 按 Claude Code 支持面接入 |
-| Cursor | `.cursor/rules/*.mdc` | persistent project context | clone 后作为 Project Rules 读取 |
+| Codex | `.agents/plugins/marketplace.json` + `.codex-plugin/plugin.json` | global plugin runtime + skills | add marketplace, install plugin globally |
+| Claude Code | `.claude-plugin/marketplace.json` + `.claude-plugin/plugin.json` | global plugin runtime + skills | add marketplace, install plugin globally |
+| Cursor | `.cursor-plugin/plugin.json`, `.cursor/rules`, `skills/` | plugin or copied project context | install Cursor plugin or copy adapter into target repo |
 
-## 限制
+## Limits
 
-- Cursor rules 是 prompt context，不是完整 plugin runtime。
-- Cursor 不会自动执行 Codex manifest、Codex skills frontmatter 或 Claude Code 专属配置。
-- 本仓库默认不新增 Cursor MCP、extensions、hooks 或用户设置。
-- Three-file backend 只是可选 recovery surface；Cursor rules 依赖的是 active slice、success criteria、verification path、evidence log、decisions、risks、blockers、next actions 等语义字段。
+- Cursor rules and skills are instruction context, not the Codex runtime.
+- Cursor does not execute Codex manifest fields or Claude Code-specific plugin commands.
+- This repository does not add Cursor MCP, extensions, hooks, or user settings by default.
+- Legacy `.cursorrules` is intentionally not the main path.

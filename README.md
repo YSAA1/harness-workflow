@@ -14,11 +14,11 @@ The repository supports three agent surfaces:
 
 | Surface | Runtime shape | Primary entry | Recognition target |
 | --- | --- | --- | --- |
-| Codex | Native plugin + skills | `.codex-plugin/plugin.json` + `skills/` | Plugin `harness-workflow` and 8 bundled skills |
-| Claude Code | Project skills + local plugin | `.claude/skills/` and `.claude-plugin/plugin.json` | `/skill-name` or `/harness-workflow:skill-name` |
-| Cursor | Project Rules adapter | `.cursor/rules/*.mdc` | Harness Workflow rules in Cursor Project Rules |
+| Codex | Global plugin marketplace + skills | `.agents/plugins/marketplace.json` + `.codex-plugin/plugin.json` | Plugin `harness-workflow` and 8 bundled skills |
+| Claude Code | Global plugin marketplace + personal-skill fallback | `.claude-plugin/marketplace.json` + `.claude-plugin/plugin.json` | `/harness-workflow:skill-name` or personal `/skill-name` |
+| Cursor | Cursor plugin + project adapter | `.cursor-plugin/plugin.json`, `skills/`, `rules/`, `.cursor/rules/*.mdc` | `/add-plugin harness-workflow` or copied Project Rules |
 
-Codex is the native plugin target. Claude Code and Cursor are first-class adapters with their own install and recognition paths; they do not read the Codex manifest.
+Codex and Claude Code are installed globally through their plugin marketplace flows. Cursor is supported through Cursor's plugin shape when published, with a project adapter that copies rules and skills into a target repo when marketplace install is not available.
 
 ## Why This Exists
 
@@ -43,47 +43,47 @@ flowchart LR
 
 ### Codex
 
-Use this repository as a Codex plugin source after publishing or cloning:
+Install the plugin globally through the Codex marketplace flow:
 
 ```bash
 codex plugin marketplace add <owner>/<repo>
-node scripts/check-plugin.mjs
 ```
 
-Successful recognition means Codex sees plugin `harness-workflow` and the 8 active skills listed below. See [docs/install/codex.md](docs/install/codex.md).
+Then install `harness-workflow` from the Codex plugin directory. Successful recognition means Codex sees plugin `harness-workflow` and the 8 active skills listed below. See [docs/install/codex.md](docs/install/codex.md).
 
 ### Claude Code
 
-Open the repository with Claude Code. Project skills are available from `.claude/skills/`:
-
-```text
-/harness-builder
-/brainstorm
-/plan
-/implement
-/diagnose
-/review
-/verify
-/cleanup
-```
-
-For local plugin testing:
+Install globally from a Claude Code plugin marketplace:
 
 ```bash
-claude --plugin-dir .
+claude plugin marketplace add <owner>/<repo>
+claude plugin install harness-workflow@harness-workflow
 ```
 
-Then invoke namespaced skills such as `/harness-workflow:harness-builder`. See [docs/install/claude-code.md](docs/install/claude-code.md).
+Then invoke namespaced skills:
+
+```text
+/harness-workflow:harness-builder
+```
+
+Claude Code personal skills in `~/.claude/skills/` are documented only as a user-level fallback, not as this repo's primary install path. See [docs/install/claude-code.md](docs/install/claude-code.md).
 
 ### Cursor
 
-Open the repository in Cursor. The `.cursor/rules/*.mdc` files are Project Rules, versioned with the repo:
+For Cursor marketplace usage after publication:
+
+```text
+/add-plugin harness-workflow
+```
+
+For project-local installation into a target repo, copy the Cursor rules and canonical skills:
 
 ```bash
+node scripts/install-cursor.mjs --target /path/to/target-project
 node scripts/check-cursor-install.mjs
 ```
 
-Cursor support is a rules adapter, not a Codex plugin runtime. The repository intentionally does not use legacy `.cursorrules` as the main path. See [docs/install/cursor.md](docs/install/cursor.md).
+Cursor support does not use the Codex manifest. The project adapter installs `.cursor/rules/` and `.cursor/skills/` into the target repo and intentionally avoids legacy `.cursorrules`. See [docs/install/cursor.md](docs/install/cursor.md).
 
 ## Workflow Skills
 
@@ -152,10 +152,13 @@ node scripts/check-plugin.mjs
 
 | Path | Purpose |
 | --- | --- |
+| `.agents/plugins/marketplace.json` | Codex marketplace entry for global plugin install |
 | `.codex-plugin/plugin.json` | Codex plugin metadata and default prompts |
-| `.claude-plugin/plugin.json` | Claude Code local plugin metadata |
-| `.claude/skills/` | Claude Code project skills copy |
-| `.cursor/rules/` | Cursor Project Rules adapter |
+| `.claude-plugin/marketplace.json` | Claude Code marketplace entry for global plugin install |
+| `.claude-plugin/plugin.json` | Claude Code plugin metadata |
+| `.cursor-plugin/plugin.json` | Cursor plugin metadata |
+| `rules/` | Cursor plugin rules |
+| `.cursor/rules/` | Cursor Project Rules source for project adapter installs |
 | `skills/*/SKILL.md` | Canonical workflow skill source |
 | `skills/*/references/` | Detailed policy and checklist files |
 | `skills/plan/templates/` | Optional three-file backend templates |
@@ -170,7 +173,7 @@ node scripts/check-plugin.mjs
 2. Confirm the README and install docs describe the same three surfaces.
 3. Confirm no default MCP, hooks, user-level config, or hidden install side effects were added.
 4. Create a public GitHub repository and push.
-5. Perform live recognition where available: Codex plugin listing, Claude Code skill menu, Cursor Project Rules UI.
+5. Perform live recognition where available: Codex plugin listing, Claude Code plugin/skill list, Cursor plugin search or Project Rules UI.
 
 ## License
 

@@ -31,12 +31,40 @@ if (!fs.existsSync(root)) {
   process.exit(1);
 }
 
+for (const manifestPath of [".cursor-plugin/plugin.json", ".cursor-plugin/marketplace.json"]) {
+  if (!exists(manifestPath)) {
+    fail(`missing Cursor plugin manifest: ${manifestPath}`);
+  } else {
+    try {
+      JSON.parse(read(manifestPath));
+      pass(`Cursor manifest parses: ${manifestPath}`);
+    } catch (error) {
+      fail(`Cursor manifest JSON is invalid in ${manifestPath}: ${error.message}`);
+    }
+  }
+}
+
+if (exists(".cursor-plugin/plugin.json")) {
+  const manifest = JSON.parse(read(".cursor-plugin/plugin.json"));
+  if (manifest.name !== "harness-workflow") fail("Cursor plugin manifest name must be harness-workflow");
+}
+if (exists(".cursor-plugin/marketplace.json")) {
+  const marketplace = JSON.parse(read(".cursor-plugin/marketplace.json"));
+  const plugin = marketplace.plugins?.find((entry) => entry.name === "harness-workflow");
+  if (marketplace.name !== "harness-workflow") fail("Cursor marketplace name must be harness-workflow");
+  if (!plugin) fail("Cursor marketplace must expose harness-workflow");
+}
+
+const pluginRulesDir = "rules";
 const rulesDir = ".cursor/rules";
+if (!exists(pluginRulesDir)) fail("Cursor plugin rules directory is missing");
+else pass("Cursor plugin rules directory exists");
 if (!exists(rulesDir)) fail("Cursor rules directory is missing");
 else pass("Cursor rules directory exists");
 
 const overview = `${rulesDir}/harness-workflow-overview.mdc`;
 if (!exists(overview)) fail("Cursor overview rule is missing");
+if (!exists(`${pluginRulesDir}/harness-workflow-overview.mdc`)) fail("Cursor plugin overview rule is missing");
 
 if (exists(rulesDir)) {
   const ruleFiles = fs.readdirSync(path.join(root, rulesDir)).filter((file) => file.endsWith(".mdc"));
@@ -45,14 +73,26 @@ if (exists(rulesDir)) {
     fail(`Cursor rules should contain ${expectedCount} MDC files, found ${ruleFiles.length}`);
   }
 }
+if (exists(pluginRulesDir)) {
+  const pluginRuleFiles = fs.readdirSync(path.join(root, pluginRulesDir)).filter((file) => file.endsWith(".mdc"));
+  const expectedCount = activeWorkflows.length + 1;
+  if (pluginRuleFiles.length !== expectedCount) {
+    fail(`Cursor plugin rules should contain ${expectedCount} MDC files, found ${pluginRuleFiles.length}`);
+  }
+}
 
 for (const workflow of activeWorkflows) {
   const rulePath = `${rulesDir}/${workflow}.mdc`;
+  const pluginRulePath = `${pluginRulesDir}/${workflow}.mdc`;
   const skillPath = `skills/${workflow}/SKILL.md`;
 
   if (!exists(rulePath)) {
     fail(`missing Cursor rule for ${workflow}`);
     continue;
+  }
+  if (!exists(pluginRulePath)) fail(`missing Cursor plugin rule for ${workflow}`);
+  if (exists(pluginRulePath) && read(pluginRulePath) !== read(rulePath)) {
+    fail(`Cursor plugin rule and project adapter rule drifted: ${workflow}`);
   }
   if (!exists(skillPath)) fail(`missing canonical skill for ${workflow}`);
 
@@ -72,6 +112,17 @@ for (const workflow of activeWorkflows) {
   }
 }
 if (!process.exitCode) pass("Cursor rules cover all active workflows");
+
+const installer = "scripts/install-cursor.mjs";
+if (!exists(installer)) {
+  fail("Cursor project adapter installer is missing");
+} else {
+  const installerBody = read(installer);
+  for (const token of ["--target", "--dry-run", ".cursor", "rules", "skills"]) {
+    if (!installerBody.includes(token)) fail(`Cursor installer missing token: ${token}`);
+  }
+  pass("Cursor project adapter installer exists");
+}
 
 const rulesBundle = exists(rulesDir)
   ? fs
@@ -105,14 +156,17 @@ if (!exists(installDoc)) {
   const doc = read(installDoc);
   const normalizedDoc = doc.toLowerCase();
   for (const token of [
+    ".cursor-plugin/plugin.json",
+    "rules/",
     ".cursor/rules",
+    ".cursor/skills",
     "project rules",
-    "AGENTS.md",
-    "rules adapter",
+    "project adapter",
+    "node scripts/install-cursor.mjs --target",
     "node scripts/check-cursor-install.mjs",
+    "/add-plugin harness-workflow",
   ]) {
-    const haystack = token === "AGENTS.md" ? doc : normalizedDoc;
-    if (!haystack.includes(token)) fail(`Cursor install doc missing token: ${token}`);
+    if (!normalizedDoc.includes(token.toLowerCase())) fail(`Cursor install doc missing token: ${token}`);
   }
   for (const forbidden of [
     /Cursor\s+会安装\s+Codex plugin/i,
@@ -135,9 +189,11 @@ if (!exists(readme)) {
 } else {
   const body = read(readme);
   for (const token of [
-    "Cursor Project Rules",
-    "rules adapter",
+    "Cursor plugin",
+    ".cursor-plugin/plugin.json",
+    "project adapter",
     "docs/install/cursor.md",
+    "node scripts/install-cursor.mjs --target",
     "node scripts/check-cursor-install.mjs",
     "legacy `.cursorrules`",
   ]) {
@@ -151,9 +207,10 @@ if (!exists(readme)) {
 
 console.log("");
 console.log("Manual Cursor recognition check:");
-console.log("1. Open this repository in Cursor.");
-console.log("2. Open Cursor Settings > Rules or inspect active rules in the Agent sidebar.");
-console.log("3. Confirm Harness Workflow overview and the eight workflow rules appear.");
-console.log("4. Test prompt: Use Harness Workflow to plan a scoped implementation.");
+console.log("1. For marketplace usage, install with /add-plugin harness-workflow and confirm the plugin appears.");
+console.log("2. For project adapter usage, run node scripts/install-cursor.mjs --target <project>.");
+console.log("3. Open the target project in Cursor and inspect active rules in Settings > Rules or the Agent sidebar.");
+console.log("4. Confirm Harness Workflow overview, eight workflow rules, and .cursor/skills appear.");
+console.log("5. Test prompt: Use Harness Workflow to plan a scoped implementation.");
 
 if (!process.exitCode) pass("Cursor install workflow checks passed");

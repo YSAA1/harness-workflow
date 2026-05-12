@@ -72,30 +72,21 @@ if (!fs.existsSync(root)) {
 }
 
 for (const skill of activeSkills) {
-  if (!exists(`skills/${skill}/SKILL.md`)) fail(`missing canonical skill: skills/${skill}/SKILL.md`);
   validateSkill("skills", skill);
-  validateSkill(".claude/skills", skill);
 }
 for (const skill of removedSkills) {
-  if (exists(`.claude/skills/${skill}/SKILL.md`)) fail(`removed skill exposed to Claude Code: ${skill}`);
+  if (exists(`skills/${skill}/SKILL.md`)) fail(`removed skill exposed to Claude Code: ${skill}`);
 }
-if (!failed) pass("Claude Code project skill set exposes the 8 active workflow skills");
+if (exists(".claude/skills")) {
+  fail("repository must not ship project-local .claude/skills as the primary Claude Code install surface");
+}
+if (!failed) pass("Claude Code global plugin skill set uses the canonical 8 workflow skills");
 
 for (const skill of activeSkills) {
-  const canonicalFiles = listFiles(`skills/${skill}`);
-  const claudeFiles = new Set(listFiles(`.claude/skills/${skill}`));
-  for (const file of canonicalFiles) {
-    if (!claudeFiles.has(file)) fail(`Claude Code copy for ${skill} is missing ${file}`);
-  }
+  const files = listFiles(`skills/${skill}`);
+  if (!files.includes("SKILL.md")) fail(`canonical skill ${skill} is missing SKILL.md`);
 }
-if (!failed) pass("Claude Code project skills preserve canonical supporting files");
-
-for (const dir of ["references", "templates", "scripts"]) {
-  const canonicalCount = activeSkills.reduce((count, skill) => count + listFiles(`skills/${skill}/${dir}`).length, 0);
-  const claudeCount = activeSkills.reduce((count, skill) => count + listFiles(`.claude/skills/${skill}/${dir}`).length, 0);
-  if (canonicalCount !== claudeCount) fail(`${dir} file count mismatch: canonical=${canonicalCount}, claude=${claudeCount}`);
-}
-if (!failed) pass("references, templates, and scripts are mirrored");
+if (!failed) pass("Claude Code plugin skills preserve canonical supporting files");
 
 if (!exists(".claude-plugin/plugin.json")) {
   fail("missing Claude Code plugin manifest: .claude-plugin/plugin.json");
@@ -110,13 +101,28 @@ if (!exists(".claude-plugin/plugin.json")) {
   }
 }
 
+if (!exists(".claude-plugin/marketplace.json")) {
+  fail("missing Claude Code marketplace manifest: .claude-plugin/marketplace.json");
+} else {
+  try {
+    const marketplace = JSON.parse(read(".claude-plugin/marketplace.json"));
+    const plugin = marketplace.plugins?.find((entry) => entry.name === "harness-workflow");
+    if (marketplace.name !== "harness-workflow") fail("Claude marketplace name must be harness-workflow");
+    if (!plugin) fail("Claude marketplace must expose harness-workflow");
+    if (plugin && plugin.source !== "./") fail("Claude marketplace source must point at the repository root");
+    pass("Claude Code marketplace manifest parses");
+  } catch (error) {
+    fail(`Claude marketplace JSON is invalid: ${error.message}`);
+  }
+}
+
 const methodContract = exists("docs/harness-method-contract.md") ? read("docs/harness-method-contract.md") : "";
-const claudeSkillBundle = activeSkills.map((skill) => exists(`.claude/skills/${skill}/SKILL.md`) ? read(`.claude/skills/${skill}/SKILL.md`) : "").join("\n");
+const skillBundle = activeSkills.map((skill) => read(`skills/${skill}/SKILL.md`)).join("\n");
 for (const token of [
   "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
   "recovery surface", "fresh evidence", "WIP=1", "Knowledge Cleanup", "Capability Discovery",
 ]) {
-  if (!`${methodContract}\n${claudeSkillBundle}`.includes(token)) fail(`Claude Code line missing required discipline token: ${token}`);
+  if (!`${methodContract}\n${skillBundle}`.includes(token)) fail(`Claude Code line missing required discipline token: ${token}`);
 }
 if (!failed) pass("Claude Code line preserves Harness Method Contract discipline");
 
@@ -125,22 +131,29 @@ if (!exists("docs/install/claude-code.md")) {
 } else {
   const doc = read("docs/install/claude-code.md");
   for (const token of [
-    ".claude/skills/",
+    "global Claude Code installation",
+    "claude plugin marketplace add",
+    "claude plugin install",
     ".claude-plugin/plugin.json",
-    "/harness-builder",
+    ".claude-plugin/marketplace.json",
+    "~/.claude/skills/",
+    "%USERPROFILE%\\.claude\\skills",
     "/harness-workflow:harness-builder",
-    "%USERPROFILE%\\.claude",
-    "更新",
-    "卸载",
+    "/harness-builder",
+    "Update",
+    "Uninstall",
     "Codex",
     "Cursor",
   ]) {
     if (!doc.includes(token)) fail(`Claude install doc missing token: ${token}`);
   }
-  if (!doc.includes("Claude Code 不读取 `.codex-plugin/plugin.json`")) {
+  if (!doc.includes("Claude Code does not read `.codex-plugin/plugin.json`")) {
     fail("Claude install doc must state that Claude Code does not read the Codex manifest");
   }
+  if (/project-local\s+`?\.claude\/skills`?\s+install/i.test(doc) && !/not project-local/i.test(doc)) {
+    fail("Claude install doc appears to present project-local .claude/skills as the install path");
+  }
 }
-if (!failed) pass("Claude Code install documentation covers install, recognition, update, uninstall, and product differences");
+if (!failed) pass("Claude Code install documentation covers global install, recognition, update, uninstall, and fallback");
 
 process.exitCode = failed ? 1 : 0;

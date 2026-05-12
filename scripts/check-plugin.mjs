@@ -42,6 +42,21 @@ try {
   fail(`manifest JSON is invalid: ${error.message}`);
 }
 
+if (!exists(".agents/plugins/marketplace.json")) {
+  fail("missing Codex marketplace manifest: .agents/plugins/marketplace.json");
+} else {
+  try {
+    const marketplace = JSON.parse(read(".agents/plugins/marketplace.json"));
+    if (marketplace.name !== "harness-workflow") fail("Codex marketplace name must be harness-workflow");
+    const plugin = marketplace.plugins?.find((entry) => entry.name === "harness-workflow");
+    if (!plugin) fail("Codex marketplace must expose harness-workflow");
+    if (plugin?.source?.path !== "./") fail("Codex marketplace source path must point at repository root");
+    pass("Codex marketplace manifest parses");
+  } catch (error) {
+    fail(`Codex marketplace JSON is invalid: ${error.message}`);
+  }
+}
+
 if (exists(".mcp.json")) fail("plugin must not include default MCP config");
 else pass("no default MCP config");
 if (exists("hooks/hooks.json")) fail("plugin must not include default hooks");
@@ -87,10 +102,11 @@ if (!exists(installDocPath)) {
   const installDoc = read(installDocPath);
   const normalizedInstallDoc = installDoc.toLowerCase();
   const requiredDocTokens = [
-    "Codex plugin runtime",
+    "global Codex plugin installation",
+    ".agents/plugins/marketplace.json",
     "codex plugin marketplace add",
     "GitHub",
-    "local development",
+    "Personal Marketplace Manual Install",
     "harness-workflow",
     "harness-builder",
     "brainstorm",
@@ -116,7 +132,7 @@ if (!exists(installDocPath)) {
 
 const readme = read("README.md");
 for (const token of [
-  "Codex is the native plugin target",
+  "Global plugin marketplace",
   "docs/install/codex.md",
   "codex plugin marketplace add",
   "node scripts/check-plugin.mjs",

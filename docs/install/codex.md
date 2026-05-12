@@ -1,30 +1,30 @@
-# Codex Install And Recognition
+# Codex Global Install And Recognition
 
-This guide is for the Codex plugin runtime. In this repository, Codex is the native plugin target:
+This guide is for **global Codex plugin installation**. The public distribution path is a Codex marketplace, not project-local instructions copied into a single repository.
 
-- `.codex-plugin/plugin.json` is the canonical Codex manifest.
-- `skills/` is the canonical Codex skill source.
-- No default MCP servers, hooks, apps, connectors, or user-level Codex config are installed by this plugin.
+Codex uses:
 
-## Prerequisites
+- `.agents/plugins/marketplace.json`: marketplace catalog.
+- `.codex-plugin/plugin.json`: plugin manifest.
+- `skills/`: bundled Codex skills.
 
-- Codex CLI or Codex App with plugin and skill support.
-- A public GitHub source, local clone, or marketplace root that contains this repository.
-- On Windows, prefer `codex.cmd` in PowerShell if `codex` resolves to a blocked `codex.ps1` shim.
+No default MCP servers, hooks, apps, connectors, or user-level Codex config are installed by this plugin.
 
-The local validation script checks repository shape without modifying `~/.codex/config.toml`.
+## Global Install From GitHub
 
-```bash
-node scripts/check-plugin.mjs
-```
-
-## Install From GitHub
-
-Use the public GitHub repository as the marketplace source once it is published:
+After publishing the repository, add it as a user-level Codex marketplace:
 
 ```bash
 codex plugin marketplace add <owner>/<repo>
 ```
+
+On Windows PowerShell, prefer `codex.cmd` if `codex` resolves to a blocked `.ps1` shim:
+
+```powershell
+codex.cmd plugin marketplace add <owner>/<repo>
+```
+
+Then restart Codex, open the plugin directory, choose the `Harness Workflow` marketplace, and install the `harness-workflow` plugin.
 
 For a pinned branch, tag, or commit:
 
@@ -32,42 +32,25 @@ For a pinned branch, tag, or commit:
 codex plugin marketplace add <owner>/<repo>@<ref>
 ```
 
-If the repository is hosted outside the `owner/repo` shorthand, use the Git URL form supported by Codex:
+## Personal Marketplace Manual Install
 
-```bash
-codex plugin marketplace add https://github.com/<owner>/<repo>.git --ref <ref>
-```
+For local/private use, install through the user-level marketplace files:
 
-After install, start or reload Codex so the plugin registry and bundled skills are refreshed.
+1. Copy or clone this plugin to a stable user-level location, for example `~/.codex/plugins/harness-workflow`.
+2. Add or update `~/.agents/plugins/marketplace.json` so its plugin entry points at that directory.
+3. Restart Codex and install `harness-workflow` from the plugin directory.
 
-## Local Development
-
-From a local checkout, register the local repository path as the marketplace source:
-
-```bash
-codex plugin marketplace add <path-to-this-repository>
-```
-
-On Windows, use the repository path you cloned:
-
-```powershell
-codex.cmd plugin marketplace add C:\path\to\harness-workflow
-```
-
-Run the repository verifier before trying live recognition:
-
-```bash
-node scripts/check-plugin.mjs
-```
+This repository already includes `.agents/plugins/marketplace.json` for marketplace discovery. Do not treat a target project checkout as the installation surface; install the plugin into the user's Codex plugin environment, then use it across projects.
 
 ## Recognition
 
 Successful recognition means Codex can see:
 
-- plugin name: `harness-workflow`
+- marketplace: `harness-workflow`
+- plugin: `harness-workflow`
 - active skills: `harness-builder`, `brainstorm`, `plan`, `implement`, `diagnose`, `review`, `verify`, `cleanup`
 
-You can ask Codex to use the plugin or a bundled skill explicitly, for example:
+You can ask Codex to use the plugin or a bundled skill explicitly:
 
 ```text
 Use the harness-workflow plugin to review this project harness.
@@ -79,27 +62,38 @@ Use harness-workflow:verify to prove the ready claim with fresh evidence.
 
 When app-server protocol tooling is available, the recognition surface to inspect is:
 
-- `plugin/list` should include `harness-workflow`
-- `plugin/read` should show `.codex-plugin/plugin.json`
-- `skills/list` should include the 8 active skills above
+- `plugin/list` includes `harness-workflow`.
+- `plugin/read` shows `.codex-plugin/plugin.json`.
+- `skills/list` includes the 8 active skills above.
 
-If live app-server inspection is not available in the current shell, record that limitation and keep `node scripts/check-plugin.mjs` as the repository-side proof. The script also prints whether the local Codex CLI exposes `codex plugin marketplace add <SOURCE>`.
+## Repository-Side Validation
 
-## Update
-
-For an installed marketplace source, refresh it with:
-
-```bash
-codex plugin marketplace upgrade harness-workflow
-```
-
-If Codex registered the source under a different marketplace name, use that configured name instead. Re-run:
+Run before publishing:
 
 ```bash
 node scripts/check-plugin.mjs
 ```
 
-Then reload Codex and confirm the plugin and 8 skills are still visible.
+The script checks:
+
+- `.agents/plugins/marketplace.json` exists and points to the plugin.
+- `.codex-plugin/plugin.json` is valid.
+- `skills/` contains the 8 active skills with valid frontmatter.
+- removed skills are not exposed.
+- no default MCP, hooks, apps, connectors, or Codex config are bundled.
+- the local Codex CLI exposes the marketplace command surface when available.
+
+This is repository-side validation. The final live check is still a global install/recognition check in Codex: the marketplace, plugin, and 8 bundled skills must appear after installing from the plugin directory.
+
+## Update
+
+For an installed marketplace source:
+
+```bash
+codex plugin marketplace upgrade harness-workflow
+```
+
+If Codex registered the source under a different marketplace name, use that configured name instead. Restart Codex and confirm the plugin and 8 skills are still visible.
 
 ## Uninstall
 
@@ -109,7 +103,7 @@ Remove the configured marketplace source:
 codex plugin marketplace remove harness-workflow
 ```
 
-If the source was registered under another marketplace name, remove that name instead. After removal, reload Codex and confirm `harness-workflow` and the 8 bundled skills no longer appear in `plugin/list` or `skills/list`.
+If the source was registered under another marketplace name, remove that name instead. After removal, restart Codex and confirm `harness-workflow` and the 8 bundled skills no longer appear.
 
 ## Windows PowerShell Note
 

@@ -1,0 +1,20 @@
+{
+  "name": "harness-workflow",
+  "displayName": "Harness Workflow",
+  "description": "Workflow skills and Cursor rules for project harness setup, planning, implementation, diagnosis, review, verification, and knowledge cleanup.",
+  "plugins": [
+    {
+      "name": "harness-workflow",
+      "source": "./",
+      "description": "Workflow skills and Cursor rules for project harness setup, planning, implementation, diagnosis, review, verification, and knowledge cleanup.",
+      "category": "Productivity",
+      "tags": [
+        "workflow",
+        "skills",
+        "cursor-rules",
+        "harness",
+        "verification"
+      ]
+    }
+  ]
+}
