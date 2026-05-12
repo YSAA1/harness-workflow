@@ -1,0 +1,42 @@
+---
+description: Use brainstorm when requirements, boundaries, solution tradeoffs, success criteria, or verification strategy are not yet settled.
+globs:
+alwaysApply: false
+---
+
+# Brainstorm
+
+Canonical source: `skills/brainstorm/SKILL.md`.
+
+## When To Use
+
+- The request is still an idea, goal, architecture question, or unclear behavior.
+- Multiple reasonable approaches exist and need tradeoff analysis.
+- Success criteria, non-goals, validation, users, constraints, or capability gaps are missing.
+- The user asks to discuss first, write a Spec, or avoid coding yet.
+
+## Inputs
+
+- User request and attached materials.
+- Existing specs, PRDs, plans, issues, README, relevant code, tests, and recovery surface.
+- Current project rules and verification commands.
+
+## Procedure
+
+1. Restate the real problem and current project context.
+2. Ask focused clarification questions until purpose, scope, behavior, constraints, success criteria, and verification strategy are explicit.
+3. Design verification before choosing implementation details.
+4. Compare two or three approaches, or record rejected alternatives when one approach is clearly best.
+5. Write an independent Spec in the project convention.
+6. Self-review the Spec for TBDs, contradictions, hidden capability gaps, and unverifiable success criteria.
+7. Stop for user approval before planning or implementation.
+
+## Outputs
+
+- An approved-ready Spec that states goals, non-goals, users, behavior, constraints, chosen approach, verification strategy, capability gaps, success criteria, residual risks, and plan handoff.
+- Optional short summary in the selected recovery surface only if that surface requires it.
+
+## Verification / Done Criteria
+
+- The Spec can answer what will be built, what will not be built, and how it will be proven correct.
+- User approval is requested before any Executable Plan or implementation.

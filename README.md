@@ -30,6 +30,14 @@
 
 这些 skill 是条件路由，不是强制全局顺序。简单任务可以直接实现并验证；非平凡任务再选择合适的 recovery surface。
 
+## Cursor Project Rules
+
+Cursor 线是 rules adapter，不是 Codex plugin runtime。Cursor 用户 clone 仓库后，`.cursor/rules/*.mdc` 会作为 Project Rules 提供 Harness Workflow 的持久上下文；`AGENTS.md` 只是简单 fallback。
+
+- 安装与识别说明：`docs/install/cursor.md`
+- 结构验证：`node scripts/check-cursor-install.mjs`
+- 不使用 legacy `.cursorrules` 作为主路径。
+
 ## Recovery Surface
 
 Recovery surface 是让未来 agent 不依赖聊天记录也能恢复工作的项目工件。Three-file backend 仍然保留，但只是一个选项：
@@ -72,6 +80,12 @@ Harness Builder 先判断当前任务需要什么能力，再做 discovery：
 
 ```bash
 node scripts/check-plugin.mjs
+```
+
+验证 Cursor rules adapter：
+
+```bash
+node scripts/check-cursor-install.mjs
 ```
 
 修改 skill graph、`SKILL.md` 结构或 flow 生成逻辑后运行：

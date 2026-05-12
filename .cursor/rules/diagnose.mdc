@@ -1,0 +1,43 @@
+---
+description: Use diagnose when build, test, lint, typecheck, CI, runtime, or smoke checks fail without a proven root cause.
+globs:
+alwaysApply: false
+---
+
+# Diagnose
+
+Canonical source: `skills/diagnose/SKILL.md`.
+
+## When To Use
+
+- A command is red and the root cause is not proven.
+- The same slice failed twice, errors changed unexpectedly, or results are flaky.
+- Local and CI behavior differ.
+- The user asks why an error happens or asks to reproduce a bug.
+
+## Inputs
+
+- Exact failing command, cwd, exit code, stderr/stdout, stack trace, and timing.
+- Relevant diff, recent commits, configs, source, tests, README, and selected recovery surface.
+
+## Procedure
+
+1. Capture facts before changing files.
+2. Reproduce the failure with the smallest command.
+3. Minimize the failure surface.
+4. Propose one falsifiable hypothesis at a time.
+5. Instrument or run focused checks to support or falsify that hypothesis.
+6. Name the root cause only when evidence supports it.
+7. Make the smallest single-purpose fix.
+8. Re-run the reproduction command and adjacent validation for fresh evidence.
+
+## Outputs
+
+- Failure report with reproduction command, hypotheses, root cause, fix, evidence, and residual risks.
+- Minimal fix only when the root cause is proven.
+
+## Verification / Done Criteria
+
+- The failing command turns green, or an explicit blocker is recorded.
+- Root cause is backed by command-level evidence.
+- Dead ends and residual risks are recorded in the selected recovery surface when required.

@@ -1,0 +1,39 @@
+---
+description: Use verify when a concrete ready claim needs fresh evidence mapped to success criteria.
+globs:
+alwaysApply: false
+---
+
+# Verify
+
+Canonical source: `skills/verify/SKILL.md`.
+
+## When To Use
+
+- A slice is ready to be declared done, shipped, or merged.
+- Review passed structurally but lacks current command evidence.
+- The user asks to prove it works, run final checks, smoke test, or validate readiness.
+
+## Inputs
+
+- Ready claim, active slice, success criteria, verification path, selected recovery surface, README, `AGENTS.md`, project scripts, changed files, and latest git state.
+
+## Procedure
+
+1. State the exact claim being verified.
+2. Identify whether existing evidence is fresh, current, and relevant.
+3. Select the smallest valuable evidence ladder: syntax, build, typecheck, lint, unit, integration, smoke, E2E, or manual signal.
+4. Run checks in the target cwd and environment.
+5. Map each success criterion to pass, fail, or unknown.
+6. Record skipped high-value checks and capability gaps with value, enablement, risk/cost, and fallback.
+7. Route failures to `diagnose`, unknowns to planning or harness work, and passing closure to `cleanup`.
+
+## Outputs
+
+- Verification report with commands, results, freshness, success-criterion mapping, capability gaps, risks, and ready yes/no.
+
+## Verification / Done Criteria
+
+- No ready claim is made without fresh evidence after the latest relevant change.
+- Unknown is not treated as pass.
+- Evidence covers the stated success criteria, not just a proxy green command.
