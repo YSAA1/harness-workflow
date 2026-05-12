@@ -136,31 +136,31 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>implement</h1>
-  <p>当 tracked feature、bugfix 或 refactor 已经可以实现，且项目工作面已确认时使用。典型触发语：实现这个、开始写代码、修 bug、让测试通过、加这个函数、接线这个功能。要求 workflow state 能解析出唯一 active slice（默认从 task_plan.md 读取）；失败连续两次转 diagnose；稳定后转 review，再转 verify。</p>
+  <p>当 scoped feature、bugfix 或 refactor 已经可以实现，且项目工作面足够清楚时使用。典型触发语：实现这个、开始写代码、修 bug、让测试通过、加这个函数、接线这个功能。读取用户请求、Spec、Executable Plan 和当前 recovery surface；不要求三文件存在。失败连续两次转 diagnose；稳定后转 review，再转 verify。</p>
   <div class="toolbar">
     <a class="button" href="../../skills/implement/SKILL.md">打开 SKILL.md</a>
     <span class="button">小步执行</span>
-    <span class="button">254 行</span>
+    <span class="button">153 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>本 skill 把实现压成小步、可验证、可恢复的循环： - 当前 active slice 没拿到证据前，不开新 slice - 修代码就同步文档/命令/workflow state，否则下次会话恢复就会失真 - 验证强度按风险匹配，不机械要求覆盖率 - 失败了不&quot;猜一下再试&quot;，转 diagnose</p>
+    <p>- 当前 active slice 没拿到证据前，不开新 slice。 - 修代码就同步命令、文档或 recovery surface，否则下次会话恢复会失真。 - 验证强度按风险匹配，不机械要求覆盖率。 - 失败了不靠猜，转 diagnose。</p>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>进入条件</h2>
-      <ul><li>workflow state 能解析出恰好一个 active slice；默认 three-file backend 要求 task_plan.md 的 范围合同 写清 active slice、non-goals、success criteria 和 verification path</li><li>项目工作面已确认；如果没有 recent bootstrap/workbench 记录，但入口、验证、恢复路径都清楚，可以继续并在 progress.md 说明复用现有工作面</li><li>用户说「实现」「写代码」「修这个 bug」「让测试过」「让它跑起来」</li><li>已经在循环中且当前 slice 还未 verified</li></ul>
+      <ul><li>用户请求、Spec 或 Executable Plan 能解析出恰好一个 active slice。</li><li>项目入口、验证命令和 protected paths 足够清楚。</li><li>用户说「实现」「写代码」「修这个 bug」「让测试过」「让它跑起来」。</li><li>已经在循环中且当前 slice 还未 verified。</li></ul>
     </div>
     <div class="panel">
       <h2>禁用条件</h2>
-      <ul><li>workflow state 不存在或 active slice 不明：先 state-contract / plan</li><li>工作面缺入口、验证、恢复路径或项目地图：先 bootstrap</li><li>失败已经发生且根因不清：转 diagnose</li><li>用户其实在问「应该怎么做」而不是「请做」：转 brainstorm</li></ul>
+      <ul><li>需求或成功标准不清：先 brainstorm。</li><li>active slice 或 planning surface 不清：先 plan。</li><li>项目工作面、验证入口或 recovery surface 不清：先 harness-builder。</li><li>失败已经发生且根因不清：转 diagnose。</li><li>用户其实在问「应该怎么做」：转 brainstorm。</li></ul>
     </div>
     <div class="panel">
       <h2>先读输入</h2>
-      <ul><li>task_plan.md：确认 范围合同 中的 active slice、non-goals、success criteria、verification path</li><li>progress.md 最新 entry：上次做到哪</li><li>findings.md：accepted spec、rejected options、约束</li><li>与 active slice 直接相关的源代码、测试、配置</li><li>git status --short：避免和未提交改动相互覆盖</li></ul>
+      <ul><li>用户请求、Spec 或 Executable Plan：确认 active slice、non-goals、success criteria、verification path。</li><li>selected recovery surface：读取上次进度、决策、风险和 blockers；没有就轻量执行，不强制创建。</li><li>与 active slice 直接相关的源代码、测试、配置和 docs。</li><li>AGENTS.md 和 README：确认项目规则、验证命令和 protected paths。</li><li>git status --short：避免和未提交改动相互覆盖。</li></ul>
     </div>
   </section>
 
@@ -169,31 +169,28 @@ pre {
     <div class="flow">
       <div class="step">
         <div class="num">1</div>
-        <div><h3>第 1 步 — 重新对账 active slice</h3><p>实现前最后一次确认：active slice 是不是仍是当前最该做的事？如果上次会话结束后情况变了，回 plan。</p></div>
+        <div><h3>第 1 步 — 重新对账 active slice</h3><p>实现前确认 active slice、non-goals 和验证路径仍然成立。若不成立，回 plan。</p></div>
       </div><div class="step">
         <div class="num">2</div>
-        <div><h3>第 2 步 — 选定本次最小步</h3><p>把 active slice 切成一个能在一次 RED→GREEN 内完成的最小步。不要试图一次 commit 完整 slice。</p></div>
+        <div><h3>第 2 步 — 选定本次最小步</h3><p>把 active slice 切成一个能在一次 RED -&gt; GREEN 内完成的最小步。</p></div>
       </div><div class="step">
         <div class="num">3</div>
-        <div><h3>第 3 步 — 写测试或最小可执行检查</h3><p>按上面的强度表选。结果应该是失败的（RED）。如果一开始就过，说明它没在测真东西。</p></div>
+        <div><h3>第 3 步 — 写测试或最小可执行检查</h3><p>按风险选验证强度。结果应该是失败的或当前缺失的；如果一开始就过，确认它是否真的覆盖目标行为。</p></div>
       </div><div class="step">
         <div class="num">4</div>
-        <div><h3>第 4 步 — 最小实现</h3><p>写最少的代码让它过。不要顺便做 refactor。</p></div>
+        <div><h3>第 4 步 — 最小实现</h3><p>写最少的代码让检查通过。不要顺便做无关 refactor。</p></div>
       </div><div class="step">
         <div class="num">5</div>
-        <div><h3>第 5 步 — 跑相邻验证</h3><p>- 同一模块的其他单测 - 紧邻边界的 integration / smoke - 全量 lint / typecheck / build（如果项目有这些）</p></div>
+        <div><h3>第 5 步 — 跑相邻验证</h3><p>运行同模块或相邻边界的检查；必要时跑 build、typecheck、lint 或 smoke。</p></div>
       </div><div class="step">
         <div class="num">6</div>
-        <div><h3>第 6 步 — 重构（可选）</h3><p>只在测试是绿的前提下做。每次 refactor 后再跑测试。</p></div>
+        <div><h3>第 6 步 — 重构</h3><p>只在绿灯下重构。每次 refactor 后再跑相关检查。</p></div>
       </div><div class="step">
         <div class="num">7</div>
-        <div><h3>第 7 步 — 同步 docs 与 workflow state</h3><p>按&quot;文档保鲜&quot;部分的清单确认是否要更新文档；命令变化先改 README / docs，只有稳定验证入口或恢复指针变化才改 AGENTS.md。</p></div>
+        <div><h3>第 7 步 — 同步 docs 与 recovery surface</h3><p>用户可见行为、命令、配置、API、环境变量或验证入口变化时，更新 README/docs。只有 selected recovery surface 要求时记录进度、决策或风险。</p></div>
       </div><div class="step">
         <div class="num">8</div>
-        <div><h3>第 8 步 — 写 progress.md entry</h3><p>YYYY-MM-DDTHH:MMZ - Intent: 实现 &lt;小步描述&gt; - Phase: in_progress - Actions: - 写测试 X - 改源码 Y - 同步 docs Z - Files:</p></div>
-      </div><div class="step">
-        <div class="num">9</div>
-        <div><h3>第 9 步 — 决定下一步</h3><p>| 当前情况 | 路径 | | --- | --- | | 还在同一 slice，但有更小步 | 回 第 2 步 | | 当前 slice 完成且稳定 | review | | 准备宣布 ready | verify | | 失败连续 2 次 | diagnose | | 需要暂停 | save-session |</p></div>
+        <div><h3>第 8 步 — 决定下一步</h3><p>稳定后转 review；准备宣布 ready 转 verify；连续两次失败转 diagnose。</p></div>
       </div>
     </div>
   </section>
@@ -201,23 +198,23 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text EXECUTION STEP DONE Active slice: &lt;一句话&gt; This step: &lt;一句话&gt; Risk tier: &lt;unit|integration|smoke|E2E|security&gt; Tests run: - &lt;command -&gt; result&gt; Docs synced: yes|no|n/a Files changed: - ... progress.md updated: yes Next: &lt;repeat|review|verify|diagnose|save-session&gt; ``</pre>
+      <pre>``text EXECUTION STEP DONE Active slice: &lt;一句话&gt; This step: &lt;一句话&gt; Risk tier: &lt;unit|integration|smoke|E2E|security&gt; Tests run: - &lt;command -&gt; result&gt; Docs synced: yes|no|n/a Recovery surface updated: yes|no|n/a Files changed: - ... Next: &lt;repeat|review|verify|diagnose|plan&gt; ``</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
-      <ul><li>progress.md：每个 step 一条 entry</li><li>findings.md：新增 root cause、约束、风险、deferred cleanup</li><li>task_plan.md：仅在 phase / focus / blocker / next 改变时更新</li><li>源代码 + docs：按上述 step 同步</li></ul>
+      <ul><li>源代码 + tests：当前最小步。</li><li>README/docs：命令、配置、API 或用户可见行为改变时同步。</li><li>selected recovery surface：仅在项目要求时记录 evidence、decisions、risks 或 blockers。</li></ul>
     </div>
   </section>
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>实现失败、根因不清</td><td>diagnose</td></tr><tr><td>当前 slice 稳定，需评审</td><td>review</td></tr><tr><td>准备宣布 ready</td><td>verify</td></tr><tr><td>范围变模糊</td><td>plan 或 brainstorm</td></tr><tr><td>需要暂停</td><td>save-session</td></tr></tbody></table>
+    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>实现失败、根因不清</td><td>diagnose</td></tr><tr><td>当前 slice 稳定，需评审</td><td>review</td></tr><tr><td>准备声明 ready</td><td>verify</td></tr><tr><td>范围变模糊</td><td>plan 或 brainstorm</td></tr><tr><td>工作面不清</td><td>harness-builder</td></tr></tbody></table>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] active slice 仍是 in_progress 且未越界</li><li>[ ] 测试或等价 focused check 在改之前是失败/未存在的</li><li>[ ] 改完之后是绿的，且相邻验证未 regress</li><li>[ ] 文档 / 命令 / workflow state 已经同步</li><li>[ ] progress.md 有 entry，时间戳与命令真实</li><li>[ ] 下一步 skill 已显式标注</li></ul>
+      <ul><li>[ ] active slice 仍是唯一当前工作且未越界。</li><li>[ ] 测试或等价 focused check 覆盖本步行为。</li><li>[ ] 改完后检查为绿，且相邻验证未 regress。</li><li>[ ] 文档和 selected recovery surface 已按需同步。</li><li>[ ] 下一步 skill 已显式标注。</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>

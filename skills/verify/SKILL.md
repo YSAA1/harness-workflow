@@ -1,21 +1,13 @@
 ---
 name: verify
-description: "当 tracked change 准备声明 ready，需要 fresh verification evidence、evidence ladder、smoke/E2E 判断和能力推荐记录时使用。典型触发语：验证一下、能结束吗、跑最终检查、证明它能用、ready to ship、E2E check、smoke test。review 通过但还缺当前命令证据时必须使用。"
+description: "当 change 准备声明 ready，需要 fresh verification evidence、evidence ladder、smoke/E2E 判断和能力推荐记录时使用。典型触发语：验证一下、能结束吗、跑最终检查、证明它能用、ready to ship、E2E check、smoke test。review 通过但还缺当前命令证据时必须使用。"
 ---
 
 # 声明 ready 前验证
 
-本 skill 是 tracked slice 声明 ready 前的最终证据闸门。它不修复、不重做计划、不清理无关文件，只用 fresh commands 证明当前状态，记录证据边界，并把失败路由到正确 skill。
+`verify` 为一个具体 claim 收集 fresh evidence。它不修复、不重做计划、不清理无关文件，只用当前命令或可用 evidence source 证明当前状态，记录证据边界，并把失败路由到正确 skill。
 
 核心规则：**没有 fresh evidence，就不能声明 ready**。
-
-## Workflow State Contract
-
-本 workflow 依赖的是 `state-contract` 定义的 workflow state，而不是某三个文件本身。默认 backend 是三文件：`task_plan.md` / `progress.md` / `findings.md`。
-
-如果项目在 `AGENTS.md`、`.harness/manifest.yaml` 或 `.harness/state.md` 中声明了其他 backend（lightweight、feature-list、existing），按该 backend 读取 active slice、evidence、decisions、risks 和 handoff。
-
-若 state backend 不存在：简单任务可以轻量执行；非平凡或跨 session 任务先调用 `state-contract` 或 `plan` 建立状态。
 
 ## 目的
 
@@ -25,34 +17,31 @@ description: "当 tracked change 准备声明 ready，需要 fresh verification 
 
 ### 触发信号
 
-- `review` found no blocking structural issue, but the slice still needs final fresh evidence.
-- A slice is about to move from `in_progress` to `complete`.
+- `review` 没有 blocking structural issue，但仍需要最终 fresh evidence。
+- 一个 slice 准备从 in-progress 进入 done/ready。
 - 用户说「验证一下」「能结束吗」「跑最终检查」「证明它能用」。
-- The change touched UI, API, auth, persistence, config, build, packaging, or cross-component behavior.
-- Prior evidence is stale because files changed after the last command.
-- A capability gap may block proper verification, such as web UI without browser automation.
+- 改动触及 UI、API、auth、persistence、config、build、packaging 或跨组件行为。
+- 之前证据在后续文件变化后变 stale。
+- 能力缺口可能阻碍真实验证，例如 Web UI 没有浏览器自动化。
 
 ### 不要使用
 
-- There is an unexplained failing command: use `diagnose`.
-- The implementation is still changing: use `implement`.
-- The spec is unclear: use `brainstorm` or `plan`.
-- The task is a one-line non-behavioral edit and the user does not need tracked evidence.
+- 有未解释的失败命令：用 `diagnose`。
+- 实现仍在变化：用 `implement`。
+- Spec 或成功标准不清：用 `brainstorm` 或 `plan`。
+- 任务是单行非行为编辑，用户不需要 tracked evidence。
 
 ## 先读取这些输入
 
-1. workflow state execution contract：active slice、success criteria、verification path、blocker state（默认 `task_plan.md` 范围合同）。
-2. workflow state evidence log：latest implementation and review entries; identify what evidence is stale（默认 `progress.md`）。
-3. workflow state findings area：accepted spec, risks, prior failures, capability gaps（默认 `findings.md`）。
-4. `git status --short`: confirm what changed since last evidence.
-5. Project verification entry points: README, `AGENTS.md`, package/build/test config.
-6. Related source/test paths touched by the current slice.
-
-如果这些文件互相矛盾，先验证矛盾来源，再运行大范围检查。
+1. ready claim：active slice、success criteria、verification path。
+2. selected recovery surface：最近 implementation/review evidence、risks、capability gaps。
+3. `git status --short`：确认最后改动后哪些证据已过期。
+4. 项目验证入口：README、`AGENTS.md`、package/build/test config。
+5. 当前 slice 涉及的 source/test/docs 路径。
 
 ## Evidence Ladder
 
-Pick the highest-value set of checks for the current risk. You do not need to run every rung, but every skipped high-value rung needs a reason.
+按风险选择最高价值的最小检查集：
 
 1. static parse / syntax
 2. build
@@ -66,20 +55,6 @@ Pick the highest-value set of checks for the current risk. You do not need to ru
 
 详细选择规则见 `references/evidence-ladder.md`。
 
-## E2E Required Signals
-
-E2E or smoke-level verification is required when the change includes:
-
-- multi-step user journey
-- frontend + backend integration
-- persistence across restart or reload
-- auth, permission, payment, or other trust boundary
-- browser rendering, routing, file upload, download, drag/drop, media, canvas, or websocket behavior
-- packaging / installer / CLI invocation path
-- release-facing regression where unit tests cannot represent the real path
-
-如果项目缺少可用 E2E 路径，记录 capability recommendation，不要假装 unit tests 已经足够。
-
 ## Capability Recommendation
 
 当验证能力不足时，按四个字段写推荐：
@@ -89,77 +64,33 @@ E2E or smoke-level verification is required when the change includes:
 - **Risk / cost**: setup overhead, flake risk, security implications.
 - **Fallback**: what can be done now without installing it.
 
-Common mappings:
-
-| Project need | Recommended capability |
-| --- | --- |
-| Web app UI | Playwright MCP or Playwright test suite |
-| Browser debugging | Chrome DevTools MCP or Playwright trace |
-| External API behavior | official docs/search capability plus mocked contract tests |
-| Issue-driven workflow | GitHub / issue tracker MCP |
-| Long-running jobs | logs, health check, trace, metrics capture |
-
-本 skill 不安装任何能力，只推荐。
+本 skill 不安装任何能力，只记录 required/recommended/deferred 的验证能力缺口。项目级安装或配置交给 `harness-builder`。
 
 ## 执行流程
 
 ### 第 1 步 — Restate The Claim
 
-Write one sentence:
-
-- "We are verifying that `<active slice>` is ready because `<success criteria>`."
-
-If you cannot write this sentence, return to planning or review.
+写一句话："We are verifying that `<active slice>` is ready because `<success criteria>`." 写不出来就回 planning 或 review。
 
 ### 第 2 步 — Identify Evidence Freshness
 
-For each previous command in `progress.md`:
-
-- Is it after the latest relevant file change?
-- Does it cover the changed behavior?
-- Was it run in the current cwd and environment?
-- Did it pass, fail, or have limits?
-
-Only fresh, relevant commands count.
+判断既有证据是否晚于最后相关改动、覆盖目标行为、在当前 cwd/env 运行、结果明确。
 
 ### 第 3 步 — Select Checks
 
-Choose the smallest set of checks that covers the risk:
-
-- Low-risk doc-only change: link/path checks or markdown lint if available.
-- Pure logic: focused unit + adjacent regression.
-- Config/build change: syntax + build/typecheck + smoke command.
-- UI/user journey: unit/integration where relevant + browser smoke/E2E.
-- Security/trust boundary: targeted tests + review/security lane + runtime evidence.
+选择能覆盖风险的最小检查集。相关但跳过的高价值检查必须说明原因。
 
 ### 第 4 步 — Run Checks
 
-Run commands exactly as documented when possible. Record:
-
-- command
-- cwd
-- result
-- relevant output summary
-- whether it is fresh
-- any skipped checks and why
-
-不要隐藏失败。只要检查失败，下一步就转 `diagnose`。
+按文档命令运行，记录 command、cwd、result、输出摘要、freshness 和跳过原因。检查失败就转 `diagnose`。
 
 ### 第 5 步 — Compare Against Success Criteria
 
-Map each success criterion to evidence:
-
-| Criterion | Evidence | Status |
-| --- | --- | --- |
-| <from task_plan.md> | <command / smoke / manual signal> | pass/fail/unknown |
-
-Unknown means not ready.
+把每条成功标准映射到 evidence，状态只能是 pass/fail/unknown。unknown 不是 ready。
 
 ### 第 6 步 — Update Artifacts
 
-- `progress.md`: append verification entry with commands and results.
-- `findings.md`: record downgraded checks, flaky behavior, capability gaps, residual risk.
-- `task_plan.md`: do not mark the phase complete here; record verification result and route to `cleanup` for closure, or update blocker / next on FAIL or INSUFFICIENT.
+按 selected recovery surface 记录 verification entry、skipped checks、capability gaps 和 residual risk。
 
 ### 第 7 步 — Route
 
@@ -167,7 +98,7 @@ Unknown means not ready.
 | --- | --- |
 | All required evidence fresh and passing | `cleanup` |
 | Command failed or behavior wrong | `diagnose` |
-| Evidence insufficient due to missing capability | `save-session` with `blocked`, or user decision to enable capability |
+| Evidence insufficient due to missing capability | `harness-builder` 或用户决策 |
 | Spec / success criteria mismatch | `plan` |
 
 ## 输出格式
@@ -199,45 +130,15 @@ Risks:
 
 Ready:
   - YES|NO
-  - Next: <cleanup | diagnose | bootstrap | plan>
+  - Next: <cleanup | diagnose | harness-builder | plan>
 ```
-
-## 示例
-
-### 示例 1: Pure Logic Change
-
-Active slice changes a date parser. Evidence:
-
-- focused parser test passes
-- caller integration test passes
-- typecheck passes
-- E2E skipped because no user flow changed
-
-Result: `PASS`, next `cleanup`.
-
-### 示例 2: Web UI Change Without Browser Tool
-
-Active slice changes checkout modal flow. Unit tests pass, but no browser can run.
-
-Result: `INSUFFICIENT`.
-
-Capability recommendation:
-
-- Value: validates real click path, routing, DOM state, screenshot regressions.
-- Enablement: add Playwright test or enable Playwright MCP for this project.
-- Risk / cost: setup time and possible flake management.
-- Fallback: manual smoke with recorded steps and screenshots, marked weaker evidence.
-
-### 示例 3: Stale Evidence
-
-`npm test` passed before a follow-up edit changed the API shape. That command is stale. Re-run the relevant tests before bootstrap.
 
 ## 常见反模式
 
 - **Counting old commands as proof.** Evidence must be after the relevant change.
-- **Running broad checks without mapping to success criteria.** A green build may not verify the changed behavior.
-- **Skipping E2E silently.** If E2E is relevant but unavailable, record why and recommend a capability.
-- **Fixing during verification.** If a command fails, switch to `diagnose`; do not mix lanes.
+- **Running broad checks without mapping to success criteria.**
+- **Skipping E2E silently.**
+- **Fixing during verification.** If a command fails, switch to `diagnose`.
 - **Claiming ready with unknowns.** Unknown is not pass.
 
 ## 验收标准
@@ -245,25 +146,18 @@ Capability recommendation:
 - [ ] Active slice and ready claim are stated.
 - [ ] Every success criterion is mapped to fresh evidence or marked unknown.
 - [ ] Relevant evidence ladder rungs are run or skipped with reasons.
-- [ ] Capability gap is either absent or documented with value/enablement/risk/fallback.
-- [ ] `progress.md` records commands, results, timestamp, and limits.
-- [ ] `findings.md` records residual risks or downgraded checks.
+- [ ] Capability gap is absent or documented with value/enablement/risk/fallback.
+- [ ] selected recovery surface records commands, results, timestamp, and limits when required.
 - [ ] Output routes to the next skill.
 
 ## 工件更新
 
-- `progress.md`: append verification entry.
-- `findings.md`: capability gaps, skipped checks, residual risks, flaky behavior.
-- `task_plan.md`: do not mark complete; after PASS route to `cleanup`, otherwise update blocker / next.
+- selected recovery surface：verification entry、capability gaps、skipped checks、residual risks、flaky behavior。
+- 不修改实现代码；失败转 `diagnose`。
 
 ## 按需读取
 
-- `references/evidence-ladder.md`: detailed verification selection rules.
-- `references/capability-recommendations.md`: recommendation format and examples.
-- `../diagnose/SKILL.md`: route here on failed verification.
-- `../cleanup/SKILL.md`: route here after PASS.
-
-
-## State Contract Reference
-
-需要选择、修复或解释 workflow state backend 时，读取 `../state-contract/SKILL.md`。
+- `references/evidence-ladder.md`：detailed verification selection rules。
+- `references/capability-recommendations.md`：recommendation format and examples。
+- `../diagnose/SKILL.md`：route here on failed verification。
+- `../cleanup/SKILL.md`：route here after PASS。

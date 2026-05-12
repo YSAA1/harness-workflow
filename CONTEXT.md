@@ -6,7 +6,7 @@ This context defines the language for the local Codex plugin that turns harness 
 
 **Harness Builder**:
 The project-level skill that designs or repairs the agent workbench: project map, recovery surface, verification entry, local skills, hooks, subagents, MCP policy, and anti-entropy rules.
-_Avoid_: bootstrap as the canonical name; use bootstrap only as a historical alias or trigger word.
+_Avoid_: bootstrap as the canonical name; keep "bootstrap" only as a historical alias or trigger word.
 
 **Skill Independence**:
 The design rule that each workflow skill can run for its own activity without requiring a fixed global sequence or a particular state backend.

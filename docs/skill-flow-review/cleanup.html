@@ -136,31 +136,31 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>cleanup</h1>
-  <p>当 tracked batch 准备完成、阻塞、放弃或做低风险收尾清理，需要 clean-state closure、真实工件和防文档腐烂时使用。典型触发语：收尾、整理一下、finish this phase、make state clean。普通暂停或交接直接用 save-session。验证已跑完后，用它防止 artifact drift 和 leftover noise。</p>
+  <p>当一个 batch 准备完成、阻塞、放弃或需要知识收尾时使用。典型触发语：收尾、整理一下、finish this phase、make state clean、同步文档、知识清理。聚焦 Knowledge Cleanup：防止文档过期、AGENTS.md 膨胀、生成物不一致和 recovery surface 漂移；除非用户要求，不做行为改动。</p>
   <div class="toolbar">
     <a class="button" href="../../skills/cleanup/SKILL.md">打开 SKILL.md</a>
-    <span class="button">干净收尾</span>
-    <span class="button">226 行</span>
+    <span class="button">Knowledge Cleanup</span>
+    <span class="button">169 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>把一个 batch 诚实地关闭、阻塞、放弃或重新打开，同时清掉低风险残留并确保 workflow state、docs 和 git state 不互相误导。普通暂停和交接由 save-session 负责。</p>
+    <p>- 保持 AGENTS.md 是薄规则手册，不写 changelog、临时状态或会话叙事。 - 确保 README、docs、generated artifacts 和验证命令描述当前真实项目。 - 检查 recovery surface 是否漂移、膨胀或与 git diff 矛盾。 - 把未解决的 doc drift 和 residual risk 记录成明确 follow-up。</p>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>进入条件</h2>
-      <ul><li>verify 已通过，slice 可以关闭。</li><li>A failed attempt should be abandoned without leaving misleading state.</li><li>Review found only low-risk entropy or stale documentation.</li><li>用户说「收尾」「整理」「把状态弄干净」。</li><li>Current artifacts no longer truthfully describe code, commands, evidence, or blockers.</li></ul>
+      <ul><li>verify 已通过，slice 可以关闭。</li><li>Review 发现文档漂移、知识腐化或低风险 residue。</li><li>用户说「收尾」「整理」「同步文档」「把状态弄干净」。</li><li>当前 artifacts 不再真实描述代码、命令、证据或 blockers。</li><li>需要交接卫生，但不应该保留单独交接 lane。</li></ul>
     </div>
     <div class="panel">
       <h2>禁用条件</h2>
-      <ul><li>Verification has not run and bootstrap is unknown: use verify.</li><li>There is an unexplained failing command: use diagnose.</li><li>Cleanup would require behavior changes: make a new active slice in plan.</li><li>The user asked for implementation, not closure.</li></ul>
+      <ul><li>Verification 尚未运行且 ready claim 需要证据：用 verify。</li><li>有未解释失败：用 diagnose。</li><li>Cleanup 需要行为变化：回 plan 或 implement。</li><li>用户要求继续实现，而不是 closure。</li></ul>
     </div>
     <div class="panel">
       <h2>先读输入</h2>
-      <ul><li>workflow state execution contract: phase, blocker, next action, success criteria（默认 task_plan.md）。</li><li>workflow state evidence log: latest commands and actual outcomes（默认 progress.md）。</li><li>workflow state findings area: accepted spec, residual risks, deferred cleanup（默认 findings.md）。</li><li>git status --short and git diff --stat.</li><li>README / docs / AGENTS.md sections touched by this batch.</li><li>Generated files, temp files, logs, screenshots, caches, local reports created during the work.</li></ul>
+      <ul><li>AGENTS.md、README、docs 目录和相关 generated artifacts。</li><li>selected recovery surface：phase、blocker、next、evidence、risks、deferred cleanup。</li><li>git status --short and git diff --stat。</li><li>生成物来源脚本，例如 flow HTML 只能由 generator 更新。</li><li>本 batch 创建的 temp files、logs、screenshots、local reports。</li></ul>
     </div>
   </section>
 
@@ -169,19 +169,25 @@ pre {
     <div class="flow">
       <div class="step">
         <div class="num">1</div>
-        <div><h3>第 1 步 — Verify Closure Preconditions</h3><p>Answer: - What evidence proves the current state? - What remains unverified? - What files changed? - What cleanup is safe? If no fresh evidence exists, route to verify.</p></div>
+        <div><h3>第 1 步 — Enumerate Docs And Artifacts</h3><p>修改前列出相关 docs、generated files、recovery artifacts 和 dirty files。不要凭记忆改。</p></div>
       </div><div class="step">
         <div class="num">2</div>
-        <div><h3>第 2 步 — Pick Closure State</h3><p>Choose one state from the table. Update task_plan.md only according to that state: - complete: mark current phase complete and set next. - blocked: mark blocker and required external action. - abandoned: mark attempt abandoned and record reason. - reopen: lea...</p></div>
+        <div><h3>第 2 步 — Compare Truth Sources</h3><p>比较代码、README、docs、generated artifacts、AGENTS.md 和 selected recovery surface。找出 drift、膨胀、重复和过期命令。</p></div>
       </div><div class="step">
         <div class="num">3</div>
-        <div><h3>第 3 步 — Remove Low-Risk Residue</h3><p>List candidate cleanup items first. Remove only those that are clearly low risk and created by this task.</p></div>
+        <div><h3>第 3 步 — Pick Closure State</h3><p>选择一个状态： | State | Meaning | | --- | --- | | complete | success criteria met with fresh evidence | | blocked | cannot proceed without external decision or capability | | abandoned | tracked attempt intentionally stopped | | reopen | cleanup found missing work;...</p></div>
       </div><div class="step">
         <div class="num">4</div>
-        <div><h3>第 4 步 — Sync Artifacts</h3><p>- progress.md: append cleanup entry with closure state, files touched, commands, remaining risk. - findings.md: record residual risk, deferred cleanup, capability gaps, abandoned paths. - task_plan.md: reflect phase and next action.</p></div>
+        <div><h3>第 4 步 — Apply Knowledge Cleanup</h3><p>小幅修正 docs、README、generated artifacts 或 recovery surface。把历史叙事从 AGENTS.md 迁出或删除，只保留稳定规则和指针。</p></div>
       </div><div class="step">
         <div class="num">5</div>
-        <div><h3>第 5 步 — Final Git State Summary</h3><p>Report: - tracked changed files relevant to this task - unrelated dirty files left alone - untracked files intentionally kept - untracked files removed or deferred</p></div>
+        <div><h3>第 5 步 — Regenerate Generated Artifacts</h3><p>生成物只能通过生成器更新。不要手改 docs/skill-flow-review/*.html。</p></div>
+      </div><div class="step">
+        <div class="num">6</div>
+        <div><h3>第 6 步 — Record Residual Drift</h3><p>未解决的 drift 写成明确 follow-up：位置、风险、建议下一步、是否阻塞 ready。</p></div>
+      </div><div class="step">
+        <div class="num">7</div>
+        <div><h3>第 7 步 — Final Git State Summary</h3><p>报告 related changes、unrelated dirty files left alone、removed/deferred residue。</p></div>
       </div>
     </div>
   </section>
@@ -189,27 +195,27 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text CLEANUP: complete|blocked|abandoned|reopen Evidence: - &lt;command -&gt; result&gt; Artifact updates: - task_plan.md: ... - progress.md: ... - findings.md: ... Entropy cleanup: - removed: ... - deferred: ... Docs freshness: - README: ok|updated|stale - AGENTS.md: ok|updated|stale - verification path: ok|stale|unknown Git state: - related changes: - unrelated changes left alone: Next: - &lt;done | save-session | implement...</pre>
+      <pre>``text CLEANUP: complete|blocked|abandoned|reopen Evidence: - &lt;command -&gt; result&gt; Knowledge cleanup: - README: ok|updated|stale - AGENTS.md: ok|updated|stale - docs: ok|updated|stale - generated artifacts: ok|regenerated|stale - recovery surface: ok|updated|stale Entropy cleanup: - removed: ... - deferred: ... Git state: - related changes: - unrelated changes left alone: Next: - &lt;done | implement | diagnose | plan |...</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
-      <ul><li>progress.md: append closure entry.</li><li>findings.md: residual risk and deferred cleanup.</li><li>task_plan.md: phase, blocker, next.</li><li>AGENTS.md: only if a stable project rule or recovery pointer changed; otherwise do not touch.</li></ul>
+      <ul><li>README/docs/AGENTS.md：只做知识保鲜和薄入口修正。</li><li>generated artifacts：只通过生成器更新。</li><li>selected recovery surface：closure state、residual risk、deferred cleanup、handoff hygiene。</li></ul>
     </div>
   </section>
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <p class="muted">该 skill 没有显式路由表；以执行流程的下一步为准。</p>
+    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>文档和 artifacts 已对齐</td><td>done</td></tr><tr><td>发现缺失行为或测试</td><td>implement</td></tr><tr><td>发现失败或不明根因</td><td>diagnose</td></tr><tr><td>发现 plan/scope 漂移</td><td>plan</td></tr><tr><td>发现项目级 recovery surface 缺口</td><td>harness-builder</td></tr></tbody></table>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] Closure state is exactly one of complete, blocked, abandoned, reopen.</li><li>[ ] Fresh evidence is recorded or lack of evidence routes away from cleanup.</li><li>[ ] Low-risk cleanup is separated from deferred high-risk cleanup.</li><li>[ ] README/docs/AGENTS.md freshness is checked when relevant.</li><li>[ ] task_plan.md, progress.md, and findings.md tell the same truth.</li><li>[ ] Unrelated dirty files are preserved.</li></ul>
+      <ul><li>[ ] Closure state is exactly one of complete, blocked, abandoned, reopen.</li><li>[ ] Fresh evidence is recorded or lack of evidence routes away from cleanup.</li><li>[ ] AGENTS.md、README、docs、generated artifacts 和 recovery surface 已比较。</li><li>[ ] Low-risk cleanup is separated from deferred high-risk cleanup.</li><li>[ ] Generated artifacts are regenerated, not hand-edited.</li><li>[ ] Unrelated dirty files are preserved.</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
-      <ul><li><a href="../../skills/cleanup/references/entropy-checklist.md">熵增清理清单</a><span class="tag">存在</span></li></ul>
+      <ul><li><a href="../../skills/cleanup/references/entropy-checklist.md">熵增清理清单</a><span class="tag">存在</span></li><li><a href="../../skills/cleanup/references/handoff-hygiene.md">Handoff Hygiene</a><span class="tag">存在</span></li></ul>
     </div>
   </section>
 

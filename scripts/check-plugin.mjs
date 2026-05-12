@@ -34,26 +34,27 @@ else pass("no default MCP config");
 if (exists("hooks/hooks.json")) fail("plugin must not include default hooks");
 else pass("no default hooks");
 
-const requiredSkills = [
-  "bootstrap",
-  "state-contract",
+const activeSkills = [
+  "harness-builder",
   "brainstorm",
   "plan",
   "implement",
   "diagnose",
   "review",
   "verify",
-  "resume",
-  "save-session",
   "cleanup",
 ];
+const removedSkills = ["bootstrap", "state-contract", "resume", "save-session"];
 
-for (const skill of requiredSkills) {
+for (const skill of activeSkills) {
   if (!exists(skillPath(skill))) fail(`missing skill ${skill}`);
 }
-if (!process.exitCode) pass("required skills exist");
+for (const skill of removedSkills) {
+  if (exists(skillPath(skill))) fail(`removed skill still exposed: ${skill}`);
+}
+if (!process.exitCode) pass("active skill set matches boundary model");
 
-for (const skill of requiredSkills) {
+for (const skill of activeSkills) {
   if (!exists(skillPath(skill))) continue;
   const body = read(skillPath(skill));
   if (!body.startsWith("---")) fail(`${skill} missing YAML frontmatter`);
@@ -75,36 +76,67 @@ for (const file of templateFiles) {
 }
 if (templateFiles.every(exists)) pass("three-file templates are preserved");
 
-const docs = `${read("README.md")}\n${read("docs/harness-method-contract.md")}`;
+const activeDocs = `${read(".codex-plugin/plugin.json")}\n${read("README.md")}\n${read("AGENTS.md")}\n${read("CONTEXT.md")}\n${read("docs/harness-method-contract.md")}\n${read("scripts/generate-skill-flow-html.mjs")}`;
 for (const token of [
   "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
-  "state-contract", "workflow state", "three-file", "bootstrap", "Harness Hypothesis",
-  "AGENTS.md", "项目铁律", "fresh evidence", "Entropy control",
+  "Harness Builder", "recovery surface", "three-file", "Spec", "Executable Plan",
+  "Knowledge Cleanup", "Capability Discovery", "AGENTS.md", "项目铁律", "fresh evidence",
 ]) {
-  if (!docs.includes(token)) fail(`docs missing contract token: ${token}`);
+  if (!activeDocs.includes(token)) fail(`docs missing boundary token: ${token}`);
 }
 
-const bootstrap = read(skillPath("bootstrap"));
-for (const token of [
-  "Harness Hypothesis",
-  "project-level harness",
-  "AGENTS.md",
-  "Project iron laws",
-  "Find skills before creating skills",
-  "subagent",
-  "anti-entropy",
-]) {
-  if (!bootstrap.includes(token)) fail(`bootstrap replacement missing token: ${token}`);
+const forbiddenActiveSkillPatterns = [
+  /Use state-contract/i,
+  /Use resume/i,
+  /Use save-session/i,
+  /Use bootstrap/i,
+  /Next skill:\s*<bootstrap/i,
+  /Next:\s*<[^>]*(save-session|resume|bootstrap)/i,
+  /skills\/(state-contract|resume|save-session)\//i,
+  /\.\.\/(state-contract|resume|save-session)\/SKILL\.md/i,
+];
+for (const pattern of forbiddenActiveSkillPatterns) {
+  if (pattern.test(activeDocs)) fail(`active docs still route to removed or legacy skill: ${pattern}`);
 }
 
-const stateContract = read(skillPath("state-contract"));
-for (const token of ["three-file", "lightweight", "feature-list", "existing", "active_slice", "progress.md", "findings.md"]) {
-  if (!stateContract.includes(token)) fail(`state-contract missing token: ${token}`);
+if (exists(skillPath("harness-builder"))) {
+  const harnessBuilder = read(skillPath("harness-builder"));
+  for (const token of [
+    "Harness Hypothesis",
+    "project-level harness",
+    "AGENTS.md",
+    "Project iron laws",
+    "Capability Discovery",
+    "$find-skills",
+    "targeted web search",
+    "recovery surface",
+    "subagent",
+    "anti-entropy",
+  ]) {
+    if (!harnessBuilder.includes(token)) fail(`harness-builder missing token: ${token}`);
+  }
+
+  for (const token of ["three-file", "lightweight", "feature-list", "existing", "active_slice", "progress.md", "findings.md"]) {
+    if (!harnessBuilder.includes(token)) fail(`recovery surface policy missing token: ${token}`);
+  }
 }
 
-const skillBundle = requiredSkills.map((skill) => (exists(skillPath(skill)) ? read(skillPath(skill)) : "")).join("\n");
-for (const token of ["WIP=1", "fresh evidence", "workflow state", "state-contract", "progress.md", "findings.md"]) {
+const skillBundle = activeSkills.map((skill) => (exists(skillPath(skill)) ? read(skillPath(skill)) : "")).join("\n");
+for (const token of ["WIP=1", "fresh evidence", "Spec", "Executable Plan", "Knowledge Cleanup", "recovery surface"]) {
   if (!skillBundle.includes(token)) fail(`skills missing discipline token: ${token}`);
+}
+
+const brainstorm = read(skillPath("brainstorm"));
+if (!/Spec/i.test(brainstorm) || /默认.*findings\.md/.test(brainstorm)) {
+  fail("brainstorm must produce an independent Spec without default findings.md writes");
+}
+const plan = read(skillPath("plan"));
+if (!/Executable Plan/i.test(plan) || /默认使用 three-file backend/.test(plan)) {
+  fail("plan must produce an Executable Plan without default three-file identity");
+}
+const cleanup = read(skillPath("cleanup"));
+if (!/Knowledge Cleanup/i.test(cleanup) || /save-session/.test(cleanup)) {
+  fail("cleanup must center Knowledge Cleanup and not route to save-session");
 }
 
 const flowReviewScript = "scripts/generate-skill-flow-html.mjs";

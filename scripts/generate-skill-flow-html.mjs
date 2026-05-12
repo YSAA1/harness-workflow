@@ -10,57 +10,57 @@ const skillsRoot = path.join(root, "skills");
 const outRoot = path.join(root, "docs", "skill-flow-review");
 
 const skillOrder = [
-  ["brainstorm", "构思收敛"],
-  ["state-contract", "状态协议"],
-  ["plan", "计划落盘"],
-  ["bootstrap", "项目级 harness"],
+  ["harness-builder", "项目级 harness"],
+  ["brainstorm", "构思 Spec"],
+  ["plan", "Executable Plan"],
   ["implement", "小步执行"],
   ["diagnose", "失败诊断"],
   ["review", "证据评审"],
   ["verify", "最终验证"],
-  ["cleanup", "干净收尾"],
-  ["save-session", "暂停交接"],
-  ["resume", "恢复上下文"],
+  ["cleanup", "Knowledge Cleanup"],
 ];
 
 const routeMap = [
-  ["brainstorm", "state-contract"],
-  ["state-contract", "plan"],
-  ["plan", "bootstrap"],
-  ["bootstrap", "implement"],
+  ["harness-builder", "brainstorm"],
+  ["harness-builder", "plan"],
+  ["brainstorm", "plan"],
+  ["brainstorm", "harness-builder"],
+  ["plan", "harness-builder"],
+  ["plan", "implement"],
   ["implement", "review"],
   ["implement", "diagnose"],
+  ["implement", "plan"],
   ["diagnose", "implement"],
   ["diagnose", "review"],
+  ["diagnose", "harness-builder"],
   ["review", "verify"],
   ["review", "diagnose"],
+  ["review", "implement"],
+  ["review", "cleanup"],
   ["verify", "cleanup"],
   ["verify", "diagnose"],
-  ["cleanup", "save-session"],
-  ["save-session", "resume"],
-  ["resume", "plan"],
-  ["resume", "implement"],
+  ["verify", "harness-builder"],
+  ["cleanup", "implement"],
+  ["cleanup", "harness-builder"],
 ];
 
 const primaryFlow = [
   "brainstorm",
-  "state-contract",
   "plan",
-  "bootstrap",
   "implement",
   "review",
   "verify",
   "cleanup",
-  "save-session",
-  "resume",
 ];
 
 const branchFlows = [
+  ["工作面缺口", ["harness-builder", "plan", "implement"]],
+  ["需求不清", ["brainstorm", "plan"]],
   ["执行失败", ["implement", "diagnose", "implement"]],
-  ["评审发现问题", ["review", "diagnose", "review"]],
+  ["评审发现问题", ["review", "implement", "review"]],
   ["最终验证失败", ["verify", "diagnose", "review"]],
-  ["恢复后修复状态", ["resume", "state-contract", "plan"]],
-  ["稳定规则同步", ["cleanup", "save-session"]],
+  ["能力缺口", ["verify", "harness-builder", "verify"]],
+  ["知识漂移", ["review", "cleanup"]],
 ];
 
 const pageTitle = "Harness Workflow Skill 流程审阅";
@@ -494,7 +494,7 @@ ${shell()}
 <body>
 <header>
   <h1>${pageTitle}</h1>
-  <p>这些页面把 ${skills.length} 个 Harness Workflow skill 抽成可审阅的流程图谱：什么时候进、怎么走、产出什么、验收什么、下一步去哪里。</p>
+  <p>这些页面把 ${skills.length} 个 Harness Workflow active skill 抽成可审阅的条件路由图谱：什么时候进、怎么走、产出什么、验收什么、下一步去哪里。</p>
   <div class="toolbar">
     <a class="button" href="../harness-method-contract.md">Method Contract</a>
     <a class="button" href="../../README.md">插件 README</a>
@@ -502,7 +502,7 @@ ${shell()}
 </header>
 <main>
   <section class="section panel">
-    <h2>主线流程</h2>
+    <h2>条件主线</h2>
     <div class="route">${renderFlow(primaryFlow)}</div>
   </section>
 
@@ -537,13 +537,13 @@ ${shell()}
   <section class="section panel">
     <h2>审阅建议</h2>
     <ul>
-      <li>先看主流程图，确认 skill 之间的转场是否符合日常项目节奏。</li>
+      <li>先看条件主线，确认 skill 之间的转场是否符合日常项目节奏。</li>
       <li>逐张打开 skill 页面，检查进入条件、禁用条件和验收闸门是否足够具体。</li>
       <li>发现语义不准时优先改对应 <code>SKILL.md</code>，再重新运行生成脚本。</li>
     </ul>
   </section>
 
-  <p class="source-note">生成命令：<code>node plugins/harness-workflow/scripts/generate-skill-flow-html.mjs</code></p>
+  <p class="source-note">生成命令：<code>node scripts/generate-skill-flow-html.mjs</code></p>
 </main>
 </body>
 </html>

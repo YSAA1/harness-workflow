@@ -136,11 +136,11 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>verify</h1>
-  <p>当 tracked change 准备声明 ready，需要 fresh verification evidence、evidence ladder、smoke/E2E 判断和能力推荐记录时使用。典型触发语：验证一下、能结束吗、跑最终检查、证明它能用、ready to ship、E2E check、smoke test。review 通过但还缺当前命令证据时必须使用。</p>
+  <p>当 change 准备声明 ready，需要 fresh verification evidence、evidence ladder、smoke/E2E 判断和能力推荐记录时使用。典型触发语：验证一下、能结束吗、跑最终检查、证明它能用、ready to ship、E2E check、smoke test。review 通过但还缺当前命令证据时必须使用。</p>
   <div class="toolbar">
     <a class="button" href="../../skills/verify/SKILL.md">打开 SKILL.md</a>
     <span class="button">最终验证</span>
-    <span class="button">270 行</span>
+    <span class="button">164 行</span>
   </div>
 </header>
 <main>
@@ -152,15 +152,15 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>进入条件</h2>
-      <ul><li>review found no blocking structural issue, but the slice still needs final fresh evidence.</li><li>A slice is about to move from in_progress to complete.</li><li>用户说「验证一下」「能结束吗」「跑最终检查」「证明它能用」。</li><li>The change touched UI, API, auth, persistence, config, build, packaging, or cross-component behavior.</li><li>Prior evidence is stale because files changed after the last command.</li><li>A capability gap may block proper verification, such as web UI without browser automation.</li></ul>
+      <ul><li>review 没有 blocking structural issue，但仍需要最终 fresh evidence。</li><li>一个 slice 准备从 in-progress 进入 done/ready。</li><li>用户说「验证一下」「能结束吗」「跑最终检查」「证明它能用」。</li><li>改动触及 UI、API、auth、persistence、config、build、packaging 或跨组件行为。</li><li>之前证据在后续文件变化后变 stale。</li><li>能力缺口可能阻碍真实验证，例如 Web UI 没有浏览器自动化。</li></ul>
     </div>
     <div class="panel">
       <h2>禁用条件</h2>
-      <ul><li>There is an unexplained failing command: use diagnose.</li><li>The implementation is still changing: use implement.</li><li>The spec is unclear: use brainstorm or plan.</li><li>The task is a one-line non-behavioral edit and the user does not need tracked evidence.</li></ul>
+      <ul><li>有未解释的失败命令：用 diagnose。</li><li>实现仍在变化：用 implement。</li><li>Spec 或成功标准不清：用 brainstorm 或 plan。</li><li>任务是单行非行为编辑，用户不需要 tracked evidence。</li></ul>
     </div>
     <div class="panel">
       <h2>先读输入</h2>
-      <ul><li>workflow state execution contract：active slice、success criteria、verification path、blocker state（默认 task_plan.md 范围合同）。</li><li>workflow state evidence log：latest implementation and review entries; identify what evidence is stale（默认 progress.md）。</li><li>workflow state findings area：accepted spec, risks, prior failures, capability gaps（默认 findings.md）。</li><li>git status --short: confirm what changed since last evidence.</li><li>Project verification entry points: README, AGENTS.md, package/build/test config.</li><li>Related source/test paths touched by the current slice.</li></ul>
+      <ul><li>ready claim：active slice、success criteria、verification path。</li><li>selected recovery surface：最近 implementation/review evidence、risks、capability gaps。</li><li>git status --short：确认最后改动后哪些证据已过期。</li><li>项目验证入口：README、AGENTS.md、package/build/test config。</li><li>当前 slice 涉及的 source/test/docs 路径。</li></ul>
     </div>
   </section>
 
@@ -169,25 +169,25 @@ pre {
     <div class="flow">
       <div class="step">
         <div class="num">1</div>
-        <div><h3>第 1 步 — Restate The Claim</h3><p>Write one sentence: - &quot;We are verifying that &lt;active slice&gt; is ready because &lt;success criteria&gt;.&quot; If you cannot write this sentence, return to planning or review.</p></div>
+        <div><h3>第 1 步 — Restate The Claim</h3><p>写一句话：&quot;We are verifying that &lt;active slice&gt; is ready because &lt;success criteria&gt;.&quot; 写不出来就回 planning 或 review。</p></div>
       </div><div class="step">
         <div class="num">2</div>
-        <div><h3>第 2 步 — Identify Evidence Freshness</h3><p>For each previous command in progress.md: - Is it after the latest relevant file change? - Does it cover the changed behavior? - Was it run in the current cwd and environment? - Did it pass, fail, or have limits? Only fresh, relevant commands count.</p></div>
+        <div><h3>第 2 步 — Identify Evidence Freshness</h3><p>判断既有证据是否晚于最后相关改动、覆盖目标行为、在当前 cwd/env 运行、结果明确。</p></div>
       </div><div class="step">
         <div class="num">3</div>
-        <div><h3>第 3 步 — Select Checks</h3><p>Choose the smallest set of checks that covers the risk: - Low-risk doc-only change: link/path checks or markdown lint if available. - Pure logic: focused unit + adjacent regression. - Config/build change: syntax + build/typecheck + smoke command. - UI/user jo...</p></div>
+        <div><h3>第 3 步 — Select Checks</h3><p>选择能覆盖风险的最小检查集。相关但跳过的高价值检查必须说明原因。</p></div>
       </div><div class="step">
         <div class="num">4</div>
-        <div><h3>第 4 步 — Run Checks</h3><p>Run commands exactly as documented when possible. Record: - command - cwd - result - relevant output summary - whether it is fresh - any skipped checks and why 不要隐藏失败。只要检查失败，下一步就转 diagnose。</p></div>
+        <div><h3>第 4 步 — Run Checks</h3><p>按文档命令运行，记录 command、cwd、result、输出摘要、freshness 和跳过原因。检查失败就转 diagnose。</p></div>
       </div><div class="step">
         <div class="num">5</div>
-        <div><h3>第 5 步 — Compare Against Success Criteria</h3><p>Map each success criterion to evidence: | Criterion | Evidence | Status | | --- | --- | --- | | &lt;from task_plan.md&gt; | &lt;command / smoke / manual signal&gt; | pass/fail/unknown | Unknown means not ready.</p></div>
+        <div><h3>第 5 步 — Compare Against Success Criteria</h3><p>把每条成功标准映射到 evidence，状态只能是 pass/fail/unknown。unknown 不是 ready。</p></div>
       </div><div class="step">
         <div class="num">6</div>
-        <div><h3>第 6 步 — Update Artifacts</h3><p>- progress.md: append verification entry with commands and results. - findings.md: record downgraded checks, flaky behavior, capability gaps, residual risk. - task_plan.md: do not mark the phase complete here; record verification result and route to cleanup f...</p></div>
+        <div><h3>第 6 步 — Update Artifacts</h3><p>按 selected recovery surface 记录 verification entry、skipped checks、capability gaps 和 residual risk。</p></div>
       </div><div class="step">
         <div class="num">7</div>
-        <div><h3>第 7 步 — Route</h3><p>| Result | Next | | --- | --- | | All required evidence fresh and passing | cleanup | | Command failed or behavior wrong | diagnose | | Evidence insufficient due to missing capability | save-session with blocked, or user decision to enable capability | | Spec...</p></div>
+        <div><h3>第 7 步 — Route</h3><p>| Result | Next | | --- | --- | | All required evidence fresh and passing | cleanup | | Command failed or behavior wrong | diagnose | | Evidence insufficient due to missing capability | harness-builder 或用户决策 | | Spec / success criteria mismatch | plan |</p></div>
       </div>
     </div>
   </section>
@@ -199,7 +199,7 @@ pre {
     </div>
     <div class="panel">
       <h2>工件更新</h2>
-      <ul><li>progress.md: append verification entry.</li><li>findings.md: capability gaps, skipped checks, residual risks, flaky behavior.</li><li>task_plan.md: do not mark complete; after PASS route to cleanup, otherwise update blocker / next.</li></ul>
+      <ul><li>selected recovery surface：verification entry、capability gaps、skipped checks、residual risks、flaky behavior。</li><li>不修改实现代码；失败转 diagnose。</li></ul>
     </div>
   </section>
 
@@ -211,7 +211,7 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] Active slice and ready claim are stated.</li><li>[ ] Every success criterion is mapped to fresh evidence or marked unknown.</li><li>[ ] Relevant evidence ladder rungs are run or skipped with reasons.</li><li>[ ] Capability gap is either absent or documented with value/enablement/risk/fallback.</li><li>[ ] progress.md records commands, results, timestamp, and limits.</li><li>[ ] findings.md records residual risks or downgraded checks.</li><li>[ ] Output routes to the next skill.</li></ul>
+      <ul><li>[ ] Active slice and ready claim are stated.</li><li>[ ] Every success criterion is mapped to fresh evidence or marked unknown.</li><li>[ ] Relevant evidence ladder rungs are run or skipped with reasons.</li><li>[ ] Capability gap is absent or documented with value/enablement/risk/fallback.</li><li>[ ] selected recovery surface records commands, results, timestamp, and limits when required.</li><li>[ ] Output routes to the next skill.</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>

@@ -1,208 +1,132 @@
 # Harness Method Contract
 
-本文档是 Harness Workflow plugin 的用户地图。运行时细节在各个 `SKILL.md` 中；这里只说明稳定方法论。
+本文件定义 `harness-workflow` 的稳定方法论。skill 名可以演进，但 C1-C10 是仓库需要保持一致的契约。
 
-## 三层结构
+## Glossary
 
-| 层级 | 内容 | 放在哪里 |
-| --- | --- | --- |
-| 全局实践规则 | 所有 workflow 都应遵守的不变量 | README、本文档、必要时项目 `AGENTS.md` |
-| 用户入口 skill | 明确用户意图和可验收产物 | `skills/*/SKILL.md` |
-| 状态协议 | active slice、evidence、decisions、risks 等字段如何落盘 | `state-contract` |
-| 能力配置 | MCP、hooks、额外 skill 或外部工具 | bootstrap / verification 记录中的 required / recommended capability |
+| Term | Meaning |
+| --- | --- |
+| Harness Builder | 设计或修复项目级 harness、verification entry、Capability Discovery 和 recovery surface 的 skill |
+| Spec | `brainstorm` 的独立产物，说明要建什么、为什么、如何证明 |
+| Executable Plan | `plan` 的产物，说明 active slice、non-goals、success criteria、verification path 和 next actions |
+| Recovery surface | 让未来 agent 恢复工作的项目工件，可以是 none、lightweight、three-file、feature-list 或 existing system |
+| Knowledge Cleanup | `cleanup` 的目标：防止 docs、生成物、AGENTS.md 和 recovery surface 漂移 |
+| Capability Discovery | 为当前任务搜索并评估 skills、MCP、hooks、subagents 或外部 agent 能力 |
 
-## C1. Harness-first diagnosis
+## C1 Harness As System
 
-失败时先问 harness 哪里坏了，而不是先归因模型能力。
+Agent 质量来自项目周围的系统：入口、规则、上下文、验证、恢复、能力、收尾纪律，而不只是 prompt。
 
-检查层：
+主要 skill：`harness-builder`、`diagnose`。
 
-- 任务：需求、边界、non-goals 是否清楚。
-- 上下文：项目地图、入口、约束是否可读。
-- 工具：命令、依赖、权限、MCP 或浏览器能力是否可用。
-- 状态：workflow state 是否真实。
-- 验证：证据是否 fresh，覆盖是否足够。
-- 生命周期：是否 WIP 过多、提前收尾或恢复入口缺失。
+## C2 Repository As Truth
 
-主要 skill：`diagnose`、`bootstrap`。
-
-## C2. Repository as truth
-
-仓库工件是真相。聊天记录、隐藏 runtime state、口头结论都不能成为唯一事实来源。
-
-默认 rigorous backend 是三文件：
-
-- `task_plan.md`：当前执行合同。
-- `progress.md`：追加式进度和验证证据。
-- `findings.md`：需求、已接受规格、拒绝方案、风险、引用和根因。
-
-但三文件不是唯一状态来源。其他 skill 依赖的是 `state-contract` 定义的 workflow state fields。
-
-需求尚未收敛时，独立 spec 也是仓库真相的一部分。`brainstorm` 默认写 `docs/specs/YYYY-MM-DD--<topic>.md`。`plan` 必须从已批准 spec 或明确请求映射执行合同，不在 planning 阶段重新发明需求。
-
-主要 skill：`state-contract`、`plan`、`resume`、`save-session`。
-
-## C3. Thin instruction surface
-
-`AGENTS.md` 是薄入口，不是百科全书。
-
-应放：
-
-- 项目概览。
-- 项目地图。
-- 项目铁律。
-- 快速开始和验证命令。
-- harness map / workflow state 指针。
-- protected paths。
-- Definition of Done。
-
-不应放：
-
-- 临时 TODO。
-- 会话摘要。
-- 一次性实现细节。
-- 当前 active slice 或本阶段 non-goals 的具体内容。
-- 长篇教程。
-
-主要 skill：`bootstrap`、`cleanup`。
-
-## C4. Workbench before implementation
-
-非平凡实现前先确认项目工作面是否能承载实现。
-
-新版 `bootstrap` 直接使用 harness-builder v3：
-
-1. collect repo evidence;
-2. gap-driven brainstorm;
-3. optional read-only subagents;
-4. Harness Hypothesis;
-5. course coverage check;
-6. Harness Plan;
-7. project-local install;
-8. verify and record.
-
-它至少考虑：
-
-- 项目入口和关键目录是否清楚。
-- `AGENTS.md` 是否有项目概览、项目地图、项目铁律、harness map。
-- workflow state backend 是否声明。
-- 验证命令和 smoke/E2E/tiny-run 候选是否明确。
-- 依赖、setup 命令和至少一条 baseline 验证是否真实可用。
-- required MCP / capability 是否已项目级配置，或是否有明确 blocker。
-- git root、dirty worktree、baseline checkpoint 是否足够支持恢复和 review。
-- 是否需要项目级 skill、hooks、subagents 或 MCP policy。
-
-主要 skill：`bootstrap`。
-
-## C5. Scope discipline
-
-默认 WIP=1。一个 active slice 到 verified 或 blocked 之前，不开启无关工作。
+仓库工件是真相，聊天记录不是唯一事实来源。非平凡工作应能从 Spec、Executable Plan、docs、issue、three-file backend 或其他 selected recovery surface 恢复。
 
 要求：
 
-- `brainstorm` 先收敛 spec，包含 goals、non-goals、success criteria、verification strategy、capability gaps 和 plan handoff。
-- active slice 和 non-goals 必须能从 workflow state 中读取。
-- 默认三文件 backend 下，`task_plan.md` 的 `范围合同` 是执行真相。
-- 创建计划、重新规划、修复阶段状态都归 `plan` / `state-contract`。
-- executor 不扩大范围。
+- 当前目标、范围、证据和风险必须能从仓库或项目系统中恢复。
+- 不把临时 active slice 写进 `AGENTS.md`。
+- Three-file backend 可用，但不是唯一恢复面。
 
-主要 skill：`brainstorm`、`state-contract`、`plan`、`implement`。
+主要 skill：all skills。
 
-## C6. Evidence before completion
+## C3 Thin Instruction Surface
 
-没有 fresh evidence 不声称完成。
+`AGENTS.md` 是薄入口：项目地图、铁律、验证命令、protected paths、required reading 和 DoD。它不是 changelog、session log 或任务计划。
 
-证据阶梯：
+主要 skill：`harness-builder`、`cleanup`。
 
-1. static / syntax
-2. build
-3. typecheck
-4. lint
-5. unit tests
-6. integration tests
-7. smoke
-8. E2E
-9. manual / external signal
+## C4 Workbench Before Implementation
 
-任务不一定每层都跑，但跳过必须说明原因。
+当项目入口、验证命令、recovery surface 或能力边界不清楚时，先用 Harness Builder 修工作面；当这些已经清楚时，不要把 Harness Builder 变成强制前置步骤。
 
-`brainstorm` 阶段必须先设计验证策略。`verify` 负责最后跑 fresh evidence，不负责临时设计整套验证流程。
+主要 skill：`harness-builder`。
 
-主要 skill：`brainstorm`、`review`、`verify`。
+## C5 Scoped Work
 
-## C7. Observability and capability fit
+非平凡工作必须有清晰边界。边界来自用户请求、Spec 或 Executable Plan。
 
-当 agent 自身验证能力不足时，不硬装自信。
+要求：
 
-当前 spec/plan 必需的能力应作为 `required` capability 进入项目级配置；非必需增强才作为 `recommended`。
+- active slice 唯一。
+- non-goals 明确。
+- success criteria 可证伪。
+- WIP=1。
+- 发现范围扩大时回 `plan` 或请求用户确认。
 
-例子：
+主要 skill：`brainstorm`、`plan`、`implement`、`review`。
 
-- Web app：推荐 Playwright MCP 或浏览器 E2E 工具。
-- API / SDK 变更：推荐官方 docs/search 能力。
-- issue-driven repo：推荐 issue tracker / GitHub 能力。
-- 实验或训练项目：推荐日志、trace、health check 或运行状态工具。
+## C6 Fresh Evidence
 
-required capability 要说明状态：configured / blocked / none。需要 secret、登录或外部服务时，只记录 env/secret 入口和 blocker，不把 secret 写进仓库。
+Ready claim 必须有当前证据。旧命令、聊天记忆和过期截图不能证明最新工作树。
 
-主要 skill：`brainstorm`、`bootstrap`、`verify`。
+主要 skill：`verify`、`review`、`diagnose`。
 
-## C8. Documentation freshness
+## C7 Observability And Capability Fit
 
-文档过期比没有文档更危险。
+能力配置必须服务当前任务的验证、可观测性、自动化或领域能力。安装或推荐 skills、MCP、hooks、subagents 前必须说明 value、enablement、risk/cost、fallback。
 
-规则：
+Capability Discovery 要求：
 
-- 改了代码、命令、验证路径、用户可见行为，就同步相关 README / docs / workflow state。
-- reviewer 要检查文档、计划和证据缺口是否与实现脱节。
-- cleanup 要删除或改写误导性说明，而不是继续堆新段落。
-- `AGENTS.md` 仍保持薄入口，详细内容放邻近 docs、本地 AGENTS 或 project-local skills。
+- 对 skills，使用 `$find-skills` 搜索强相关可复用能力。
+- 对 MCP、hooks 或外部 agent 能力，使用 targeted web search 查官方文档或成熟实现。
+- 不把当前已安装 skills 当作搜索范围上限。
+- 不因为"可能有用"就安装能力。
 
-主要 skill：`implement`、`review`、`cleanup`。
+主要 skill：`harness-builder`、`verify`。
 
-## C9. Entropy control and clean state
+## C8 Artifact Freshness
 
-会话结束时不能增加项目熵。
+代码、命令、README、docs、generated artifacts 和 selected recovery surface 必须描述同一个现实。
 
-检查：
+要求：
 
-- 临时文件、调试输出是否留在仓库。
-- 陈旧 TODO、重复规则、过期状态是否误导后续 agent。
-- workflow state 是否能恢复当前状态。
-- `AGENTS.md` 是否仍是薄入口。
-- 未验证内容和残余风险是否明确。
+- 改命令、配置、API、用户可见行为时同步相关 docs。
+- 生成物只能通过生成器更新。
+- Review 可以指出 drift；系统性 reconciliation 由 Knowledge Cleanup 完成。
 
-主要 skill：`cleanup`、`save-session`。
+主要 skill：`review`、`cleanup`。
 
-## C10. State backend decoupling
+## C9 Knowledge Cleanup
 
-所有 workflow skill 依赖的是 `state-contract`，不是固定文件布局。
+收尾不是简单说 done，而是降低知识熵。
 
-Backend：
+要求：
 
-- `none`：简单一次性任务。
-- `lightweight`：中等任务，少量范围合同和证据。
-- `three-file`：默认 rigorous tracked workflow。
-- `feature-list`：多功能/产品型项目。
-- `existing`：复用项目已有 issue/docs/PROJECT.md 状态系统。
+- `AGENTS.md` 保持薄入口。
+- README 和 docs 面向读者且不过期。
+- selected recovery surface 能回答当前状态、证据、风险和下一步。
+- 未解决 drift 记录为明确 follow-up。
+- 不用 cleanup 隐藏未完成工作。
 
-三文件依然是默认强模式，但不是所有 skill 的硬前提。
+主要 skill：`cleanup`。
 
-主要 skill：`state-contract`。
+## C10 Backend Decoupling
 
-## 12 节课映射
+Workflow skills 依赖 recovery surface 的语义字段，不依赖固定文件布局。
 
-| 课程思想 | Contract | 插件承载 |
-| --- | --- | --- |
-| 模型能力不等于执行可靠 | C1 | `diagnose` |
-| Harness 是外部工程系统 | C1 / C4 / C7 | `bootstrap` + diagnosis |
-| 仓库是事实来源 | C2 / C10 | workflow state |
-| 拆分指令文件 | C3 | `bootstrap` / `cleanup` |
-| 跨会话连续性 | C2 / C9 / C10 | resume / save |
-| 初始化是独立阶段 | C4 | `bootstrap` |
-| 任务边界 | C5 | planning / execution |
-| 功能清单是状态原语 | C10 | feature-list backend |
-| 防止提前宣告完成 | C6 | review / verify |
-| E2E 改变结果 | C6 / C7 | verify + capability recommendation |
-| 可观测性属于 harness | C7 | bootstrap / verify |
-| 每次会话留下干净状态 | C8 / C9 | cleanup / save |
+Backend options：
+
+- `none`
+- `lightweight`
+- `three-file`
+- `feature-list`
+- `existing`
+
+Three-file backend 使用 `task_plan.md`、`progress.md`、`findings.md`，仍适合 rigorous tracked workflow；但它只是 selected backend，不是所有 skill 的概念前提。
+
+主要 skill：`harness-builder`、all skills。
+
+## Skill Responsibility Map
+
+| Skill | Canonical output |
+| --- | --- |
+| `harness-builder` | project harness, recovery surface policy, Capability Discovery recommendations |
+| `brainstorm` | Spec |
+| `plan` | Executable Plan |
+| `implement` | scoped change with evidence |
+| `diagnose` | root cause, minimal fix, regression evidence |
+| `review` | findings-first review |
+| `verify` | fresh evidence for a claim |
+| `cleanup` | Knowledge Cleanup and aligned artifacts |

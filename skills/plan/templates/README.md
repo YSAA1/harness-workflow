@@ -1,6 +1,6 @@
 # 中文三文件模板
 
-这些模板是 `plan` 的 canonical state-file templates。
+这些模板是 three-file recovery surface 的 canonical templates。
 
 来源：
 
@@ -19,6 +19,6 @@
 
 职责边界：
 
-- `plan` 通过 `state-contract` 负责创建和维护默认 three-file backend。
-- `bootstrap` 不再直接维护三文件模板；需要 tracked state 时通过 `state-contract` / `plan` 复用这些模板。
-- 其他 skill 只更新对应职责范围内的状态，不维护第二套模板。
+- `plan` 只有在 selected planning surface 是 three-file backend 时才使用这些模板。
+- `harness-builder` 负责选择或修复 recovery surface，不直接维护第二套三文件模板。
+- 其他 skill 只在 selected recovery surface 要求时更新对应职责范围内的状态，不维护第二套模板。

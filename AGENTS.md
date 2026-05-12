@@ -8,14 +8,16 @@
 
 - `.codex-plugin/plugin.json`: plugin manifest，声明插件元数据和 skills 入口。
 - `README.md`: 用户入口，说明 workflow 分层、使用场景和验证命令。
+- `CONTEXT.md`: 术语和边界澄清。
 - `docs/harness-method-contract.md`: Harness Method Contract，解释 C1-C10 稳定方法论。
+- `docs/prd/`: 本地 PRD。
 - `docs/skill-flow-review/`: 由脚本生成的 skill 流程审阅 HTML。
 - `scripts/check-plugin.mjs`: 插件结构和方法论覆盖的快速验证脚本。
 - `scripts/generate-skill-flow-html.mjs`: 从各个 `SKILL.md` 生成流程审阅 HTML。
-- `skills/*/SKILL.md`: 每个 workflow skill 的主入口和执行协议。
+- `skills/*/SKILL.md`: 每个 active workflow skill 的主入口和执行协议。
 - `skills/*/references/`: 按需读取的细节政策、检查表和参考资料。
-- `skills/*/templates/`: skill 使用或 bootstrap 生成时复用的模板。
-- `skills/bootstrap/references/legacy-bootstrap/`: 旧版 bootstrap 的历史参考，不是当前主路径。
+- `skills/*/templates/`: skill 使用或 backend 生成时复用的模板。
+- `skills/harness-builder/references/legacy-bootstrap/`: 旧版历史参考，不是当前主路径。
 
 ## 快速开始
 
@@ -26,9 +28,11 @@
 ## 项目铁律
 
 - 这是 plugin 仓库；所有改动必须保持 `.codex-plugin/plugin.json`、`README.md`、`docs/harness-method-contract.md` 和 `skills/*/SKILL.md` 之间语义一致。
+- Active skills 只有 `harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`verify`、`cleanup`。
 - `AGENTS.md` 只做薄入口；临时计划、会话摘要、active slice 和一次性结论不要写进这里。
-- Workflow skills 依赖 `state-contract` 的字段语义，不要把所有任务强绑死到三文件。
-- `bootstrap` 当前代表 harness-builder v3；旧版只在 `skills/bootstrap/references/legacy-bootstrap/` 中作为历史参考。
+- Workflow skills 依赖 selected recovery surface 的语义字段，不要把所有任务强绑死到三文件。
+- `harness-builder` 是 canonical 项目 harness skill；"bootstrap" 只能作为历史别名或触发词出现。
+- Three-file backend 仍可作为可选 recovery surface，但不是所有 skill 的概念依赖。
 - 每个 `SKILL.md` 必须保留 YAML frontmatter，并让 `name` 与目录名匹配。
 - 不要默认加入 hooks、MCP 配置或用户级配置；此插件默认只声明 `Read` / `Write` 能力。
 - 没有 fresh verification，不声明插件结构、流程图或方法论覆盖已经可用。
@@ -36,21 +40,21 @@
 
 ## Workflow State
 
-本仓库维护自身时，默认使用 lightweight state：简单改动可直接以用户请求和 Git diff 为准；跨多步、跨会话或高风险改动再创建三文件 `task_plan.md` / `progress.md` / `findings.md`。
+本仓库维护自身时，默认使用 lightweight state：简单改动可直接以用户请求和 Git diff 为准；跨多步、跨会话或高风险改动再选择 three-file backend 或其他 durable recovery surface。
 
 若当前任务进入 tracked workflow：
 
-- active slice 和 success criteria 写入 `task_plan.md`。
-- 命令证据追加到 `progress.md`。
-- 设计决策、拒绝方案、风险和 root cause 写入 `findings.md`。
+- active slice 和 success criteria 写入选定 planning surface。
+- 命令证据追加到选定 evidence log。
+- 设计决策、拒绝方案、风险和 root cause 写入选定 decision/risk artifact。
 
 不要在仓库根部并行创建第二套恢复面。
 
 ## Required Reading By Task Type
 
 - 修改 skill 行为：先读对应 `skills/<skill>/SKILL.md`，再按需读同目录 `references/`。
-- 修改 bootstrap：先读 `skills/bootstrap/SKILL.md`，再读相关 `skills/bootstrap/references/*.md`。
-- 修改 state backend 语义：读 `skills/state-contract/SKILL.md` 和 `skills/state-contract/references/`。
+- 修改 harness builder：先读 `skills/harness-builder/SKILL.md`，再读相关 `skills/harness-builder/references/*.md`。
+- 修改 recovery surface 语义：读 `skills/harness-builder/references/recovery_surface_policy.md`。
 - 修改验证、ready 或 evidence 规则：读 `skills/verify/SKILL.md`、`skills/review/SKILL.md` 和 `docs/harness-method-contract.md`。
 - 修改生成的 HTML：优先改 `scripts/generate-skill-flow-html.mjs`，再重新生成 `docs/skill-flow-review/*.html`。
 - 修改 manifest 或能力声明：同步检查 `.codex-plugin/plugin.json`、`README.md` 和 `scripts/check-plugin.mjs`。
@@ -58,7 +62,7 @@
 ## Protected Paths
 
 - `.codex-plugin/plugin.json`: 改 name、skills path、capabilities 或 prompt 前必须确认影响面并跑验证。
-- `skills/bootstrap/references/legacy-bootstrap/`: 历史参考区，除非任务明确要求迁移或修订旧资料，否则不要改。
+- `skills/harness-builder/references/legacy-bootstrap/`: 历史参考区，除非任务明确要求迁移或修订旧资料，否则不要改。
 - `docs/skill-flow-review/*.html`: 生成物；不要手改，改生成脚本后重建。
 - 用户级配置、全局 skills、MCP、hooks、外部 plugin marketplace：只有用户明确要求时才能修改。
 

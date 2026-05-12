@@ -136,31 +136,31 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>diagnose</h1>
-  <p>当 build、test、lint、typecheck、CI 或运行时检查失败，且无法指出单一证据支撑的 root cause 时使用。典型触发语：测试挂了、构建坏了、为什么报错、CI 红了、本地能跑 CI 不行、flaky、复现这个 bug、我试了但错误变了。修复前必须先复现、提出单一假设、验证根因，并把 root cause 写入 workflow state 的 findings area（默认 `findings.md`）。</p>
+  <p>当 build、test、lint、typecheck、CI 或运行时检查失败，且无法指出单一证据支撑的 root cause 时使用。典型触发语：测试挂了、构建坏了、为什么报错、CI 红了、本地能跑 CI 不行、flaky、复现这个 bug、我试了但错误变了。修复前必须先复现、提出单一假设、验证根因，并把 root cause 写入 selected recovery surface。</p>
   <div class="toolbar">
     <a class="button" href="../../skills/diagnose/SKILL.md">打开 SKILL.md</a>
     <span class="button">失败诊断</span>
-    <span class="button">270 行</span>
+    <span class="button">136 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>本 skill 专门处理&quot;基于失败现象继续猜&quot;的问题。失败可能来自代码，也可能来自工具链、状态、验证方式、范围漂移或环境差异。诊断要先把失败稳定复现，再用单一假设逐步排除。 diagnose 把这些教训压成纪律: - 没有可复现的失败,不允许提修复 - 没有写进 workflow state findings area 的 root cause,不算诊断完成 - 不在 build / test / lint 已红的状态下推进 implementation - 修复必须是最小的、单一的、可验证的 - 三轮 hypothesis 仍找不到根因 → 升级为 blocker,不继续盲改</p>
+    <p>- 没有可复现失败，不提修复结论。 - 没有 root cause 证据，不算诊断完成。 - 不在 build/test/lint 已红的状态下推进 implementation。 - 修复必须最小、单一、可验证。 - 三轮 hypothesis 仍找不到根因，升级为 blocker。</p>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>进入条件</h2>
-      <ul><li>implement 中同一 slice 出现连续两次失败,或同一命令两次返回不同错误</li><li>npm test / npm run build / cargo test / go test 等命令红,且错误消息无法直接对应到刚改的几行</li><li>测试通过本地但 CI 红,或反过来</li><li>构建突然慢、卡住、内存爆,但代码改动看起来无关</li><li>出现&quot;我以为我修了&quot;,但同一现象再次出现</li><li>E2E / smoke 通过但 unit 失败,或反之 — 行为分层不一致</li><li>用户说「为什么报这个错」「再试一下还是不行」「flaky 了」「CI 红了」「能不能别用 try/except 把它包起来」</li></ul>
+      <ul><li>implement 中同一 slice 连续两次失败，或同一命令两次返回不同错误。</li><li>npm test / build / lint / typecheck 等命令红，且错误不能直接对应刚改的几行。</li><li>本地和 CI 结果不一致。</li><li>构建突然慢、卡住、内存爆。</li><li>用户说「为什么报这个错」「再试一下还是不行」「flaky 了」「CI 红了」。</li></ul>
     </div>
     <div class="panel">
       <h2>禁用条件</h2>
-      <ul><li>这是 RED→GREEN 流程里你刚写的测试在红 → 回 implement</li><li>这是已知的 spec 变化导致旧测试失效 → 先回 plan 调整 active slice</li><li>失败的根因已经清楚,只差一行修改 → 回 implement 做最小修复</li><li>用户其实是在问&quot;应该怎么做&quot;而不是&quot;为什么坏&quot; → brainstorm</li></ul>
+      <ul><li>这是 RED-&gt;GREEN 流程里刚写的测试在红：回 implement。</li><li>这是已知 Spec 变化导致旧测试失效：先回 plan。</li><li>失败根因已经清楚，只差最小修改：回 implement。</li><li>用户在问方案而不是失败原因：转 brainstorm。</li></ul>
     </div>
     <div class="panel">
       <h2>先读输入</h2>
-      <ul><li>失败命令的真实输出,不要靠记忆复述。完整 stderr / stack trace 必须存在 progress.md</li><li>最近 progress.md entry,确认上一次成功状态</li><li>findings.md 的 Risks / Failures / Dead ends — 避免重走老路</li><li>git diff HEAD~5..HEAD --stat 与 git status --short:看最近改动范围</li><li>task_plan.md:确认当前 active slice,避免修着修着越界</li><li>与失败直接相关的源文件、测试、配置(只读够定位即可)</li></ul>
+      <ul><li>失败命令的真实输出：完整 stderr、stack trace、退出码。</li><li>selected recovery surface：最近成功状态、风险、dead ends、capability gaps。</li><li>git status --short 和相关 diff：确认变化面。</li><li>与失败直接相关的源文件、测试、配置。</li><li>README / AGENTS.md：确认命令入口是否真实。</li></ul>
     </div>
   </section>
 
@@ -169,22 +169,28 @@ pre {
     <div class="flow">
       <div class="step">
         <div class="num">1</div>
-        <div><h3>第 1 步 — 捕获事实</h3><p>完整记录: - 命令(精确到 flag、cwd、env) - 失败输出(stderr、stack trace、退出码) - 时间戳与 git HEAD - 最近 5 次相关命令的成功/失败序列 写到 progress.md 的本次 entry,不只是 chat 里。</p></div>
+        <div><h3>第 1 步 — 捕获事实</h3><p>记录命令、cwd、退出码、失败输出、时间戳、git HEAD 和最近相关命令序列。</p></div>
       </div><div class="step">
         <div class="num">2</div>
-        <div><h3>第 2 步 — 稳定复现</h3><p>- 跑同样命令两次,确认结果一致 - 如果 flaky,先治 flaky:看是不是时间/顺序/并发/外部依赖。flaky 本身就是根因之一,不能假装它&quot;偶尔&quot; - 找出最小复现命令(单测试文件、单 spec、单 seed) - 如果不能复现,转 resume 校对状态,或写进 findings.md 作为 dead end</p></div>
+        <div><h3>第 2 步 — 稳定复现</h3><p>跑同样命令两次，确认结果一致。若 flaky，先把 flaky 当根因方向诊断。</p></div>
       </div><div class="step">
         <div class="num">3</div>
-        <div><h3>第 3 步 — 定位变化面</h3><p>- git log --oneline -20 看最近提交 - git diff 看本地未提交改动 - git bisect 在 regression 嫌疑大时使用 - 找一个已知能跑通的 commit 或 working example 作锚点</p></div>
+        <div><h3>第 3 步 — 定位变化面</h3><p>查看最近提交、本地 diff、相关配置和已知能跑通的锚点。</p></div>
       </div><div class="step">
         <div class="num">4</div>
-        <div><h3>第 4 步 — 提出 hypothesis(单数)</h3><p>每轮只一个 hypothesis,写成可证伪命题。例: &gt; H1: 失败是因为 documentService 在 loadAll 之后没等 parseAll,导致渲染线程拿到空数组。 不要写&quot;可能 A 也可能 B 也可能 C&quot;。多假设并发只会浪费 token。</p></div>
+        <div><h3>第 4 步 — 提出单一 hypothesis</h3><p>每轮只一个可证伪命题，不并发猜多个原因。</p></div>
       </div><div class="step">
         <div class="num">5</div>
-        <div><h3>第 5 步 — 用最小检查验证 hypothesis</h3><p>- 加一行日志、一个断点、一段独立脚本、一个 focused test - 检查必须能单独回答&quot;H1 是真的吗?&quot;,不能依赖大段重构 - 跑检查,记录结果</p></div>
+        <div><h3>第 5 步 — 用最小检查验证 hypothesis</h3><p>用 focused test、日志、独立脚本或配置对照回答 H1 是否成立。</p></div>
       </div><div class="step">
         <div class="num">6</div>
-        <div><h3>第 6 步 — 命名 root cause</h3><p>只有当检查证伪 hypothesis 时,才换下一个。每次切换前在 findings.md 记下&quot;H1 不是根因,因为 ...&quot;。当某个 hypothesis 被实证支撑时,把它写为 root cause。 格式参考:</p></div>
+        <div><h3>第 6 步 — 命名 root cause</h3><p>只有当证据支持某个 hypothesis 时，才写 root cause。被证伪的 hypothesis 也记录到 selected recovery surface，避免下次重走。</p></div>
+      </div><div class="step">
+        <div class="num">7</div>
+        <div><h3>第 7 步 — 最小修复</h3><p>修复改动尽可能小且单一。不顺手 refactor，不用注释测试、catch-all 或忽略类型错误隐藏失败。</p></div>
+      </div><div class="step">
+        <div class="num">8</div>
+        <div><h3>第 8 步 — fresh 验证</h3><p>先跑 reproduction 命令，再跑相邻验证。失败则继续诊断；通过后转 review 或 verify。</p></div>
       </div>
     </div>
   </section>
@@ -192,23 +198,23 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text BUILD FIX REPORT Failure command: - &lt;command -&gt; output&gt; Reproduction: - &lt;minimal command&gt; Hypotheses tried: - H1: &lt;statement&gt; -&gt; &lt;falsified|supported&gt; - H2: &lt;statement&gt; -&gt; &lt;falsified|supported&gt; Root cause: &lt;一句话&gt; Evidence: &lt;command + output|trace&gt; Fix: &lt;一句话 + 文件清单&gt; Verification: - &lt;command -&gt; result&gt; Risks / residual: &lt;一句话&gt; Next: &lt;implement | review | verify | blocker&gt; ``</pre>
+      <pre>``text BUILD FIX REPORT Failure command: - &lt;command -&gt; output&gt; Reproduction: - &lt;minimal command&gt; Hypotheses tried: - H1: &lt;statement&gt; -&gt; &lt;falsified|supported&gt; Root cause: &lt;一句话&gt; Evidence: &lt;command + output|trace&gt; Fix: &lt;一句话 + 文件清单&gt; Verification: - &lt;command -&gt; result&gt; Risks / residual: &lt;一句话&gt; Recovery surface updated: yes|no|n/a Next: &lt;implement | review | verify | blocker&gt; ``</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
-      <ul><li>progress.md:append entry,含失败现象、hypotheses、修复、验证</li><li>findings.md:root cause + 残余风险 + dead ends</li><li>task_plan.md:仅在 phase / blocker / next 改变时更新</li><li>AGENTS.md:不动;若发现 baseline 命令或项目地图需调整,记录到 findings.md，由 bootstrap 或 cleanup 做薄入口修正</li></ul>
+      <ul><li>selected recovery surface：记录失败事实、hypotheses、root cause、dead ends、修复、验证和残余风险。</li><li>源码/tests/docs：仅做 root cause 所需的最小修复。</li></ul>
     </div>
   </section>
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>根因已找到、修复直接</td><td>implement(以 reproduction test 起始)</td></tr><tr><td>根因找到、影响多文件</td><td>回 plan 拆 slice</td></tr><tr><td>根因找到、需要重新审视边界</td><td>brainstorm</td></tr><tr><td>修复稳定</td><td>review 或 verify</td></tr><tr><td>三轮诊断未果</td><td>记 blocker,转 save-session 或升级到 user</td></tr><tr><td>命令链路本身坏(找不到入口、依赖装不上)</td><td>bootstrap 重审工作面</td></tr></tbody></table>
+    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>根因已找到、修复直接</td><td>implement</td></tr><tr><td>根因影响多文件或范围</td><td>plan</td></tr><tr><td>根因揭示需求边界错</td><td>brainstorm</td></tr><tr><td>修复稳定</td><td>review 或 verify</td></tr><tr><td>三轮诊断未果</td><td>记录 blocker 并向用户升级</td></tr><tr><td>命令链路本身坏</td><td>harness-builder</td></tr></tbody></table>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] 失败有最小复现命令,且记录在 progress.md</li><li>[ ] hypotheses 序列写在 findings.md,被证伪的也保留</li><li>[ ] root cause 一句话能讲清,且有命令级证据</li><li>[ ] 修复是最小的、单一的、未越界</li><li>[ ] reproduction 命令由红转绿,相邻验证未 regress</li><li>[ ] 没有用 hack 屏蔽失败</li><li>[ ] 下一步 skill 已显式标注</li></ul>
+      <ul><li>[ ] 失败有最小复现命令。</li><li>[ ] hypotheses 序列被记录，被证伪的也保留。</li><li>[ ] root cause 一句话能讲清，且有命令级证据。</li><li>[ ] 修复最小、单一、未越界。</li><li>[ ] reproduction 命令由红转绿，相邻验证未 regress。</li><li>[ ] 下一步 skill 已显式标注。</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>

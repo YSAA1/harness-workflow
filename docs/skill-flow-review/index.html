@@ -135,7 +135,7 @@ pre {
 <body>
 <header>
   <h1>Harness Workflow Skill 流程审阅</h1>
-  <p>这些页面把 11 个 Harness Workflow skill 抽成可审阅的流程图谱：什么时候进、怎么走、产出什么、验收什么、下一步去哪里。</p>
+  <p>这些页面把 8 个 Harness Workflow active skill 抽成可审阅的条件路由图谱：什么时候进、怎么走、产出什么、验收什么、下一步去哪里。</p>
   <div class="toolbar">
     <a class="button" href="../harness-method-contract.md">Method Contract</a>
     <a class="button" href="../../README.md">插件 README</a>
@@ -143,16 +143,16 @@ pre {
 </header>
 <main>
   <section class="section panel">
-    <h2>主线流程</h2>
-    <div class="route"><span><a href="brainstorm.html">brainstorm</a></span><span class="arrow">→</span><span><a href="state-contract.html">state-contract</a></span><span class="arrow">→</span><span><a href="plan.html">plan</a></span><span class="arrow">→</span><span><a href="bootstrap.html">bootstrap</a></span><span class="arrow">→</span><span><a href="implement.html">implement</a></span><span class="arrow">→</span><span><a href="review.html">review</a></span><span class="arrow">→</span><span><a href="verify.html">verify</a></span><span class="arrow">→</span><span><a href="cleanup.html">cleanup</a></span><span class="arrow">→</span><span><a href="save-session.html">save-session</a></span><span class="arrow">→</span><span><a href="resume.html">resume</a></span></div>
+    <h2>条件主线</h2>
+    <div class="route"><span><a href="brainstorm.html">brainstorm</a></span><span class="arrow">→</span><span><a href="plan.html">plan</a></span><span class="arrow">→</span><span><a href="implement.html">implement</a></span><span class="arrow">→</span><span><a href="review.html">review</a></span><span class="arrow">→</span><span><a href="verify.html">verify</a></span><span class="arrow">→</span><span><a href="cleanup.html">cleanup</a></span></div>
   </section>
 
   <section class="section panel">
     <h2>分支与回路</h2>
-    <div class="route-row"><div class="route-label">执行失败</div><div class="route"><span><a href="implement.html">implement</a></span><span class="arrow">→</span><span><a href="diagnose.html">diagnose</a></span><span class="arrow">→</span><span><a href="implement.html">implement</a></span></div></div><div class="route-row"><div class="route-label">评审发现问题</div><div class="route"><span><a href="review.html">review</a></span><span class="arrow">→</span><span><a href="diagnose.html">diagnose</a></span><span class="arrow">→</span><span><a href="review.html">review</a></span></div></div><div class="route-row"><div class="route-label">最终验证失败</div><div class="route"><span><a href="verify.html">verify</a></span><span class="arrow">→</span><span><a href="diagnose.html">diagnose</a></span><span class="arrow">→</span><span><a href="review.html">review</a></span></div></div><div class="route-row"><div class="route-label">恢复后修复状态</div><div class="route"><span><a href="resume.html">resume</a></span><span class="arrow">→</span><span><a href="state-contract.html">state-contract</a></span><span class="arrow">→</span><span><a href="plan.html">plan</a></span></div></div><div class="route-row"><div class="route-label">稳定规则同步</div><div class="route"><span><a href="cleanup.html">cleanup</a></span><span class="arrow">→</span><span><a href="save-session.html">save-session</a></span></div></div>
+    <div class="route-row"><div class="route-label">工作面缺口</div><div class="route"><span><a href="harness-builder.html">harness-builder</a></span><span class="arrow">→</span><span><a href="plan.html">plan</a></span><span class="arrow">→</span><span><a href="implement.html">implement</a></span></div></div><div class="route-row"><div class="route-label">需求不清</div><div class="route"><span><a href="brainstorm.html">brainstorm</a></span><span class="arrow">→</span><span><a href="plan.html">plan</a></span></div></div><div class="route-row"><div class="route-label">执行失败</div><div class="route"><span><a href="implement.html">implement</a></span><span class="arrow">→</span><span><a href="diagnose.html">diagnose</a></span><span class="arrow">→</span><span><a href="implement.html">implement</a></span></div></div><div class="route-row"><div class="route-label">评审发现问题</div><div class="route"><span><a href="review.html">review</a></span><span class="arrow">→</span><span><a href="implement.html">implement</a></span><span class="arrow">→</span><span><a href="review.html">review</a></span></div></div><div class="route-row"><div class="route-label">最终验证失败</div><div class="route"><span><a href="verify.html">verify</a></span><span class="arrow">→</span><span><a href="diagnose.html">diagnose</a></span><span class="arrow">→</span><span><a href="review.html">review</a></span></div></div><div class="route-row"><div class="route-label">能力缺口</div><div class="route"><span><a href="verify.html">verify</a></span><span class="arrow">→</span><span><a href="harness-builder.html">harness-builder</a></span><span class="arrow">→</span><span><a href="verify.html">verify</a></span></div></div><div class="route-row"><div class="route-label">知识漂移</div><div class="route"><span><a href="review.html">review</a></span><span class="arrow">→</span><span><a href="cleanup.html">cleanup</a></span></div></div>
     <details>
       <summary>展开完整转场表</summary>
-      <table><thead><tr><th>From</th><th>To</th></tr></thead><tbody><tr><td><a href="brainstorm.html">brainstorm</a></td><td><a href="state-contract.html">state-contract</a></td></tr><tr><td><a href="state-contract.html">state-contract</a></td><td><a href="plan.html">plan</a></td></tr><tr><td><a href="plan.html">plan</a></td><td><a href="bootstrap.html">bootstrap</a></td></tr><tr><td><a href="bootstrap.html">bootstrap</a></td><td><a href="implement.html">implement</a></td></tr><tr><td><a href="implement.html">implement</a></td><td><a href="review.html">review</a></td></tr><tr><td><a href="implement.html">implement</a></td><td><a href="diagnose.html">diagnose</a></td></tr><tr><td><a href="diagnose.html">diagnose</a></td><td><a href="implement.html">implement</a></td></tr><tr><td><a href="diagnose.html">diagnose</a></td><td><a href="review.html">review</a></td></tr><tr><td><a href="review.html">review</a></td><td><a href="verify.html">verify</a></td></tr><tr><td><a href="review.html">review</a></td><td><a href="diagnose.html">diagnose</a></td></tr><tr><td><a href="verify.html">verify</a></td><td><a href="cleanup.html">cleanup</a></td></tr><tr><td><a href="verify.html">verify</a></td><td><a href="diagnose.html">diagnose</a></td></tr><tr><td><a href="cleanup.html">cleanup</a></td><td><a href="save-session.html">save-session</a></td></tr><tr><td><a href="save-session.html">save-session</a></td><td><a href="resume.html">resume</a></td></tr><tr><td><a href="resume.html">resume</a></td><td><a href="plan.html">plan</a></td></tr><tr><td><a href="resume.html">resume</a></td><td><a href="implement.html">implement</a></td></tr></tbody></table>
+      <table><thead><tr><th>From</th><th>To</th></tr></thead><tbody><tr><td><a href="harness-builder.html">harness-builder</a></td><td><a href="brainstorm.html">brainstorm</a></td></tr><tr><td><a href="harness-builder.html">harness-builder</a></td><td><a href="plan.html">plan</a></td></tr><tr><td><a href="brainstorm.html">brainstorm</a></td><td><a href="plan.html">plan</a></td></tr><tr><td><a href="brainstorm.html">brainstorm</a></td><td><a href="harness-builder.html">harness-builder</a></td></tr><tr><td><a href="plan.html">plan</a></td><td><a href="harness-builder.html">harness-builder</a></td></tr><tr><td><a href="plan.html">plan</a></td><td><a href="implement.html">implement</a></td></tr><tr><td><a href="implement.html">implement</a></td><td><a href="review.html">review</a></td></tr><tr><td><a href="implement.html">implement</a></td><td><a href="diagnose.html">diagnose</a></td></tr><tr><td><a href="implement.html">implement</a></td><td><a href="plan.html">plan</a></td></tr><tr><td><a href="diagnose.html">diagnose</a></td><td><a href="implement.html">implement</a></td></tr><tr><td><a href="diagnose.html">diagnose</a></td><td><a href="review.html">review</a></td></tr><tr><td><a href="diagnose.html">diagnose</a></td><td><a href="harness-builder.html">harness-builder</a></td></tr><tr><td><a href="review.html">review</a></td><td><a href="verify.html">verify</a></td></tr><tr><td><a href="review.html">review</a></td><td><a href="diagnose.html">diagnose</a></td></tr><tr><td><a href="review.html">review</a></td><td><a href="implement.html">implement</a></td></tr><tr><td><a href="review.html">review</a></td><td><a href="cleanup.html">cleanup</a></td></tr><tr><td><a href="verify.html">verify</a></td><td><a href="cleanup.html">cleanup</a></td></tr><tr><td><a href="verify.html">verify</a></td><td><a href="diagnose.html">diagnose</a></td></tr><tr><td><a href="verify.html">verify</a></td><td><a href="harness-builder.html">harness-builder</a></td></tr><tr><td><a href="cleanup.html">cleanup</a></td><td><a href="implement.html">implement</a></td></tr><tr><td><a href="cleanup.html">cleanup</a></td><td><a href="harness-builder.html">harness-builder</a></td></tr></tbody></table>
     </details>
   </section>
 
@@ -160,91 +160,67 @@ pre {
     <h2>Skill 审阅入口</h2>
     <div class="grid">
       <article class="panel skill-card">
-        <h3><a href="brainstorm.html">brainstorm</a></h3>
-        <p class="muted">构思收敛 · 270 行 · 9 个流程步</p>
-        <p>本 skill 解决三个问题： - 想法太早进入实现，导致边界、non-goals 和成功标准靠聊天记忆维持。 - agent 只问一个问题就收敛，实际没有确认用户、范围、约束、失败模式和验收信号。 - spec 只描述要做什么，却没有设计验证流程，到了 verify 才发现没有可运行证据。 brainstorm 必须先把&quot;要建什么&quot;和&quot;如何证明建对&quot;一起说明白。plan 只负责把已批准 spec 拆成阶段和执行合同。</p>
-        <div class="meta">
-          <span class="tag">1 个 reference</span>
-          <span class="tag">8 条验收项</span>
-        </div>
-      </article><article class="panel skill-card">
-        <h3><a href="state-contract.html">state-contract</a></h3>
-        <p class="muted">状态协议 · 176 行 · 5 个流程步</p>
-        <p>降低 workflow skills 之间的耦合，同时保留三文件带来的可恢复、可验证、可审计能力。 本 skill 解决这些问题： - 简单任务被迫创建三文件，增加噪声。 - implement、review、verify 等 skill 把 task_plan.md 写成硬依赖，导致没有三文件时能力打折。 - 老项目已有 issue tracker、PROJECT.md、features.yaml 或 .harness/ 状态时，被强行套三文件。 - 三文件漂移时，没人负责判断是修复、降级、升级，还是切换 backend。</p>
-        <div class="meta">
-          <span class="tag">2 个 reference</span>
-          <span class="tag">5 条验收项</span>
-        </div>
-      </article><article class="panel skill-card">
-        <h3><a href="plan.html">plan</a></h3>
-        <p class="muted">计划落盘 · 253 行 · 6 个流程步</p>
-        <p>这个 skill 解决&quot;计划只活在聊天里&quot;的问题。如果计划不进入 workflow state，三件事会同时坏掉： - agent 被压缩或新会话开启后丢失&quot;为什么这样做&quot; - 多人/多 agent 协作时，没人能从仓库回答&quot;现在做到哪&quot; - 范围会在追加讨论中悄悄扩张，第一个 active slice 永远收不了尾 plan 强制把这些信息搬到 workflow state。默认映射是 task_plan.md（执行合同）/ progress.md（追加证据）/ findings.md（决策与风险），并使用从 OthmanAdi/planning-with-files vendored 过来的中文模板，使三文件结构在所有项目里一致、可恢复。</p>
-        <div class="meta">
-          <span class="tag">0 个 reference</span>
-          <span class="tag">8 条验收项</span>
-        </div>
-      </article><article class="panel skill-card">
-        <h3><a href="bootstrap.html">bootstrap</a></h3>
-        <p class="muted">项目级 harness · 197 行 · 0 个流程步</p>
+        <h3><a href="harness-builder.html">harness-builder</a></h3>
+        <p class="muted">项目级 harness · 210 行 · 0 个流程步</p>
         <p></p>
         <div class="meta">
-          <span class="tag">15 个 reference</span>
+          <span class="tag">16 个 reference</span>
           <span class="tag">0 条验收项</span>
         </div>
       </article><article class="panel skill-card">
-        <h3><a href="implement.html">implement</a></h3>
-        <p class="muted">小步执行 · 254 行 · 9 个流程步</p>
-        <p>本 skill 把实现压成小步、可验证、可恢复的循环： - 当前 active slice 没拿到证据前，不开新 slice - 修代码就同步文档/命令/workflow state，否则下次会话恢复就会失真 - 验证强度按风险匹配，不机械要求覆盖率 - 失败了不&quot;猜一下再试&quot;，转 diagnose</p>
+        <h3><a href="brainstorm.html">brainstorm</a></h3>
+        <p class="muted">构思 Spec · 160 行 · 9 个流程步</p>
+        <p>本 skill 解决三个问题： - 想法太早进入实现，导致边界、non-goals 和成功标准靠聊天记忆维持。 - agent 只问一个问题就收敛，实际没有确认用户、范围、约束、失败模式和验收信号。 - Spec 只描述要做什么，却没有设计验证流程，到了 verify 才发现没有可运行证据。 brainstorm 必须先把&quot;要建什么&quot;和&quot;如何证明建对&quot;一起说明白。plan 只负责把已批准 Spec 拆成 Executable Plan。</p>
         <div class="meta">
           <span class="tag">1 个 reference</span>
-          <span class="tag">6 条验收项</span>
+          <span class="tag">8 条验收项</span>
+        </div>
+      </article><article class="panel skill-card">
+        <h3><a href="plan.html">plan</a></h3>
+        <p class="muted">Executable Plan · 154 行 · 5 个流程步</p>
+        <p>这个 skill 解决&quot;计划只活在聊天里&quot;的问题，同时避免把所有项目强绑到同一种状态文件。 - agent 被压缩或新会话开启后，仍能从项目 artifact 恢复执行边界。 - 多人/多 agent 协作时，能回答&quot;现在做到哪、下一步是什么&quot;。 - 范围不会在追加讨论中悄悄扩张。</p>
+        <div class="meta">
+          <span class="tag">0 个 reference</span>
+          <span class="tag">7 条验收项</span>
+        </div>
+      </article><article class="panel skill-card">
+        <h3><a href="implement.html">implement</a></h3>
+        <p class="muted">小步执行 · 153 行 · 8 个流程步</p>
+        <p>- 当前 active slice 没拿到证据前，不开新 slice。 - 修代码就同步命令、文档或 recovery surface，否则下次会话恢复会失真。 - 验证强度按风险匹配，不机械要求覆盖率。 - 失败了不靠猜，转 diagnose。</p>
+        <div class="meta">
+          <span class="tag">1 个 reference</span>
+          <span class="tag">5 条验收项</span>
         </div>
       </article><article class="panel skill-card">
         <h3><a href="diagnose.html">diagnose</a></h3>
-        <p class="muted">失败诊断 · 270 行 · 6 个流程步</p>
-        <p>本 skill 专门处理&quot;基于失败现象继续猜&quot;的问题。失败可能来自代码，也可能来自工具链、状态、验证方式、范围漂移或环境差异。诊断要先把失败稳定复现，再用单一假设逐步排除。 diagnose 把这些教训压成纪律: - 没有可复现的失败,不允许提修复 - 没有写进 workflow state findings area 的 root cause,不算诊断完成 - 不在 build / test / lint 已红的状态下推进 implementation - 修复必须是最小的、单一的、可验证的 - 三轮 hypothesis 仍找不到根因 → 升级为 blocker,不继续盲改</p>
+        <p class="muted">失败诊断 · 136 行 · 8 个流程步</p>
+        <p>- 没有可复现失败，不提修复结论。 - 没有 root cause 证据，不算诊断完成。 - 不在 build/test/lint 已红的状态下推进 implementation。 - 修复必须最小、单一、可验证。 - 三轮 hypothesis 仍找不到根因，升级为 blocker。</p>
         <div class="meta">
           <span class="tag">1 个 reference</span>
-          <span class="tag">7 条验收项</span>
+          <span class="tag">6 条验收项</span>
         </div>
       </article><article class="panel skill-card">
         <h3><a href="review.html">review</a></h3>
-        <p class="muted">证据评审 · 244 行 · 6 个流程步</p>
-        <p>review 必须同时检查&quot;做超了&quot;和&quot;做欠了&quot;。输出必须落到 workflow state（默认 findings.md / progress.md），不能只留在聊天框。缺 fresh evidence 时，review 仍要完成结构性判断，并把 evidence gap 标成 Important 后路由到 verify。</p>
+        <p class="muted">证据评审 · 145 行 · 6 个流程步</p>
+        <p>review 必须同时检查&quot;做超了&quot;和&quot;做欠了&quot;。缺 fresh evidence 时，review 仍可完成结构判断，并把 evidence gap 标成 Important 后路由到 verify。</p>
         <div class="meta">
           <span class="tag">1 个 reference</span>
-          <span class="tag">7 条验收项</span>
+          <span class="tag">6 条验收项</span>
         </div>
       </article><article class="panel skill-card">
         <h3><a href="verify.html">verify</a></h3>
-        <p class="muted">最终验证 · 270 行 · 7 个流程步</p>
+        <p class="muted">最终验证 · 164 行 · 7 个流程步</p>
         <p>把&quot;可以结束&quot;转化为可追溯证据：每条成功标准都必须对应 fresh command、smoke/E2E 或明确的未验证限制。</p>
         <div class="meta">
           <span class="tag">2 个 reference</span>
-          <span class="tag">7 条验收项</span>
+          <span class="tag">6 条验收项</span>
         </div>
       </article><article class="panel skill-card">
         <h3><a href="cleanup.html">cleanup</a></h3>
-        <p class="muted">干净收尾 · 226 行 · 5 个流程步</p>
-        <p>把一个 batch 诚实地关闭、阻塞、放弃或重新打开，同时清掉低风险残留并确保 workflow state、docs 和 git state 不互相误导。普通暂停和交接由 save-session 负责。</p>
+        <p class="muted">Knowledge Cleanup · 169 行 · 7 个流程步</p>
+        <p>- 保持 AGENTS.md 是薄规则手册，不写 changelog、临时状态或会话叙事。 - 确保 README、docs、generated artifacts 和验证命令描述当前真实项目。 - 检查 recovery surface 是否漂移、膨胀或与 git diff 矛盾。 - 把未解决的 doc drift 和 residual risk 记录成明确 follow-up。</p>
         <div class="meta">
-          <span class="tag">1 个 reference</span>
-          <span class="tag">6 条验收项</span>
-        </div>
-      </article><article class="panel skill-card">
-        <h3><a href="save-session.html">save-session</a></h3>
-        <p class="muted">暂停交接 · 229 行 · 6 个流程步</p>
-        <p>在暂停或交接前把当前状态写成可恢复文件事实，让下一次会话能直接知道目标、进度、证据、风险、失败和第一步动作。</p>
-        <div class="meta">
-          <span class="tag">1 个 reference</span>
-          <span class="tag">6 条验收项</span>
-        </div>
-      </article><article class="panel skill-card">
-        <h3><a href="resume.html">resume</a></h3>
-        <p class="muted">恢复上下文 · 218 行 · 6 个流程步</p>
-        <p>让新会话或压缩后的 agent 先从仓库事实恢复，而不是依赖聊天记忆，避免重复旧路、覆盖用户改动或基于过期证据继续执行。</p>
-        <div class="meta">
-          <span class="tag">1 个 reference</span>
+          <span class="tag">2 个 reference</span>
           <span class="tag">6 条验收项</span>
         </div>
       </article>
@@ -254,13 +230,13 @@ pre {
   <section class="section panel">
     <h2>审阅建议</h2>
     <ul>
-      <li>先看主流程图，确认 skill 之间的转场是否符合日常项目节奏。</li>
+      <li>先看条件主线，确认 skill 之间的转场是否符合日常项目节奏。</li>
       <li>逐张打开 skill 页面，检查进入条件、禁用条件和验收闸门是否足够具体。</li>
       <li>发现语义不准时优先改对应 <code>SKILL.md</code>，再重新运行生成脚本。</li>
     </ul>
   </section>
 
-  <p class="source-note">生成命令：<code>node plugins/harness-workflow/scripts/generate-skill-flow-html.mjs</code></p>
+  <p class="source-note">生成命令：<code>node scripts/generate-skill-flow-html.mjs</code></p>
 </main>
 </body>
 </html>

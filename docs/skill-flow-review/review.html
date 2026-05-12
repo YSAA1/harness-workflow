@@ -136,31 +136,31 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>review</h1>
-  <p>当一段有意义的代码或文档改动已稳定、准备声明 ready/done/merge 前使用。典型触发语：review 一下、检查我的改动、commit 前看下、phase 完成了、spec 已实现、sanity check、有没有漏。通常在 verify 之前、diagnose 修复之后使用；WIP 未稳定时不要使用。</p>
+  <p>当一段有意义的代码或文档改动已稳定、准备声明 ready/done/merge 前使用。典型触发语：review 一下、检查我的改动、commit 前看下、phase 完成了、Spec 已实现、sanity check、有没有漏。通常在 verify 之前、diagnose 修复之后使用；WIP 未稳定时不要使用。</p>
   <div class="toolbar">
     <a class="button" href="../../skills/review/SKILL.md">打开 SKILL.md</a>
     <span class="button">证据评审</span>
-    <span class="button">244 行</span>
+    <span class="button">145 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>review 必须同时检查&quot;做超了&quot;和&quot;做欠了&quot;。输出必须落到 workflow state（默认 findings.md / progress.md），不能只留在聊天框。缺 fresh evidence 时，review 仍要完成结构性判断，并把 evidence gap 标成 Important 后路由到 verify。</p>
+    <p>review 必须同时检查&quot;做超了&quot;和&quot;做欠了&quot;。缺 fresh evidence 时，review 仍可完成结构判断，并把 evidence gap 标成 Important 后路由到 verify。</p>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>进入条件</h2>
-      <ul><li>implement 完成一个 slice、即将转下一阶段</li><li>diagnose 修复稳定、要回主流程</li><li>用户说「review 一下」「这样可以吗」「能不能合并」「commit 前检查」「phase 一完事了」「sanity check」</li><li>准备调用 verify 之前的最后一道结构性把关</li><li>多 agent 协作时上一个 agent 刚交付,本 agent 接手前</li></ul>
+      <ul><li>implement 完成一个 slice、即将转下一阶段。</li><li>diagnose 修复稳定，要回主流程。</li><li>用户说「review 一下」「这样可以吗」「能不能合并」「commit 前检查」「sanity check」。</li><li>准备调用 verify 之前的结构性把关。</li><li>多 agent 协作时上一个 agent 刚交付，本 agent 接手前。</li></ul>
     </div>
     <div class="panel">
       <h2>禁用条件</h2>
-      <ul><li>工作还在 WIP 中、active slice 未稳定 → 继续 implement</li><li>工作完全没有稳定到可审状态 → 继续 implement</li><li>用户其实在问&quot;行不行&quot;想要架构建议 → brainstorm</li><li>失败已经在发生 → diagnose</li></ul>
+      <ul><li>工作还在 WIP 中、active slice 未稳定：继续 implement。</li><li>工作完全没有稳定到可审状态：继续 implement。</li><li>用户要架构建议：转 brainstorm。</li><li>失败正在发生：转 diagnose。</li></ul>
     </div>
     <div class="panel">
       <h2>先读输入</h2>
-      <ul><li>scope / diff / 文件列表:git diff &lt;base&gt;...HEAD --stat + 实际改动文件</li><li>accepted spec 与 non-goals:从 workflow state 的 findings area 读；没有就先回 brainstorm</li><li>active slice 与成功标准:从 workflow state 的 execution contract 读（默认 task_plan.md）</li><li>fresh evidence:workflow state evidence log 最近 entry（默认 progress.md） 的 Commands / Checks 段；缺失时记录为 finding，不中止 review</li><li>风险面:findings.md 的 Risks / Open questions</li><li>与本次 slice 相关的源文件、测试、配置(确认改动&quot;对得上 spec&quot;)</li><li>README / AGENTS.md 的相关段(确认文档与代码同步)</li></ul>
+      <ul><li>scope / diff / 文件列表：git diff --stat 和实际改动文件。</li><li>accepted Spec、Executable Plan 或用户请求。</li><li>selected recovery surface：active slice、success criteria、evidence、risks。</li><li>与本次 slice 相关的源文件、测试、配置。</li><li>README / AGENTS.md 的相关段，确认文档与代码同步。</li></ul>
     </div>
   </section>
 
@@ -169,22 +169,22 @@ pre {
     <div class="flow">
       <div class="step">
         <div class="num">1</div>
-        <div><h3>第 1 步 — 重述 scope</h3><p>一句话回答:本次 review 的是哪个 active slice、改动了哪些文件、声称解决了什么。如果说不出来,先停下来读 task_plan.md 与 progress.md。</p></div>
+        <div><h3>第 1 步 — 重述 scope</h3><p>一句话回答本次 review 的 active slice、改动文件和完成声明。</p></div>
       </div><div class="step">
         <div class="num">2</div>
-        <div><h3>第 2 步 — 用四把尺逐项过</h3><p>对每一条问题给: - 状态(满足 / 不满足 / 不适用) - 证据(diff 行号、命令输出、文件路径) - 严重级(Critical / Important / Minor)</p></div>
+        <div><h3>第 2 步 — 用五把尺逐项过</h3><p>对每条问题给状态、证据和严重级。</p></div>
       </div><div class="step">
         <div class="num">3</div>
-        <div><h3>第 3 步 — 分级 findings</h3><p>按下面的分级判定严重性,不要凭感觉打分: | 级别 | 含义 | 处置 | | --- | --- | --- | | Critical | 正确性错误、安全漏洞、数据丢失、核心行为破坏、违反 accepted spec | 必须修复才允许声明完成 | | Important | 设计缺陷、健壮性缺口、关键测试缺失、文档严重失真 | 应该修;暂时不修必须写进 findings.md deferred | | Minor | 风格、可读性、非阻塞清理、注释优化 | 可选;若不修不需要登记 |</p></div>
+        <div><h3>第 3 步 — 分级 findings</h3><p>| 级别 | 含义 | 处置 | | --- | --- | --- | | Critical | 正确性错误、安全漏洞、数据丢失、核心行为破坏、违反 accepted Spec | 必须修复 | | Important | 设计缺陷、关键测试缺失、文档严重失真、scope creep | 应修或明确 deferred | | Minor | 风格、可读性、非阻塞清理 | 可选 |</p></div>
       </div><div class="step">
         <div class="num">4</div>
-        <div><h3>第 4 步 — 列 Open Questions / Residual Risks</h3><p>不是所有发现都能立刻判明。把不确定项明确列出,例如: - &quot;未验证此函数在并发下行为&quot; - &quot;tsconfig.json 的某项变化原因不明&quot; - &quot;E2E 在 Windows 上未跑过&quot; 让用户决定是阻塞 ready 还是放进 risks。</p></div>
+        <div><h3>第 4 步 — 列 Open Questions / Residual Risks</h3><p>把无法判断的项明确列出，不把不确定伪装成通过。</p></div>
       </div><div class="step">
         <div class="num">5</div>
-        <div><h3>第 5 步 — 给出 Assessment</h3><p>最后一段必须明确: - Pass:无 Critical;Important 已写进 deferred;允许进入 verify 或合并 - Conditional:有 Important 必须先修;给出修复 lane - Block:有 Critical;必须回 implement 或 diagnose 不要写&quot;看起来不错&quot;&quot;基本可以&quot;这种含糊话。含糊结论会把 premature completion 包装成通过。</p></div>
+        <div><h3>第 5 步 — 给出 Assessment</h3><p>结论只能是 Pass / Conditional / Block。</p></div>
       </div><div class="step">
         <div class="num">6</div>
-        <div><h3>第 6 步 — 同步 artifacts</h3><p>- blocking findings(Critical / Important)写进 findings.md - review 结果与下一步动作写进 progress.md - 必要时调整 task_plan.md 的 phase / next - 不写进 AGENTS.md(那是稳定规则,不是本次 review 结论)</p></div>
+        <div><h3>第 6 步 — 按需同步 artifacts</h3><p>blocking findings 和 residual risks 写入 selected recovery surface；不把一次性 review 结论写进 AGENTS.md。</p></div>
       </div>
     </div>
   </section>
@@ -192,23 +192,23 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text REVIEW: PASS | CONDITIONAL | BLOCK Scope: - Active slice: &lt;一句话&gt; - Files reviewed: &lt;list 或 git stat&gt; - Fresh evidence base: &lt;progress.md timestamp&gt; Findings: Critical: - &lt;一句话&gt; (file:line) — &lt;evidence&gt; Important: - &lt;一句话&gt; (file:line) — &lt;evidence&gt; Minor: - &lt;一句话&gt; Open Questions / Residual Risks: - ... Assessment: - Spec coverage: &lt;ok|partial|miss&gt; - Evidence sufficiency: &lt;ok|gap|missing&gt; - Docs sync: &lt;ok|drift&gt; - ...</pre>
+      <pre>``text REVIEW: PASS | CONDITIONAL | BLOCK Scope: - Active slice: &lt;一句话&gt; - Files reviewed: &lt;list 或 git stat&gt; - Fresh evidence base: &lt;command or missing&gt; Findings: Critical: - &lt;一句话&gt; (file:line) - &lt;evidence&gt; Important: - &lt;一句话&gt; (file:line) - &lt;evidence&gt; Minor: - &lt;一句话&gt; Open Questions / Residual Risks: - ... Assessment: - Spec coverage: &lt;ok|partial|miss&gt; - Evidence sufficiency: &lt;ok|gap|missing&gt; - Docs sync: &lt;ok|drift&gt; - Ent...</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
-      <ul><li>progress.md:append review entry,含 scope、findings 数量、assessment、next</li><li>findings.md:Critical / Important findings + Open Questions / Residual Risks</li><li>task_plan.md:仅在 phase / blocker / next 改变时更新</li><li>AGENTS.md:不动</li></ul>
+      <ul><li>selected recovery surface：Critical / Important findings、Open Questions、Residual Risks、review entry。</li><li>AGENTS.md：不动；稳定规则漂移交给 cleanup。</li></ul>
     </div>
   </section>
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>review 通过或仅有 evidence gap</td><td>verify</td></tr><tr><td>review 找出 critical/important findings</td><td>回 implement 修复(最严重的先)</td></tr><tr><td>review 发现 spec 漂移</td><td>brainstorm 或 plan</td></tr><tr><td>review 通过、准备暂停</td><td>save-session</td></tr><tr><td>review 全部 minor</td><td>直接进入 verify 或合并</td></tr></tbody></table>
+    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>review 通过或仅有 evidence gap</td><td>verify</td></tr><tr><td>review 找出 Critical/Important findings</td><td>implement</td></tr><tr><td>review 发现 Spec 漂移</td><td>brainstorm 或 plan</td></tr><tr><td>发现项目工作面缺口</td><td>harness-builder</td></tr><tr><td>文档/知识漂移需要整理</td><td>cleanup</td></tr></tbody></table>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] 至少检查了 spec / evidence / docs / entropy 四把尺</li><li>[ ] 每条 Critical / Important finding 有文件路径或命令级证据</li><li>[ ] Open Questions 与 Residual Risks 至少回答&quot;还有没有不确定的&quot;</li><li>[ ] Assessment 是 Pass / Conditional / Block 之一,不留含糊语</li><li>[ ] blocking findings 写入 findings.md</li><li>[ ] review entry 写入 progress.md(append-only)</li><li>[ ] 下一步 skill 与原因显式</li></ul>
+      <ul><li>[ ] 至少检查了 Spec / evidence / docs / entropy。</li><li>[ ] 每条 Critical / Important finding 有文件路径或命令级证据。</li><li>[ ] Open Questions 与 Residual Risks 明确。</li><li>[ ] Assessment 是 Pass / Conditional / Block 之一。</li><li>[ ] blocking findings 按需写入 selected recovery surface。</li><li>[ ] 下一步 skill 与原因显式。</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
