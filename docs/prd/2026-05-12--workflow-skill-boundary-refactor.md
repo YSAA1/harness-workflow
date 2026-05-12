@@ -1,138 +1,138 @@
-# PRD: Workflow Skill Boundary Refactor
+# PRD：Workflow Skill 边界重构
 
-## Problem Statement
+## 问题陈述
 
-Harness Workflow currently exposes too many workflow lanes and binds too much behavior to `state-contract`, `bootstrap`, and the three-file backend. The result is conceptual coupling: workflow skills claim to be backend-independent, but many still directly read or write `task_plan.md`, `progress.md`, and `findings.md`; `state-contract` exists as a separate skill even though recovery surface design belongs to the project harness; `bootstrap` is the canonical project harness construction skill but still uses an initialization-oriented name; `resume` and `save-session` duplicate recovery behavior that should be provided by `AGENTS.md`, living docs, and the selected recovery surface.
+当前 Harness Workflow 暴露了过多 workflow lane，并且把太多行为绑定到了 `state-contract`、`bootstrap` 和 three-file backend 上。结果是概念耦合：workflow skills 虽然宣称不依赖具体 backend，但很多 skill 仍然直接读取或写入 `task_plan.md`、`progress.md`、`findings.md`；`state-contract` 作为独立 skill 存在，但 recovery surface 的设计本应属于项目级 harness；`bootstrap` 实际承担项目 harness 构建职责，却仍使用偏初始化的名称；`resume` 和 `save-session` 重复了本应由 `AGENTS.md`、活文档和已选择 recovery surface 提供的恢复能力。
 
-The user needs this plugin to become a cleaner set of independent workflow skills. Each skill should focus on its own job, work without a mandatory global sequence, and use project recovery artifacts only when the current task actually requires durable state.
+用户需要这个插件成为一组更干净、更独立的 workflow skills。每个 skill 应专注自身职责，不依赖强制全局顺序，并且只在当前任务确实需要 durable state 时使用项目恢复工件。
 
-## Goals
+## 目标
 
-- Rename the canonical project harness construction skill from `bootstrap` to **Harness Builder**.
-- Remove `state-contract`, `resume`, and `save-session` as exposed skills.
-- Preserve the useful ideas from removed skills by migrating them into Harness Builder references, Cleanup references, and project documentation.
-- Make `brainstorm` produce a **Spec**, not workflow state.
-- Make `plan` produce an **Executable Plan**, not three files by default.
-- Make `cleanup` focus on **Knowledge Cleanup**: preventing stale docs, bloated `AGENTS.md`, inconsistent generated artifacts, and recovery surface drift.
-- Keep the three-file backend available as one possible workflow state backend, but stop treating it as the conceptual dependency of every skill.
-- Update plugin metadata, validation scripts, generated HTML, README, Method Contract, AGENTS.md, and relevant templates so they all describe the same model.
+- 将 canonical 项目 harness 构建 skill 从 `bootstrap` 改名为 **Harness Builder**。
+- 删除作为暴露 skill 的 `state-contract`、`resume`、`save-session`。
+- 保留被删除 skills 中有价值的思想，并迁移到 Harness Builder references、Cleanup references 和项目文档中。
+- 让 `brainstorm` 产出 **Spec**，而不是 workflow state。
+- 让 `plan` 产出 **Executable Plan**，而不是默认创建三文件。
+- 让 `cleanup` 聚焦 **Knowledge Cleanup**：防止文档过期、`AGENTS.md` 膨胀、生成物不一致和 recovery surface 漂移。
+- 保留 three-file backend 作为一种可选 workflow state backend，但不再把它视为所有 skill 的概念依赖。
+- 更新 plugin metadata、验证脚本、生成 HTML、README、Method Contract、AGENTS.md 和相关模板，使它们描述同一个模型。
 
-## Solution
+## 方案
 
-Refactor the plugin around five durable concepts already recorded in `CONTEXT.md` and ADR 0001:
+围绕 `CONTEXT.md` 和 ADR 0001 中已经记录的五个稳定概念重构插件：
 
-- **Harness Builder**: designs or repairs project-level harness and recovery surface.
-- **Skill Independence**: each workflow skill can run based on task conditions, not a fixed global sequence.
-- **Spec**: the output of `brainstorm`.
-- **Executable Plan**: the output of `plan`.
-- **Knowledge Cleanup**: the purpose of `cleanup`.
+- **Harness Builder**：设计或修复项目级 harness 和 recovery surface。
+- **Skill Independence**：每个 workflow skill 根据任务条件运行，而不是依赖固定全局顺序。
+- **Spec**：`brainstorm` 的产物。
+- **Executable Plan**：`plan` 的产物。
+- **Knowledge Cleanup**：`cleanup` 的目的。
 
-The implementation should remove old skill lanes instead of preserving them as legacy entries. Compatibility should be handled through trigger wording where appropriate, not by keeping old skill directories visible.
+实现时应移除旧 workflow lane，而不是把它们保留为 legacy 入口。兼容性通过 description 中的触发词处理，而不是继续暴露旧 skill 目录。
 
-## User Stories
+## 用户故事
 
-1. As a plugin user, I want `harness-builder` to be the visible project harness skill, so that the name matches its real responsibility.
-2. As a plugin user, I want `bootstrap` to remain only as a historical alias or trigger word, so that old wording still routes correctly without preserving the old concept.
-3. As a plugin user, I want `state-contract` removed as a skill, so that state backend selection is not a separate workflow lane.
-4. As a plugin user, I want recovery surface design to belong to Harness Builder, so that recovery is treated as project harness design.
-5. As a plugin user, I want `resume` removed as a skill, so that normal session recovery is driven by `AGENTS.md` and living project documents.
-6. As a plugin user, I want `save-session` removed as a skill, so that handoff hygiene is part of cleanup and the recovery policy instead of a separate lane.
-7. As a plugin user, I want `brainstorm` to produce an independent spec, so that it can work before any state backend exists.
-8. As a plugin user, I want `brainstorm` to avoid default writes to `findings.md` or `progress.md`, so that it remains portable across projects.
-9. As a plugin user, I want `plan` to produce an executable plan artifact, so that planning is not synonymous with three-file setup.
-10. As a plugin user, I want `plan` to write three-file state only when the selected recovery surface uses that backend.
-11. As a plugin user, I want `implement` to read only the context it needs, so that implementation is not blocked by missing three-file state when the task is otherwise clear.
-12. As a plugin user, I want `diagnose` to focus on reproduction, hypothesis, root cause, fix, and evidence, so that debugging does not depend on a specific state backend.
-13. As a plugin user, I want `review` to check correctness, scope, design risk, and missing tests, so that review is not confused with documentation cleanup.
-14. As a plugin user, I want `verify` to gather fresh evidence for a concrete claim, so that readiness is based on current commands or checks.
-15. As a plugin user, I want `cleanup` to reconcile docs with code and generated artifacts, so that project knowledge does not rot.
-16. As a future agent, I want `AGENTS.md` to stay thin and rule-focused, so that I can quickly understand project constraints without reading a changelog.
-17. As a future agent, I want README, docs, generated HTML, manifest prompts, and validation scripts to agree, so that I do not get contradictory workflow guidance.
-18. As a maintainer, I want deleted skill content migrated into focused references, so that useful recovery and backend policy guidance is not lost.
-19. As a maintainer, I want validation to fail when old exposed skill names reappear, so that the simplified model does not regress.
-20. As a maintainer, I want generated skill-flow HTML rebuilt from the new flow, so that review artifacts reflect the actual plugin shape.
-21. As a maintainer, I want a clean Git commit after the refactor, so that the structural migration can be reviewed and reverted as one unit.
+1. 作为插件用户，我希望 `harness-builder` 成为可见的项目 harness skill，这样名称能匹配它的真实职责。
+2. 作为插件用户，我希望 `bootstrap` 只作为历史别名或触发词保留，这样旧说法仍能正确路由，但不会保留旧概念。
+3. 作为插件用户，我希望移除 `state-contract` skill，这样 state backend 选择不会成为单独 workflow lane。
+4. 作为插件用户，我希望 recovery surface 设计归 Harness Builder 负责，这样恢复能力被视为项目 harness 设计的一部分。
+5. 作为插件用户，我希望移除 `resume` skill，这样普通会话恢复由 `AGENTS.md` 和活文档驱动。
+6. 作为插件用户，我希望移除 `save-session` skill，这样交接卫生属于 cleanup 和 recovery policy，而不是单独 lane。
+7. 作为插件用户，我希望 `brainstorm` 产出独立 spec，这样它能在任何 state backend 存在之前运行。
+8. 作为插件用户，我希望 `brainstorm` 不默认写入 `findings.md` 或 `progress.md`，这样它能跨项目复用。
+9. 作为插件用户，我希望 `plan` 产出 executable plan artifact，这样 planning 不等同于三文件初始化。
+10. 作为插件用户，我希望 `plan` 只在已选择的 recovery surface 使用 three-file backend 时写三文件。
+11. 作为插件用户，我希望 `implement` 只读取它需要的上下文，这样任务清楚时不会因为缺少三文件而阻塞实现。
+12. 作为插件用户，我希望 `diagnose` 聚焦复现、hypothesis、root cause、修复和证据，这样调试不依赖某个特定 state backend。
+13. 作为插件用户，我希望 `review` 检查正确性、范围、设计风险和缺失测试，这样 review 不会和文档清理混淆。
+14. 作为插件用户，我希望 `verify` 为一个具体 claim 收集 fresh evidence，这样 ready 判断基于当前命令或检查。
+15. 作为插件用户，我希望 `cleanup` 对齐 docs、代码和生成物，这样项目知识不会腐化。
+16. 作为未来 agent，我希望 `AGENTS.md` 保持薄入口和规则导向，这样我能快速理解项目约束，而不用读一份 changelog。
+17. 作为未来 agent，我希望 README、docs、生成 HTML、manifest prompts 和验证脚本保持一致，这样我不会收到互相矛盾的 workflow 指引。
+18. 作为维护者，我希望被删除 skill 的有效内容迁移到聚焦的 references 中，这样 recovery 和 backend policy 指导不会丢失。
+19. 作为维护者，我希望旧的暴露 skill 名重新出现时验证失败，这样简化后的模型不会回退。
+20. 作为维护者，我希望用新流程重建 skill-flow HTML，这样审阅工件能反映插件真实形态。
+21. 作为维护者，我希望重构完成后有一个干净的 Git commit，这样结构迁移可以作为一个整体被 review 或 revert。
 
-## Implementation Decisions
+## 实现决策
 
-- The exposed skill set should become: `harness-builder`, `brainstorm`, `plan`, `implement`, `diagnose`, `review`, `verify`, and `cleanup`.
-- `bootstrap` should be renamed to `harness-builder` at the skill identity level, not merely in prose.
-- `bootstrap` should remain in descriptions as an alias or trigger word only.
-- `state-contract`, `resume`, and `save-session` should be deleted as exposed skill directories.
-- Backend taxonomy from `state-contract` should migrate into Harness Builder references as recovery surface policy.
-- Useful resume and save-session checklist material should migrate into Harness Builder recovery policy and Cleanup knowledge cleanup policy.
-- `brainstorm` should remove the default Workflow State Contract section and replace it with a small persistence note: write a spec first; record summaries only if the current recovery surface asks for it.
-- `plan` should remove three-file identity language and define its output as an executable plan.
-- `plan` should support multiple storage targets: plan document, issue, feature-list entry, existing project system, or three-file backend.
-- `cleanup` should be rewritten around knowledge freshness, anti-rot, anti-bloat, and reader-specific documentation layers, using `neat-freak` as the reference model.
-- `review`, `verify`, `implement`, and `diagnose` should reference semantic inputs such as spec, executable plan, evidence log, recovery surface, and project docs rather than hard-coded three-file paths.
-- `scripts/check-plugin.mjs` should validate the new required skill set and new terminology.
-- `scripts/generate-skill-flow-html.mjs` should remove `state-contract`, `resume`, and `save-session` from the skill order and route map.
-- Generated HTML in `docs/skill-flow-review/` should be regenerated, not hand-edited.
-- `.codex-plugin/plugin.json` should describe Harness Builder and the simplified skill set.
-- `README.md`, `docs/harness-method-contract.md`, `AGENTS.md`, `CONTEXT.md`, and ADRs should use the same canonical terms.
+- 暴露的 skill 集合应变为：`harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`verify`、`cleanup`。
+- `bootstrap` 应在 skill identity 层面改名为 `harness-builder`，不能只改文案。
+- `bootstrap` 只应作为 description 中的别名或触发词保留。
+- `state-contract`、`resume`、`save-session` 应作为暴露 skill 目录删除。
+- `state-contract` 中的 backend taxonomy 应迁移到 Harness Builder references，作为 recovery surface policy。
+- `resume` 和 `save-session` 中有价值的 checklist 应迁移到 Harness Builder recovery policy 和 Cleanup knowledge cleanup policy。
+- `brainstorm` 应删除默认 Workflow State Contract 章节，替换为简短 persistence note：先写 spec；只有当前 recovery surface 要求时才记录摘要。
+- `plan` 应删除 three-file identity 语言，并将输出定义为 executable plan。
+- `plan` 应支持多种存储目标：plan document、issue、feature-list entry、既有项目系统或 three-file backend。
+- `cleanup` 应围绕知识保鲜、防腐化、防膨胀和不同读者层级重写，并以 `neat-freak` 为参考模型。
+- `review`、`verify`、`implement`、`diagnose` 应引用 spec、executable plan、evidence log、recovery surface、project docs 等语义输入，而不是硬编码三文件路径。
+- `scripts/check-plugin.mjs` 应验证新的 required skill set 和新术语。
+- `scripts/generate-skill-flow-html.mjs` 应从 skill 顺序和 route map 中移除 `state-contract`、`resume`、`save-session`。
+- `docs/skill-flow-review/` 中的生成 HTML 必须重新生成，不能手改。
+- `.codex-plugin/plugin.json` 应描述 Harness Builder 和简化后的 skill 集合。
+- `README.md`、`docs/harness-method-contract.md`、`AGENTS.md`、`CONTEXT.md` 和 ADRs 应使用同一套 canonical terms。
 
-## Module And File Change Plan
+## 模块和文件改动计划
 
 ### Plugin Manifest
 
-Update the plugin manifest so the default prompts no longer mention `state-contract`, `resume`, `save-session`, or `bootstrap` as canonical skills. The prompt should direct users toward Harness Builder for project harness and recovery surface work, Brainstorm for specs, Plan for executable plans, Verify for fresh evidence, and Cleanup for knowledge cleanup.
+更新 plugin manifest，使 default prompts 不再把 `state-contract`、`resume`、`save-session` 或 `bootstrap` 作为 canonical skills 提及。prompt 应引导用户：项目 harness 和 recovery surface 工作使用 Harness Builder；spec 使用 Brainstorm；executable plan 使用 Plan；fresh evidence 使用 Verify；knowledge cleanup 使用 Cleanup。
 
-### Skill Directory Structure
+### Skill 目录结构
 
-Rename the active `bootstrap` skill to `harness-builder`. Remove `state-contract`, `resume`, and `save-session` directories after migrating useful content. Do not keep legacy skill directories because visible legacy entries would preserve the old mental model.
+将 active `bootstrap` skill 重命名为 `harness-builder`。迁移有价值内容后删除 `state-contract`、`resume`、`save-session` 目录。不要保留 legacy skill 目录，因为可见 legacy 入口会继续保留旧心智模型。
 
 ### Harness Builder
 
-Harness Builder should own project-level harness responsibilities:
+Harness Builder 应拥有项目级 harness 职责：
 
-- project map and thin `AGENTS.md`
-- recovery surface selection and repair
+- project map 和薄 `AGENTS.md`
+- recovery surface 选择与修复
 - recovery policy
 - verification entry point
 - project-local skills
-- hooks, subagents, and MCP policy when justified
+- justified hooks、subagents 和 MCP policy
 - capability recommendations
 - anti-entropy guardrails
 
-It must not become a mandatory step before or after Brainstorm or Plan. It should be invoked when project-level workbench, recovery surface, verification entry, or capability setup is unclear.
+它不能变成 Brainstorm 或 Plan 前后的强制步骤。只有当 project-level workbench、recovery surface、verification entry 或 capability setup 不清楚时，才应调用它。
 
 ### Brainstorm
 
-Brainstorm should be rewritten around independent spec creation:
+Brainstorm 应围绕独立 spec 创建重写：
 
-- Inputs: user idea, existing docs, code, issues, README, context glossary, and relevant constraints.
-- Output: a spec document in a project-appropriate location.
-- No default writes to three-file state.
-- No default dependency on Harness Builder.
-- Route to Plan only after the spec is approved.
-- Route to Harness Builder only when project-level context or recovery surface gaps block good spec work.
+- 输入：用户想法、既有 docs、代码、issues、README、context glossary 和相关约束。
+- 输出：放在项目合适位置的 spec 文档。
+- 不默认写入 three-file state。
+- 不默认依赖 Harness Builder。
+- 只有 spec 获得批准后才路由到 Plan。
+- 只有 project-level context 或 recovery surface 缺口阻碍高质量 spec 工作时才路由到 Harness Builder。
 
 ### Plan
 
-Plan should become a write-plan style skill:
+Plan 应成为 write-plan 风格的 skill：
 
-- Input: approved spec or sufficiently clear user request.
-- Output: an executable plan.
-- Default output should not be three files.
-- It should write into the selected project planning surface: docs plan, issue, feature list, existing system, or three-file backend.
-- It should stop after producing the plan unless the user asks to continue.
-- It should route conditionally: Harness Builder if project workbench is unclear, Implement if ready, Diagnose if failures are already known.
+- 输入：已批准 spec 或足够明确的用户请求。
+- 输出：executable plan。
+- 默认输出不应是三文件。
+- 应写入已选择的项目 planning surface：docs plan、issue、feature list、existing system 或 three-file backend。
+- 除非用户要求继续，否则产出 plan 后应停止。
+- 应条件路由：project workbench 不清楚时到 Harness Builder；可以实现时到 Implement；已知失败存在时到 Diagnose。
 
 ### Implement
 
-Implement should focus on making scoped changes:
+Implement 应聚焦 scoped changes：
 
-- Read the current spec, executable plan, or user request.
-- Respect project recovery surface if present.
-- Do not require `task_plan.md`.
-- Record durable notes only when required by the selected recovery surface.
-- Route repeated failures to Diagnose.
-- Route stable work to Review and Verify.
+- 读取当前 spec、executable plan 或用户请求。
+- 如果存在 project recovery surface，则尊重它。
+- 不要求 `task_plan.md` 存在。
+- 只有 selected recovery surface 要求时才记录 durable notes。
+- 重复失败时路由到 Diagnose。
+- 稳定后路由到 Review 和 Verify。
 
 ### Diagnose
 
-Diagnose should focus on failure analysis:
+Diagnose 应聚焦 failure analysis：
 
 - reproduce
 - minimize
@@ -142,23 +142,23 @@ Diagnose should focus on failure analysis:
 - apply minimal fix
 - rerun fresh evidence
 
-It should record root cause and dead ends in the selected recovery surface if one exists, but should not require `findings.md`.
+如果 selected recovery surface 存在，应把 root cause 和 dead ends 记录进去，但不应要求 `findings.md`。
 
 ### Review
 
-Review should check:
+Review 应检查：
 
 - correctness
 - scope discipline
 - design risk
 - missing tests
-- mismatch with spec or executable plan
+- 与 spec 或 executable plan 的不一致
 
-It should not serve as the main documentation synchronization pass. Documentation drift can be a review finding, but Cleanup owns reconciliation.
+它不应作为主要文档同步流程。文档漂移可以成为 review finding，但 Cleanup 负责 reconciliation。
 
 ### Verify
 
-Verify should gather fresh evidence for a specific claim:
+Verify 应为特定 claim 收集 fresh evidence：
 
 - static checks
 - build
@@ -166,103 +166,103 @@ Verify should gather fresh evidence for a specific claim:
 - lint
 - unit tests
 - integration tests
-- smoke or E2E checks when relevant
-- documented capability gaps when evidence is insufficient
+- 相关时执行 smoke 或 E2E checks
+- evidence insufficient 时记录 capability gaps
 
-It should not depend on `progress.md`; it should use current commands and any available evidence source.
+它不应依赖 `progress.md`；应使用当前命令和任何可用 evidence source。
 
 ### Cleanup
 
-Cleanup should be refactored using the `neat-freak` model:
+Cleanup 应参考 `neat-freak` 模型重构：
 
-- start with size and bloat checks for `AGENTS.md`, README, docs, and recovery artifacts
-- enumerate project docs before deciding what to change
-- compare code, docs, generated artifacts, README, AGENTS, and recovery surface
-- delete or migrate historical narration from `AGENTS.md`
-- keep `AGENTS.md` as a thin rulebook
-- keep docs reader-facing and current
-- update generated artifacts only through generators
-- record unresolved doc drift as explicit follow-up
-- avoid behavior changes unless the user asked for cleanup to include them
+- 先检查 `AGENTS.md`、README、docs 和 recovery artifacts 的尺寸与膨胀
+- 修改前枚举项目 docs
+- 比较代码、docs、生成物、README、AGENTS 和 recovery surface
+- 从 `AGENTS.md` 删除或迁移历史叙事
+- 保持 `AGENTS.md` 是薄规则手册
+- 保持 docs 面向读者且处于最新状态
+- 生成物只能通过生成器更新
+- 将未解决的 doc drift 记录为明确 follow-up
+- 除非用户要求 cleanup 包含行为改动，否则避免行为变化
 
-Cleanup should absorb the useful handoff hygiene from `save-session`, but without becoming a separate pause/resume lane.
+Cleanup 应吸收 `save-session` 中有价值的 handoff hygiene，但不能变成单独 pause/resume lane。
 
 ### Method Contract
 
-Update the contract so the stable principles are not tied to removed skill names. In particular:
+更新 contract，使稳定原则不再绑定到被删除的 skill 名。具体要求：
 
-- C2 should refer to repository artifacts and recovery surface, not only workflow state.
-- C3 should continue to protect thin `AGENTS.md`.
-- C4 should refer to Harness Builder, not bootstrap.
-- C5 should refer to executable plans and scoped work.
-- C8 and C9 should make Knowledge Cleanup explicit.
-- C10 should preserve backend decoupling as a principle, not a `state-contract` skill.
+- C2 应引用 repository artifacts 和 recovery surface，而不只是 workflow state。
+- C3 应继续保护薄 `AGENTS.md`。
+- C4 应引用 Harness Builder，而不是 bootstrap。
+- C5 应引用 executable plans 和 scoped work。
+- C8 和 C9 应显式体现 Knowledge Cleanup。
+- C10 应保留 backend decoupling 作为原则，而不是 `state-contract` skill。
 
-### README And AGENTS.md
+### README 和 AGENTS.md
 
-Rewrite the public workflow map:
+重写公开 workflow map：
 
-- remove `state-contract`, `resume`, and `save-session`
-- introduce Harness Builder as the canonical project harness skill
-- describe Brainstorm, Plan, Implement, Diagnose, Review, Verify, and Cleanup with their independent responsibilities
-- document that three-file state is optional
-- document the default verification command
-- keep `AGENTS.md` concise and rule-focused
+- 移除 `state-contract`、`resume`、`save-session`
+- 引入 Harness Builder 作为 canonical 项目 harness skill
+- 用独立职责描述 Brainstorm、Plan、Implement、Diagnose、Review、Verify、Cleanup
+- 说明 three-file state 是可选项
+- 说明默认验证命令
+- 保持 `AGENTS.md` 简洁、规则导向
 
-### Validation Scripts
+### 验证脚本
 
-Update checks to enforce the new model:
+更新检查逻辑以强制新模型：
 
-- required skills list uses `harness-builder`
-- removed skills are absent
-- docs do not advertise `state-contract`, `resume`, or `save-session` as active skills
-- `bootstrap` is allowed only as alias/history, not canonical active skill
-- three-file templates may exist if still used as backend templates, but validation must not treat them as global dependency
-- generated HTML exists for active skills only
+- required skills list 使用 `harness-builder`
+- removed skills 必须不存在
+- docs 不得把 `state-contract`、`resume`、`save-session` 宣传为 active skills
+- `bootstrap` 只允许作为 alias/history 出现，不能作为 canonical active skill
+- three-file templates 如果仍作为 backend templates 使用可以保留，但验证不能把它们当成全局依赖
+- 只为 active skills 生成 HTML
 
 ### Skill Flow HTML
 
-Regenerate the HTML review pages from the new skill graph. The primary view should show conditional routes, not a mandatory linear sequence.
+基于新的 skill graph 重新生成 HTML 审阅页面。主视图应展示条件路由，而不是强制线性流程。
 
-## Testing Decisions
+## 测试决策
 
-- Run `node scripts/check-plugin.mjs` after structural changes.
-- Run `node scripts/generate-skill-flow-html.mjs` whenever skill names, route maps, or `SKILL.md` structures change.
-- Run `node scripts/check-plugin.mjs` again after regeneration.
-- Verify removed skill names do not appear as active required skills in plugin manifest, check script, generated flow, README, Method Contract, or AGENTS.md.
-- Verify old terms may appear only as historical aliases, ADR context, or legacy archive references.
-- Verify every active `SKILL.md` has valid frontmatter and matching skill name.
-- Verify generated HTML pages exist for active skills and do not exist for deleted skills unless intentionally retained as historical docs.
-- Good tests for this project should check external plugin behavior and documentation consistency rather than internal wording details.
-- The check script should be the main regression test for plugin shape.
+- 结构性改动后运行 `node scripts/check-plugin.mjs`。
+- skill 名称、route map 或 `SKILL.md` 结构变化时运行 `node scripts/generate-skill-flow-html.mjs`。
+- 重新生成后再次运行 `node scripts/check-plugin.mjs`。
+- 验证 removed skill names 不再作为 active required skills 出现在 plugin manifest、check script、generated flow、README、Method Contract 或 AGENTS.md 中。
+- 验证旧术语只作为 historical aliases、ADR context 或 legacy archive references 出现。
+- 验证每个 active `SKILL.md` 都有有效 frontmatter，且 skill name 匹配。
+- 验证 active skills 有对应生成 HTML 页面；已删除 skills 没有页面，除非被明确保留为历史文档。
+- 本项目的好测试应检查插件外部行为和文档一致性，而不是内部措辞细节。
+- check script 应作为 plugin shape 的主要回归测试。
 
-## Out of Scope
+## 不在范围内
 
-- Changing user-global Codex configuration.
-- Publishing or installing the plugin into the local Codex marketplace.
-- Adding hooks, MCP config, or subagents as part of this refactor.
-- Rewriting the legacy bootstrap archive beyond updating references needed to avoid active-skill confusion.
-- Implementing a full issue tracker workflow.
-- Changing the actual project memory system outside this repository.
-- Removing the three-file backend templates entirely.
+- 修改用户级 Codex 配置。
+- 发布或安装插件到本地 Codex marketplace。
+- 在本次重构中新增 hooks、MCP config 或 subagents。
+- 大幅重写 legacy bootstrap archive；只更新避免 active-skill 混淆所需的引用。
+- 实现完整 issue tracker workflow。
+- 修改本仓库外的实际项目 memory system。
+- 完全删除 three-file backend templates。
 
-## Acceptance Criteria
+## 验收标准
 
-- `harness-builder` is the canonical active skill name.
-- `bootstrap` is no longer an active skill name, except as historical alias wording.
-- `state-contract`, `resume`, and `save-session` are no longer exposed as skills.
-- Useful state backend and recovery guidance has been migrated into Harness Builder and Cleanup references.
-- Brainstorm documentation describes spec output and does not default to workflow state writes.
-- Plan documentation describes executable plan output and does not default to three-file creation.
-- Cleanup documentation centers on knowledge cleanup and documentation freshness.
-- Review, Verify, Implement, and Diagnose use recovery-surface-aware wording instead of hard-coded three-file dependency.
-- README, Method Contract, AGENTS.md, plugin manifest, validation script, flow generator, and generated HTML agree.
-- `node scripts/generate-skill-flow-html.mjs` succeeds.
-- `node scripts/check-plugin.mjs` succeeds.
-- A Chinese Git commit records the completed refactor.
+- `harness-builder` 是 canonical active skill name。
+- `bootstrap` 不再是 active skill name，只能作为历史别名措辞出现。
+- `state-contract`、`resume`、`save-session` 不再作为 skills 暴露。
+- 有用的 state backend 和 recovery guidance 已迁移到 Harness Builder 和 Cleanup references。
+- Brainstorm 文档描述 spec output，且不默认写 workflow state。
+- Plan 文档描述 executable plan output，且不默认创建三文件。
+- Cleanup 文档以 knowledge cleanup 和 documentation freshness 为中心。
+- Review、Verify、Implement、Diagnose 使用 recovery-surface-aware wording，而不是硬编码 three-file dependency。
+- README、Method Contract、AGENTS.md、plugin manifest、validation script、flow generator 和 generated HTML 保持一致。
+- `node scripts/generate-skill-flow-html.mjs` 成功。
+- `node scripts/check-plugin.mjs` 成功。
+- 完成重构后用中文 Git commit 记录。
 
-## Further Notes
+## 补充说明
 
-This PRD intentionally removes exposed workflow lanes rather than preserving compatibility directories. The migration should reduce conceptual load even if it requires a larger first refactor.
+本 PRD 有意移除暴露的 workflow lane，而不是保留兼容目录。即使这会让第一轮重构范围更大，迁移后的概念负担也会更低。
 
-The issue tracker was not configured in this repository during PRD creation, so this PRD is stored as a local project document under `docs/prd/`.
+PRD 创建时本仓库未配置 issue tracker，因此本文档作为本地项目文档存放在 `docs/prd/` 下。
