@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 
 const cwd = process.cwd();
 const root = fs.existsSync(path.join(cwd, ".codex-plugin", "plugin.json"))
@@ -11,6 +12,7 @@ const fail = (message) => {
   process.exitCode = 1;
 };
 const pass = (message) => console.log(`PASS: ${message}`);
+const info = (message) => console.log(`INFO: ${message}`);
 const exists = (relativePath) => fs.existsSync(path.join(root, relativePath));
 const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "utf8");
 const skillPath = (skill) => `skills/${skill}/SKILL.md`;
@@ -24,6 +26,17 @@ try {
   const manifest = JSON.parse(read(".codex-plugin/plugin.json"));
   if (manifest.name !== "harness-workflow") fail("manifest name must be harness-workflow");
   if (manifest.skills !== "./skills/") fail("manifest skills path must be ./skills/");
+  const capabilities = manifest.interface?.capabilities ?? [];
+  const expectedCapabilities = ["Read", "Write"];
+  if (JSON.stringify(capabilities) !== JSON.stringify(expectedCapabilities)) {
+    fail("manifest capabilities must be exactly Read and Write");
+  }
+  const manifestText = JSON.stringify(manifest);
+  for (const token of ["bootstrap", "state-contract", "resume", "save-session"]) {
+    if (manifestText.includes(token)) {
+      fail(`manifest must not expose removed active skill: ${token}`);
+    }
+  }
   pass("manifest parses and points at skills");
 } catch (error) {
   fail(`manifest JSON is invalid: ${error.message}`);
@@ -33,6 +46,8 @@ if (exists(".mcp.json")) fail("plugin must not include default MCP config");
 else pass("no default MCP config");
 if (exists("hooks/hooks.json")) fail("plugin must not include default hooks");
 else pass("no default hooks");
+if (exists(".codex/config.toml")) fail("plugin must not include user or project Codex config");
+else pass("no default Codex config");
 
 const activeSkills = [
   "harness-builder",
@@ -64,6 +79,51 @@ for (const skill of activeSkills) {
   if (!/description:\s*/.test(body)) fail(`${skill} missing description`);
 }
 if (!process.exitCode) pass("skill frontmatter is valid");
+
+const installDocPath = "docs/install/codex.md";
+if (!exists(installDocPath)) {
+  fail("missing Codex install documentation");
+} else {
+  const installDoc = read(installDocPath);
+  const normalizedInstallDoc = installDoc.toLowerCase();
+  const requiredDocTokens = [
+    "Codex plugin runtime",
+    "codex plugin marketplace add",
+    "GitHub",
+    "local development",
+    "harness-workflow",
+    "harness-builder",
+    "brainstorm",
+    "plan",
+    "implement",
+    "diagnose",
+    "review",
+    "verify",
+    "cleanup",
+    "recognition",
+    "update",
+    "uninstall",
+    "node scripts/check-plugin.mjs",
+    "plugin/list",
+    "skills/list",
+    "PowerShell",
+  ];
+  for (const token of requiredDocTokens) {
+    if (!normalizedInstallDoc.includes(token.toLowerCase())) fail(`Codex install doc missing token: ${token}`);
+  }
+  pass("Codex install documentation covers install, recognition, update, and verification");
+}
+
+const readme = read("README.md");
+for (const token of [
+  "Codex is the native plugin target",
+  "docs/install/codex.md",
+  "codex plugin marketplace add",
+  "node scripts/check-plugin.mjs",
+]) {
+  if (!readme.includes(token)) fail(`README missing Codex install entry token: ${token}`);
+}
+if (!process.exitCode) pass("README exposes the Codex install entry");
 
 const templateFiles = [
   "skills/plan/templates/task_plan.md",
@@ -143,3 +203,25 @@ const flowReviewScript = "scripts/generate-skill-flow-html.mjs";
 if (!exists(flowReviewScript)) fail("skill flow HTML generator is missing");
 
 if (!process.exitCode) pass("contract coverage checks passed");
+
+const runCodex = (args) => {
+  if (process.platform === "win32") {
+    return spawnSync(process.env.ComSpec ?? "cmd.exe", ["/d", "/s", "/c", `codex.cmd ${args.join(" ")}`], {
+      encoding: "utf8",
+    });
+  }
+  return spawnSync("codex", args, { encoding: "utf8" });
+};
+
+const codexVersion = runCodex(["--version"]);
+if (codexVersion.status === 0) {
+  info(`local Codex CLI detected: ${codexVersion.stdout.trim()}`);
+  const marketplaceHelp = runCodex(["plugin", "marketplace", "add", "--help"]);
+  if (marketplaceHelp.status === 0 && marketplaceHelp.stdout.includes("<SOURCE>")) {
+    info("live install command surface available: codex plugin marketplace add <SOURCE>");
+  } else {
+    info("Codex CLI detected, but marketplace add help was not available; use docs/install/codex.md manual recognition steps");
+  }
+} else {
+  info("Codex CLI not detected in this shell; use docs/install/codex.md manual recognition steps");
+}

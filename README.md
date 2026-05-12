@@ -51,6 +51,17 @@ Harness Builder 先判断当前任务需要什么能力，再做 discovery：
 - 只有当能力对验证、可观测性、自动化或领域能力明显有价值时，才进入 `Required` 或 `Recommended`。
 - 不确定或只是可能有用的能力记录为 `Deferred`，不安装。
 
+## Codex Install
+
+Codex is the native plugin target. Quick install from the published GitHub source:
+
+```bash
+codex plugin marketplace add <owner>/<repo>
+node scripts/check-plugin.mjs
+```
+
+安装后确认插件名为 `harness-workflow`，并能识别 8 个 active skills。完整安装、识别、更新和卸载说明见 [docs/install/codex.md](docs/install/codex.md)。
+
 ## Method Contract
 
 | Contract | Meaning | Primary skills |
