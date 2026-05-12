@@ -12,6 +12,10 @@ _Avoid_: bootstrap as the canonical name; use bootstrap only as a historical ali
 The design rule that each workflow skill can run for its own activity without requiring a fixed global sequence or a particular state backend.
 _Avoid_: making Harness Builder, planning, or three-file state a universal prerequisite.
 
+**Capability Discovery**:
+The Harness Builder activity that searches for task-relevant skills, MCP servers, hooks, or external agent capabilities before recommending project-level installation.
+_Avoid_: treating the current user's installed skills as the full capability universe, or installing optional capabilities without clear value.
+
 **Recovery Surface**:
 The durable project-local artifacts that let a future agent resume work without relying on chat history.
 _Avoid_: three files as a synonym, because three-file state is only one possible implementation.
@@ -56,6 +60,7 @@ _Avoid_: treating it as the default dependency of every skill.
 
 - A **Harness Builder** selects or repairs the **Recovery Surface** for a project.
 - A **Harness Builder** defines the **Recovery Policy** for a project.
+- A **Harness Builder** performs **Capability Discovery** with `$find-skills` and targeted web research when the current task may benefit from reusable skills, MCP servers, hooks, or agent tooling.
 - A **Recovery Surface** may use a **Three-File Backend**, `.harness/*`, an issue tracker, a feature list, or an existing project status system.
 - A **Workflow Skill** reads and writes through the **Workflow State Backend** only when its own activity requires durable state.
 - A `brainstorm` workflow produces a **Spec** and does not default to writing workflow state.
@@ -72,6 +77,9 @@ _Avoid_: treating it as the default dependency of every skill.
 
 > **Dev:** "Should every new task run **Harness Builder** before `plan`?"
 > **Domain expert:** "No. Use **Harness Builder** when the project workbench or **Recovery Surface** is unclear. If the task already has enough context, `brainstorm`, `plan`, or another **Workflow Skill** can run independently."
+
+> **Dev:** "Should Harness Builder only inspect already installed skills?"
+> **Domain expert:** "No. During **Capability Discovery**, it should use `$find-skills` for strongly relevant reusable skills and targeted web search for useful MCP or hook options, then recommend installation only when the value is clear."
 
 > **Dev:** "Does `plan` always create `task_plan.md`, `progress.md`, and `findings.md`?"
 > **Domain expert:** "No. `plan` creates an **Executable Plan**. It writes the **Three-File Backend** only when the project has selected that backend."

@@ -14,6 +14,7 @@
 - 让 `brainstorm` 产出 **Spec**，而不是 workflow state。
 - 让 `plan` 产出 **Executable Plan**，而不是默认创建三文件。
 - 让 `cleanup` 聚焦 **Knowledge Cleanup**：防止文档过期、`AGENTS.md` 膨胀、生成物不一致和 recovery surface 漂移。
+- 让 Harness Builder 的能力发现从“盘点已安装 skills”升级为 **Capability Discovery**：通过 `$find-skills` 搜索强相关可复用 skills，并通过 targeted web search 查找对本次任务有价值的 MCP 或 hooks。
 - 保留 three-file backend 作为一种可选 workflow state backend，但不再把它视为所有 skill 的概念依赖。
 - 更新 plugin metadata、验证脚本、生成 HTML、README、Method Contract、AGENTS.md 和相关模板，使它们描述同一个模型。
 
@@ -26,6 +27,7 @@
 - **Spec**：`brainstorm` 的产物。
 - **Executable Plan**：`plan` 的产物。
 - **Knowledge Cleanup**：`cleanup` 的目的。
+- **Capability Discovery**：Harness Builder 在任务需要时搜索可复用 skills、MCP、hooks 和外部 agent 能力的活动。
 
 实现时应移除旧 workflow lane，而不是把它们保留为 legacy 入口。兼容性通过 description 中的触发词处理，而不是继续暴露旧 skill 目录。
 
@@ -52,6 +54,9 @@
 19. 作为维护者，我希望旧的暴露 skill 名重新出现时验证失败，这样简化后的模型不会回退。
 20. 作为维护者，我希望用新流程重建 skill-flow HTML，这样审阅工件能反映插件真实形态。
 21. 作为维护者，我希望重构完成后有一个干净的 Git commit，这样结构迁移可以作为一个整体被 review 或 revert。
+22. 作为插件用户，我希望 Harness Builder 使用 `$find-skills` 搜索与本次任务强相关的 skills，而不是只盘点当前用户已经安装的 skills。
+23. 作为插件用户，我希望 Harness Builder 用 targeted web search 查找与本次任务强相关的 MCP 或 hooks，这样项目 harness 能获得真正有价值的能力补充。
+24. 作为插件用户，我希望 skills、MCP 和 hooks 只有在明显有用时才被推荐或安装，这样项目不会因为随意装能力而增加维护成本和风险。
 
 ## 实现决策
 
@@ -65,6 +70,9 @@
 - `plan` 应删除 three-file identity 语言，并将输出定义为 executable plan。
 - `plan` 应支持多种存储目标：plan document、issue、feature-list entry、既有项目系统或 three-file backend。
 - `cleanup` 应围绕知识保鲜、防腐化、防膨胀和不同读者层级重写，并以 `neat-freak` 为参考模型。
+- Harness Builder 的能力发现应调用 `$find-skills` 搜索强相关可复用 skills，并用 targeted web search 查找强相关 MCP 或 hooks。
+- Harness Builder 不应把“当前用户已安装 skills”当成能力发现的边界；已安装内容只能作为可用性信息，不是搜索范围上限。
+- Harness Builder 对 skills、MCP、hooks 的安装应保持克制：只有当它们对当前任务的验证、可观测性、自动化或领域能力明显有价值时，才进入 required 或 recommended。
 - `review`、`verify`、`implement`、`diagnose` 应引用 spec、executable plan、evidence log、recovery surface、project docs 等语义输入，而不是硬编码三文件路径。
 - `scripts/check-plugin.mjs` 应验证新的 required skill set 和新术语。
 - `scripts/generate-skill-flow-html.mjs` 应从 skill 顺序和 route map 中移除 `state-contract`、`resume`、`save-session`。
@@ -90,12 +98,23 @@ Harness Builder 应拥有项目级 harness 职责：
 - recovery surface 选择与修复
 - recovery policy
 - verification entry point
-- project-local skills
+- Capability Discovery：通过 `$find-skills` 搜索强相关 skills，通过 targeted web search 搜索强相关 MCP 或 hooks
+- project-local skills 的选择、复用或安装建议
 - justified hooks、subagents 和 MCP policy
 - capability recommendations
 - anti-entropy guardrails
 
 它不能变成 Brainstorm 或 Plan 前后的强制步骤。只有当 project-level workbench、recovery surface、verification entry 或 capability setup 不清楚时，才应调用它。
+
+能力发现要求：
+
+- 第一步先根据当前任务判断需要什么能力，而不是先枚举本机已安装 skills。
+- 对 skill 能力，调用 `$find-skills` 搜索开放 skill 生态中与当前任务强相关的选项。
+- 对 MCP、hooks 或外部 agent 能力，使用 targeted web search 查找当前任务相关的高价值方案、官方文档或成熟实现。
+- 安装或写入项目配置前必须评估 value、enablement、risk/cost、fallback。
+- required capability 只用于当前任务不可缺少的验证、可观测性、自动化或领域能力。
+- recommended capability 只用于明显能降低风险或提高效率的能力。
+- 不要因为“可能有用”就安装 skill、MCP 或 hook；不确定时记录为 deferred recommendation。
 
 ### Brainstorm
 
@@ -259,6 +278,8 @@ Cleanup 应吸收 `save-session` 中有价值的 handoff hygiene，但不能变�
 - README、Method Contract、AGENTS.md、plugin manifest、validation script、flow generator 和 generated HTML 保持一致。
 - `node scripts/generate-skill-flow-html.mjs` 成功。
 - `node scripts/check-plugin.mjs` 成功。
+- Harness Builder 文档明确要求通过 `$find-skills` 和 targeted web search 进行任务相关 Capability Discovery。
+- Harness Builder 文档明确要求只有高价值 skills、MCP 或 hooks 才能被推荐或安装。
 - 完成重构后用中文 Git commit 记录。
 
 ## 补充说明
