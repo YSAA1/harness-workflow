@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cleanup - Harness Workflow Skill 流程审阅</title>
+<style>
+:root {
+  --bg: #f7f5ef;
+  --ink: #1f2933;
+  --muted: #667085;
+  --line: #d7d1c3;
+  --panel: #ffffff;
+  --accent: #0f766e;
+  --accent-2: #b45309;
+  --accent-3: #334155;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+header {
+  background: #102a2a;
+  color: #fff;
+  padding: 28px 36px 30px;
+}
+header p { max-width: 920px; color: #dbe7e5; margin: 8px 0 0; }
+main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 48px; }
+.toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.35);
+  color: #fff;
+  border-radius: 6px;
+}
+.section { margin: 26px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 0 rgba(31,41,51,.04);
+}
+.panel h2, .panel h3 { margin-top: 0; }
+.muted { color: var(--muted); }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 1px 7px;
+  margin-left: 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--accent-3);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.skill-card h3 { margin-bottom: 4px; }
+.meta { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+.flow { display: grid; gap: 10px; }
+.step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.num {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+}
+.step h3 { margin: 2px 0 3px; font-size: 16px; }
+.step p { margin: 0; color: var(--muted); }
+.route {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.route-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0 14px;
+}
+.route-label {
+  min-width: 112px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.route span {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 9px;
+}
+.arrow { color: var(--accent-2); font-weight: 700; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { background: #edf4f2; }
+ul { padding-left: 20px; }
+code { background: #eef2f0; padding: 1px 4px; border-radius: 4px; }
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #f8faf9;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px;
+}
+.source-note { font-size: 13px; color: var(--muted); }
+@media (max-width: 720px) {
+  header { padding: 22px 20px; }
+  main { padding: 20px 16px 36px; }
+  .step { grid-template-columns: 1fr; }
+  .num { width: 26px; height: 26px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <p><a class="button" href="index.html">返回总览</a></p>
+  <h1>cleanup</h1>
+  <p>当 tracked batch 准备完成、阻塞、放弃或做低风险收尾清理，需要 clean-state closure、真实工件和防文档腐烂时使用。典型触发语：收尾、整理一下、finish this phase、make state clean。普通暂停或交接直接用 save-session。验证已跑完后，用它防止 artifact drift 和 leftover noise。</p>
+  <div class="toolbar">
+    <a class="button" href="../../skills/cleanup/SKILL.md">打开 SKILL.md</a>
+    <span class="button">干净收尾</span>
+    <span class="button">226 行</span>
+  </div>
+</header>
+<main>
+  <section class="section panel">
+    <h2>核心思想</h2>
+    <p>把一个 batch 诚实地关闭、阻塞、放弃或重新打开，同时清掉低风险残留并确保 workflow state、docs 和 git state 不互相误导。普通暂停和交接由 save-session 负责。</p>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>进入条件</h2>
+      <ul><li>verify 已通过，slice 可以关闭。</li><li>A failed attempt should be abandoned without leaving misleading state.</li><li>Review found only low-risk entropy or stale documentation.</li><li>用户说「收尾」「整理」「把状态弄干净」。</li><li>Current artifacts no longer truthfully describe code, commands, evidence, or blockers.</li></ul>
+    </div>
+    <div class="panel">
+      <h2>禁用条件</h2>
+      <ul><li>Verification has not run and bootstrap is unknown: use verify.</li><li>There is an unexplained failing command: use diagnose.</li><li>Cleanup would require behavior changes: make a new active slice in plan.</li><li>The user asked for implementation, not closure.</li></ul>
+    </div>
+    <div class="panel">
+      <h2>先读输入</h2>
+      <ul><li>workflow state execution contract: phase, blocker, next action, success criteria（默认 task_plan.md）。</li><li>workflow state evidence log: latest commands and actual outcomes（默认 progress.md）。</li><li>workflow state findings area: accepted spec, residual risks, deferred cleanup（默认 findings.md）。</li><li>git status --short and git diff --stat.</li><li>README / docs / AGENTS.md sections touched by this batch.</li><li>Generated files, temp files, logs, screenshots, caches, local reports created during the work.</li></ul>
+    </div>
+  </section>
+
+  <section class="section panel">
+    <h2>执行流程</h2>
+    <div class="flow">
+      <div class="step">
+        <div class="num">1</div>
+        <div><h3>第 1 步 — Verify Closure Preconditions</h3><p>Answer: - What evidence proves the current state? - What remains unverified? - What files changed? - What cleanup is safe? If no fresh evidence exists, route to verify.</p></div>
+      </div><div class="step">
+        <div class="num">2</div>
+        <div><h3>第 2 步 — Pick Closure State</h3><p>Choose one state from the table. Update task_plan.md only according to that state: - complete: mark current phase complete and set next. - blocked: mark blocker and required external action. - abandoned: mark attempt abandoned and record reason. - reopen: lea...</p></div>
+      </div><div class="step">
+        <div class="num">3</div>
+        <div><h3>第 3 步 — Remove Low-Risk Residue</h3><p>List candidate cleanup items first. Remove only those that are clearly low risk and created by this task.</p></div>
+      </div><div class="step">
+        <div class="num">4</div>
+        <div><h3>第 4 步 — Sync Artifacts</h3><p>- progress.md: append cleanup entry with closure state, files touched, commands, remaining risk. - findings.md: record residual risk, deferred cleanup, capability gaps, abandoned paths. - task_plan.md: reflect phase and next action.</p></div>
+      </div><div class="step">
+        <div class="num">5</div>
+        <div><h3>第 5 步 — Final Git State Summary</h3><p>Report: - tracked changed files relevant to this task - unrelated dirty files left alone - untracked files intentionally kept - untracked files removed or deferred</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>输出形态</h2>
+      <pre>``text CLEANUP: complete|blocked|abandoned|reopen Evidence: - &lt;command -&gt; result&gt; Artifact updates: - task_plan.md: ... - progress.md: ... - findings.md: ... Entropy cleanup: - removed: ... - deferred: ... Docs freshness: - README: ok|updated|stale - AGENTS.md: ok|updated|stale - verification path: ok|stale|unknown Git state: - related changes: - unrelated changes left alone: Next: - &lt;done | save-session | implement...</pre>
+    </div>
+    <div class="panel">
+      <h2>工件更新</h2>
+      <ul><li>progress.md: append closure entry.</li><li>findings.md: residual risk and deferred cleanup.</li><li>task_plan.md: phase, blocker, next.</li><li>AGENTS.md: only if a stable project rule or recovery pointer changed; otherwise do not touch.</li></ul>
+    </div>
+  </section>
+
+  <section class="section panel">
+    <h2>路由规则</h2>
+    <p class="muted">该 skill 没有显式路由表；以执行流程的下一步为准。</p>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>验收闸门</h2>
+      <ul><li>[ ] Closure state is exactly one of complete, blocked, abandoned, reopen.</li><li>[ ] Fresh evidence is recorded or lack of evidence routes away from cleanup.</li><li>[ ] Low-risk cleanup is separated from deferred high-risk cleanup.</li><li>[ ] README/docs/AGENTS.md freshness is checked when relevant.</li><li>[ ] task_plan.md, progress.md, and findings.md tell the same truth.</li><li>[ ] Unrelated dirty files are preserved.</li></ul>
+    </div>
+    <div class="panel">
+      <h2>Progressive Disclosure</h2>
+      <ul><li><a href="../../skills/cleanup/references/entropy-checklist.md">熵增清理清单</a><span class="tag">存在</span></li></ul>
+    </div>
+  </section>
+
+  <p class="source-note">本页由 <code>scripts/generate-skill-flow-html.mjs</code> 从 <code>skills/cleanup/SKILL.md</code> 自动生成。</p>
+</main>
+</body>
+</html>

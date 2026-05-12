@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>save-session - Harness Workflow Skill 流程审阅</title>
+<style>
+:root {
+  --bg: #f7f5ef;
+  --ink: #1f2933;
+  --muted: #667085;
+  --line: #d7d1c3;
+  --panel: #ffffff;
+  --accent: #0f766e;
+  --accent-2: #b45309;
+  --accent-3: #334155;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+header {
+  background: #102a2a;
+  color: #fff;
+  padding: 28px 36px 30px;
+}
+header p { max-width: 920px; color: #dbe7e5; margin: 8px 0 0; }
+main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 48px; }
+.toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.35);
+  color: #fff;
+  border-radius: 6px;
+}
+.section { margin: 26px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 0 rgba(31,41,51,.04);
+}
+.panel h2, .panel h3 { margin-top: 0; }
+.muted { color: var(--muted); }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 1px 7px;
+  margin-left: 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--accent-3);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.skill-card h3 { margin-bottom: 4px; }
+.meta { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+.flow { display: grid; gap: 10px; }
+.step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.num {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+}
+.step h3 { margin: 2px 0 3px; font-size: 16px; }
+.step p { margin: 0; color: var(--muted); }
+.route {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.route-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0 14px;
+}
+.route-label {
+  min-width: 112px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.route span {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 9px;
+}
+.arrow { color: var(--accent-2); font-weight: 700; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { background: #edf4f2; }
+ul { padding-left: 20px; }
+code { background: #eef2f0; padding: 1px 4px; border-radius: 4px; }
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #f8faf9;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px;
+}
+.source-note { font-size: 13px; color: var(--muted); }
+@media (max-width: 720px) {
+  header { padding: 22px 20px; }
+  main { padding: 20px 16px 36px; }
+  .step { grid-template-columns: 1fr; }
+  .num { width: 26px; height: 26px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <p><a class="button" href="index.html">返回总览</a></p>
+  <h1>save-session</h1>
+  <p>当 tracked work 要暂停、交接、压缩前保存现场，且当前 workflow state backend 必须成为真实恢复面时使用。典型触发语：保存现场、先暂停、下次继续、handoff、context compact soon、保存 session。不要创建第二套 handoff；当前 workflow state backend 就是恢复来源，默认是三文件。</p>
+  <div class="toolbar">
+    <a class="button" href="../../skills/save-session/SKILL.md">打开 SKILL.md</a>
+    <span class="button">暂停交接</span>
+    <span class="button">229 行</span>
+  </div>
+</header>
+<main>
+  <section class="section panel">
+    <h2>核心思想</h2>
+    <p>在暂停或交接前把当前状态写成可恢复文件事实，让下一次会话能直接知道目标、进度、证据、风险、失败和第一步动作。</p>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>进入条件</h2>
+      <ul><li>用户说「先停」「下次继续」「保存一下」「handoff」。</li><li>Context compaction is likely and current state is non-trivial.</li><li>You are about to leave a long-running task mid-slice.</li><li>Verification failed and the next session needs exact failure context.</li><li>A review or cleanup produced residual risks that must persist.</li><li>Another agent will pick up the work.</li></ul>
+    </div>
+    <div class="panel">
+      <h2>禁用条件</h2>
+      <ul><li>Work is complete and no future continuation is expected: use cleanup final state.</li><li>The active slice is unclear: use resume or plan first.</li><li>There is no tracked workflow and the task is trivial.</li><li>You want to put temporary notes in AGENTS.md; do not do that.</li></ul>
+    </div>
+    <div class="panel">
+      <h2>先读输入</h2>
+      <ul><li>task_plan.md</li><li>latest progress.md entries</li><li>findings.md</li><li>git status --short</li><li>command outputs or logs from this session</li><li>files touched by the active slice</li></ul>
+    </div>
+  </section>
+
+  <section class="section panel">
+    <h2>执行流程</h2>
+    <div class="flow">
+      <div class="step">
+        <div class="num">1</div>
+        <div><h3>第 1 步 — Decide Pause State</h3><p>Pick one: | State | Meaning | | --- | --- | | paused-clean | no known broken command; continuation is straightforward | | paused-with-risk | work can continue, but some evidence is missing or stale | | blocked | external decision/tool/data is needed | | needs...</p></div>
+      </div><div class="step">
+        <div class="num">2</div>
+        <div><h3>第 2 步 — Update task_plan.md</h3><p>Make it truthful and short: - current phase status - active slice - blocker if any - next 1-3 actions - success criteria if they changed 不要把命令 transcript、review findings 或长解释塞进 task_plan.md。</p></div>
+      </div><div class="step">
+        <div class="num">3</div>
+        <div><h3>第 3 步 — Append progress.md</h3><p>Append a timestamped handoff entry: ### YYYY-MM-DDTHH:MMZ - Intent: Pause after &lt;milestone or attempt&gt;. - Phase: paused-clean|paused-with-risk|blocked|needs-recovery - Actions: - ... - Files: - ...</p></div>
+      </div><div class="step">
+        <div class="num">4</div>
+        <div><h3>第 4 步 — Update findings.md</h3><p>Record: - unresolved risks - not-run checks - failures and exact errors - dead ends not to retry - capability recommendation if verification was blocked - links or docs that the next session must read</p></div>
+      </div><div class="step">
+        <div class="num">5</div>
+        <div><h3>第 5 步 — Report Git State</h3><p>Summarize: - related modified files - related untracked files - unrelated dirty files left alone - generated artifacts intentionally kept 不要清理无关文件，除非用户明确要求。</p></div>
+      </div><div class="step">
+        <div class="num">6</div>
+        <div><h3>第 6 步 — State Resume Command</h3><p>End with the next skill and first action, for example: - resume, then read three workflow files. - diagnose, then rerun &lt;failing command&gt;. - implement, then implement &lt;next small step&gt;.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>输出形态</h2>
+      <pre>``text SESSION SAVED: paused-clean|paused-with-risk|blocked|needs-recovery Current: - Active slice: - Phase: Verified: - &lt;command -&gt; result&gt; Unverified / Risk: - ... Files: - related changed: - unrelated left alone: Artifacts updated: - task_plan.md: - progress.md: - findings.md: Resume: - Skill: - First action: ``</pre>
+    </div>
+    <div class="panel">
+      <h2>工件更新</h2>
+      <ul><li>task_plan.md: phase, blocker, next action.</li><li>progress.md: append-only handoff entry.</li><li>findings.md: unresolved risk, failures, not-run checks, references.</li><li>AGENTS.md: do not update unless a durable project rule or recovery pointer changed; if it changed, apply the thin-entry rubric from bootstrap.</li></ul>
+    </div>
+  </section>
+
+  <section class="section panel">
+    <h2>路由规则</h2>
+    <p class="muted">该 skill 没有显式路由表；以执行流程的下一步为准。</p>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>验收闸门</h2>
+      <ul><li>[ ] Pause state is chosen and explicit.</li><li>[ ] task_plan.md next action is current and short.</li><li>[ ] progress.md has a new timestamped handoff entry.</li><li>[ ] findings.md records risks, dead ends, capability gaps, or says none.</li><li>[ ] Git dirty state is summarized without reverting user work.</li><li>[ ] Resume skill and first action are explicit.</li></ul>
+    </div>
+    <div class="panel">
+      <h2>Progressive Disclosure</h2>
+      <ul><li><a href="../../skills/save-session/references/handoff-checklist.md">交接检查清单</a><span class="tag">存在</span></li></ul>
+    </div>
+  </section>
+
+  <p class="source-note">本页由 <code>scripts/generate-skill-flow-html.mjs</code> 从 <code>skills/save-session/SKILL.md</code> 自动生成。</p>
+</main>
+</body>
+</html>

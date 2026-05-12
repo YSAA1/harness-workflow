@@ -1,0 +1,33 @@
+{
+  "name": "harness-workflow",
+  "version": "0.2.0",
+  "description": "Practical Codex workflow skills for project-level harness bootstrap, decoupled workflow state, planning, verification, review, and clean handoff.",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "workflow",
+    "harness",
+    "planning",
+    "verification"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Harness Workflow",
+    "shortDescription": "Daily project harness workflows for Codex.",
+    "longDescription": "Turns Learn Harness Engineering ideas into practical Codex skills for project-level harness bootstrap, decoupled workflow state backends, planning, implementation, verification, review, and clean handoff.",
+    "developerName": "Local",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Use brainstorm to turn unclear requirements into an approved spec with a verification strategy before planning.",
+      "Use state-contract when workflow state, three files, feature lists, or recovery backend need to be selected or repaired.",
+      "Use bootstrap to build or audit the project-level harness: AGENTS.md, project map, iron laws, verification, state, skills, hooks, subagents, and MCP policy.",
+      "Use plan to create or refresh the execution contract using the chosen workflow state backend; default is task_plan.md, progress.md, and findings.md.",
+      "Use verify before claiming tracked work is ready."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

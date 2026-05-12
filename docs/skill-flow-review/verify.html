@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>verify - Harness Workflow Skill 流程审阅</title>
+<style>
+:root {
+  --bg: #f7f5ef;
+  --ink: #1f2933;
+  --muted: #667085;
+  --line: #d7d1c3;
+  --panel: #ffffff;
+  --accent: #0f766e;
+  --accent-2: #b45309;
+  --accent-3: #334155;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+header {
+  background: #102a2a;
+  color: #fff;
+  padding: 28px 36px 30px;
+}
+header p { max-width: 920px; color: #dbe7e5; margin: 8px 0 0; }
+main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 48px; }
+.toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.35);
+  color: #fff;
+  border-radius: 6px;
+}
+.section { margin: 26px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 0 rgba(31,41,51,.04);
+}
+.panel h2, .panel h3 { margin-top: 0; }
+.muted { color: var(--muted); }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 1px 7px;
+  margin-left: 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--accent-3);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.skill-card h3 { margin-bottom: 4px; }
+.meta { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+.flow { display: grid; gap: 10px; }
+.step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.num {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+}
+.step h3 { margin: 2px 0 3px; font-size: 16px; }
+.step p { margin: 0; color: var(--muted); }
+.route {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.route-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0 14px;
+}
+.route-label {
+  min-width: 112px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.route span {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 9px;
+}
+.arrow { color: var(--accent-2); font-weight: 700; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { background: #edf4f2; }
+ul { padding-left: 20px; }
+code { background: #eef2f0; padding: 1px 4px; border-radius: 4px; }
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #f8faf9;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px;
+}
+.source-note { font-size: 13px; color: var(--muted); }
+@media (max-width: 720px) {
+  header { padding: 22px 20px; }
+  main { padding: 20px 16px 36px; }
+  .step { grid-template-columns: 1fr; }
+  .num { width: 26px; height: 26px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <p><a class="button" href="index.html">返回总览</a></p>
+  <h1>verify</h1>
+  <p>当 tracked change 准备声明 ready，需要 fresh verification evidence、evidence ladder、smoke/E2E 判断和能力推荐记录时使用。典型触发语：验证一下、能结束吗、跑最终检查、证明它能用、ready to ship、E2E check、smoke test。review 通过但还缺当前命令证据时必须使用。</p>
+  <div class="toolbar">
+    <a class="button" href="../../skills/verify/SKILL.md">打开 SKILL.md</a>
+    <span class="button">最终验证</span>
+    <span class="button">270 行</span>
+  </div>
+</header>
+<main>
+  <section class="section panel">
+    <h2>核心思想</h2>
+    <p>把&quot;可以结束&quot;转化为可追溯证据：每条成功标准都必须对应 fresh command、smoke/E2E 或明确的未验证限制。</p>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>进入条件</h2>
+      <ul><li>review found no blocking structural issue, but the slice still needs final fresh evidence.</li><li>A slice is about to move from in_progress to complete.</li><li>用户说「验证一下」「能结束吗」「跑最终检查」「证明它能用」。</li><li>The change touched UI, API, auth, persistence, config, build, packaging, or cross-component behavior.</li><li>Prior evidence is stale because files changed after the last command.</li><li>A capability gap may block proper verification, such as web UI without browser automation.</li></ul>
+    </div>
+    <div class="panel">
+      <h2>禁用条件</h2>
+      <ul><li>There is an unexplained failing command: use diagnose.</li><li>The implementation is still changing: use implement.</li><li>The spec is unclear: use brainstorm or plan.</li><li>The task is a one-line non-behavioral edit and the user does not need tracked evidence.</li></ul>
+    </div>
+    <div class="panel">
+      <h2>先读输入</h2>
+      <ul><li>workflow state execution contract：active slice、success criteria、verification path、blocker state（默认 task_plan.md 范围合同）。</li><li>workflow state evidence log：latest implementation and review entries; identify what evidence is stale（默认 progress.md）。</li><li>workflow state findings area：accepted spec, risks, prior failures, capability gaps（默认 findings.md）。</li><li>git status --short: confirm what changed since last evidence.</li><li>Project verification entry points: README, AGENTS.md, package/build/test config.</li><li>Related source/test paths touched by the current slice.</li></ul>
+    </div>
+  </section>
+
+  <section class="section panel">
+    <h2>执行流程</h2>
+    <div class="flow">
+      <div class="step">
+        <div class="num">1</div>
+        <div><h3>第 1 步 — Restate The Claim</h3><p>Write one sentence: - &quot;We are verifying that &lt;active slice&gt; is ready because &lt;success criteria&gt;.&quot; If you cannot write this sentence, return to planning or review.</p></div>
+      </div><div class="step">
+        <div class="num">2</div>
+        <div><h3>第 2 步 — Identify Evidence Freshness</h3><p>For each previous command in progress.md: - Is it after the latest relevant file change? - Does it cover the changed behavior? - Was it run in the current cwd and environment? - Did it pass, fail, or have limits? Only fresh, relevant commands count.</p></div>
+      </div><div class="step">
+        <div class="num">3</div>
+        <div><h3>第 3 步 — Select Checks</h3><p>Choose the smallest set of checks that covers the risk: - Low-risk doc-only change: link/path checks or markdown lint if available. - Pure logic: focused unit + adjacent regression. - Config/build change: syntax + build/typecheck + smoke command. - UI/user jo...</p></div>
+      </div><div class="step">
+        <div class="num">4</div>
+        <div><h3>第 4 步 — Run Checks</h3><p>Run commands exactly as documented when possible. Record: - command - cwd - result - relevant output summary - whether it is fresh - any skipped checks and why 不要隐藏失败。只要检查失败，下一步就转 diagnose。</p></div>
+      </div><div class="step">
+        <div class="num">5</div>
+        <div><h3>第 5 步 — Compare Against Success Criteria</h3><p>Map each success criterion to evidence: | Criterion | Evidence | Status | | --- | --- | --- | | &lt;from task_plan.md&gt; | &lt;command / smoke / manual signal&gt; | pass/fail/unknown | Unknown means not ready.</p></div>
+      </div><div class="step">
+        <div class="num">6</div>
+        <div><h3>第 6 步 — Update Artifacts</h3><p>- progress.md: append verification entry with commands and results. - findings.md: record downgraded checks, flaky behavior, capability gaps, residual risk. - task_plan.md: do not mark the phase complete here; record verification result and route to cleanup f...</p></div>
+      </div><div class="step">
+        <div class="num">7</div>
+        <div><h3>第 7 步 — Route</h3><p>| Result | Next | | --- | --- | | All required evidence fresh and passing | cleanup | | Command failed or behavior wrong | diagnose | | Evidence insufficient due to missing capability | save-session with blocked, or user decision to enable capability | | Spec...</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>输出形态</h2>
+      <pre>``text VERIFICATION: PASS|FAIL|INSUFFICIENT Claim: - Active slice: ... - Success criteria checked: ... Evidence: - Build: &lt;command -&gt; pass|fail|not applicable&gt; - Typecheck: ... - Lint: ... - Unit: ... - Integration: ... - Smoke/E2E: ... Freshness: - Latest relevant change: ... - Evidence after change: yes|no Capabilities: - recommended: &lt;none | capability + value/enablement/risk/fallback&gt; Risks: - ... Ready: - YES|N...</pre>
+    </div>
+    <div class="panel">
+      <h2>工件更新</h2>
+      <ul><li>progress.md: append verification entry.</li><li>findings.md: capability gaps, skipped checks, residual risks, flaky behavior.</li><li>task_plan.md: do not mark complete; after PASS route to cleanup, otherwise update blocker / next.</li></ul>
+    </div>
+  </section>
+
+  <section class="section panel">
+    <h2>路由规则</h2>
+    <p class="muted">该 skill 没有显式路由表；以执行流程的下一步为准。</p>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>验收闸门</h2>
+      <ul><li>[ ] Active slice and ready claim are stated.</li><li>[ ] Every success criterion is mapped to fresh evidence or marked unknown.</li><li>[ ] Relevant evidence ladder rungs are run or skipped with reasons.</li><li>[ ] Capability gap is either absent or documented with value/enablement/risk/fallback.</li><li>[ ] progress.md records commands, results, timestamp, and limits.</li><li>[ ] findings.md records residual risks or downgraded checks.</li><li>[ ] Output routes to the next skill.</li></ul>
+    </div>
+    <div class="panel">
+      <h2>Progressive Disclosure</h2>
+      <ul><li><a href="../../skills/verify/references/evidence-ladder.md">Evidence Ladder</a><span class="tag">存在</span></li><li><a href="../../skills/verify/references/capability-recommendations.md">Capability Recommendation 格式</a><span class="tag">存在</span></li></ul>
+    </div>
+  </section>
+
+  <p class="source-note">本页由 <code>scripts/generate-skill-flow-html.mjs</code> 从 <code>skills/verify/SKILL.md</code> 自动生成。</p>
+</main>
+</body>
+</html>

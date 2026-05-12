@@ -1,0 +1,30 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Edit|Write|apply_patch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .codex/hooks/pre_tool_use_policy.py",
+            "timeout": 20,
+            "statusMessage": "Checking project safety policy"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .codex/hooks/prompt_secret_scan.py",
+            "timeout": 10,
+            "statusMessage": "Scanning prompt for possible secrets"
+          }
+        ]
+      }
+    ]
+  }
+}

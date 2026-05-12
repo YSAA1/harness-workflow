@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>brainstorm - Harness Workflow Skill 流程审阅</title>
+<style>
+:root {
+  --bg: #f7f5ef;
+  --ink: #1f2933;
+  --muted: #667085;
+  --line: #d7d1c3;
+  --panel: #ffffff;
+  --accent: #0f766e;
+  --accent-2: #b45309;
+  --accent-3: #334155;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+header {
+  background: #102a2a;
+  color: #fff;
+  padding: 28px 36px 30px;
+}
+header p { max-width: 920px; color: #dbe7e5; margin: 8px 0 0; }
+main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 48px; }
+.toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.35);
+  color: #fff;
+  border-radius: 6px;
+}
+.section { margin: 26px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 0 rgba(31,41,51,.04);
+}
+.panel h2, .panel h3 { margin-top: 0; }
+.muted { color: var(--muted); }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 1px 7px;
+  margin-left: 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--accent-3);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.skill-card h3 { margin-bottom: 4px; }
+.meta { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+.flow { display: grid; gap: 10px; }
+.step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.num {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+}
+.step h3 { margin: 2px 0 3px; font-size: 16px; }
+.step p { margin: 0; color: var(--muted); }
+.route {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.route-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0 14px;
+}
+.route-label {
+  min-width: 112px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.route span {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 9px;
+}
+.arrow { color: var(--accent-2); font-weight: 700; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { background: #edf4f2; }
+ul { padding-left: 20px; }
+code { background: #eef2f0; padding: 1px 4px; border-radius: 4px; }
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #f8faf9;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px;
+}
+.source-note { font-size: 13px; color: var(--muted); }
+@media (max-width: 720px) {
+  header { padding: 22px 20px; }
+  main { padding: 20px 16px 36px; }
+  .step { grid-template-columns: 1fr; }
+  .num { width: 26px; height: 26px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <p><a class="button" href="index.html">返回总览</a></p>
+  <h1>brainstorm</h1>
+  <p>当需求、边界、方案取舍、成功标准或验证策略还没收敛时使用。典型触发语：帮我想想、我有个想法但不确定、先讨论方案、这个架构怎么做、需求还没定、不要直接写代码、先落 spec。必须在 plan 之前通过多轮澄清、方案比较、验证策略设计和用户批准，写出独立 spec 文档并把摘要写入当前 workflow state 的 findings area（默认 `findings.md`）。</p>
+  <div class="toolbar">
+    <a class="button" href="../../skills/brainstorm/SKILL.md">打开 SKILL.md</a>
+    <span class="button">构思收敛</span>
+    <span class="button">270 行</span>
+  </div>
+</header>
+<main>
+  <section class="section panel">
+    <h2>核心思想</h2>
+    <p>本 skill 解决三个问题： - 想法太早进入实现，导致边界、non-goals 和成功标准靠聊天记忆维持。 - agent 只问一个问题就收敛，实际没有确认用户、范围、约束、失败模式和验收信号。 - spec 只描述要做什么，却没有设计验证流程，到了 verify 才发现没有可运行证据。 brainstorm 必须先把&quot;要建什么&quot;和&quot;如何证明建对&quot;一起说明白。plan 只负责把已批准 spec 拆成阶段和执行合同。</p>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>进入条件</h2>
+      <ul><li>用户描述还停留在意图层面：「我想让它...」「我们要...」</li><li>用户明确说「先 brainstorm」「先讨论」「先落 spec」「需求还没定」</li><li>多个方案都合理，需要比较取舍</li><li>成功标准、验收方式、测试/E2E/smoke 路径不清楚</li><li>现有 spec 漂移，计划或实现已经无法回答&quot;到底验什么&quot;</li><li>任务包含 UI、架构、状态模型、外部工具、权限、安全或跨模块行为</li></ul>
+    </div>
+    <div class="panel">
+      <h2>禁用条件</h2>
+      <ul><li>用户已经给出完整 spec 且验证策略清楚：直接 plan</li><li>任务是可直接完成的小补丁：直接执行，并按当前 state backend 按需记录 evidence（默认 progress.md）</li><li>用户明确只要快速事实回答、翻译、格式整理</li><li>已有 spec 只需要拆实施阶段：不要在 brainstorm 里重新设计</li></ul>
+    </div>
+    <div class="panel">
+      <h2>先读输入</h2>
+      <ul><li>既有 spec：docs/specs/、docs/product-specs/、docs/design-docs/、issue、PRD、README。</li><li>findings.md：读取已接受规格、拒绝方案、残余风险，避免重走旧路。</li><li>task_plan.md：若存在，只作为当前上下文，不把旧 active slice 当成新 spec。</li><li>AGENTS.md、README、相关代码和测试：确认项目惯例、验证命令和工作面限制。</li><li>git status --short、git log --oneline -10：确认是否已有未提交方向或近期设计趋势。</li><li>用户给出的链接、截图、设计稿或外部约束。</li></ul>
+    </div>
+  </section>
+
+  <section class="section panel">
+    <h2>执行流程</h2>
+    <div class="flow">
+      <div class="step">
+        <div class="num">1</div>
+        <div><h3>第 0 步 — 建立问题框架</h3><p>先用不超过 5 句话复述项目现实和当前想法，然后判断是否需要拆分。 如果请求包含多个独立子系统，先让用户选择第一个 spec 的子项目。不要用一个 spec 覆盖平台级大杂烩。每个独立子项目走自己的 brainstorm -&gt; plan -&gt; implement。</p></div>
+      </div><div class="step">
+        <div class="num">2</div>
+        <div><h3>第 1 步 — 多轮澄清，不许一问收敛</h3><p>每次只问一个问题，但不是只问一个问题。至少覆盖这些维度，除非用户已经在材料中明确回答： - 目的：这个能力为谁解决什么问题？ - 范围：本轮必须包含什么，明确不包含什么？ - 用户/调用者：谁会使用它，入口在哪里？ - 行为：输入、输出、状态变化、错误处理是什么？ - 约束：依赖、性能、兼容、安全、数据、时间或迁移限制是什么？ - 成功标准：什么现象说明 spec 成功，什么现象说明失败？ - 验证策略：用哪些测试、命令、smoke、E2E、人工检查或外部信号证明？</p></div>
+      </div><div class="step">
+        <div class="num">3</div>
+        <div><h3>第 2 步 — 设计验证流程</h3><p>在提出实现方案前，先构建验证策略。至少写清： - 基线证据：开始前要读哪些测试、命令、日志或现有行为。 - 单元/集成验证：哪些可自动化检查覆盖核心行为。 - 端到端或 smoke：用户可见路径如何确认。 - 负例和边界：什么输入、权限、异常或退化路径必须验证。 - 文档/状态验证：README、AGENTS、三文件、spec 是否需要同步。 - Fresh evidence 要求：最终完成前哪些命令必须重新跑。 - 无法验证项：当前环境做不到什么，如何记录风险或推荐能力。</p></div>
+      </div><div class="step">
+        <div class="num">4</div>
+        <div><h3>第 3 步 — 比较 2-3 个方案</h3><p>每个方案必须包含： - 一句话定位 - 关键取舍：复杂度、可维护性、验证成本、用户价值 - 失败模式：什么情况下会做偏或做不完 - 验证影响：该方案让验证更容易还是更难 如果只有一个方案真正合理，仍要写出被拒绝的替代方案和拒绝理由。推荐方案必须说明为什么更适合当前 active slice。</p></div>
+      </div><div class="step">
+        <div class="num">5</div>
+        <div><h3>第 4 步 — 分段呈现设计并获得确认</h3><p>不要一次甩完整长文。按复杂度分段确认： 1. 目标和范围 2. 行为与接口 3. 状态、数据或架构边界 4. 验证策略和能力缺口 5. 非目标、拒绝方案和残余风险 每段后询问是否正确；如果用户修改，回到对应段落。不要把用户沉默当批准。</p></div>
+      </div><div class="step">
+        <div class="num">6</div>
+        <div><h3>第 5 步 — 写 spec 文档</h3><p>使用本 skill 自带模板 templates/spec.md。不要从 plan skill 借模板；brainstorm 的 spec 是独立产物。 写入默认路径： docs/specs/YYYY-MM-DD--&lt;topic&gt;.md 如果项目已有惯例，优先沿用。spec 文件必须覆盖： - 背景和问题 - Goals - Non-goals - 用户/调用者</p></div>
+      </div><div class="step">
+        <div class="num">7</div>
+        <div><h3>第 6 步 — spec 自审</h3><p>写完后按 references/spec-review-checklist.md 自审并直接修复： - 是否还有 TBD、TODO、占位符或空章节？ - Goals、non-goals、行为和验证策略是否互相矛盾？ - 是否大到需要拆成多个 spec？ - 成功标准是否可证伪？ - 验证策略是否包含 baseline、自动化、smoke/E2E、负例、fresh evidence？ - capability gap 是否记录到 spec，而不是藏在聊天里？ 复杂或高风险 spec 可以派 reviewer sub...</p></div>
+      </div><div class="step">
+        <div class="num">8</div>
+        <div><h3>第 7 步 — 写 findings 摘要</h3><p>在 findings.md 追加一段摘要，包含： - spec 文件路径 - accepted goals / non-goals - 关键约束 - verification strategy 摘要 - capability gaps - rejected options - residual risks</p></div>
+      </div><div class="step">
+        <div class="num">9</div>
+        <div><h3>第 8 步 — 用户 review gate</h3><p>最后必须停下来让用户审阅 spec 文件： Spec written: &lt;path&gt; Please review and approve or request changes before I create the implementation plan. Next skill after approval: plan 用户批准前不要调用 plan，不要写 task_plan.md，不要实现。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>输出形态</h2>
+      <pre>``text BRAINSTORM SPEC READY Spec: &lt;docs/specs/YYYY-MM-DD--topic.md&gt; Question solved: &lt;一句话&gt; Chosen approach: &lt;一句话&gt; Verification strategy: &lt;一句话&gt; Needs user review: - Approve -&gt; plan - Request changes -&gt; revise spec and re-run self-review - Pause -&gt; save-session ``</pre>
+    </div>
+    <div class="panel">
+      <h2>工件更新</h2>
+      <ul><li>docs/specs/YYYY-MM-DD--&lt;topic&gt;.md：本次重点产物。</li><li>findings.md：追加 spec 摘要、拒绝方案、风险、验证策略索引。</li><li>progress.md：可追加 brainstorm entry，记录 spec 路径和待批准状态。</li><li>task_plan.md：不在本 skill 中创建或改写；批准后交给 plan。</li></ul>
+    </div>
+  </section>
+
+  <section class="section panel">
+    <h2>路由规则</h2>
+    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>需求、边界或验证策略未定</td><td>本 skill</td></tr><tr><td>spec 已写但用户未批准</td><td>继续本 skill</td></tr><tr><td>spec 已批准</td><td>plan</td></tr><tr><td>spec 已批准、计划已写、工作面缺失</td><td>bootstrap</td></tr><tr><td>只是单点小改</td><td>退出 brainstorm</td></tr></tbody></table>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>验收闸门</h2>
+      <ul><li>[ ] 已读取项目现实、既有 spec / findings / plan / docs / 相关代码。</li><li>[ ] 已通过多轮澄清覆盖目的、范围、行为、约束、成功标准和验证策略。</li><li>[ ] 已比较 2-3 个方案，或明确记录被拒绝替代方案。</li><li>[ ] 已写独立 spec 文档，默认位于 docs/specs/YYYY-MM-DD--&lt;topic&gt;.md。</li><li>[ ] spec 含 Verification strategy、Capability gaps、Success criteria、Plan handoff。</li><li>[ ] 已按 references/spec-review-checklist.md 自审并修复问题。</li><li>[ ] findings.md 已追加 spec 摘要和 rejected options。</li><li>[ ] 已请求用户批准 spec；未批准前没有调用 plan 或写实现代码。</li></ul>
+    </div>
+    <div class="panel">
+      <h2>Progressive Disclosure</h2>
+      <ul><li><a href="../../skills/brainstorm/references/spec-review-checklist.md">Spec Review Checklist</a><span class="tag">存在</span></li></ul>
+    </div>
+  </section>
+
+  <p class="source-note">本页由 <code>scripts/generate-skill-flow-html.mjs</code> 从 <code>skills/brainstorm/SKILL.md</code> 自动生成。</p>
+</main>
+</body>
+</html>

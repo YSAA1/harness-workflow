@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>state-contract - Harness Workflow Skill 流程审阅</title>
+<style>
+:root {
+  --bg: #f7f5ef;
+  --ink: #1f2933;
+  --muted: #667085;
+  --line: #d7d1c3;
+  --panel: #ffffff;
+  --accent: #0f766e;
+  --accent-2: #b45309;
+  --accent-3: #334155;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+header {
+  background: #102a2a;
+  color: #fff;
+  padding: 28px 36px 30px;
+}
+header p { max-width: 920px; color: #dbe7e5; margin: 8px 0 0; }
+main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 48px; }
+.toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.35);
+  color: #fff;
+  border-radius: 6px;
+}
+.section { margin: 26px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 0 rgba(31,41,51,.04);
+}
+.panel h2, .panel h3 { margin-top: 0; }
+.muted { color: var(--muted); }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 1px 7px;
+  margin-left: 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--accent-3);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.skill-card h3 { margin-bottom: 4px; }
+.meta { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+.flow { display: grid; gap: 10px; }
+.step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.num {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+}
+.step h3 { margin: 2px 0 3px; font-size: 16px; }
+.step p { margin: 0; color: var(--muted); }
+.route {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.route-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0 14px;
+}
+.route-label {
+  min-width: 112px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.route span {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 9px;
+}
+.arrow { color: var(--accent-2); font-weight: 700; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { background: #edf4f2; }
+ul { padding-left: 20px; }
+code { background: #eef2f0; padding: 1px 4px; border-radius: 4px; }
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #f8faf9;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px;
+}
+.source-note { font-size: 13px; color: var(--muted); }
+@media (max-width: 720px) {
+  header { padding: 22px 20px; }
+  main { padding: 20px 16px 36px; }
+  .step { grid-template-columns: 1fr; }
+  .num { width: 26px; height: 26px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <p><a class="button" href="index.html">返回总览</a></p>
+  <h1>state-contract</h1>
+  <p>当 workflow 需要选择、创建、修复或解释状态后端时使用。典型触发语：状态协议、三文件、state backend、workflow state、task_plan/progress/findings、恢复面、feature list、轻量状态、不要把三文件绑死。其他 skill 需要 active slice、success criteria、evidence、decisions、handoff 时，应依赖本 skill 定义的 state contract，而不是直接假设某个文件布局。</p>
+  <div class="toolbar">
+    <a class="button" href="../../skills/state-contract/SKILL.md">打开 SKILL.md</a>
+    <span class="button">状态协议</span>
+    <span class="button">176 行</span>
+  </div>
+</header>
+<main>
+  <section class="section panel">
+    <h2>核心思想</h2>
+    <p>降低 workflow skills 之间的耦合，同时保留三文件带来的可恢复、可验证、可审计能力。 本 skill 解决这些问题： - 简单任务被迫创建三文件，增加噪声。 - implement、review、verify 等 skill 把 task_plan.md 写成硬依赖，导致没有三文件时能力打折。 - 老项目已有 issue tracker、PROJECT.md、features.yaml 或 .harness/ 状态时，被强行套三文件。 - 三文件漂移时，没人负责判断是修复、降级、升级，还是切换 backend。</p>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>进入条件</h2>
+      <ul><li>用户说「三文件是不是太绑死」「降低耦合」「state backend」「状态协议」。</li><li>非平凡任务需要 tracked workflow，但当前没有明确状态来源。</li><li>task_plan.md / progress.md / findings.md 缺失、漂移、互相矛盾。</li><li>项目已有自己的状态系统，需要映射到 workflow fields。</li><li>resume 无法判断当前 active slice。</li><li>plan 要创建或重写三文件。</li><li>产品型项目需要 feature/task list，而不是单 active slice。</li></ul>
+    </div>
+    <div class="panel">
+      <h2>禁用条件</h2>
+      <ul><li>一次性问答、翻译、单点小补丁。</li><li>当前 state backend 已清晰，active slice / evidence / decisions 都能读到。</li><li>用户只要求 brainstorm spec，不需要进入 tracked workflow。</li></ul>
+    </div>
+    <div class="panel">
+      <h2>先读输入</h2>
+      <ul><li>AGENTS.md：看是否声明 workflow state backend。</li><li>.harness/manifest.yaml / .harness/state.md / .harness/progress.md / .harness/session_handoff.md，如果存在。</li><li>task_plan.md、progress.md、findings.md，如果存在。</li><li>项目已有状态来源：issue、PROJECT.md、features.json、tasks.yaml、roadmap、docs/progress。</li><li>git status --short：判断状态是否和 dirty worktree 对得上。</li><li>当前用户请求：判断任务是否值得 tracked state。</li></ul>
+    </div>
+  </section>
+
+  <section class="section panel">
+    <h2>执行流程</h2>
+    <div class="flow">
+      <div class="step">
+        <div class="num">1</div>
+        <div><h3>第 1 步 — 判断是否需要 tracked state</h3><p>不所有任务都需要状态文件。 - 小任务：可以 none 或 inline。 - 中等任务：可以 lightweight tracked state。 - 多步骤、跨 session、高风险任务：用 three-file backend。 - 多功能产品型项目：考虑 feature-list backend。 - 老项目已有状态系统：考虑 existing backend。</p></div>
+      </div><div class="step">
+        <div class="num">2</div>
+        <div><h3>第 2 步 — 选择 backend</h3><p>选择一个： | Backend | 用途 | | --- | --- | | none | 简单一次性任务，不创建状态文件 | | lightweight | 只需要范围合同 + 关键证据 | | three-file | 默认 rigorous tracked workflow | | feature-list | 多功能、多状态、产品型项目 | | existing | 复用项目已有 issue/docs 状态系统 |</p></div>
+      </div><div class="step">
+        <div class="num">3</div>
+        <div><h3>第 3 步 — 声明映射</h3><p>把选择写到合适位置： - 项目级：AGENTS.md 的 Workflow State / Harness map。 - harness 级：.harness/manifest.yaml 或 .harness/state.md。 - 任务级：task_plan.md 或项目既有 task source。</p></div>
+      </div><div class="step">
+        <div class="num">4</div>
+        <div><h3>第 4 步 — 创建或修复状态</h3><p>如果选择 three-file，使用 plan/templates/ 中的 canonical 模板。 如果选择 feature-list，至少记录： - feature id - behavior - verification command - status - owner / next action 如果选择 existing，记录现有来源和字段映射，不要复制一套并行状态。</p></div>
+      </div><div class="step">
+        <div class="num">5</div>
+        <div><h3>第 5 步 — 给其他 skill 一个读写约定</h3><p>输出当前 backend： Workflow state backend: three-file Read active slice from: task_plan.md / 范围合同 Append evidence to: progress.md Record decisions and root causes in: findings.md 其他 skill 应引用这个约定，而不是重新发明状态路径。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>输出形态</h2>
+      <pre>未抽取到输出格式</pre>
+    </div>
+    <div class="panel">
+      <h2>工件更新</h2>
+      <ul><li>AGENTS.md：只写 backend 入口和恢复指针，不写临时状态。</li><li>.harness/manifest.yaml / .harness/state.md：记录 backend 选择。</li><li>task_plan.md / progress.md / findings.md：three-file backend 的默认工件。</li><li>项目既有 issue/docs/features：existing 或 feature-list backend 的工件。</li></ul>
+    </div>
+  </section>
+
+  <section class="section panel">
+    <h2>路由规则</h2>
+    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>需求未收敛</td><td>brainstorm</td></tr><tr><td>需要选择或修复状态后端</td><td>本 skill</td></tr><tr><td>后端选定，需要写执行计划</td><td>plan</td></tr><tr><td>active slice 已明确</td><td>implement</td></tr><tr><td>状态互相矛盾且需要恢复</td><td>resume + 本 skill</td></tr><tr><td>状态过期但无需新计划</td><td>cleanup 或 save-session</td></tr></tbody></table>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>验收闸门</h2>
+      <ul><li>[ ] 当前任务是否需要 tracked state 已判断。</li><li>[ ] state backend 已选择并说明原因。</li><li>[ ] 必要字段能从 backend 中读到，或缺口已记录。</li><li>[ ] 其他 skill 知道 active slice、evidence、decisions 分别读写哪里。</li><li>[ ] 没有创建和现有状态冲突的第二套恢复面。</li></ul>
+    </div>
+    <div class="panel">
+      <h2>Progressive Disclosure</h2>
+      <ul><li><a href="../../skills/state-contract/references/backends.md">State Backends</a><span class="tag">存在</span></li><li><a href="../../skills/state-contract/references/state-fields.md">State Fields</a><span class="tag">存在</span></li></ul>
+    </div>
+  </section>
+
+  <p class="source-note">本页由 <code>scripts/generate-skill-flow-html.mjs</code> 从 <code>skills/state-contract/SKILL.md</code> 自动生成。</p>
+</main>
+</body>
+</html>

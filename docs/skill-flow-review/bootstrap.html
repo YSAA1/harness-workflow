@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bootstrap - Harness Workflow Skill 流程审阅</title>
+<style>
+:root {
+  --bg: #f7f5ef;
+  --ink: #1f2933;
+  --muted: #667085;
+  --line: #d7d1c3;
+  --panel: #ffffff;
+  --accent: #0f766e;
+  --accent-2: #b45309;
+  --accent-3: #334155;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+header {
+  background: #102a2a;
+  color: #fff;
+  padding: 28px 36px 30px;
+}
+header p { max-width: 920px; color: #dbe7e5; margin: 8px 0 0; }
+main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 48px; }
+.toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.35);
+  color: #fff;
+  border-radius: 6px;
+}
+.section { margin: 26px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 0 rgba(31,41,51,.04);
+}
+.panel h2, .panel h3 { margin-top: 0; }
+.muted { color: var(--muted); }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 1px 7px;
+  margin-left: 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--accent-3);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.skill-card h3 { margin-bottom: 4px; }
+.meta { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+.flow { display: grid; gap: 10px; }
+.step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.num {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+}
+.step h3 { margin: 2px 0 3px; font-size: 16px; }
+.step p { margin: 0; color: var(--muted); }
+.route {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.route-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0 14px;
+}
+.route-label {
+  min-width: 112px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.route span {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 9px;
+}
+.arrow { color: var(--accent-2); font-weight: 700; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { background: #edf4f2; }
+ul { padding-left: 20px; }
+code { background: #eef2f0; padding: 1px 4px; border-radius: 4px; }
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #f8faf9;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px;
+}
+.source-note { font-size: 13px; color: var(--muted); }
+@media (max-width: 720px) {
+  header { padding: 22px 20px; }
+  main { padding: 20px 16px 36px; }
+  .step { grid-template-columns: 1fr; }
+  .num { width: 26px; height: 26px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <p><a class="button" href="index.html">返回总览</a></p>
+  <h1>bootstrap</h1>
+  <p>Project-level bootstrap entry that directly embeds harness-builder v3. Use when starting, onboarding, auditing, repairing, or upgrading a project harness before coding: AGENTS.md/CLAUDE.md, project map, project iron laws, check scripts, workflow state, recovery files, project-local skills, hooks, subagents, MCP policy, and anti-entropy cleanup. Trigger when the user says bootstrap, initialize, onboard, build harness, prepare workbench, create project rules, replace old bootstrap, find reusable skills, or wants Superpowers-like harness setup.</p>
+  <div class="toolbar">
+    <a class="button" href="../../skills/bootstrap/SKILL.md">打开 SKILL.md</a>
+    <span class="button">项目级 harness</span>
+    <span class="button">197 行</span>
+  </div>
+</header>
+<main>
+  <section class="section panel">
+    <h2>核心思想</h2>
+    <p></p>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>进入条件</h2>
+      <p class="muted">未抽取到条目</p>
+    </div>
+    <div class="panel">
+      <h2>禁用条件</h2>
+      <p class="muted">未抽取到条目</p>
+    </div>
+    <div class="panel">
+      <h2>先读输入</h2>
+      <p class="muted">未抽取到条目</p>
+    </div>
+  </section>
+
+  <section class="section panel">
+    <h2>执行流程</h2>
+    <div class="flow">
+      
+    </div>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>输出形态</h2>
+      <pre>未抽取到输出格式</pre>
+    </div>
+    <div class="panel">
+      <h2>工件更新</h2>
+      <p class="muted">未抽取到条目</p>
+    </div>
+  </section>
+
+  <section class="section panel">
+    <h2>路由规则</h2>
+    <p class="muted">该 skill 没有显式路由表；以执行流程的下一步为准。</p>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>验收闸门</h2>
+      <p class="muted">未抽取到条目</p>
+    </div>
+    <div class="panel">
+      <h2>Progressive Disclosure</h2>
+      <ul><li><a href="../../skills/bootstrap/references/brainstorming_policy.md">Brainstorming Policy</a><span class="tag">存在</span></li><li><a href="../../skills/bootstrap/references/harness_subsystems.md">Harness Subsystems</a><span class="tag">存在</span></li><li><a href="../../skills/bootstrap/references/course_alignment.md">Learn Harness Engineering Alignment</a><span class="tag">存在</span></li><li><a href="../../skills/bootstrap/references/subagent_orchestration.md">Subagent Orchestration</a><span class="tag">存在</span></li><li><a href="../../skills/bootstrap/references/skill_policy.md">Skill Policy</a><span class="tag">存在</span></li><li><a href="../../skills/bootstrap/references/web_research_policy.md">Web Research Policy</a><span class="tag">存在</span></li><li><a href="../../skills/bootstrap/references/profiles.md">Harness Profiles</a><span class="tag">存在</span></li><li><a href="../../skills/bootstrap/references/decision_matrix.md">Harness Builder Decision Matrix</a><span class="tag">存在</span></li><li><a href="../../skills/bootstrap/references/install_policy.md">Install Policy</a><span class="tag">存在</span></li><li><a href="../../skills/bootstrap/references/anti_entropy.md">Anti-Entropy Policy</a><span class="tag">存在</span></li><li><a href="../../skills/bootstrap/references/project_map_policy.md">AGENTS.md and Project Map Policy</a><span class="tag">存在</span></li><li><a href="../../skills/bootstrap/references/verification_policy.md">Verification Policy</a><span class="tag">存在</span></li><li><a href="../../skills/bootstrap/references/hook_policy.md">Hook Policy</a><span class="tag">存在</span></li><li><a href="../../skills/bootstrap/references/subagent_policy.md">Subagent Policy</a><span class="tag">存在</span></li><li><a href="../../skills/bootstrap/references/mcp_policy.md">MCP Policy</a><span class="tag">存在</span></li></ul>
+    </div>
+  </section>
+
+  <p class="source-note">本页由 <code>scripts/generate-skill-flow-html.mjs</code> 从 <code>skills/bootstrap/SKILL.md</code> 自动生成。</p>
+</main>
+</body>
+</html>

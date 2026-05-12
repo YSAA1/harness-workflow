@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>resume - Harness Workflow Skill 流程审阅</title>
+<style>
+:root {
+  --bg: #f7f5ef;
+  --ink: #1f2933;
+  --muted: #667085;
+  --line: #d7d1c3;
+  --panel: #ffffff;
+  --accent: #0f766e;
+  --accent-2: #b45309;
+  --accent-3: #334155;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+header {
+  background: #102a2a;
+  color: #fff;
+  padding: 28px 36px 30px;
+}
+header p { max-width: 920px; color: #dbe7e5; margin: 8px 0 0; }
+main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 48px; }
+.toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.35);
+  color: #fff;
+  border-radius: 6px;
+}
+.section { margin: 26px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 0 rgba(31,41,51,.04);
+}
+.panel h2, .panel h3 { margin-top: 0; }
+.muted { color: var(--muted); }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 1px 7px;
+  margin-left: 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--accent-3);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.skill-card h3 { margin-bottom: 4px; }
+.meta { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+.flow { display: grid; gap: 10px; }
+.step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.num {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+}
+.step h3 { margin: 2px 0 3px; font-size: 16px; }
+.step p { margin: 0; color: var(--muted); }
+.route {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.route-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0 14px;
+}
+.route-label {
+  min-width: 112px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.route span {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 9px;
+}
+.arrow { color: var(--accent-2); font-weight: 700; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { background: #edf4f2; }
+ul { padding-left: 20px; }
+code { background: #eef2f0; padding: 1px 4px; border-radius: 4px; }
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #f8faf9;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px;
+}
+.source-note { font-size: 13px; color: var(--muted); }
+@media (max-width: 720px) {
+  header { padding: 22px 20px; }
+  main { padding: 20px 16px 36px; }
+  .step { grid-template-columns: 1fr; }
+  .num { width: 26px; height: 26px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <p><a class="button" href="index.html">返回总览</a></p>
+  <h1>resume</h1>
+  <p>当 compaction、暂停、交接或新会话后恢复 tracked workflow，必须从当前 workflow state backend、AGENTS.md 和 git state 重建上下文时使用。典型触发语：继续、接着做、恢复上下文、上次到哪了、after compact、resume。不要相信聊天记忆。</p>
+  <div class="toolbar">
+    <a class="button" href="../../skills/resume/SKILL.md">打开 SKILL.md</a>
+    <span class="button">恢复上下文</span>
+    <span class="button">218 行</span>
+  </div>
+</header>
+<main>
+  <section class="section panel">
+    <h2>核心思想</h2>
+    <p>让新会话或压缩后的 agent 先从仓库事实恢复，而不是依赖聊天记忆，避免重复旧路、覆盖用户改动或基于过期证据继续执行。</p>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>进入条件</h2>
+      <ul><li>Context compaction happened or the session was resumed.</li><li>用户说「继续」「接着做」「恢复上下文」「上次到哪了」。</li><li>workflow state exists but the current phase is unclear.</li><li>Chat memory conflicts with repository state.</li><li>Another agent left a handoff and you need to verify it.</li><li>There are dirty files and you need to determine whether they belong to the tracked slice.</li></ul>
+    </div>
+    <div class="panel">
+      <h2>禁用条件</h2>
+      <ul><li>You are in the middle of a fresh uninterrupted step and all relevant context is already loaded.</li><li>The user asks for a simple one-off command or explanation.</li><li>The active slice is clear and the next action is to implement; use implement.</li><li>A command is failing and root cause is unknown; use diagnose.</li></ul>
+    </div>
+    <div class="panel">
+      <h2>先读输入</h2>
+      <ul><li>当前 workflow state backend 的 execution contract（默认 task_plan.md）</li><li>当前 workflow state backend 的 evidence log（默认 progress.md，尤其最新 2-5 个 timestamp sections）</li><li>当前 workflow state backend 的 findings area（默认 findings.md，尤其 accepted spec、risks、failures、references、rejected options）</li><li>AGENTS.md</li><li>git status --short</li><li>git diff --stat</li><li>Files directly related to the current active slice</li><li>Recent relevant logs or command outputs referenced by progress.md</li></ul>
+    </div>
+  </section>
+
+  <section class="section panel">
+    <h2>执行流程</h2>
+    <div class="flow">
+      <div class="step">
+        <div class="num">1</div>
+        <div><h3>第 1 步 — Recover The Claimed State</h3><p>From workflow state execution contract（默认 task_plan.md）, extract: - objective - current phase - active slice - success criteria - blockers - next actions If more than one phase is in_progress, mark the plan stale and recommend plan.</p></div>
+      </div><div class="step">
+        <div class="num">2</div>
+        <div><h3>第 2 步 — Recover The Actual Recent State</h3><p>From workflow state evidence log（默认 progress.md）, extract: - last completed action - last commands and results - files touched - stated next action - unresolved failures or not-run checks Use timestamps. If entries are out of order or vague, call that out.</p></div>
+      </div><div class="step">
+        <div class="num">3</div>
+        <div><h3>第 3 步 — Recover Decisions And Risk</h3><p>From findings.md, extract: - accepted spec - non-goals - rejected options not to retry - root causes already found - residual risks - external references or capability recommendations 不要重新打开已拒绝的方案，除非有新证据。</p></div>
+      </div><div class="step">
+        <div class="num">4</div>
+        <div><h3>第 4 步 — Compare With Git State</h3><p>Use git status --short and git diff --stat to check: - dirty files that match the active slice - dirty files that look unrelated - generated files or temp files - deleted files - untracked artifacts that may be useful or accidental 不要 revert 任何文件。若存在无关 dirty ...</p></div>
+      </div><div class="step">
+        <div class="num">5</div>
+        <div><h3>第 5 步 — Detect Staleness</h3><p>当工件互相矛盾时读取 references/staleness-checklist.md。常见漂移信号： - task_plan.md says phase is active, but progress.md shows it completed. - progress.md claims tests passed before the latest source edit. - findings.md accepted spec conflicts with current code or user requ...</p></div>
+      </div><div class="step">
+        <div class="num">6</div>
+        <div><h3>第 6 步 — Choose The Next Skill</h3><p>| Recovered state | Next skill | | --- | --- | | Need to create or repair plan files | plan | | Plan exists but workbench not ready | bootstrap | | Active slice clear and ready to edit | implement | | Failure root cause unknown | diagnose | | Stable change ne...</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>输出形态</h2>
+      <pre>``text RESUME CONTEXT 当前状态: - Objective: - Active slice: - Current phase: - Success criteria: 最近变化: - ... Fresh Evidence: - &lt;command -&gt; result -&gt; fresh|stale&gt; 开放风险 / Blockers: - ... What Not To Retry: - ... Staleness / Drift Notes: - ... Git Working State: - Related dirty files: - Unrelated dirty files: - Untracked files: 推荐下一步 Skill: - &lt;skill&gt; - Reason: ``</pre>
+    </div>
+    <div class="panel">
+      <h2>工件更新</h2>
+      <ul><li>the user asked to repair stale files;</li><li>the recovery itself proves a simple artifact correction is needed;</li><li>the next lane requires it and the user has approved.</li></ul>
+    </div>
+  </section>
+
+  <section class="section panel">
+    <h2>路由规则</h2>
+    <p class="muted">该 skill 没有显式路由表；以执行流程的下一步为准。</p>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>验收闸门</h2>
+      <ul><li>[ ] Current state, active slice, and phase are recovered or marked unknown.</li><li>[ ] Latest relevant progress.md evidence is classified fresh or stale.</li><li>[ ] Known blockers, residual risks, and rejected paths are surfaced.</li><li>[ ] Git dirty state is separated into related and unrelated.</li><li>[ ] Artifact drift is named, not hidden.</li><li>[ ] A single next skill and reason are given.</li></ul>
+    </div>
+    <div class="panel">
+      <h2>Progressive Disclosure</h2>
+      <ul><li><a href="../../skills/resume/references/staleness-checklist.md">状态漂移检查清单</a><span class="tag">存在</span></li></ul>
+    </div>
+  </section>
+
+  <p class="source-note">本页由 <code>scripts/generate-skill-flow-html.mjs</code> 从 <code>skills/resume/SKILL.md</code> 自动生成。</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>implement - Harness Workflow Skill 流程审阅</title>
+<style>
+:root {
+  --bg: #f7f5ef;
+  --ink: #1f2933;
+  --muted: #667085;
+  --line: #d7d1c3;
+  --panel: #ffffff;
+  --accent: #0f766e;
+  --accent-2: #b45309;
+  --accent-3: #334155;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+header {
+  background: #102a2a;
+  color: #fff;
+  padding: 28px 36px 30px;
+}
+header p { max-width: 920px; color: #dbe7e5; margin: 8px 0 0; }
+main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 48px; }
+.toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.35);
+  color: #fff;
+  border-radius: 6px;
+}
+.section { margin: 26px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 0 rgba(31,41,51,.04);
+}
+.panel h2, .panel h3 { margin-top: 0; }
+.muted { color: var(--muted); }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 1px 7px;
+  margin-left: 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--accent-3);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.skill-card h3 { margin-bottom: 4px; }
+.meta { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+.flow { display: grid; gap: 10px; }
+.step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.num {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+}
+.step h3 { margin: 2px 0 3px; font-size: 16px; }
+.step p { margin: 0; color: var(--muted); }
+.route {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.route-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0 14px;
+}
+.route-label {
+  min-width: 112px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.route span {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 9px;
+}
+.arrow { color: var(--accent-2); font-weight: 700; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { background: #edf4f2; }
+ul { padding-left: 20px; }
+code { background: #eef2f0; padding: 1px 4px; border-radius: 4px; }
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #f8faf9;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px;
+}
+.source-note { font-size: 13px; color: var(--muted); }
+@media (max-width: 720px) {
+  header { padding: 22px 20px; }
+  main { padding: 20px 16px 36px; }
+  .step { grid-template-columns: 1fr; }
+  .num { width: 26px; height: 26px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <p><a class="button" href="index.html">返回总览</a></p>
+  <h1>implement</h1>
+  <p>当 tracked feature、bugfix 或 refactor 已经可以实现，且项目工作面已确认时使用。典型触发语：实现这个、开始写代码、修 bug、让测试通过、加这个函数、接线这个功能。要求 workflow state 能解析出唯一 active slice（默认从 task_plan.md 读取）；失败连续两次转 diagnose；稳定后转 review，再转 verify。</p>
+  <div class="toolbar">
+    <a class="button" href="../../skills/implement/SKILL.md">打开 SKILL.md</a>
+    <span class="button">小步执行</span>
+    <span class="button">254 行</span>
+  </div>
+</header>
+<main>
+  <section class="section panel">
+    <h2>核心思想</h2>
+    <p>本 skill 把实现压成小步、可验证、可恢复的循环： - 当前 active slice 没拿到证据前，不开新 slice - 修代码就同步文档/命令/workflow state，否则下次会话恢复就会失真 - 验证强度按风险匹配，不机械要求覆盖率 - 失败了不&quot;猜一下再试&quot;，转 diagnose</p>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>进入条件</h2>
+      <ul><li>workflow state 能解析出恰好一个 active slice；默认 three-file backend 要求 task_plan.md 的 范围合同 写清 active slice、non-goals、success criteria 和 verification path</li><li>项目工作面已确认；如果没有 recent bootstrap/workbench 记录，但入口、验证、恢复路径都清楚，可以继续并在 progress.md 说明复用现有工作面</li><li>用户说「实现」「写代码」「修这个 bug」「让测试过」「让它跑起来」</li><li>已经在循环中且当前 slice 还未 verified</li></ul>
+    </div>
+    <div class="panel">
+      <h2>禁用条件</h2>
+      <ul><li>workflow state 不存在或 active slice 不明：先 state-contract / plan</li><li>工作面缺入口、验证、恢复路径或项目地图：先 bootstrap</li><li>失败已经发生且根因不清：转 diagnose</li><li>用户其实在问「应该怎么做」而不是「请做」：转 brainstorm</li></ul>
+    </div>
+    <div class="panel">
+      <h2>先读输入</h2>
+      <ul><li>task_plan.md：确认 范围合同 中的 active slice、non-goals、success criteria、verification path</li><li>progress.md 最新 entry：上次做到哪</li><li>findings.md：accepted spec、rejected options、约束</li><li>与 active slice 直接相关的源代码、测试、配置</li><li>git status --short：避免和未提交改动相互覆盖</li></ul>
+    </div>
+  </section>
+
+  <section class="section panel">
+    <h2>执行流程</h2>
+    <div class="flow">
+      <div class="step">
+        <div class="num">1</div>
+        <div><h3>第 1 步 — 重新对账 active slice</h3><p>实现前最后一次确认：active slice 是不是仍是当前最该做的事？如果上次会话结束后情况变了，回 plan。</p></div>
+      </div><div class="step">
+        <div class="num">2</div>
+        <div><h3>第 2 步 — 选定本次最小步</h3><p>把 active slice 切成一个能在一次 RED→GREEN 内完成的最小步。不要试图一次 commit 完整 slice。</p></div>
+      </div><div class="step">
+        <div class="num">3</div>
+        <div><h3>第 3 步 — 写测试或最小可执行检查</h3><p>按上面的强度表选。结果应该是失败的（RED）。如果一开始就过，说明它没在测真东西。</p></div>
+      </div><div class="step">
+        <div class="num">4</div>
+        <div><h3>第 4 步 — 最小实现</h3><p>写最少的代码让它过。不要顺便做 refactor。</p></div>
+      </div><div class="step">
+        <div class="num">5</div>
+        <div><h3>第 5 步 — 跑相邻验证</h3><p>- 同一模块的其他单测 - 紧邻边界的 integration / smoke - 全量 lint / typecheck / build（如果项目有这些）</p></div>
+      </div><div class="step">
+        <div class="num">6</div>
+        <div><h3>第 6 步 — 重构（可选）</h3><p>只在测试是绿的前提下做。每次 refactor 后再跑测试。</p></div>
+      </div><div class="step">
+        <div class="num">7</div>
+        <div><h3>第 7 步 — 同步 docs 与 workflow state</h3><p>按&quot;文档保鲜&quot;部分的清单确认是否要更新文档；命令变化先改 README / docs，只有稳定验证入口或恢复指针变化才改 AGENTS.md。</p></div>
+      </div><div class="step">
+        <div class="num">8</div>
+        <div><h3>第 8 步 — 写 progress.md entry</h3><p>YYYY-MM-DDTHH:MMZ - Intent: 实现 &lt;小步描述&gt; - Phase: in_progress - Actions: - 写测试 X - 改源码 Y - 同步 docs Z - Files:</p></div>
+      </div><div class="step">
+        <div class="num">9</div>
+        <div><h3>第 9 步 — 决定下一步</h3><p>| 当前情况 | 路径 | | --- | --- | | 还在同一 slice，但有更小步 | 回 第 2 步 | | 当前 slice 完成且稳定 | review | | 准备宣布 ready | verify | | 失败连续 2 次 | diagnose | | 需要暂停 | save-session |</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>输出形态</h2>
+      <pre>``text EXECUTION STEP DONE Active slice: &lt;一句话&gt; This step: &lt;一句话&gt; Risk tier: &lt;unit|integration|smoke|E2E|security&gt; Tests run: - &lt;command -&gt; result&gt; Docs synced: yes|no|n/a Files changed: - ... progress.md updated: yes Next: &lt;repeat|review|verify|diagnose|save-session&gt; ``</pre>
+    </div>
+    <div class="panel">
+      <h2>工件更新</h2>
+      <ul><li>progress.md：每个 step 一条 entry</li><li>findings.md：新增 root cause、约束、风险、deferred cleanup</li><li>task_plan.md：仅在 phase / focus / blocker / next 改变时更新</li><li>源代码 + docs：按上述 step 同步</li></ul>
+    </div>
+  </section>
+
+  <section class="section panel">
+    <h2>路由规则</h2>
+    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>实现失败、根因不清</td><td>diagnose</td></tr><tr><td>当前 slice 稳定，需评审</td><td>review</td></tr><tr><td>准备宣布 ready</td><td>verify</td></tr><tr><td>范围变模糊</td><td>plan 或 brainstorm</td></tr><tr><td>需要暂停</td><td>save-session</td></tr></tbody></table>
+  </section>
+
+  <section class="section grid">
+    <div class="panel">
+      <h2>验收闸门</h2>
+      <ul><li>[ ] active slice 仍是 in_progress 且未越界</li><li>[ ] 测试或等价 focused check 在改之前是失败/未存在的</li><li>[ ] 改完之后是绿的，且相邻验证未 regress</li><li>[ ] 文档 / 命令 / workflow state 已经同步</li><li>[ ] progress.md 有 entry，时间戳与命令真实</li><li>[ ] 下一步 skill 已显式标注</li></ul>
+    </div>
+    <div class="panel">
+      <h2>Progressive Disclosure</h2>
+      <ul><li><a href="../../skills/implement/references/verification-intensity.md">验证强度选择</a><span class="tag">存在</span></li></ul>
+    </div>
+  </section>
+
+  <p class="source-note">本页由 <code>scripts/generate-skill-flow-html.mjs</code> 从 <code>skills/implement/SKILL.md</code> 自动生成。</p>
+</main>
+</body>
+</html>
