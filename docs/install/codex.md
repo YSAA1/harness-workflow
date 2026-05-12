@@ -48,10 +48,10 @@ From a local checkout, register the local repository path as the marketplace sou
 codex plugin marketplace add <path-to-this-repository>
 ```
 
-For this worktree on Windows, the path form is:
+On Windows, use the repository path you cloned:
 
 ```powershell
-codex.cmd plugin marketplace add C:\Users\shash\Desktop\harness_workflow\harness-workflow-codex
+codex.cmd plugin marketplace add C:\path\to\harness-workflow
 ```
 
 Run the repository verifier before trying live recognition:

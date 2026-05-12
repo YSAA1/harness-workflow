@@ -1,0 +1,40 @@
+---
+description: Use plan when an approved Spec or clear non-trivial request must become an Executable Plan.
+globs:
+alwaysApply: false
+---
+
+# Plan
+
+Canonical source: `skills/plan/SKILL.md`.
+
+## When To Use
+
+- An approved Spec needs implementation sequencing.
+- A clear request is non-trivial, multi-step, multi-file, or needs durable recovery.
+- Current planning surface is stale, lacks active slice, or cannot answer next actions.
+
+## Inputs
+
+- Approved Spec, PRD, issue, or explicit small-task request.
+- Existing planning surface, recovery surface, README, `AGENTS.md`, related code, tests, and validation commands.
+- Current dirty state and recent commits.
+
+## Procedure
+
+1. Gate on readiness: goals, non-goals, success criteria, and verification path must be clear.
+2. Choose the planning surface: docs plan, issue, feature-list, existing tracker, lightweight note, or three-file backend.
+3. Write an Executable Plan with objective, active slice, non-goals, success criteria, verification path, phases, next item, commit units, risks, blockers, and handoff.
+4. Ensure exactly one current item is next or in progress.
+5. Stop at the planning boundary unless the user asked to continue.
+
+## Outputs
+
+- Executable Plan in the selected planning surface.
+- Clear next skill: usually `implement`, `diagnose`, or `harness-builder`.
+
+## Verification / Done Criteria
+
+- The plan is specific enough for another agent to resume without chat history.
+- It preserves WIP=1 and does not create a second recovery surface by default.
+- Every phase has an action and verification meaning.

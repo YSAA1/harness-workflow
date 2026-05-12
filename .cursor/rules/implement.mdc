@@ -1,0 +1,44 @@
+---
+description: Use implement when a scoped feature, bugfix, refactor, or docs change is ready to execute.
+globs:
+alwaysApply: false
+---
+
+# Implement
+
+Canonical source: `skills/implement/SKILL.md`.
+
+## When To Use
+
+- The user request, Spec, or Executable Plan gives one clear active slice.
+- Project entry, protected paths, and verification path are clear enough.
+- The user asks to implement, fix, wire, update, or make checks pass.
+
+## Inputs
+
+- Active slice, non-goals, success criteria, verification path, and selected recovery surface.
+- Related source, tests, docs, configs, README, and project rules.
+- `git status --short` to avoid overwriting unrelated work.
+
+## Procedure
+
+1. Reconcile active slice, non-goals, and verification path before editing.
+2. Keep WIP=1. Do not expand scope until the current slice is verified or explicitly replanned.
+3. Choose the smallest step that can be checked.
+4. Add or run a focused failing check when practical.
+5. Make the smallest implementation needed.
+6. Run adjacent validation and refactor only while green.
+7. Sync docs and selected recovery surface when behavior, commands, config, APIs, or validation entry points change.
+8. Route unexplained repeated failures to `diagnose`.
+
+## Outputs
+
+- Scoped code or document changes.
+- Fresh command evidence for the step.
+- Updated docs or recovery surface only when required by the change.
+
+## Verification / Done Criteria
+
+- The current slice has not crossed non-goals.
+- Focused checks cover the behavior at a risk-appropriate level.
+- Relevant checks pass after the latest change.

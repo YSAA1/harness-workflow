@@ -1,0 +1,45 @@
+---
+description: Use Harness Builder when the project workbench, verification entry, Capability Discovery, or recovery surface needs to be created or repaired.
+globs:
+alwaysApply: false
+---
+
+# Harness Builder
+
+Canonical source: `skills/harness-builder/SKILL.md`.
+
+## When To Use
+
+- The user asks to initialize, bootstrap, create project rules, onboard agents, build a harness, or repair the workbench.
+- Project entry, protected paths, verification commands, recovery surface, or Capability Discovery are unclear.
+- The task needs project-local skills, hooks, MCP policy, subagents, or anti-entropy rules evaluated.
+
+## Inputs
+
+- User intent and repository evidence.
+- Existing `AGENTS.md`, README, docs, scripts, and project rules.
+- Current verification commands and any selected recovery surface.
+- Official or mature external references only when current external facts matter.
+
+## Procedure
+
+1. Collect repository evidence before generating files.
+2. Identify known facts, unknowns, protected paths, verification signals, and recovery options.
+3. Produce a Harness Hypothesis when important gaps remain.
+4. Run Capability Discovery only for capabilities that materially help verification, observability, automation, or domain work.
+5. Classify candidates as Required, Recommended, Deferred, or Rejected by value, enablement, risk/cost, and fallback.
+6. Choose or repair the recovery surface as a semantic contract; do not force three-file state.
+7. Install only approved project-local components.
+8. Verify the installed harness with the narrowest real command.
+
+## Outputs
+
+- Harness Hypothesis or Harness Plan.
+- Project-local rules, docs, validation entry points, and recovery-surface declaration when approved.
+- Capability Discovery decisions with rejected and deferred options.
+
+## Verification / Done Criteria
+
+- The repository has a clear project map, hard rules, verification entry, and recovery path when needed.
+- No user-global config, hooks, MCP, or extensions were added without explicit approval.
+- The chosen check command ran successfully, or the blocker is concrete.

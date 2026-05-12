@@ -1,122 +1,177 @@
 # Harness Workflow
 
-`harness-workflow` 是本地 Codex plugin，把 Learn Harness Engineering 的稳定方法落成一组独立 workflow skills。它的重点不是固定线性流程，而是让 agent 工作具备项目入口、清晰边界、验证闸门、恢复路径和知识收尾纪律。
+[简体中文](README.zh-CN.md)
 
-## Canonical Skill Set
+<p align="center">
+  <img src="docs/assets/readme/harness-workflow-icon.png" alt="Harness Workflow icon" width="120">
+</p>
 
-暴露的 active skills 只有 8 个：
+![Harness Workflow hero](docs/assets/readme/harness-workflow-hero.png)
 
-- `harness-builder`：设计或修复项目级 harness 和 recovery surface。历史说法 "bootstrap" 只作为触发词或别名。
-- `brainstorm`：把不清楚的需求收敛成独立 **Spec**。
-- `plan`：把已批准 Spec 或明确请求写成 **Executable Plan**。
-- `implement`：按 WIP=1 推进 scoped change，并按风险做 RED -> GREEN -> REFACTOR。
-- `diagnose`：复现失败、验证 hypothesis、命名 root cause、做最小修复。
-- `review`：检查正确性、范围、设计风险、缺失测试和 Spec/plan 不一致。
-- `verify`：为具体 ready claim 收集 fresh evidence。
-- `cleanup`：做 **Knowledge Cleanup**，对齐 README、AGENTS.md、docs、生成物和 recovery surface。
+`harness-workflow` packages the Learn Harness Engineering operating model as reusable workflow instructions for AI coding agents. It gives an agent a practical workbench: project entry points, scoped planning, fresh verification, recovery surfaces, and cleanup discipline.
 
-`state-contract`、`resume`、`save-session` 不再作为暴露 skill。它们的有用思想已经迁入 Harness Builder recovery policy 和 Cleanup handoff hygiene。
+The repository supports three agent surfaces:
 
-## Claude Code Support
+| Surface | Runtime shape | Primary entry | Recognition target |
+| --- | --- | --- | --- |
+| Codex | Native plugin + skills | `.codex-plugin/plugin.json` + `skills/` | Plugin `harness-workflow` and 8 bundled skills |
+| Claude Code | Project skills + local plugin | `.claude/skills/` and `.claude-plugin/plugin.json` | `/skill-name` or `/harness-workflow:skill-name` |
+| Cursor | Project Rules adapter | `.cursor/rules/*.mdc` | Harness Workflow rules in Cursor Project Rules |
 
-本仓库同时提供 Claude Code 识别面：
+Codex is the native plugin target. Claude Code and Cursor are first-class adapters with their own install and recognition paths; they do not read the Codex manifest.
 
-- Project skills：`.claude/skills/*`，在本项目中可直接用 `/harness-builder`、`/brainstorm`、`/plan`、`/implement`、`/diagnose`、`/review`、`/verify`、`/cleanup`。
-- 本地 plugin：`.claude-plugin/plugin.json` + 根目录 `skills/*`，用 `claude --plugin-dir .` 启动后可通过 `/harness-workflow:harness-builder` 等 namespace 调用。
+## Why This Exists
 
-Claude Code 不读取 `.codex-plugin/plugin.json`；Codex manifest 和 Claude Code manifest 分开维护。完整安装、识别、更新和卸载说明见 `docs/install/claude-code.md`。
+Most agent failures are not model failures alone. They come from missing project maps, unclear scope, weak verification, invisible state, and stale documentation. Harness Workflow turns those concerns into small reusable workflows instead of one giant prompt.
 
-## Workflow Map
+```mermaid
+flowchart LR
+  A[Unclear request] --> B[brainstorm: Spec]
+  B --> C[plan: Executable Plan]
+  C --> D[implement: WIP=1 scoped change]
+  D --> E[review: correctness and scope]
+  E --> F[verify: fresh evidence]
+  F --> G[cleanup: knowledge stays current]
+  H[harness-builder] --> B
+  H --> C
+  H --> D
+  D --> I[diagnose: reproduce and root cause]
+  I --> D
+```
 
-- 需求不清：`brainstorm` -> Spec。
-- Spec 已批准或请求足够明确：`plan` -> Executable Plan。
-- 项目入口、验证命令、Capability Discovery 或 recovery surface 不清：`harness-builder`。
-- 可以动手：`implement`。
-- 失败根因不清：`diagnose`。
-- 改动稳定但未宣布 ready：`review`。
-- 需要证明 ready：`verify`。
-- 收尾、防文档腐化、同步生成物：`cleanup`。
+## Quick Install
 
-这些 skill 是条件路由，不是强制全局顺序。简单任务可以直接实现并验证；非平凡任务再选择合适的 recovery surface。
+### Codex
 
-## Recovery Surface
-
-Recovery surface 是让未来 agent 不依赖聊天记录也能恢复工作的项目工件。Three-file backend 仍然保留，但只是一个选项：
-
-- `none`：简单一次性任务。
-- `lightweight`：只需要范围和关键证据。
-- `three-file`：多步、高风险、跨会话或多 agent 工作，使用 `task_plan.md` / `progress.md` / `findings.md`。
-- `feature-list`：多个产品 feature 独立推进。
-- `existing`：复用项目已有 issue、roadmap、PROJECT.md 或内部任务系统。
-
-其他 skills 读取的是 selected recovery surface 中的语义字段：`active_slice`、`non_goals`、`success_criteria`、`verification_path`、`evidence_log`、`decisions`、`risks`、`blockers`、`next_actions`。不要把这些语义强绑到某三个文件。
-
-## Capability Discovery
-
-Harness Builder 先判断当前任务需要什么能力，再做 discovery：
-
-- skill 能力：调用 `$find-skills` 搜索强相关可复用 skills，不把当前已安装目录当成边界。
-- MCP、hooks、外部 agent 能力：用 targeted web search 查官方文档、成熟实现或任务相关方案。
-- 只有当能力对验证、可观测性、自动化或领域能力明显有价值时，才进入 `Required` 或 `Recommended`。
-- 不确定或只是可能有用的能力记录为 `Deferred`，不安装。
-
-## Codex Install
-
-Codex is the native plugin target. Quick install from the published GitHub source:
+Use this repository as a Codex plugin source after publishing or cloning:
 
 ```bash
 codex plugin marketplace add <owner>/<repo>
 node scripts/check-plugin.mjs
 ```
 
-安装后确认插件名为 `harness-workflow`，并能识别 8 个 active skills。完整安装、识别、更新和卸载说明见 [docs/install/codex.md](docs/install/codex.md)。
+Successful recognition means Codex sees plugin `harness-workflow` and the 8 active skills listed below. See [docs/install/codex.md](docs/install/codex.md).
+
+### Claude Code
+
+Open the repository with Claude Code. Project skills are available from `.claude/skills/`:
+
+```text
+/harness-builder
+/brainstorm
+/plan
+/implement
+/diagnose
+/review
+/verify
+/cleanup
+```
+
+For local plugin testing:
+
+```bash
+claude --plugin-dir .
+```
+
+Then invoke namespaced skills such as `/harness-workflow:harness-builder`. See [docs/install/claude-code.md](docs/install/claude-code.md).
+
+### Cursor
+
+Open the repository in Cursor. The `.cursor/rules/*.mdc` files are Project Rules, versioned with the repo:
+
+```bash
+node scripts/check-cursor-install.mjs
+```
+
+Cursor support is a rules adapter, not a Codex plugin runtime. The repository intentionally does not use legacy `.cursorrules` as the main path. See [docs/install/cursor.md](docs/install/cursor.md).
+
+## Workflow Skills
+
+| Skill | Use When | Output |
+| --- | --- | --- |
+| `harness-builder` | The project workbench, verification entry, Capability Discovery, or recovery surface is unclear | Harness Hypothesis and project-local harness plan |
+| `brainstorm` | The requirement is fuzzy or has multiple valid interpretations | Approved Spec |
+| `plan` | A Spec is approved or the request is already clear | Executable Plan |
+| `implement` | The next scoped change is ready to build | Minimal verified code/doc change |
+| `diagnose` | A failure, regression, or unknown root cause blocks progress | Reproduction, root cause, minimal fix, evidence |
+| `review` | A change needs correctness, scope, design, and test scrutiny | Findings and residual risk |
+| `verify` | A ready claim needs proof | Fresh evidence for a specific claim |
+| `cleanup` | Work is done and project knowledge may drift | Updated docs, generated artifacts, and handoff notes |
+
+`state-contract`, `resume`, and `save-session` are not active skills. Their useful ideas live in Harness Builder recovery policy and Cleanup handoff hygiene.
+
+## Recovery Surface
+
+A recovery surface is the durable place future agents use instead of chat history. It is semantic, not tied to one file layout.
+
+| Backend | Use For | Typical Artifacts |
+| --- | --- | --- |
+| `none` | Simple one-turn work | Current request and git diff |
+| `lightweight` | Small tasks needing only scope and evidence | Existing docs or short notes |
+| `three-file` | Multi-step, risky, or cross-session work | `task_plan.md`, `progress.md`, `findings.md` |
+| `feature-list` | Many independent product features | Feature tracker or structured list |
+| `existing` | Repos with their own tracker | Issues, roadmap, project docs, internal system |
+
+All skills read the same semantic fields when available: `active_slice`, `non_goals`, `success_criteria`, `verification_path`, `evidence_log`, `decisions`, `risks`, `blockers`, and `next_actions`.
 
 ## Method Contract
 
 | Contract | Meaning | Primary skills |
 | --- | --- | --- |
-| C1 Harness as system | agent performance comes from surrounding systems, not prompts alone | `harness-builder`, `diagnose` |
-| C2 Repository as truth | repository artifacts and recovery surface are the durable truth | all skills |
+| C1 Harness as system | Agent performance comes from surrounding systems, not prompts alone | `harness-builder`, `diagnose` |
+| C2 Repository as truth | Repository artifacts and recovery surface are the durable truth | All skills |
 | C3 Thin instruction surface | `AGENTS.md` stays a thin rule entry | `harness-builder`, `cleanup` |
-| C4 Workbench before implementation | project map, verification entry and recovery path must be clear when needed | `harness-builder` |
-| C5 Scoped work | work is bounded by Spec, Executable Plan and WIP=1 | `brainstorm`, `plan`, `implement` |
-| C6 Fresh evidence | ready claims require current evidence | `review`, `verify`, `diagnose` |
-| C7 Capability fit | add skills, MCP, hooks or subagents only when value beats risk | `harness-builder`, `verify` |
-| C8 Artifact freshness | docs, commands and generated files must match code | `review`, `cleanup` |
-| C9 Knowledge Cleanup | close work by reducing drift and entropy | `cleanup` |
-| C10 Backend decoupling | recovery surface is semantic; three-file is optional | `harness-builder`, all skills |
+| C4 Workbench before implementation | Project map, verification entry, and recovery path must be clear when needed | `harness-builder` |
+| C5 Scoped work | Work is bounded by Spec, Executable Plan, and WIP=1 | `brainstorm`, `plan`, `implement` |
+| C6 Fresh evidence | Ready claims require current evidence | `review`, `verify`, `diagnose` |
+| C7 Capability fit | Add skills, MCP, hooks, or subagents only when value beats risk | `harness-builder`, `verify` |
+| C8 Artifact freshness | Docs, commands, and generated files must match code | `review`, `cleanup` |
+| C9 Knowledge Cleanup | Close work by reducing drift and entropy | `cleanup` |
+| C10 Backend decoupling | Recovery surface is semantic; three-file is optional | `harness-builder`, all skills |
 
-## Verification
+## Validation
 
-默认验证命令：
+Run the full repository-side recognition checks before publishing:
 
 ```bash
 node scripts/check-plugin.mjs
-```
-
-Claude Code 适配验证：
-
-```bash
 node scripts/check-claude-code-install.mjs
+node scripts/check-cursor-install.mjs
 ```
 
-修改 skill graph、`SKILL.md` 结构或 flow 生成逻辑后运行：
+If you modify skill structure or the generated flow review:
 
 ```bash
 node scripts/generate-skill-flow-html.mjs
 node scripts/check-plugin.mjs
 ```
 
-`docs/skill-flow-review/*.html` 是生成物，不要手改。
+`docs/skill-flow-review/*.html` is generated. Update the generator, then rebuild.
 
 ## Repository Map
 
-- `.codex-plugin/plugin.json`：plugin metadata 和 default prompts。
-- `skills/*/SKILL.md`：active workflow skill 入口。
-- `skills/*/references/`：按需读取的 policy 和 checklist。
-- `skills/plan/templates/`：three-file backend 模板，只有选中该 backend 时使用。
-- `docs/harness-method-contract.md`：C1-C10 方法契约。
-- `docs/skill-flow-review/`：由生成脚本创建的 skill flow HTML。
-- `scripts/check-plugin.mjs`：插件结构和术语一致性检查。
-- `scripts/check-claude-code-install.mjs`：Claude Code project skills 与本地 plugin 识别面检查。
-- `scripts/generate-skill-flow-html.mjs`：重新生成 skill flow HTML。
+| Path | Purpose |
+| --- | --- |
+| `.codex-plugin/plugin.json` | Codex plugin metadata and default prompts |
+| `.claude-plugin/plugin.json` | Claude Code local plugin metadata |
+| `.claude/skills/` | Claude Code project skills copy |
+| `.cursor/rules/` | Cursor Project Rules adapter |
+| `skills/*/SKILL.md` | Canonical workflow skill source |
+| `skills/*/references/` | Detailed policy and checklist files |
+| `skills/plan/templates/` | Optional three-file backend templates |
+| `docs/install/` | Per-surface installation and recognition guides |
+| `docs/harness-method-contract.md` | C1-C10 method contract |
+| `docs/skill-flow-review/` | Generated skill flow review HTML |
+| `scripts/check-*.mjs` | Repository-side recognition and consistency checks |
+
+## Publishing Checklist
+
+1. Run all validation commands.
+2. Confirm the README and install docs describe the same three surfaces.
+3. Confirm no default MCP, hooks, user-level config, or hidden install side effects were added.
+4. Create a public GitHub repository and push.
+5. Perform live recognition where available: Codex plugin listing, Claude Code skill menu, Cursor Project Rules UI.
+
+## License
+
+MIT.
