@@ -17,6 +17,15 @@
 
 `state-contract`、`resume`、`save-session` 不再作为暴露 skill。它们的有用思想已经迁入 Harness Builder recovery policy 和 Cleanup handoff hygiene。
 
+## Claude Code Support
+
+本仓库同时提供 Claude Code 识别面：
+
+- Project skills：`.claude/skills/*`，在本项目中可直接用 `/harness-builder`、`/brainstorm`、`/plan`、`/implement`、`/diagnose`、`/review`、`/verify`、`/cleanup`。
+- 本地 plugin：`.claude-plugin/plugin.json` + 根目录 `skills/*`，用 `claude --plugin-dir .` 启动后可通过 `/harness-workflow:harness-builder` 等 namespace 调用。
+
+Claude Code 不读取 `.codex-plugin/plugin.json`；Codex manifest 和 Claude Code manifest 分开维护。完整安装、识别、更新和卸载说明见 `docs/install/claude-code.md`。
+
 ## Workflow Map
 
 - 需求不清：`brainstorm` -> Spec。
@@ -85,6 +94,12 @@ node scripts/check-plugin.mjs
 node scripts/check-plugin.mjs
 ```
 
+Claude Code 适配验证：
+
+```bash
+node scripts/check-claude-code-install.mjs
+```
+
 修改 skill graph、`SKILL.md` 结构或 flow 生成逻辑后运行：
 
 ```bash
@@ -103,4 +118,5 @@ node scripts/check-plugin.mjs
 - `docs/harness-method-contract.md`：C1-C10 方法契约。
 - `docs/skill-flow-review/`：由生成脚本创建的 skill flow HTML。
 - `scripts/check-plugin.mjs`：插件结构和术语一致性检查。
+- `scripts/check-claude-code-install.mjs`：Claude Code project skills 与本地 plugin 识别面检查。
 - `scripts/generate-skill-flow-html.mjs`：重新生成 skill flow HTML。
