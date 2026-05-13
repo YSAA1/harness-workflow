@@ -98,6 +98,12 @@ for (const skill of activeSkills) {
 for (const skill of removedSkills) {
   if (exists(skillPath(skill))) fail(`removed skill still exposed: ${skill}`);
 }
+if (exists("skills/harness-builder/references/legacy-bootstrap/SKILL.md")) {
+  fail("legacy bootstrap reference must not be named SKILL.md; recursive skill scanners may expose it");
+}
+if (!exists("skills/harness-builder/references/legacy-bootstrap/bootstrap-legacy.md")) {
+  fail("legacy bootstrap reference document is missing");
+}
 if (!process.exitCode) pass("active skill set matches boundary model plus helper skills");
 
 for (const skill of activeSkills) {

@@ -3,6 +3,9 @@ name: bootstrap
 description: "当 spec/plan 之后项目工作面还不清楚，或从空项目/陌生仓库启动非平凡实现时使用。典型触发语：准备开工、检查项目工作面、搭项目地图、补 AGENTS.md、创建三文件、确认验证路径、git 初始化、baseline commit、阶段提交规则、安装依赖、配置项目 MCP、推荐 Playwright MCP 或其他能力。进入 implement 前必须能说明薄 AGENTS.md、三文件、项目地图、验证路径、依赖/MCP、git/root/dirty 状态、恢复入口和能力缺口；若这些已有且未漂移，可跳过本 skill。"
 ---
 
+> Historical reference only. Do not install or expose this file as a skill.
+> The active entry is `skills/harness-builder/SKILL.md`.
+
 # 项目工作面准备
 
 本 skill 把"准备好动工"从隐性默契变成显式项目工作面检查。它通常在 `brainstorm` 的 spec 被批准、`plan` 写好之后、`implement` 之前运行；如果仓库是空项目或刚接手的陌生项目，也可以先用它搭起最小 harness 工作面，再回到 `plan` 补执行计划。若项目工作面已有 fresh evidence 且未漂移，`implement` 可以复用现状并在 `progress.md` 说明，不必重复跑全套 audit。
