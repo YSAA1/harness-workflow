@@ -148,6 +148,7 @@ for (const skill of activeSkills) {
     fail(`${skill} frontmatter name mismatch`);
   }
   if (!/description:\s*/.test(body)) fail(`${skill} missing description`);
+  if (!body.includes("## Recommended next skill")) fail(`${skill} missing Recommended next skill section`);
 }
 if (!process.exitCode) pass("skill frontmatter is valid");
 

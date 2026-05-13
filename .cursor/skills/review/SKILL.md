@@ -115,6 +115,19 @@ Next:
   - Skill: <implement | diagnose | verify | cleanup | plan>
 ```
 
+## Recommended next skill
+
+Use review findings to route the next lane; review itself should not quietly become implementation.
+
+| Situation | Recommended next skill |
+| --- | --- |
+| Pass, but fresh evidence is missing or stale | `verify` |
+| Pass and evidence is already fresh | `cleanup` |
+| Correctness, docs, or scope findings need edits | `implement` |
+| A finding needs root-cause work before a fix | `diagnose` |
+| The implementation no longer matches the plan or Spec | `plan` |
+| Missing verification capability blocks confidence | `harness-builder` |
+
 ## 常见反模式
 
 - **鼓励性总结，无证据。**

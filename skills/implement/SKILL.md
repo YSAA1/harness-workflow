@@ -122,6 +122,18 @@ Files changed:
 Next: <repeat|review|verify|diagnose|plan>
 ```
 
+## Recommended next skill
+
+Pick the next lane from current evidence instead of defaulting to more implementation.
+
+| Situation | Recommended next skill |
+| --- | --- |
+| Same active slice still has scoped work left | `implement` |
+| Meaningful code or docs changed and local checks are stable | `review` |
+| Tiny low-risk change is complete and review would add little signal | `verify` |
+| Checks fail twice, errors change, or root cause is unclear | `diagnose` |
+| Scope, success criteria, or active slice no longer matches reality | `plan` |
+
 ## 常见反模式
 
 - **顺手清理无关代码。** 那是 scope creep；写到 deferred cleanup。

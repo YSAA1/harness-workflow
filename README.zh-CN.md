@@ -63,6 +63,8 @@ node scripts/check-cursor-install.mjs
 
 这个 adapter 会安装 `.cursor/rules/` 和 `.cursor/skills/`；本仓库也把同一套 Cursor 预览面提交进来，包括 `find-skills`。它不依赖 legacy `.cursorrules`。详见 [docs/install/cursor.md](docs/install/cursor.md)。
 
+Codex 会把这个仓库当作 GitHub marketplace 读取，然后从 `plugins/harness-workflow/` 安装真正的插件包。根目录 `skills/` 仍然是 canonical 编辑面；`node scripts/check-plugin.mjs` 会检查 packaged copy 是否和根目录漂移。
+
 ## 为什么需要它
 
 很多开源 agent workflow 会给一条漂亮顺序：收集需求、写计划、改代码、review、verify。这条顺序有用，但它经常把真正难的部分留空。
@@ -156,17 +158,17 @@ docs/research/iteration_protocol.md
 
 ## Skill map
 
-| Skill | 什么时候用 | 应该留下什么 |
-| --- | --- | --- |
-| `brainstorm` | 目标、边界、取舍或成功标准还不够清楚。 | 聚焦的 spec：goals、non-goals、考虑过的方案、成功标准和验证策略。 |
-| `plan` | spec 或用户请求已经清楚，可以选择第一个可执行 slice。 | 写入 selected planning surface 的计划，包括 active slice、proof path 和 commit-sized work units。 |
-| `harness-builder` | 仓库缺少可靠工作台、恢复面、验证入口或能力决策。 | 基于仓库证据的最小 project-local harness plan，以及经过批准安装的组件。 |
-| `implement` | 一个 slice 已经 ready，项目工作面也足够清楚。 | 小范围改动，以及本地检查证据；如果检查不能跑，要说明原因。 |
-| `diagnose` | build、test、lint、typecheck、CI 或运行时行为失败，且根因未知。 | 复现、一个已验证假设、根因、最小修复和回归证据。 |
-| `review` | 有意义的改动已经稳定，需要在 ready 前检查。 | 关于正确性、测试缺口、文档漂移、范围膨胀和残余风险的 findings。 |
-| `verify` | agent 准备声明 work ready。 | 绑定具体成功标准的 fresh evidence。 |
-| `cleanup` | 工作完成、阻塞、放弃或准备交接。 | 更新后的项目知识、清理后的残留物，以及下个 agent 能读的恢复状态。 |
-| `find-skills` | 当前任务可能受益于已有可复用 skill。 | 搜索候选 skill，并在推荐或安装前检查质量。 |
+| Skill | 什么时候用 | 应该留下什么 | 推荐下一步 |
+| --- | --- | --- | --- |
+| `brainstorm` | 目标、边界、取舍或成功标准还不够清楚。 | 聚焦的 spec：goals、non-goals、考虑过的方案、成功标准和验证策略。 | `plan`，如果任务本身是 harness 设计则转 `harness-builder` |
+| `plan` | spec 或用户请求已经清楚，可以选择第一个可执行 slice。 | 写入 selected planning surface 的计划，包括 active slice、proof path 和 commit-sized work units。 | 工作台缺失时转 `harness-builder`，否则转 `implement` |
+| `harness-builder` | 仓库缺少可靠工作台、恢复面、验证入口或能力决策。 | 基于仓库证据的最小 project-local harness plan，以及经过批准安装的组件。 | `verify`，再进入 `implement` 或 `cleanup` |
+| `implement` | 一个 slice 已经 ready，项目工作面也足够清楚。 | 小范围改动，以及本地检查证据；如果检查不能跑，要说明原因。 | 有意义改动转 `review`，小改动可直接 `verify` |
+| `diagnose` | build、test、lint、typecheck、CI 或运行时行为失败，且根因未知。 | 复现、一个已验证假设、根因、最小修复和回归证据。 | 需要修复时转 `implement`，已修好时转 `verify` |
+| `review` | 有意义的改动已经稳定，需要在 ready 前检查。 | 关于正确性、测试缺口、文档漂移、范围膨胀和残余风险的 findings。 | 通过后转 `verify`，有 findings 转 `implement` 或 `diagnose` |
+| `verify` | agent 准备声明 work ready。 | 绑定具体成功标准的 fresh evidence。 | 通过转 `cleanup`，失败或缺能力转 `diagnose` / `harness-builder` |
+| `cleanup` | 工作完成、阻塞、放弃或准备交接。 | 更新后的项目知识、清理后的残留物，以及下个 agent 能读的恢复状态。 | stop，或把明确 follow-up 交给 `plan` / `implement` |
+| `find-skills` | 当前任务可能受益于已有可复用 skill。 | 搜索候选 skill，并在推荐或安装前检查质量。 | 要纳入项目能力时转 `harness-builder` |
 
 ## 常见路径
 
@@ -255,6 +257,7 @@ claude plugin validate .
 | --- | --- |
 | `skills/*/SKILL.md` | canonical workflow skill source。 |
 | `skills/*/references/` | 按需读取的 checklist 和 policy notes。 |
+| `plugins/harness-workflow/` | GitHub marketplace 使用的 Codex 可安装插件包。 |
 | `.codex-plugin/` | Codex plugin metadata。 |
 | `.claude-plugin/` | Claude Code plugin metadata 和 marketplace entry。 |
 | `.cursor-plugin/`, `rules/`, `.cursor/rules/` | Cursor plugin 和 project-rule adapter surface。 |

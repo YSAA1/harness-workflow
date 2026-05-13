@@ -122,6 +122,17 @@ Next skill: <implement | diagnose | harness-builder>
 Reason: <一句话>
 ```
 
+## Recommended next skill
+
+Use this as a routing recommendation, not as permission to keep working after plan output unless the user asked to continue.
+
+| Situation | Recommended next skill |
+| --- | --- |
+| Repo workbench, recovery surface, or verification entry is missing | `harness-builder` |
+| Active slice is clear and the workbench is adequate | `implement` |
+| The plan starts from a failing command without root-cause evidence | `diagnose` |
+| The plan is only a proof or release-readiness check | `verify` |
+
 ## 常见反模式
 
 - **用 plan 补问需求。** 如果 goals、non-goals 或 verification strategy 不清楚，回 `brainstorm`。

@@ -63,6 +63,8 @@ node scripts/check-cursor-install.mjs
 
 The adapter installs `.cursor/rules/` and `.cursor/skills/`; this repo checks in the same Cursor preview surface, including `find-skills`. It does not depend on legacy `.cursorrules`. See [docs/install/cursor.md](docs/install/cursor.md).
 
+Codex reads this repository as a GitHub marketplace, then installs the actual plugin package from `plugins/harness-workflow/`. The root `skills/` directory remains the canonical editing surface; `node scripts/check-plugin.mjs` verifies that the packaged copy has not drifted.
+
 ## Why this exists
 
 Most open-source agent workflows describe a nice sequence: gather requirements, write a plan, change code, review, verify. That sequence helps, but it leaves several hard parts underspecified.
@@ -156,17 +158,17 @@ Failed code should not accumulate forever. Research Route records the failure re
 
 ## Skill map
 
-| Skill | Use it when | What it should leave behind |
-| --- | --- | --- |
-| `brainstorm` | The goal, boundary, tradeoff, or success criteria is not clear enough to plan. | A focused spec: goals, non-goals, options considered, success criteria, and verification strategy. |
-| `plan` | The spec or user request is clear enough to choose a first executable slice. | A plan in the selected planning surface, with active slice, proof path, and commit-sized work units. |
-| `harness-builder` | The repo lacks a reliable workbench, recovery surface, verification entry point, or capability decision. | A minimal project-local harness plan and approved installed components, grounded in repo evidence. |
-| `implement` | One slice is ready and the workbench is clear enough to change files. | A small scoped change, with local checks or a clear reason checks cannot run. |
-| `diagnose` | A build, test, lint, typecheck, CI run, or runtime behavior fails without a known root cause. | Reproduction, one tested hypothesis, root cause, minimal fix, and regression evidence. |
-| `review` | A meaningful change looks stable and needs scrutiny before a ready claim. | Findings about correctness, missed tests, docs drift, scope creep, and residual risk. |
-| `verify` | The agent wants to say the work is ready. | Fresh evidence tied to the exact success criteria. |
-| `cleanup` | Work is done, blocked, abandoned, or being handed off. | Updated project knowledge, removed leftovers, and a recovery state the next agent can read. |
-| `find-skills` | The current task may benefit from an existing reusable skill. | Search and quality checks before recommending or installing a skill. |
+| Skill | Use it when | What it should leave behind | Recommended next |
+| --- | --- | --- | --- |
+| `brainstorm` | The goal, boundary, tradeoff, or success criteria is not clear enough to plan. | A focused spec: goals, non-goals, options considered, success criteria, and verification strategy. | `plan`, or `harness-builder` for direct harness work |
+| `plan` | The spec or user request is clear enough to choose a first executable slice. | A plan in the selected planning surface, with active slice, proof path, and commit-sized work units. | `harness-builder` when the workbench is missing; otherwise `implement` |
+| `harness-builder` | The repo lacks a reliable workbench, recovery surface, verification entry point, or capability decision. | A minimal project-local harness plan and approved installed components, grounded in repo evidence. | `verify`, then `implement` or `cleanup` |
+| `implement` | One slice is ready and the workbench is clear enough to change files. | A small scoped change, with local checks or a clear reason checks cannot run. | `review` for meaningful changes; `verify` for tiny changes |
+| `diagnose` | A build, test, lint, typecheck, CI run, or runtime behavior fails without a known root cause. | Reproduction, one tested hypothesis, root cause, minimal fix, and regression evidence. | `implement` for the fix, or `verify` when already fixed |
+| `review` | A meaningful change looks stable and needs scrutiny before a ready claim. | Findings about correctness, missed tests, docs drift, scope creep, and residual risk. | `verify` on pass; `implement` or `diagnose` on findings |
+| `verify` | The agent wants to say the work is ready. | Fresh evidence tied to the exact success criteria. | `cleanup` on pass; `diagnose` or `harness-builder` on gaps |
+| `cleanup` | Work is done, blocked, abandoned, or being handed off. | Updated project knowledge, removed leftovers, and a recovery state the next agent can read. | stop, or reopen with `plan` / `implement` for explicit follow-up |
+| `find-skills` | The current task may benefit from an existing reusable skill. | Search and quality checks before recommending or installing a skill. | `harness-builder` when adopting a project capability |
 
 ## Common routes
 
@@ -255,6 +257,7 @@ claude plugin validate .
 | --- | --- |
 | `skills/*/SKILL.md` | Canonical workflow skill source. |
 | `skills/*/references/` | Extra checklists and policy notes loaded only when needed. |
+| `plugins/harness-workflow/` | Codex-installable plugin package used by the GitHub marketplace. |
 | `.codex-plugin/` | Codex plugin metadata. |
 | `.claude-plugin/` | Claude Code plugin metadata and marketplace entry. |
 | `.cursor-plugin/`, `rules/`, `.cursor/rules/` | Cursor plugin and project-rule adapter surface. |

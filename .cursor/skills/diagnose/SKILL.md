@@ -106,6 +106,18 @@ Recovery surface updated: yes|no|n/a
 Next: <implement | review | verify | blocker>
 ```
 
+## Recommended next skill
+
+Route based on what the diagnosis proved; do not keep debugging after a single root cause is established.
+
+| Situation | Recommended next skill |
+| --- | --- |
+| Root cause is proven and the fix still needs code changes | `implement` |
+| Fix was applied and the change is meaningful | `review` |
+| Fix was applied and only fresh proof remains | `verify` |
+| Root cause points to missing tooling, environment, MCP, hook, or recovery surface | `harness-builder` |
+| Diagnosis changes task scope or success criteria | `plan` |
+
 ## 常见反模式
 
 - **多假设并发。** 每轮只一个 hypothesis。

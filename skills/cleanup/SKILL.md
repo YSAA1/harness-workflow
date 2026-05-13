@@ -138,6 +138,18 @@ Next:
   - <done | implement | diagnose | plan | harness-builder>
 ```
 
+## Recommended next skill
+
+Cleanup is normally the closing lane. Recommend another skill only when the cleanup pass found real unfinished work.
+
+| Situation | Recommended next skill |
+| --- | --- |
+| Artifacts, docs, recovery surface, and git state are clean enough | stop |
+| Deferred follow-up is concrete and planned work is needed | `plan` |
+| A small leftover fix is in scope and safe | `implement` |
+| Cleanup found a failing command or unexplained drift | `diagnose` |
+| Cleanup found a missing recovery surface, capability, hook, MCP, or project rule | `harness-builder` |
+
 ## 常见反模式
 
 - **Using cleanup to hide unfinished work.**

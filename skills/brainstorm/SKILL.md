@@ -124,6 +124,17 @@ Needs user review:
   - Pause -> use the selected recovery surface only if needed
 ```
 
+## Recommended next skill
+
+These recommendations guide handoff; do not invoke the next skill automatically before the user approves the Spec.
+
+| Situation | Recommended next skill |
+| --- | --- |
+| Spec approved and implementation needs planning | `plan` |
+| User is explicitly designing or repairing the project harness | `harness-builder` |
+| Spec exposes missing skills, MCP, hooks, or verification capability | `plan`, then `harness-builder` if the capability affects execution |
+| User pauses before approval | selected recovery surface only |
+
 ## 常见反模式
 
 - **只问一个问题就收敛。** 一条消息只问一个问题，不等于整个 brainstorm 只能问一个问题。

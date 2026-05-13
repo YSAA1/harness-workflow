@@ -20,6 +20,17 @@ Use this skill when the user:
 - Wants to search for tools, templates, or workflows
 - Mentions they wish they had help with a specific domain (design, testing, deployment, etc.)
 
+## Recommended next skill
+
+This helper only discovers candidates. Adoption belongs to the workflow lane that owns the current gap.
+
+| Situation | Recommended next skill |
+| --- | --- |
+| A reusable skill should become part of this project's harness | `harness-builder` |
+| The skill is only needed once and no install is justified | return to the calling skill |
+| Search finds no trustworthy candidate | return to `harness-builder` or continue with the existing plan |
+| Installed or adopted skill changes the verification path | `verify` |
+
 ## What is the Skills CLI?
 
 The Skills CLI (`npx skills`) is the package manager for the open agent skills ecosystem. Skills are modular packages that extend agent capabilities with specialized knowledge, workflows, and tools.

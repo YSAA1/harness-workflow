@@ -230,3 +230,17 @@ Always state:
 - what future failure would justify adding more harness.
 
 Prefer a small working harness over a large impressive one.
+
+---
+
+## Recommended next skill
+
+Use the recommendation to keep the workflow moving, but keep the harness plan user-approved before installing anything unless the user already authorized direct changes.
+
+| Situation | Recommended next skill |
+| --- | --- |
+| Harness files or capabilities were installed or repaired | `verify` |
+| Harness hypothesis exposes unclear goals, non-goals, or success criteria | `brainstorm` |
+| Harness plan is approved and the first work slice is clear | `implement` |
+| Harness verification fails or setup breaks | `diagnose` |
+| Harness is current and no implementation is requested | `cleanup` |

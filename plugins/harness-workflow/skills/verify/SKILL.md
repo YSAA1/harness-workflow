@@ -133,6 +133,18 @@ Ready:
   - Next: <cleanup | diagnose | harness-builder | plan>
 ```
 
+## Recommended next skill
+
+Verification should produce the next lane from evidence, not from optimism.
+
+| Situation | Recommended next skill |
+| --- | --- |
+| Required evidence is fresh and passing | `cleanup` |
+| Command failed or observed behavior is wrong | `diagnose` |
+| Required proof is blocked by missing skill, MCP, hook, service, or smoke runner | `harness-builder` |
+| Success criteria, Spec, or active slice does not match the checked behavior | `plan` |
+| Only docs or recovery notes are stale after passing checks | `cleanup` |
+
 ## 常见反模式
 
 - **Counting old commands as proof.** Evidence must be after the relevant change.
