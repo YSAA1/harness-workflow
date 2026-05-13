@@ -2,17 +2,27 @@
 
 ## 项目概览
 
-本项目是 `harness-workflow` 本地 Codex plugin，把 Learn Harness Engineering 的方法落成一组可执行 workflow skills。核心目标是让 agent 工作具备项目入口、状态协议、验证闸门、恢复路径和收尾纪律。
+本项目是 `harness-workflow` agent workflow plugin，把 Learn Harness Engineering 的方法落成一组可执行 workflow skills，并提供 Codex、Claude Code 和 Cursor 三套适配面。核心目标是让 agent 工作具备项目入口、状态协议、验证闸门、恢复路径和收尾纪律。
 
 ## 项目地图
 
-- `.codex-plugin/plugin.json`: plugin manifest，声明插件元数据和 skills 入口。
+- `.codex-plugin/plugin.json`: Codex plugin manifest，声明插件元数据和 skills 入口。
+- `.agents/plugins/marketplace.json`: Codex marketplace catalog。
+- `.claude-plugin/`: Claude Code plugin manifest 和 marketplace catalog。
+- `.cursor-plugin/`: Cursor plugin metadata。
+- `.cursor/rules/`: Cursor project-preview rules。
+- `.cursor/skills/`: Cursor project-preview skills，必须和根目录 `skills/` 保持一致。
 - `README.md`: 用户入口，说明 workflow 分层、使用场景和验证命令。
 - `CONTEXT.md`: 术语和边界澄清。
 - `docs/harness-method-contract.md`: Harness Method Contract，解释 C1-C10 稳定方法论。
+- `docs/install/`: Codex、Claude Code、Cursor 安装和识别说明。
 - `docs/prd/`: 本地 PRD。
 - `docs/skill-flow-review/`: 由脚本生成的 skill 流程审阅 HTML。
+- `.github/workflows/ci.yml`: GitHub Actions，运行三端安装/结构检查和 Cursor dry-run。
 - `scripts/check-plugin.mjs`: 插件结构和方法论覆盖的快速验证脚本。
+- `scripts/check-claude-code-install.mjs`: Claude Code 安装面验证脚本。
+- `scripts/check-cursor-install.mjs`: Cursor rules、skills 和 adapter 验证脚本。
+- `scripts/install-cursor.mjs`: 将 rules 和 skills 复制到目标项目 `.cursor/` 的 project adapter。
 - `scripts/generate-skill-flow-html.mjs`: 从各个 `SKILL.md` 生成流程审阅 HTML。
 - `skills/*/SKILL.md`: 每个 active workflow skill 的主入口和执行协议。
 - `skills/*/references/`: 按需读取的细节政策、检查表和参考资料。
@@ -23,12 +33,14 @@
 
 - 快速验证：`node scripts/check-plugin.mjs`
 - 重新生成 skill flow HTML：`node scripts/generate-skill-flow-html.mjs`
-- 当前没有安装步骤或测试框架配置；不要虚构 `npm test`、`npm install` 或不存在的 agent 脚本。
+- 三端结构验证：`node scripts/check-plugin.mjs && node scripts/check-claude-code-install.mjs && node scripts/check-cursor-install.mjs`
+- Cursor adapter dry-run：`node scripts/install-cursor.mjs --target . --dry-run`
+- 当前没有 package install 或测试框架配置；不要虚构 `npm test`、`npm install` 或不存在的 agent 脚本。
 
 ## 项目铁律
 
 - 这是 plugin 仓库；所有改动必须保持 `.codex-plugin/plugin.json`、`README.md`、`docs/harness-method-contract.md` 和 `skills/*/SKILL.md` 之间语义一致。
-- Active skills 只有 `harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`verify`、`cleanup`。
+- Active workflow skills 只有 `harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`verify`、`cleanup`；`find-skills` 是辅助 skill，不是第九条 workflow lane。
 - `AGENTS.md` 只做薄入口；临时计划、会话摘要、active slice 和一次性结论不要写进这里。
 - Workflow skills 依赖 selected recovery surface 的语义字段，不要把所有任务强绑死到三文件。
 - `harness-builder` 是 canonical 项目 harness skill；"bootstrap" 只能作为历史别名或触发词出现。
@@ -57,7 +69,7 @@
 - 修改 recovery surface 语义：读 `skills/harness-builder/references/recovery_surface_policy.md`。
 - 修改验证、ready 或 evidence 规则：读 `skills/verify/SKILL.md`、`skills/review/SKILL.md` 和 `docs/harness-method-contract.md`。
 - 修改生成的 HTML：优先改 `scripts/generate-skill-flow-html.mjs`，再重新生成 `docs/skill-flow-review/*.html`。
-- 修改 manifest 或能力声明：同步检查 `.codex-plugin/plugin.json`、`README.md` 和 `scripts/check-plugin.mjs`。
+- 修改 manifest 或能力声明：同步检查 `.codex-plugin/`、`.claude-plugin/`、`.cursor-plugin/`、`README.md`、`docs/install/` 和对应 `scripts/check-*.mjs`。
 
 ## Protected Paths
 
@@ -72,6 +84,9 @@
 
 ```bash
 node scripts/check-plugin.mjs
+node scripts/check-claude-code-install.mjs
+node scripts/check-cursor-install.mjs
+node scripts/install-cursor.mjs --target . --dry-run
 ```
 
 如果修改了 skill flow 生成逻辑或任何 `SKILL.md` 的结构，还要运行：

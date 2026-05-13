@@ -29,6 +29,14 @@ jobs:
       - name: Check Claude Code plugin
         run: node scripts/check-claude-code-install.mjs
 
+      - name: Validate Claude Code plugin when CLI is available
+        run: |
+          if command -v claude >/dev/null 2>&1; then
+            claude plugin validate .
+          else
+            echo "claude CLI not installed; skipped plugin validator"
+          fi
+
       - name: Check Cursor adapter
         run: node scripts/check-cursor-install.mjs
 

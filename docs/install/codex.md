@@ -12,7 +12,7 @@ No default MCP servers, hooks, apps, connectors, or user-level Codex config are 
 
 ## Global Install From GitHub
 
-After publishing the repository, add it as a user-level Codex marketplace:
+Add the public GitHub repository as a user-level Codex marketplace:
 
 ```bash
 codex plugin marketplace add YSAA1/harness-workflow

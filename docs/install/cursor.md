@@ -2,7 +2,7 @@
 
 `harness-workflow` supports Cursor in two ways:
 
-1. **Cursor plugin surface** for public marketplace usage after the repo is published.
+1. **Cursor plugin surface** for public marketplace usage when a Cursor marketplace entry is available.
 2. **Project adapter install** for teams that want the same rules and skills copied into a target project.
 
 Cursor does not install the Codex plugin and does not read `.codex-plugin/plugin.json`. Its durable project context is `.cursor/rules` and `.cursor/skills`. This repository keeps both surfaces checked in, so the Cursor preview you see in this repo matches what the project adapter installs into a target repo.
@@ -11,7 +11,7 @@ This follows the pattern used by mature agent-tooling repos: keep reusable agent
 
 ## Cursor Plugin Install
 
-After the plugin is published to a Cursor marketplace, install it from Cursor chat:
+When a Cursor marketplace entry is available, install it from Cursor chat:
 
 ```text
 /add-plugin harness-workflow
@@ -28,6 +28,9 @@ The Cursor plugin metadata lives in:
 
 - `.cursor-plugin/plugin.json`
 - `.cursor-plugin/marketplace.json`
+
+The canonical source and checked-in Cursor preview live in:
+
 - `skills/`
 - `rules/`
 - `.cursor/rules/`

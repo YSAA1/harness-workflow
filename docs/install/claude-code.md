@@ -10,7 +10,7 @@ Claude Code does not read `.codex-plugin/plugin.json`. This repository has a sep
 
 ## Global Plugin Install
 
-After the repository is public, add it as a Claude Code marketplace:
+Add the public GitHub repository as a Claude Code marketplace:
 
 ```text
 /plugin marketplace add YSAA1/harness-workflow

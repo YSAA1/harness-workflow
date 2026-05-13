@@ -27,6 +27,21 @@ const fail = (message) => {
 const pass = (message) => console.log(`PASS: ${message}`);
 const exists = (relativePath) => fs.existsSync(path.join(root, relativePath));
 const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "utf8");
+const listFiles = (relativeDir) => {
+  const absoluteDir = path.join(root, relativeDir);
+  if (!fs.existsSync(absoluteDir)) return [];
+  const out = [];
+  const walk = (absoluteCurrent, relativeCurrent) => {
+    for (const entry of fs.readdirSync(absoluteCurrent, { withFileTypes: true })) {
+      const absoluteEntry = path.join(absoluteCurrent, entry.name);
+      const relativeEntry = path.join(relativeCurrent, entry.name);
+      if (entry.isDirectory()) walk(absoluteEntry, relativeEntry);
+      else out.push(relativeEntry.replaceAll(path.sep, "/"));
+    }
+  };
+  walk(absoluteDir, "");
+  return out.sort();
+};
 
 if (!fs.existsSync(root)) {
   fail("plugin root is missing");
@@ -127,6 +142,19 @@ for (const skill of bundledSkills) {
   }
 }
 if (!process.exitCode) pass("Cursor project-preview skills cover all bundled skills");
+
+const canonicalSkillFiles = listFiles("skills");
+const cursorSkillFiles = listFiles(cursorSkillsDir);
+if (JSON.stringify(canonicalSkillFiles) !== JSON.stringify(cursorSkillFiles)) {
+  fail("canonical skills and Cursor project-preview skills have different file lists");
+} else {
+  for (const file of canonicalSkillFiles) {
+    if (read(`skills/${file}`) !== read(`${cursorSkillsDir}/${file}`)) {
+      fail(`canonical skills and Cursor project-preview skills drifted: ${file}`);
+    }
+  }
+  if (!process.exitCode) pass("Cursor project-preview skills match canonical skills recursively");
+}
 
 const installer = "scripts/install-cursor.mjs";
 if (!exists(installer)) {

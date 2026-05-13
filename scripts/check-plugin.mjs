@@ -16,6 +16,7 @@ const info = (message) => console.log(`INFO: ${message}`);
 const exists = (relativePath) => fs.existsSync(path.join(root, relativePath));
 const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "utf8");
 const skillPath = (skill) => `skills/${skill}/SKILL.md`;
+const readJson = (relativePath) => JSON.parse(read(relativePath));
 
 if (!fs.existsSync(root)) {
   fail("plugin root is missing");
@@ -23,7 +24,7 @@ if (!fs.existsSync(root)) {
 }
 
 try {
-  const manifest = JSON.parse(read(".codex-plugin/plugin.json"));
+  const manifest = readJson(".codex-plugin/plugin.json");
   if (manifest.name !== "harness-workflow") fail("manifest name must be harness-workflow");
   if (manifest.skills !== "./skills/") fail("manifest skills path must be ./skills/");
   const capabilities = manifest.interface?.capabilities ?? [];
@@ -40,6 +41,19 @@ try {
   pass("manifest parses and points at skills");
 } catch (error) {
   fail(`manifest JSON is invalid: ${error.message}`);
+}
+
+try {
+  const codex = readJson(".codex-plugin/plugin.json");
+  const claude = readJson(".claude-plugin/plugin.json");
+  const cursor = readJson(".cursor-plugin/plugin.json");
+  if (codex.version !== claude.version || codex.version !== cursor.version) {
+    fail(`public surface versions drifted: codex=${codex.version}, claude=${claude.version}, cursor=${cursor.version}`);
+  } else {
+    pass(`public surface versions match: ${codex.version}`);
+  }
+} catch (error) {
+  fail(`public surface version check failed: ${error.message}`);
 }
 
 if (!exists(".agents/plugins/marketplace.json")) {

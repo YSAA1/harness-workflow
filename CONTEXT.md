@@ -1,6 +1,6 @@
 # Harness Workflow Context
 
-This context defines the language for the local Codex plugin that turns harness engineering practice into reusable workflow skills.
+This context defines the language for the Harness Workflow plugin that turns harness engineering practice into reusable workflow skills for Codex, Claude Code, and Cursor.
 
 ## Language
 
