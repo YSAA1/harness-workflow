@@ -22,6 +22,7 @@
   <a href="#快速开始">快速开始</a> ·
   <a href="#为什么需要它">为什么需要</a> ·
   <a href="#它和普通-workflow-有什么不同">特点</a> ·
+  <a href="#research-route-和-autoresearch">Research Route</a> ·
   <a href="#skill-map">Skill map</a> ·
   <a href="docs/install/codex.md">Codex</a> ·
   <a href="docs/install/claude-code.md">Claude Code</a> ·
@@ -104,6 +105,7 @@ harness 不是一个更长的 prompt。它是围绕模型的一套项目运行�
 | 先看 repo truth，再谈流程 | agent 会检查 docs、源码布局、测试、git 状态、已有规则和 setup 命令，再判断项目是否真的 ready。 |
 | 恢复面是设计决策 | 有些任务不需要持久状态；有些只要短 checkpoint；有些需要 `task_plan.md`、`progress.md`、`findings.md`；有些应该复用 issue tracker 或已有 docs。 |
 | 能力必须匹配真实缺口 | 额外 skills、MCP、hooks、subagents 只有在补上当前任务或仓库缺口时才推荐。插件内置的 `find-skills` 辅助 skill 用于 skill 发现；hooks、MCP 和工具行为优先查当前官方资料或成熟实现。 |
+| 面向开放研究的 Research Route | 当用户明确要求 autoresearch 或研究性探索时，`harness-builder` 可以生成项目本地 research harness：假设、baseline、metric、evidence log、bounded iterations 和 rollback policy。 |
 | ready claim 必须有新证据 | `verify` 会把每个“完成了”的声明绑定到当前证据：测试、构建输出、smoke check、截图、人工检查，或明确说明为什么无法验证。 |
 | cleanup 是交付的一部分 | README 过期、生成物残留、状态不清、恢复笔记缺失，都不是小问题。下一个 agent 读不懂现场，工作就没有真正结束。 |
 
@@ -119,9 +121,38 @@ harness 不是一个更长的 prompt。它是围绕模型的一套项目运行�
 | 需求已经清楚，但仓库工作台缺失 | `plan -> harness-builder -> implement` |
 | 仓库已经有 fresh harness 和明确 check path | 跳过 `harness-builder`，进入 `implement`、`diagnose` 或 `verify` |
 | 任务本身就是审计、修复或创建 agent governance | 直接用 `harness-builder`，但仍然先收集证据并做 gap-driven questions |
+| 用户明确要求 autoresearch 或开放式研究探索 | `brainstorm -> plan -> harness-builder -> bounded evidence loop -> review -> verify -> cleanup` |
 | 只是很小的改动 | 直接做并验证，不要制造流程 |
 
 这个顺序很重要。一个有用的 harness 取决于当前目标、non-goals、风险、验证策略和仓库形状。没有这些上下文，agent 只能装一套看起来合理的模板。
+
+## Research Route 和 autoresearch
+
+有些项目不是单纯交付功能，而是在问一个想法值不值得继续：某个方法是否优于 baseline，某个 RL reward 是否真的改善行为，某个架构假设是否能被小实验支持。这类任务适合 Research Route。
+
+Research Route 仍然从 `brainstorm` 和 `plan` 开始。agent 进入循环前必须先定义研究问题：
+
+- goal 和 hypothesis；
+- counter-hypothesis 或失败条件；
+- baseline 和公平性检查；
+- metric 或 review rubric；
+- verification command 或 tiny run；
+- data、secrets、protected paths、compute 的 guardrails；
+- iteration budget 和 stop rule；
+- logs、checkpoints、reports、discarded attempts 的 artifact policy。
+
+用户批准这条路线后，`harness-builder` 可以在目标项目生成一组 project-local research harness：
+
+```text
+docs/research/research_plan.md
+docs/research/evidence_log.md
+docs/research/iteration_protocol.md
+.harness/research_manifest.yaml
+```
+
+`uditgoenka/autoresearch` 这类上游项目最有价值的部分是 evidence loop：modify、verify、keep or discard、repeat。Harness Workflow 会把这个循环当作一个可选执行引擎，而不是完整研究流程。它不替代问题定义、baseline review、data leakage check、最终 research review 和 cleanup。详见 [docs/integrations/autoresearch.md](docs/integrations/autoresearch.md)。
+
+失败代码不应该一直堆在仓库里。Research Route 要求先把失败原因、metric、命令输出摘要和改动文件写入 evidence log，再做 rollback。在用户批准的 research branch 或 worktree 内，`git reset --hard` 可以是正确的清理工具。它不能覆盖无关用户改动，也不能对未审视的 dirty tree 直接执行。
 
 ## Skill map
 
@@ -154,6 +185,9 @@ diagnose -> implement -> verify
 
 Harness audit or repair:
 harness-builder -> verify -> cleanup
+
+Open research / autoresearch:
+brainstorm -> plan -> harness-builder -> bounded evidence loop -> review -> verify -> cleanup
 ```
 
 这些 lanes 可以循环。如果 verify 发现缺浏览器 runner、外部 API、本地 skill 或 recovery gap，就把这个缺口交回 `harness-builder`，不要塞在实现里糊过去。
@@ -226,6 +260,7 @@ claude plugin validate .
 | `.cursor-plugin/`, `rules/`, `.cursor/rules/` | Cursor plugin 和 project-rule adapter surface。 |
 | `docs/assets/readme/` | README icon 和 imagegen infographic PNG assets。 |
 | `docs/install/` | 各端安装说明。 |
+| `docs/integrations/` | 可选外部 workflow 集成说明，例如 autoresearch。 |
 | `scripts/check-*.mjs` | 一致性和识别检查。 |
 
 ## License

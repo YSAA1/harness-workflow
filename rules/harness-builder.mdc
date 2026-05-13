@@ -13,6 +13,7 @@ Canonical source: `skills/harness-builder/SKILL.md`.
 - The user asks to initialize, bootstrap, create project rules, onboard agents, build a harness, or repair the workbench.
 - Project entry, protected paths, verification commands, recovery surface, or Capability Discovery are unclear.
 - The task needs project-local skills, hooks, MCP policy, subagents, or anti-entropy rules evaluated.
+- The user explicitly asks for autoresearch, autonomous research, or repeated research exploration and needs a project-local Research Route harness.
 
 ## Inputs
 
@@ -28,18 +29,21 @@ Canonical source: `skills/harness-builder/SKILL.md`.
 3. Produce a Harness Hypothesis when important gaps remain.
 4. Run Capability Discovery only for capabilities that materially help verification, observability, automation, or domain work.
 5. Classify candidates as Required, Recommended, Deferred, or Rejected by value, enablement, risk/cost, and fallback.
-6. Choose or repair the recovery surface as a semantic contract; do not force three-file state.
-7. Install only approved project-local components.
-8. Verify the installed harness with the narrowest real command.
+6. For Research Route, require goal, hypothesis, baseline, metric, verification, guardrails, iteration budget, artifact policy, and stop rule before any evidence loop.
+7. Choose or repair the recovery surface as a semantic contract; do not force three-file state.
+8. Install only approved project-local components.
+9. Verify the installed harness with the narrowest real command.
 
 ## Outputs
 
 - Harness Hypothesis or Harness Plan.
 - Project-local rules, docs, validation entry points, and recovery-surface declaration when approved.
+- For approved Research Route: research plan, evidence log, iteration protocol, and research manifest.
 - Capability Discovery decisions with rejected and deferred options.
 
 ## Verification / Done Criteria
 
 - The repository has a clear project map, hard rules, verification entry, and recovery path when needed.
+- Research Route preserves failed evidence before rollback; `git reset --hard` is limited to an approved research branch or worktree.
 - No user-global config, hooks, MCP, or extensions were added without explicit approval.
 - The chosen check command ran successfully, or the blocker is concrete.

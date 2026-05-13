@@ -151,6 +151,7 @@ const readme = read("README.md");
 for (const token of [
   "YSAA1/harness-workflow",
   "docs/install/codex.md",
+  "docs/integrations/autoresearch.md",
   "codex plugin marketplace add",
   "node scripts/check-plugin.mjs",
 ]) {
@@ -163,17 +164,22 @@ const templateFiles = [
   "skills/plan/templates/progress.md",
   "skills/plan/templates/findings.md",
   "skills/plan/templates/README.md",
+  "skills/harness-builder/templates/research_route/research_plan.md.j2",
+  "skills/harness-builder/templates/research_route/evidence_log.md.j2",
+  "skills/harness-builder/templates/research_route/iteration_protocol.md.j2",
+  "skills/harness-builder/templates/research_route/research_manifest.yaml.j2",
 ];
 for (const file of templateFiles) {
   if (!exists(file)) fail(`missing template ${file}`);
 }
-if (templateFiles.every(exists)) pass("three-file templates are preserved");
+if (templateFiles.every(exists)) pass("planning and research-route templates are preserved");
 
-const activeDocs = `${read(".codex-plugin/plugin.json")}\n${read("README.md")}\n${read("AGENTS.md")}\n${read("CONTEXT.md")}\n${read("docs/harness-method-contract.md")}\n${read("scripts/generate-skill-flow-html.mjs")}`;
+const activeDocs = `${read(".codex-plugin/plugin.json")}\n${read("README.md")}\n${read("README.zh-CN.md")}\n${read("AGENTS.md")}\n${read("CONTEXT.md")}\n${read("docs/harness-method-contract.md")}\n${read("docs/integrations/autoresearch.md")}\n${read("scripts/generate-skill-flow-html.mjs")}`;
 for (const token of [
   "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
   "Harness Builder", "recovery surface", "three-file", "Spec", "Executable Plan",
   "Knowledge Cleanup", "Capability Discovery", "AGENTS.md", "项目铁律", "fresh evidence",
+  "Research Route", "autoresearch", "Evidence Loop", "Research Reset Policy",
 ]) {
   if (!activeDocs.includes(token)) fail(`docs missing boundary token: ${token}`);
 }
@@ -203,6 +209,10 @@ if (exists(skillPath("harness-builder"))) {
     "$find-skills",
     "targeted web search",
     "recovery surface",
+    "Research Route",
+    "research_route_policy.md",
+    "templates/research_route",
+    "git reset --hard",
     "subagent",
     "anti-entropy",
   ]) {

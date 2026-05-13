@@ -13,6 +13,9 @@
 | Knowledge Cleanup | `cleanup` 的目标：防止 docs、生成物、AGENTS.md 和 recovery surface 漂移 |
 | Capability Discovery | 为当前任务搜索并评估 skills、MCP、hooks、subagents 或外部 agent 能力 |
 | Skill discovery helper | `find-skills`，用于搜索可复用 skills；它辅助 Capability Discovery，不是第九条 workflow lane |
+| Research Route | `harness-builder` 在用户明确要求 autoresearch 或开放式研究时生成的项目本地研究 harness，不是第九条 workflow lane |
+| Evidence Loop | 有边界地反复提出 iteration hypothesis、修改、验证、记录证据、keep/revert/reset/discard/stop 的研究循环 |
+| Research Reset Policy | 失败代码可以在隔离研究分支或 worktree 内清掉，但失败原因、metric 和验证证据必须先保留 |
 
 ## C1 Harness As System
 
@@ -55,6 +58,7 @@ Agent 质量来自项目周围的系统：入口、规则、上下文、验证�
 - success criteria 可证伪。
 - WIP=1。
 - 发现范围扩大时回 `plan` 或请求用户确认。
+- Research Route 还必须有 hypothesis、baseline、metric、verify、guard、budget 和 stop rule。
 
 主要 skill：`brainstorm`、`plan`、`implement`、`review`。
 
@@ -74,6 +78,7 @@ Capability Discovery 要求：
 - 对 MCP、hooks 或外部 agent 能力，使用 targeted web search 查官方文档或成熟实现。
 - 不把当前已安装 skills 当作搜索范围上限。
 - 不因为"可能有用"就安装能力。
+- 用户明确要求 autoresearch 时，先判断是否已有完整 Research Route contract；缺少目标、baseline、metric 或 verify 时，回到 brainstorm / plan，而不是直接循环。
 
 主要 skill：`harness-builder`、`verify`。辅助 skill：`find-skills`。
 
@@ -100,6 +105,7 @@ Capability Discovery 要求：
 - selected recovery surface 能回答当前状态、证据、风险和下一步。
 - 未解决 drift 记录为明确 follow-up。
 - 不用 cleanup 隐藏未完成工作。
+- 对 Research Route，cleanup 前必须确认失败尝试的证据仍可读，即使失败代码已经 revert 或 reset。
 
 主要 skill：`cleanup`。
 

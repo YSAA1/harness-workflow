@@ -22,6 +22,7 @@
   <a href="#quick-start">Quick start</a> ·
   <a href="#why-this-exists">Why this exists</a> ·
   <a href="#what-makes-it-different">What is different</a> ·
+  <a href="#research-route-and-autoresearch">Research Route</a> ·
   <a href="#skill-map">Skill map</a> ·
   <a href="docs/install/codex.md">Codex</a> ·
   <a href="docs/install/claude-code.md">Claude Code</a> ·
@@ -104,6 +105,7 @@ That checklist is not a mandatory artifact list. It is a decision framework. A s
 | Repo truth before workflow ceremony | The agent checks docs, source layout, tests, git state, existing rules, and setup commands before it claims the project is ready. |
 | Recovery as a design choice | Some work needs no durable state. Some needs a short checkpoint. Some needs `task_plan.md`, `progress.md`, and `findings.md`. Some should reuse an issue tracker or existing docs. |
 | Capability fit, not capability hoarding | Extra skills, MCP servers, hooks, and subagents are recommended only when they close a real gap in the task or repo. The bundled `find-skills` helper is for skill discovery; web research is used for current hooks, MCP, and tool behavior. |
+| Research Route for open-ended work | When the user explicitly asks for autoresearch or method exploration, `harness-builder` can build a project-local research harness with hypothesis, baseline, metric, evidence log, bounded iterations, and rollback rules. |
 | Fresh evidence for ready claims | `verify` ties every "done" claim to current evidence: tests, build output, smoke checks, screenshots, manual checks, or a clearly stated reason verification is blocked. |
 | Cleanup before handoff | The workflow treats stale README text, leftover generated files, unclear state, and missing recovery notes as part of the work, not as optional polish. |
 
@@ -119,9 +121,38 @@ Recommended order:
 | The request is clear, but the repo workbench is missing | `plan -> harness-builder -> implement` |
 | The repo already has a fresh harness and a known check path | Skip `harness-builder`; go to `implement`, `diagnose`, or `verify` |
 | The task is specifically to audit, repair, or create agent governance | Use `harness-builder` directly, but still start with evidence collection and gap-driven questions |
+| The user explicitly asks for autoresearch or open research exploration | `brainstorm -> plan -> harness-builder -> bounded evidence loop -> review -> verify -> cleanup` |
 | The task is tiny | Do the tiny task and verify it; do not create ceremony |
 
 This placement matters. A useful harness depends on the current goal, non-goals, risk, verification strategy, and repository shape. Without that context, the agent can only install a plausible template.
+
+## Research Route and autoresearch
+
+Some projects need more than delivery work. A research task may ask whether an idea is worth pursuing, whether a method beats a baseline, or whether a hypothesis survives a small experiment. That is where Research Route fits.
+
+Research Route still starts with `brainstorm` and `plan`. The agent must define the research question before it starts looping:
+
+- goal and hypothesis;
+- counter-hypothesis or failure condition;
+- baseline and fairness checks;
+- metric or review rubric;
+- verification command or tiny run;
+- guardrails for data, secrets, protected paths, and compute;
+- iteration budget and stop rule;
+- artifact policy for logs, checkpoints, reports, and discarded attempts.
+
+When the user approves this route, `harness-builder` can install a project-local research harness:
+
+```text
+docs/research/research_plan.md
+docs/research/evidence_log.md
+docs/research/iteration_protocol.md
+.harness/research_manifest.yaml
+```
+
+Upstream projects such as `uditgoenka/autoresearch` are useful inspiration for the evidence loop: modify, verify, keep or discard, repeat. Harness Workflow treats that loop as one component, not the whole research process. It does not replace problem framing, baseline review, data leakage checks, final research review, or cleanup. See [docs/integrations/autoresearch.md](docs/integrations/autoresearch.md).
+
+Failed code should not accumulate forever. Research Route records the failure reason, metric, command output summary, and changed files before rollback. In an approved research branch or worktree, `git reset --hard` can be the right cleanup tool after evidence is preserved. It should not run over unrelated user work or an unreviewed dirty tree.
 
 ## Skill map
 
@@ -154,6 +185,9 @@ diagnose -> implement -> verify
 
 Harness audit or repair:
 harness-builder -> verify -> cleanup
+
+Open research / autoresearch:
+brainstorm -> plan -> harness-builder -> bounded evidence loop -> review -> verify -> cleanup
 ```
 
 The lanes can loop. If verification discovers a missing browser runner, external API, local skill, or recovery gap, route that gap back to `harness-builder` instead of burying it inside implementation.
@@ -226,6 +260,7 @@ claude plugin validate .
 | `.cursor-plugin/`, `rules/`, `.cursor/rules/` | Cursor plugin and project-rule adapter surface. |
 | `docs/assets/readme/` | README icon and imagegen infographic PNG assets. |
 | `docs/install/` | Install notes for each supported agent surface. |
+| `docs/integrations/` | Notes for optional external workflow integrations such as autoresearch. |
 | `scripts/check-*.mjs` | Consistency and recognition checks. |
 
 ## License

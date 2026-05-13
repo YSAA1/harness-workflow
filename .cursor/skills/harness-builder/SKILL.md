@@ -33,6 +33,8 @@ repo evidence + user intent + Capability Discovery + optional research
 
 Use `references/brainstorming_policy.md` before asking questions.
 
+If the user explicitly asks for autoresearch, autonomous research, or repeated investigation of a research idea, treat that as a request for a **Research Route** harness. Research Route still needs brainstormed or planned context first: the goal, hypothesis, baseline, metric, verification path, guardrails, and stop rule must be clear before any evidence loop starts. Use `references/research_route_policy.md`.
+
 ---
 
 ## Non-negotiable goals
@@ -85,34 +87,43 @@ Follow this sequence unless the user asks for a narrower task.
    - Record adopted research in `.harness/research_notes.md`.
    - Use `references/web_research_policy.md`.
 
-6. **Choose recovery surface**
+6. **Decide whether this is Research Route**
+   - Use Research Route only when the user explicitly asks for autoresearch, autonomous research, repeated research attempts, or method exploration.
+   - Confirm a research contract: Goal, Hypothesis, Counter-hypothesis, Baseline, Scope, Metric, Verify, Guard, Budget, Artifact policy, and Stop rule.
+   - If the contract is incomplete, return to gap-driven brainstorm instead of starting an evidence loop.
+   - If approved, add project-local research artifacts from `templates/research_route/`: `docs/research/research_plan.md`, `docs/research/evidence_log.md`, `docs/research/iteration_protocol.md`, and `.harness/research_manifest.yaml`.
+   - Treat upstream `autoresearch` as an optional evidence-loop engine, not as the owner of problem framing, baseline fairness, review, verification, or cleanup.
+   - Record failed attempts before rollback. `git reset --hard` is allowed only inside an approved research branch or worktree after failure evidence is preserved; never reset over user-authored work.
+   - Use `references/research_route_policy.md`.
+
+7. **Choose recovery surface**
    - Select or repair the project recovery surface only if the task needs durable state.
    - Options include none, lightweight, three-file, feature-list, or existing project systems.
    - Three-file maps `active_slice` to `task_plan.md`, evidence to `progress.md`, and decisions/risks to `findings.md`.
    - Declare field mapping without making three-file state a universal prerequisite.
    - Use `references/recovery_surface_policy.md`.
 
-7. **Synthesize Harness Plan**
+8. **Synthesize Harness Plan**
    - Merge user intent, repo evidence, gap answers, capability candidates, subagent findings, research, and recovery-surface choice.
    - Produce `Required`, `Recommended`, `Deferred`, and `Rejected`.
    - Include orchestration strategy and course coverage check.
    - Use `references/profiles.md` and `references/decision_matrix.md`.
 
-8. **User checkpoint**
+9. **User checkpoint**
    - Before installing, show the plan and ask for confirmation unless the user explicitly authorized direct install.
    - Do not install if the Harness Hypothesis has not considered the relevant course dimensions.
 
-9. **Install only approved project-local components**
+10. **Install only approved project-local components**
    - Install `Required` only unless the user approved more.
    - Prefer: `AGENTS.md`, `scripts/agent/check.sh`, `docs/agent/*`, `.harness/*`, `.agents/skills/*`, `.codex/*`.
    - Use `references/install_policy.md`.
 
-10. **Verify**
+11. **Verify**
    - Validate files, frontmatter, JSON/TOML/YAML, hook scripts, and fast check command.
    - Use `scripts/validate_harness.py` where possible.
    - Do not claim the harness works if verification was not run or failed.
 
-11. **Record and evolve**
+12. **Record and evolve**
    - Update `.harness/manifest.yaml`, `.harness/decisions.md`, `.harness/state.md`, skill inventory, and research notes.
    - For later cleanup, use `references/anti_entropy.md`.
 
@@ -169,6 +180,15 @@ For most projects, the first useful harness is:
 
 Add project-local skills, hooks, subagents, and MCP only when the plan justifies them.
 
+For an approved Research Route harness, also generate:
+
+- `docs/research/research_plan.md`
+- `docs/research/evidence_log.md`
+- `docs/research/iteration_protocol.md`
+- `.harness/research_manifest.yaml`
+
+These files are the research recovery surface. They preserve failed knowledge while allowing failed code to be reverted or reset inside a declared isolation boundary.
+
 ---
 
 ## Reference routing
@@ -183,6 +203,7 @@ Read the relevant reference before detailed work:
 - install layout: `references/install_policy.md`
 - skill decisions: `references/skill_policy.md`
 - recovery surface policy: `references/recovery_surface_policy.md`
+- Research Route and autoresearch policy: `references/research_route_policy.md`
 - verification: `references/verification_policy.md`
 - hooks: `references/hook_policy.md`
 - subagents: `references/subagent_policy.md`

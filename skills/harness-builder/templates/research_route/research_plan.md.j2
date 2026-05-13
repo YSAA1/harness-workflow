@@ -1,0 +1,83 @@
+# Research Plan
+
+## Goal
+
+{{ research_goal }}
+
+## Hypothesis
+
+{{ hypothesis }}
+
+## Counter-hypothesis
+
+{{ counter_hypothesis }}
+
+## Baseline
+
+{{ baseline }}
+
+## Scope
+
+Allowed files, modules, data, or experiments:
+
+- {{ scope }}
+
+## Non-goals
+
+- {{ non_goals }}
+
+## Metric
+
+{{ metric }}
+
+## Verification
+
+```bash
+{{ verify_command }}
+```
+
+## Success rule
+
+{{ success_rule }}
+
+## Failure rule
+
+{{ failure_rule }}
+
+## Stop rule
+
+{{ stop_rule }}
+
+## Budget
+
+- Iterations: {{ iterations }}
+- Time: {{ time_budget }}
+- Compute or external cost: {{ compute_budget }}
+
+## Guardrails
+
+- Protect baseline and control runs.
+- Do not touch protected paths outside the declared scope.
+- Do not use production credentials or private data unless explicitly approved.
+- Record failure evidence before rollback.
+- Use destructive git reset only inside the approved research isolation boundary.
+
+## Artifact policy
+
+| Artifact | Path | Notes |
+| --- | --- | --- |
+| Evidence log | `docs/research/evidence_log.md` | Append after every iteration. |
+| Iteration protocol | `docs/research/iteration_protocol.md` | Loop rules and rollback policy. |
+| Manifest | `.harness/research_manifest.yaml` | Recovery entry and verification command. |
+| Raw logs | `{{ log_dir }}` | Keep selected logs only. |
+| Checkpoints | `{{ checkpoint_dir }}` | Keep only approved or referenced checkpoints. |
+
+## Review gate
+
+Before declaring the route successful, run a research review:
+
+- Was the baseline fair?
+- Was the metric meaningful?
+- Were failed attempts recorded?
+- Is the result reproducible?
+- Should the idea continue, stop, or become a normal implementation plan?

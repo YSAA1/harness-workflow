@@ -1,7 +1,7 @@
 {
   "name": "harness-workflow",
   "version": "0.2.0",
-  "description": "Practical Codex workflow skills for Harness Builder, Spec, Executable Plan, scoped implementation, fresh verification, review, Knowledge Cleanup, and skill discovery.",
+  "description": "Practical Codex workflow skills for Harness Builder, Spec, Executable Plan, Research Route, scoped implementation, fresh verification, review, Knowledge Cleanup, and skill discovery.",
   "license": "MIT",
   "keywords": [
     "codex",
@@ -14,7 +14,7 @@
   "interface": {
     "displayName": "Harness Workflow",
     "shortDescription": "Daily project harness workflows for Codex.",
-    "longDescription": "Turns Learn Harness Engineering ideas into practical Codex skills for project-level Harness Builder, recovery surface design, Spec creation, Executable Plan writing, implementation, diagnosis, review, verification, Knowledge Cleanup, and project-fit skill discovery.",
+    "longDescription": "Turns Learn Harness Engineering ideas into practical Codex skills for project-level Harness Builder, recovery surface design, Spec creation, Executable Plan writing, Research Route harnesses, implementation, diagnosis, review, verification, Knowledge Cleanup, and project-fit skill discovery.",
     "developerName": "Local",
     "category": "Productivity",
     "capabilities": [
@@ -24,6 +24,7 @@
     "defaultPrompt": [
       "Use brainstorm to turn unclear requirements into an approved Spec with a verification strategy before planning.",
       "Use harness-builder to design or repair the project harness and recovery surface: AGENTS.md, project map, iron laws, verification entry, Capability Discovery, justified skills, hooks, subagents, and MCP policy.",
+      "When the user explicitly asks for autoresearch or open research exploration, use harness-builder to create a bounded Research Route harness before any evidence loop.",
       "Use find-skills as the auxiliary skill-discovery helper when Capability Discovery needs reusable skills beyond the current plugin.",
       "Use plan to create an Executable Plan in the selected planning surface: docs plan, issue, feature list, existing project system, or three-file backend.",
       "Use verify to collect fresh evidence before claiming work is ready.",

@@ -16,6 +16,18 @@ _Avoid_: making Harness Builder, planning, or three-file state a universal prere
 The Harness Builder activity that searches for task-relevant skills, MCP servers, hooks, or external agent capabilities before recommending project-level installation.
 _Avoid_: treating the current user's installed skills as the full capability universe, or installing optional capabilities without clear value.
 
+**Research Route**:
+A Harness Builder mode for explicit autoresearch or open-ended method exploration after enough brainstorm or plan context exists. It creates a project-local research plan, evidence log, iteration protocol, and research manifest.
+_Avoid_: treating Research Route as a mandatory lane for all work, a replacement for brainstorm, or a generic hyperparameter-tuning loop.
+
+**Evidence Loop**:
+The bounded research cycle that tests one iteration hypothesis, changes the project, verifies the result, records evidence, then keeps, reverts, resets, discards, or stops.
+_Avoid_: looping without a baseline, metric, verification path, budget, or failure record.
+
+**Research Reset Policy**:
+The rule that failed code may be discarded only after failed knowledge is preserved. `git reset --hard` can be valid inside an approved research branch or worktree, but not over unrelated user work or an unreviewed dirty tree.
+_Avoid_: both extremes: keeping every failed patch until the codebase rots, or deleting failed attempts without evidence.
+
 **Recovery Surface**:
 The durable project-local artifacts that let a future agent resume work without relying on chat history.
 _Avoid_: three files as a synonym, because three-file state is only one possible implementation.
@@ -61,6 +73,9 @@ _Avoid_: treating it as the default dependency of every skill.
 - A **Harness Builder** selects or repairs the **Recovery Surface** for a project.
 - A **Harness Builder** defines the **Recovery Policy** for a project.
 - A **Harness Builder** performs **Capability Discovery** with `$find-skills` and targeted web research when the current task may benefit from reusable skills, MCP servers, hooks, or agent tooling.
+- A **Harness Builder** may create a **Research Route** harness when the user explicitly asks for autoresearch or research exploration and the research contract is clear.
+- A **Research Route** uses an **Evidence Loop** only after goal, hypothesis, baseline, metric, verification, guardrails, budget, and stop rule are defined.
+- A **Research Reset Policy** preserves negative evidence before failed code is removed from the active branch or worktree.
 - A **Recovery Surface** may use a **Three-File Backend**, `.harness/*`, an issue tracker, a feature list, or an existing project status system.
 - A **Workflow Skill** reads and writes through the **Workflow State Backend** only when its own activity requires durable state.
 - A `brainstorm` workflow produces a **Spec** and does not default to writing workflow state.
@@ -80,6 +95,12 @@ _Avoid_: treating it as the default dependency of every skill.
 
 > **Dev:** "Should Harness Builder only inspect already installed skills?"
 > **Domain expert:** "No. During **Capability Discovery**, it should use `$find-skills` for strongly relevant reusable skills and targeted web search for useful MCP or hook options, then recommend installation only when the value is clear."
+
+> **Dev:** "If the user asks for autoresearch, should we skip `brainstorm` and start looping?"
+> **Domain expert:** "No. Autoresearch needs an approved **Research Route** contract first: goal, hypothesis, baseline, metric, verification, guardrails, budget, and stop rule. The loop starts only after that contract exists."
+
+> **Dev:** "Is `git reset --hard` always wrong after a failed research attempt?"
+> **Domain expert:** "No. A failed patch can be reset inside an approved research branch or worktree after the failure evidence is recorded. It is wrong when it erases user work or deletes the only record of why the attempt failed."
 
 > **Dev:** "Does `plan` always create `task_plan.md`, `progress.md`, and `findings.md`?"
 > **Domain expert:** "No. `plan` creates an **Executable Plan**. It writes the **Three-File Backend** only when the project has selected that backend."

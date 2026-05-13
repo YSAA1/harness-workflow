@@ -11,6 +11,7 @@ v3 adds:
 - Learn Harness Engineering course alignment checklist;
 - optional subagent orchestration for read-only discovery, research, and plan review;
 - explicit rule: subagents read/research/review, main agent writes;
+- Research Route policy for explicit autoresearch and open-ended method exploration;
 - stronger anti-entropy and clean-state thinking.
 
 ## What it does
@@ -19,6 +20,7 @@ v3 adds:
 - Identifies missing information needed to build the right harness.
 - Designs a harness plan.
 - Installs project-local AGENTS.md, docs, check scripts, state files, skills, hooks, and reviewer agents when justified.
+- Installs project-local Research Route artifacts when the user explicitly asks for autoresearch or repeated research exploration.
 - Records manifest and decisions for auditability.
 - Supports repair, upgrade, and garbage collection to prevent harness entropy.
 

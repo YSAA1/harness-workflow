@@ -1,0 +1,54 @@
+# Research Iteration Protocol
+
+This protocol is for bounded research loops. It is not a license for unbounded autonomous work.
+
+## Preconditions
+
+- `docs/research/research_plan.md` defines Goal, Hypothesis, Baseline, Metric, Verify, Guard, Budget, and Stop rule.
+- `.harness/research_manifest.yaml` points to the recovery entry and artifact locations.
+- The git tree is clean, or user-authored changes are isolated and explicitly protected.
+- The research loop runs on an approved branch or worktree.
+
+## Loop
+
+For each iteration:
+
+1. State the iteration hypothesis.
+2. Make the smallest change that tests it.
+3. Run the declared verification.
+4. Record result and metric in `docs/research/evidence_log.md`.
+5. Decide keep, revert, reset, discard, or stop.
+6. Preserve failure knowledge before removing failed code.
+7. Stop when the budget, success rule, failure rule, or review gate says stop.
+
+## Rollback rules
+
+- Failed code may be removed.
+- Failed knowledge must remain in the evidence log.
+- Prefer `git revert` when an attempt was committed and the history is useful.
+- `git reset --hard` is allowed only inside the approved research branch or worktree after evidence is recorded.
+- Never reset over uncommitted user work or unrelated changes.
+- Keep selected logs, result tables, and reports outside the reset target or commit them before reset.
+
+## Autoresearch engine
+
+An external autoresearch engine may run the loop only when the research contract is complete:
+
+- Goal
+- Scope
+- Metric
+- Verify
+- Guard
+- Iterations
+
+If any field is missing, return to research planning instead of starting the loop.
+
+## Completion
+
+At the end:
+
+- summarize kept and discarded attempts;
+- compare against baseline;
+- note reproducibility limits;
+- recommend continue, stop, or convert to normal implementation work;
+- run cleanup so README, docs, artifacts, and recovery state do not drift.
