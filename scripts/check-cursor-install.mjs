@@ -59,10 +59,13 @@ if (exists(".cursor-plugin/marketplace.json")) {
 
 const pluginRulesDir = "rules";
 const rulesDir = ".cursor/rules";
+const cursorSkillsDir = ".cursor/skills";
 if (!exists(pluginRulesDir)) fail("Cursor plugin rules directory is missing");
 else pass("Cursor plugin rules directory exists");
 if (!exists(rulesDir)) fail("Cursor rules directory is missing");
 else pass("Cursor rules directory exists");
+if (!exists(cursorSkillsDir)) fail("Cursor project-preview skills directory is missing");
+else pass("Cursor project-preview skills directory exists");
 
 const overview = `${rulesDir}/harness-workflow-overview.mdc`;
 if (!exists(overview)) fail("Cursor overview rule is missing");
@@ -117,7 +120,13 @@ if (!process.exitCode) pass("Cursor rules cover all active workflows");
 
 for (const skill of bundledSkills) {
   if (!exists(`skills/${skill}/SKILL.md`)) fail(`missing bundled skill for Cursor adapter: ${skill}`);
+  if (!exists(`${cursorSkillsDir}/${skill}/SKILL.md`)) {
+    fail(`missing Cursor project-preview skill: ${skill}`);
+  } else if (read(`skills/${skill}/SKILL.md`) !== read(`${cursorSkillsDir}/${skill}/SKILL.md`)) {
+    fail(`canonical skill and Cursor project-preview skill drifted: ${skill}`);
+  }
 }
+if (!process.exitCode) pass("Cursor project-preview skills cover all bundled skills");
 
 const installer = "scripts/install-cursor.mjs";
 if (!exists(installer)) {

@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Plugin checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Check Codex plugin
+        run: node scripts/check-plugin.mjs
+
+      - name: Check Claude Code plugin
+        run: node scripts/check-claude-code-install.mjs
+
+      - name: Check Cursor adapter
+        run: node scripts/check-cursor-install.mjs
+
+      - name: Dry-run Cursor project install
+        run: node scripts/install-cursor.mjs --target . --dry-run
+
+      - name: Check README assets
+        run: |
+          test -f docs/assets/readme/harness-workflow-icon.png
+          test -f docs/assets/readme/harness-workflow-figure.png
+          test -f docs/assets/readme/harness-fit-figure.png
+          test -f .cursor/skills/find-skills/SKILL.md

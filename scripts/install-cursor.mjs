@@ -44,6 +44,7 @@ for (let index = 0; index < args.length; index += 1) {
 
 const sourceRules = path.join(root, "rules");
 const previewRules = path.join(root, ".cursor", "rules");
+const previewSkills = path.join(root, ".cursor", "skills");
 const sourceSkills = path.join(root, "skills");
 const targetRoot = path.resolve(target);
 const targetRules = path.join(targetRoot, ".cursor", "rules");
@@ -56,6 +57,7 @@ const fail = (message) => {
 
 if (!fs.existsSync(sourceRules)) fail(`missing source rules directory: ${sourceRules}`);
 if (!fs.existsSync(previewRules)) fail(`missing project-preview rules directory: ${previewRules}`);
+if (!fs.existsSync(previewSkills)) fail(`missing project-preview skills directory: ${previewSkills}`);
 if (!fs.existsSync(sourceSkills)) fail(`missing source skills directory: ${sourceSkills}`);
 if (!fs.existsSync(targetRoot)) fail(`target project does not exist: ${targetRoot}`);
 if (!fs.statSync(targetRoot).isDirectory()) fail(`target is not a directory: ${targetRoot}`);

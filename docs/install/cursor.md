@@ -5,7 +5,7 @@
 1. **Cursor plugin surface** for public marketplace usage after the repo is published.
 2. **Project adapter install** for teams that want the same rules and skills copied into a target project.
 
-Cursor does not install the Codex plugin and does not read `.codex-plugin/plugin.json`. Its durable project context is `.cursor/rules`, and the project adapter also copies canonical workflow skills into `.cursor/skills` so Cursor can see the same skill content without information loss.
+Cursor does not install the Codex plugin and does not read `.codex-plugin/plugin.json`. Its durable project context is `.cursor/rules` and `.cursor/skills`. This repository keeps both surfaces checked in, so the Cursor preview you see in this repo matches what the project adapter installs into a target repo.
 
 This follows the pattern used by mature agent-tooling repos: keep reusable agent capabilities in repo-native folders, then expose a Cursor-specific plugin or `.cursor/` adapter rather than pretending Cursor can consume another agent's manifest.
 
@@ -31,6 +31,7 @@ The Cursor plugin metadata lives in:
 - `skills/`
 - `rules/`
 - `.cursor/rules/`
+- `.cursor/skills/`
 
 ## Project Adapter Install
 

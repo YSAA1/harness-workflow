@@ -15,6 +15,10 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml"><img src="https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+</p>
+
+<p align="center">
   <a href="#快速开始">快速开始</a> ·
   <a href="#为什么需要它">为什么需要</a> ·
   <a href="#它和普通-workflow-有什么不同">特点</a> ·
@@ -56,7 +60,7 @@ node scripts/install-cursor.mjs --target .
 node scripts/check-cursor-install.mjs
 ```
 
-这个 adapter installs `.cursor/rules/` and `.cursor/skills/`；它不依赖 legacy `.cursorrules`。详见 [docs/install/cursor.md](docs/install/cursor.md)。
+这个 adapter 会安装 `.cursor/rules/` 和 `.cursor/skills/`；本仓库也把同一套 Cursor 预览面提交进来，包括 `find-skills`。它不依赖 legacy `.cursorrules`。详见 [docs/install/cursor.md](docs/install/cursor.md)。
 
 ## 为什么需要它
 
