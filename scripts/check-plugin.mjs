@@ -64,7 +64,7 @@ else pass("no default hooks");
 if (exists(".codex/config.toml")) fail("plugin must not include user or project Codex config");
 else pass("no default Codex config");
 
-const activeSkills = [
+const workflowSkills = [
   "harness-builder",
   "brainstorm",
   "plan",
@@ -74,6 +74,8 @@ const activeSkills = [
   "verify",
   "cleanup",
 ];
+const helperSkills = ["find-skills"];
+const activeSkills = [...workflowSkills, ...helperSkills];
 const removedSkills = ["bootstrap", "state-contract", "resume", "save-session"];
 
 for (const skill of activeSkills) {
@@ -82,7 +84,7 @@ for (const skill of activeSkills) {
 for (const skill of removedSkills) {
   if (exists(skillPath(skill))) fail(`removed skill still exposed: ${skill}`);
 }
-if (!process.exitCode) pass("active skill set matches boundary model");
+if (!process.exitCode) pass("active skill set matches boundary model plus helper skills");
 
 for (const skill of activeSkills) {
   if (!exists(skillPath(skill))) continue;
@@ -116,6 +118,7 @@ if (!exists(installDocPath)) {
     "review",
     "verify",
     "cleanup",
+    "find-skills",
     "recognition",
     "update",
     "uninstall",
@@ -132,7 +135,7 @@ if (!exists(installDocPath)) {
 
 const readme = read("README.md");
 for (const token of [
-  "Global plugin marketplace",
+  "YSAA1/harness-workflow",
   "docs/install/codex.md",
   "codex plugin marketplace add",
   "node scripts/check-plugin.mjs",
@@ -197,7 +200,7 @@ if (exists(skillPath("harness-builder"))) {
   }
 }
 
-const skillBundle = activeSkills.map((skill) => (exists(skillPath(skill)) ? read(skillPath(skill)) : "")).join("\n");
+const skillBundle = workflowSkills.map((skill) => (exists(skillPath(skill)) ? read(skillPath(skill)) : "")).join("\n");
 for (const token of ["WIP=1", "fresh evidence", "Spec", "Executable Plan", "Knowledge Cleanup", "recovery surface"]) {
   if (!skillBundle.includes(token)) fail(`skills missing discipline token: ${token}`);
 }
@@ -213,6 +216,10 @@ if (!/Executable Plan/i.test(plan) || /默认使用 three-file backend/.test(pla
 const cleanup = read(skillPath("cleanup"));
 if (!/Knowledge Cleanup/i.test(cleanup) || /save-session/.test(cleanup)) {
   fail("cleanup must center Knowledge Cleanup and not route to save-session");
+}
+const findSkills = read(skillPath("find-skills"));
+for (const token of ["npx skills find", "npx skills add", "skills.sh", "Verify Quality Before Recommending"]) {
+  if (!findSkills.includes(token)) fail(`find-skills helper missing token: ${token}`);
 }
 
 const flowReviewScript = "scripts/generate-skill-flow-html.mjs";

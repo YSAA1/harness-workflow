@@ -12,6 +12,7 @@
 | Recovery surface | 让未来 agent 恢复工作的项目工件，可以是 none、lightweight、three-file、feature-list 或 existing system |
 | Knowledge Cleanup | `cleanup` 的目标：防止 docs、生成物、AGENTS.md 和 recovery surface 漂移 |
 | Capability Discovery | 为当前任务搜索并评估 skills、MCP、hooks、subagents 或外部 agent 能力 |
+| Skill discovery helper | `find-skills`，用于搜索可复用 skills；它辅助 Capability Discovery，不是第九条 workflow lane |
 
 ## C1 Harness As System
 
@@ -74,7 +75,7 @@ Capability Discovery 要求：
 - 不把当前已安装 skills 当作搜索范围上限。
 - 不因为"可能有用"就安装能力。
 
-主要 skill：`harness-builder`、`verify`。
+主要 skill：`harness-builder`、`verify`。辅助 skill：`find-skills`。
 
 ## C8 Artifact Freshness
 
@@ -130,3 +131,4 @@ Three-file backend 使用 `task_plan.md`、`progress.md`、`findings.md`，仍�
 | `review` | findings-first review |
 | `verify` | fresh evidence for a claim |
 | `cleanup` | Knowledge Cleanup and aligned artifacts |
+| `find-skills` | reusable skill discovery and quality screening |

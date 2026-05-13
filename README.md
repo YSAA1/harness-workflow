@@ -1,179 +1,228 @@
-# Harness Workflow
-
 [简体中文](README.zh-CN.md)
 
 <p align="center">
-  <img src="docs/assets/readme/harness-workflow-icon.png" alt="Harness Workflow icon" width="120">
+  <img src="docs/assets/readme/harness-workflow-icon.png" alt="Harness Workflow icon" width="108">
 </p>
 
-![Harness Workflow hero](docs/assets/readme/harness-workflow-hero.png)
+<h1 align="center">Harness Workflow</h1>
 
-`harness-workflow` packages the Learn Harness Engineering operating model as reusable workflow instructions for AI coding agents. It gives an agent a practical workbench: project entry points, scoped planning, fresh verification, recovery surfaces, and cleanup discipline.
+<p align="center">
+  <strong>Context-aware agent workbench for real repositories.</strong>
+</p>
 
-The repository supports three agent surfaces:
+<p align="center">
+  Give Codex, Claude Code, and Cursor enough repo evidence, requirement context, recovery state, and verification discipline to work on projects that do not fit in one chat.
+</p>
 
-| Surface | Runtime shape | Primary entry | Recognition target |
-| --- | --- | --- | --- |
-| Codex | Global plugin marketplace + skills | `.agents/plugins/marketplace.json` + `.codex-plugin/plugin.json` | Plugin `harness-workflow` and 8 bundled skills |
-| Claude Code | Global plugin marketplace + personal-skill fallback | `.claude-plugin/marketplace.json` + `.claude-plugin/plugin.json` | `/harness-workflow:skill-name` or personal `/skill-name` |
-| Cursor | Cursor plugin + project adapter | `.cursor-plugin/plugin.json`, `skills/`, `rules/`, `.cursor/rules/*.mdc` | `/add-plugin harness-workflow` or copied Project Rules |
+<p align="center">
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#why-this-exists">Why this exists</a> ·
+  <a href="#what-makes-it-different">What is different</a> ·
+  <a href="#skill-map">Skill map</a> ·
+  <a href="docs/install/codex.md">Codex</a> ·
+  <a href="docs/install/claude-code.md">Claude Code</a> ·
+  <a href="docs/install/cursor.md">Cursor</a>
+</p>
 
-Codex and Claude Code are installed globally through their plugin marketplace flows. Cursor is supported through Cursor's plugin shape when published, with a project adapter that copies rules and skills into a target repo when marketplace install is not available.
+<p align="center">
+  <img src="docs/assets/readme/harness-workflow-figure.png" alt="Harness Workflow context-aware agent workbench infographic">
+</p>
 
-## Why This Exists
+> More context and more repo evidence produce a better harness. `harness-builder` is usually useful after `brainstorm` or `plan`, when the agent knows what is being built and what must be proven.
 
-Most agent failures are not model failures alone. They come from missing project maps, unclear scope, weak verification, invisible state, and stale documentation. Harness Workflow turns those concerns into small reusable workflows instead of one giant prompt.
+<p align="center">
+  <img src="docs/assets/readme/harness-fit-figure.png" alt="From global bloat to project-fit harness infographic">
+</p>
 
-```mermaid
-flowchart LR
-  A[Unclear request] --> B[brainstorm: Spec]
-  B --> C[plan: Executable Plan]
-  C --> D[implement: WIP=1 scoped change]
-  D --> E[review: correctness and scope]
-  E --> F[verify: fresh evidence]
-  F --> G[cleanup: knowledge stays current]
-  H[harness-builder] --> B
-  H --> C
-  H --> D
-  D --> I[diagnose: reproduce and root cause]
-  I --> D
-```
+## Quick start
 
-## Quick Install
-
-### Codex
-
-Install the plugin globally through the Codex marketplace flow:
+Install the plugin, then enter the lane that matches the current project state.
 
 ```bash
-codex plugin marketplace add <owner>/<repo>
+codex plugin marketplace add YSAA1/harness-workflow
 ```
 
-Then install `harness-workflow` from the Codex plugin directory. Successful recognition means Codex sees plugin `harness-workflow` and the 8 active skills listed below. See [docs/install/codex.md](docs/install/codex.md).
-
-### Claude Code
-
-Install globally from a Claude Code plugin marketplace:
+For Claude Code:
 
 ```bash
-claude plugin marketplace add <owner>/<repo>
+claude plugin marketplace add YSAA1/harness-workflow
 claude plugin install harness-workflow@harness-workflow
 ```
 
-Then invoke namespaced skills:
+For Cursor project-local use:
+
+```bash
+node scripts/install-cursor.mjs --target .
+node scripts/check-cursor-install.mjs
+```
+
+The adapter installs `.cursor/rules/` and `.cursor/skills/`; it does not depend on legacy `.cursorrules`. See [docs/install/cursor.md](docs/install/cursor.md).
+
+## Why this exists
+
+Most open-source agent workflows describe a nice sequence: gather requirements, write a plan, change code, review, verify. That sequence helps, but it leaves several hard parts underspecified.
+
+Real repositories have stale docs, missing tests, unclear ownership, dirty git state, local conventions, broken setup commands, and long tasks that survive context compaction. A generic checklist cannot decide which recovery surface, verification path, skill, hook, or MCP server belongs in that repo.
+
+Harness Workflow is built around that gap. It gives the agent separate lanes for thinking, planning, implementation, diagnosis, verification, cleanup, and project harness construction. The point is not to force every task into a heavy process. The point is to make the process fit the evidence.
+
+## The pain it fixes
+
+Harness engineering can sound abstract: "build a better operating environment around the agent." The hard part is turning that idea into files, checks, rules, and recovery state that actually help the next coding session.
+
+Three common failure modes show up again and again:
+
+| Pain | What usually happens | What this plugin does instead |
+| --- | --- | --- |
+| "Harness engineering" stays theoretical | The team likes the idea, but nobody knows what to create first. | `harness-builder` turns the idea into concrete project artifacts: project map, thin rules, check scripts, recovery surface, capability decisions, and cleanup policy. |
+| Every project gets the same global setup | Users install all skills, MCP servers, hooks, memories, and rules globally. Context gets noisy, tools fight each other, and small projects inherit irrelevant process. | The plugin pushes project-fit decisions: adopt what this repo needs, defer what might help later, reject what adds cost without signal. |
+| Agents finish work but leave entropy behind | Tests may pass, but docs lie, temp files remain, state is stale, and the next agent has to rediscover the same facts. | `verify` requires fresh evidence, and `cleanup` keeps README, generated artifacts, recovery state, and handoff knowledge aligned. |
+
+## Harness engineering in practice
+
+The harness is not one giant prompt. It is the operating environment around the model:
+
+- **Instructions**: thin `AGENTS.md` or `CLAUDE.md`, project iron laws, protected paths, and task-type reading pointers.
+- **State**: none, lightweight notes, three-file backend, feature list, issue tracker, or an existing project system.
+- **Feedback**: fast checks, smoke tests, tiny runs, screenshots, logs, and current verification evidence.
+- **Tools**: scripts, project-local skills, targeted MCP, justified hooks, and subagents only when they pay for their cost.
+- **Cleanup**: anti-entropy rules so sessions close with accurate docs, clear next state, and no misleading residue.
+
+The 12-lesson checklist in [`course_alignment.md`](skills/harness-builder/references/course_alignment.md) is folded into `harness-builder` as a practical coverage guide. It asks whether capable agents can still fail here, what the harness around the model should contain, which repo files become the system of record, how to keep root instructions thin, when long-running work needs continuity, what a fresh agent should do before implementation, how to constrain scope, whether a feature list is useful, what gates prevent premature victory, where smoke/e2e checks belong, what observability should be captured, and what clean state every session must leave.
+
+That checklist is not a mandatory artifact list. It is a decision framework. A small CLI library may only need a thin map and one check command. An ML experiment repo may need tiny-run verification, data leakage review, run metadata, and stricter recovery state. A frontend app may need browser smoke checks and design review. Different projects need different harnesses.
+
+## What makes it different
+
+| Difference | What it means in practice |
+| --- | --- |
+| Context-aware harness building | `harness-builder` should consume a brainstormed spec or executable plan when one exists, plus real repository evidence. It is not a blank template generator. |
+| Repo truth before workflow ceremony | The agent checks docs, source layout, tests, git state, existing rules, and setup commands before it claims the project is ready. |
+| Recovery as a design choice | Some work needs no durable state. Some needs a short checkpoint. Some needs `task_plan.md`, `progress.md`, and `findings.md`. Some should reuse an issue tracker or existing docs. |
+| Capability fit, not capability hoarding | Extra skills, MCP servers, hooks, and subagents are recommended only when they close a real gap in the task or repo. The bundled `find-skills` helper is for skill discovery; web research is used for current hooks, MCP, and tool behavior. |
+| Fresh evidence for ready claims | `verify` ties every "done" claim to current evidence: tests, build output, smoke checks, screenshots, manual checks, or a clearly stated reason verification is blocked. |
+| Cleanup before handoff | The workflow treats stale README text, leftover generated files, unclear state, and missing recovery notes as part of the work, not as optional polish. |
+
+## Where `harness-builder` fits
+
+`harness-builder` is the lane that creates or repairs the project workbench: `AGENTS.md` or `CLAUDE.md`, project map, verification entry point, recovery surface, local rules, and justified optional capabilities.
+
+Recommended order:
+
+| Project state | Better route |
+| --- | --- |
+| The request is fuzzy or still has tradeoffs | `brainstorm -> plan -> harness-builder -> implement` |
+| The request is clear, but the repo workbench is missing | `plan -> harness-builder -> implement` |
+| The repo already has a fresh harness and a known check path | Skip `harness-builder`; go to `implement`, `diagnose`, or `verify` |
+| The task is specifically to audit, repair, or create agent governance | Use `harness-builder` directly, but still start with evidence collection and gap-driven questions |
+| The task is tiny | Do the tiny task and verify it; do not create ceremony |
+
+This placement matters. A useful harness depends on the current goal, non-goals, risk, verification strategy, and repository shape. Without that context, the agent can only install a plausible template.
+
+## Skill map
+
+| Skill | Use it when | What it should leave behind |
+| --- | --- | --- |
+| `brainstorm` | The goal, boundary, tradeoff, or success criteria is not clear enough to plan. | A focused spec: goals, non-goals, options considered, success criteria, and verification strategy. |
+| `plan` | The spec or user request is clear enough to choose a first executable slice. | A plan in the selected planning surface, with active slice, proof path, and commit-sized work units. |
+| `harness-builder` | The repo lacks a reliable workbench, recovery surface, verification entry point, or capability decision. | A minimal project-local harness plan and approved installed components, grounded in repo evidence. |
+| `implement` | One slice is ready and the workbench is clear enough to change files. | A small scoped change, with local checks or a clear reason checks cannot run. |
+| `diagnose` | A build, test, lint, typecheck, CI run, or runtime behavior fails without a known root cause. | Reproduction, one tested hypothesis, root cause, minimal fix, and regression evidence. |
+| `review` | A meaningful change looks stable and needs scrutiny before a ready claim. | Findings about correctness, missed tests, docs drift, scope creep, and residual risk. |
+| `verify` | The agent wants to say the work is ready. | Fresh evidence tied to the exact success criteria. |
+| `cleanup` | Work is done, blocked, abandoned, or being handed off. | Updated project knowledge, removed leftovers, and a recovery state the next agent can read. |
+| `find-skills` | The current task may benefit from an existing reusable skill. | Search and quality checks before recommending or installing a skill. |
+
+## Common routes
+
+```text
+Tiny edit:
+implement -> verify
+
+Unclear feature:
+brainstorm -> plan -> harness-builder -> implement -> review -> verify -> cleanup
+
+Clear task in an unfamiliar repo:
+plan -> harness-builder -> implement -> review -> verify
+
+Broken command:
+diagnose -> implement -> verify
+
+Harness audit or repair:
+harness-builder -> verify -> cleanup
+```
+
+The lanes can loop. If verification discovers a missing browser runner, external API, local skill, or recovery gap, route that gap back to `harness-builder` instead of burying it inside implementation.
+
+## Install
+
+### Codex
+
+```bash
+codex plugin marketplace add YSAA1/harness-workflow
+```
+
+Then install `harness-workflow` from the Codex plugin directory. Run the repo check when editing this project:
+
+```bash
+node scripts/check-plugin.mjs
+```
+
+More details: [docs/install/codex.md](docs/install/codex.md).
+
+### Claude Code
+
+```bash
+claude plugin marketplace add YSAA1/harness-workflow
+claude plugin install harness-workflow@harness-workflow
+```
+
+Use the namespaced commands:
 
 ```text
 /harness-workflow:harness-builder
 ```
 
-Claude Code personal skills in `~/.claude/skills/` are documented only as a user-level fallback, not as this repo's primary install path. See [docs/install/claude-code.md](docs/install/claude-code.md).
+More details: [docs/install/claude-code.md](docs/install/claude-code.md).
 
 ### Cursor
 
-For Cursor marketplace usage after publication:
+When Cursor plugin installation is available, use the Cursor plugin flow:
 
 ```text
 /add-plugin harness-workflow
 ```
 
-For project-local installation into a target repo, copy the Cursor rules and canonical skills:
+For project-local use, copy the rules and skills into the target repo:
 
 ```bash
-node scripts/install-cursor.mjs --target /path/to/target-project
+node scripts/install-cursor.mjs --target .
 node scripts/check-cursor-install.mjs
 ```
 
-Cursor support does not use the Codex manifest. The project adapter installs `.cursor/rules/` and `.cursor/skills/` into the target repo and intentionally avoids legacy `.cursorrules`. See [docs/install/cursor.md](docs/install/cursor.md).
+More details: [docs/install/cursor.md](docs/install/cursor.md).
 
-## Workflow Skills
-
-| Skill | Use When | Output |
-| --- | --- | --- |
-| `harness-builder` | The project workbench, verification entry, Capability Discovery, or recovery surface is unclear | Harness Hypothesis and project-local harness plan |
-| `brainstorm` | The requirement is fuzzy or has multiple valid interpretations | Approved Spec |
-| `plan` | A Spec is approved or the request is already clear | Executable Plan |
-| `implement` | The next scoped change is ready to build | Minimal verified code/doc change |
-| `diagnose` | A failure, regression, or unknown root cause blocks progress | Reproduction, root cause, minimal fix, evidence |
-| `review` | A change needs correctness, scope, design, and test scrutiny | Findings and residual risk |
-| `verify` | A ready claim needs proof | Fresh evidence for a specific claim |
-| `cleanup` | Work is done and project knowledge may drift | Updated docs, generated artifacts, and handoff notes |
-
-`state-contract`, `resume`, and `save-session` are not active skills. Their useful ideas live in Harness Builder recovery policy and Cleanup handoff hygiene.
-
-## Recovery Surface
-
-A recovery surface is the durable place future agents use instead of chat history. It is semantic, not tied to one file layout.
-
-| Backend | Use For | Typical Artifacts |
-| --- | --- | --- |
-| `none` | Simple one-turn work | Current request and git diff |
-| `lightweight` | Small tasks needing only scope and evidence | Existing docs or short notes |
-| `three-file` | Multi-step, risky, or cross-session work | `task_plan.md`, `progress.md`, `findings.md` |
-| `feature-list` | Many independent product features | Feature tracker or structured list |
-| `existing` | Repos with their own tracker | Issues, roadmap, project docs, internal system |
-
-All skills read the same semantic fields when available: `active_slice`, `non_goals`, `success_criteria`, `verification_path`, `evidence_log`, `decisions`, `risks`, `blockers`, and `next_actions`.
-
-## Method Contract
-
-| Contract | Meaning | Primary skills |
-| --- | --- | --- |
-| C1 Harness as system | Agent performance comes from surrounding systems, not prompts alone | `harness-builder`, `diagnose` |
-| C2 Repository as truth | Repository artifacts and recovery surface are the durable truth | All skills |
-| C3 Thin instruction surface | `AGENTS.md` stays a thin rule entry | `harness-builder`, `cleanup` |
-| C4 Workbench before implementation | Project map, verification entry, and recovery path must be clear when needed | `harness-builder` |
-| C5 Scoped work | Work is bounded by Spec, Executable Plan, and WIP=1 | `brainstorm`, `plan`, `implement` |
-| C6 Fresh evidence | Ready claims require current evidence | `review`, `verify`, `diagnose` |
-| C7 Capability fit | Add skills, MCP, hooks, or subagents only when value beats risk | `harness-builder`, `verify` |
-| C8 Artifact freshness | Docs, commands, and generated files must match code | `review`, `cleanup` |
-| C9 Knowledge Cleanup | Close work by reducing drift and entropy | `cleanup` |
-| C10 Backend decoupling | Recovery surface is semantic; three-file is optional | `harness-builder`, all skills |
-
-## Validation
-
-Run the full repository-side recognition checks before publishing:
+## Check this repo
 
 ```bash
 node scripts/check-plugin.mjs
 node scripts/check-claude-code-install.mjs
 node scripts/check-cursor-install.mjs
+claude plugin validate .
 ```
 
-If you modify skill structure or the generated flow review:
-
-```bash
-node scripts/generate-skill-flow-html.mjs
-node scripts/check-plugin.mjs
-```
-
-`docs/skill-flow-review/*.html` is generated. Update the generator, then rebuild.
-
-## Repository Map
+## Repository layout
 
 | Path | Purpose |
 | --- | --- |
-| `.agents/plugins/marketplace.json` | Codex marketplace entry for global plugin install |
-| `.codex-plugin/plugin.json` | Codex plugin metadata and default prompts |
-| `.claude-plugin/marketplace.json` | Claude Code marketplace entry for global plugin install |
-| `.claude-plugin/plugin.json` | Claude Code plugin metadata |
-| `.cursor-plugin/plugin.json` | Cursor plugin metadata |
-| `rules/` | Cursor plugin rules |
-| `.cursor/rules/` | Cursor Project Rules source for project adapter installs |
-| `skills/*/SKILL.md` | Canonical workflow skill source |
-| `skills/*/references/` | Detailed policy and checklist files |
-| `skills/plan/templates/` | Optional three-file backend templates |
-| `docs/install/` | Per-surface installation and recognition guides |
-| `docs/harness-method-contract.md` | C1-C10 method contract |
-| `docs/skill-flow-review/` | Generated skill flow review HTML |
-| `scripts/check-*.mjs` | Repository-side recognition and consistency checks |
-
-## Publishing Checklist
-
-1. Run all validation commands.
-2. Confirm the README and install docs describe the same three surfaces.
-3. Confirm no default MCP, hooks, user-level config, or hidden install side effects were added.
-4. Create a public GitHub repository and push.
-5. Perform live recognition where available: Codex plugin listing, Claude Code plugin/skill list, Cursor plugin search or Project Rules UI.
+| `skills/*/SKILL.md` | Canonical workflow skill source. |
+| `skills/*/references/` | Extra checklists and policy notes loaded only when needed. |
+| `.codex-plugin/` | Codex plugin metadata. |
+| `.claude-plugin/` | Claude Code plugin metadata and marketplace entry. |
+| `.cursor-plugin/`, `rules/`, `.cursor/rules/` | Cursor plugin and project-rule adapter surface. |
+| `docs/assets/readme/` | README icon and imagegen infographic PNG assets. |
+| `docs/install/` | Install notes for each supported agent surface. |
+| `scripts/check-*.mjs` | Consistency and recognition checks. |
 
 ## License
 

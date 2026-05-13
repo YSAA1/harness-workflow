@@ -4,7 +4,7 @@ import path from "node:path";
 
 const cwd = process.cwd();
 const root = fs.existsSync(path.join(cwd, "skills")) ? cwd : path.resolve(cwd, "plugins/harness-workflow");
-const activeSkills = [
+const workflowSkills = [
   "harness-builder",
   "brainstorm",
   "plan",
@@ -14,6 +14,8 @@ const activeSkills = [
   "verify",
   "cleanup",
 ];
+const helperSkills = ["find-skills"];
+const activeSkills = [...workflowSkills, ...helperSkills];
 const removedSkills = ["bootstrap", "state-contract", "resume", "save-session"];
 
 let failed = false;
@@ -80,7 +82,7 @@ for (const skill of removedSkills) {
 if (exists(".claude/skills")) {
   fail("repository must not ship project-local .claude/skills as the primary Claude Code install surface");
 }
-if (!failed) pass("Claude Code global plugin skill set uses the canonical 8 workflow skills");
+if (!failed) pass("Claude Code global plugin skill set uses canonical workflow skills plus helpers");
 
 for (const skill of activeSkills) {
   const files = listFiles(`skills/${skill}`);
@@ -108,6 +110,12 @@ if (!exists(".claude-plugin/marketplace.json")) {
     const marketplace = JSON.parse(read(".claude-plugin/marketplace.json"));
     const plugin = marketplace.plugins?.find((entry) => entry.name === "harness-workflow");
     if (marketplace.name !== "harness-workflow") fail("Claude marketplace name must be harness-workflow");
+    if (Object.hasOwn(marketplace, "description")) {
+      fail("Claude marketplace manifest must not use top-level description; Claude Code rejects this key");
+    }
+    if (!marketplace.metadata?.description) {
+      fail("Claude marketplace manifest must include metadata.description");
+    }
     if (!plugin) fail("Claude marketplace must expose harness-workflow");
     if (plugin && plugin.source !== "./") fail("Claude marketplace source must point at the repository root");
     pass("Claude Code marketplace manifest parses");
@@ -117,7 +125,7 @@ if (!exists(".claude-plugin/marketplace.json")) {
 }
 
 const methodContract = exists("docs/harness-method-contract.md") ? read("docs/harness-method-contract.md") : "";
-const skillBundle = activeSkills.map((skill) => read(`skills/${skill}/SKILL.md`)).join("\n");
+const skillBundle = workflowSkills.map((skill) => read(`skills/${skill}/SKILL.md`)).join("\n");
 for (const token of [
   "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
   "recovery surface", "fresh evidence", "WIP=1", "Knowledge Cleanup", "Capability Discovery",
@@ -139,6 +147,7 @@ if (!exists("docs/install/claude-code.md")) {
     "~/.claude/skills/",
     "%USERPROFILE%\\.claude\\skills",
     "/harness-workflow:harness-builder",
+    "/harness-workflow:find-skills",
     "/harness-builder",
     "Update",
     "Uninstall",

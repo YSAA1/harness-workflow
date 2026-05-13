@@ -13,13 +13,13 @@ Claude Code does not read `.codex-plugin/plugin.json`. This repository has a sep
 After the repository is public, add it as a Claude Code marketplace:
 
 ```text
-/plugin marketplace add <owner>/<repo>
+/plugin marketplace add YSAA1/harness-workflow
 ```
 
 Or from the shell:
 
 ```bash
-claude plugin marketplace add <owner>/<repo>
+claude plugin marketplace add YSAA1/harness-workflow
 ```
 
 Then install the plugin globally:
@@ -50,6 +50,7 @@ Successful recognition means Claude Code can see the installed plugin and namesp
 /harness-workflow:review
 /harness-workflow:verify
 /harness-workflow:cleanup
+/harness-workflow:find-skills
 ```
 
 You can also ask:
@@ -58,7 +59,7 @@ You can also ask:
 List all available Skills
 ```
 
-Expected result: the 8 Harness Workflow plugin skills appear under the `harness-workflow` namespace.
+Expected result: the 8 Harness Workflow lanes plus the `find-skills` helper appear under the `harness-workflow` namespace.
 
 ## Local Marketplace Test
 
@@ -92,6 +93,7 @@ cp -r skills/diagnose ~/.claude/skills/
 cp -r skills/review ~/.claude/skills/
 cp -r skills/verify ~/.claude/skills/
 cp -r skills/cleanup ~/.claude/skills/
+cp -r skills/find-skills ~/.claude/skills/
 ```
 
 On Windows PowerShell:
@@ -106,6 +108,7 @@ Copy-Item -Recurse -Force skills\diagnose "$env:USERPROFILE\.claude\skills\"
 Copy-Item -Recurse -Force skills\review "$env:USERPROFILE\.claude\skills\"
 Copy-Item -Recurse -Force skills\verify "$env:USERPROFILE\.claude\skills\"
 Copy-Item -Recurse -Force skills\cleanup "$env:USERPROFILE\.claude\skills\"
+Copy-Item -Recurse -Force skills\find-skills "$env:USERPROFILE\.claude\skills\"
 ```
 
 Equivalent Windows path: `%USERPROFILE%\.claude\skills`.
@@ -128,7 +131,7 @@ The script checks:
 
 - `.claude-plugin/plugin.json` is valid.
 - `.claude-plugin/marketplace.json` exposes `harness-workflow`.
-- `skills/` contains the 8 active workflow skills with valid frontmatter.
+- `skills/` contains the 8 active workflow skills plus `find-skills` with valid frontmatter.
 - Supporting files remain available under each skill.
 - The docs describe global plugin or personal-skill installation, not project-local `.claude/skills` as the primary path.
 
@@ -143,7 +146,7 @@ claude plugin update harness-workflow
 
 If the plugin was installed from a marketplace under a different name, use that marketplace/plugin identifier from `claude plugin list`.
 
-For personal skills fallback, recopy the 8 skill directories into `~/.claude/skills/`.
+For personal skills fallback, recopy the 8 workflow skill directories plus `find-skills` into `~/.claude/skills/`.
 
 ## Uninstall
 
@@ -164,5 +167,6 @@ For personal skills fallback, delete only these directories from `~/.claude/skil
 - `review`
 - `verify`
 - `cleanup`
+- `find-skills`
 
 Do not delete the whole `~/.claude` directory.

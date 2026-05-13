@@ -20,7 +20,8 @@ After the plugin is published to a Cursor marketplace, install it from Cursor ch
 Successful recognition means Cursor can see:
 
 - plugin: `harness-workflow`
-- bundled skills: `harness-builder`, `brainstorm`, `plan`, `implement`, `diagnose`, `review`, `verify`, `cleanup`
+- bundled workflow skills: `harness-builder`, `brainstorm`, `plan`, `implement`, `diagnose`, `review`, `verify`, `cleanup`
+- bundled helper skill: `find-skills`
 - rules that carry the Harness Workflow operating model
 
 The Cursor plugin metadata lives in:
@@ -36,7 +37,7 @@ The Cursor plugin metadata lives in:
 Use this when Cursor marketplace install is not available, or when you want the workflow pinned inside a specific target repo:
 
 ```bash
-node scripts/install-cursor.mjs --target /path/to/target-project
+node scripts/install-cursor.mjs --target .
 ```
 
 On Windows PowerShell:
@@ -47,13 +48,13 @@ node scripts\install-cursor.mjs --target C:\path\to\target-project
 
 The installer copies:
 
-- `.cursor/rules/*.mdc` to `<target>/.cursor/rules/`
-- `skills/*` to `<target>/.cursor/skills/`
+- `.cursor/rules/*.mdc` to the target repo's `.cursor/rules/`
+- `skills/*` to the target repo's `.cursor/skills/`
 
 It does not delete existing target rules or settings. If a file with the same name already exists, it is overwritten with this repository's current version. Preview without writing:
 
 ```bash
-node scripts/install-cursor.mjs --target /path/to/target-project --dry-run
+node scripts/install-cursor.mjs --target . --dry-run
 ```
 
 ## Recognition
@@ -65,7 +66,7 @@ For project adapter install:
 1. Open the target project in Cursor.
 2. Open Cursor Settings > Rules or inspect active Project Rules in the Agent sidebar.
 3. Confirm Harness Workflow overview and 8 workflow rules are visible.
-4. Confirm `<target>/.cursor/skills/` contains the 8 skill directories.
+4. Confirm the target repo's `.cursor/skills/` contains the 8 workflow skill directories plus `find-skills`.
 
 Test prompt:
 
@@ -103,7 +104,7 @@ node scripts/check-plugin.mjs
 For a target project adapter install, rerun:
 
 ```bash
-node scripts/install-cursor.mjs --target /path/to/target-project
+node scripts/install-cursor.mjs --target .
 ```
 
 ## Uninstall
@@ -112,8 +113,8 @@ For marketplace install, remove `harness-workflow` from Cursor's plugin UI.
 
 For project adapter install, delete only the installed Harness Workflow files from:
 
-- `<target>/.cursor/rules/`
-- `<target>/.cursor/skills/`
+- the target repo's `.cursor/rules/`
+- the target repo's `.cursor/skills/`
 
 Do not delete the whole `.cursor` directory unless that project has no other Cursor configuration.
 

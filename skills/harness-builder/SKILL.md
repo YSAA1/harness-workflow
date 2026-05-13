@@ -19,6 +19,8 @@ Do not start by generating files.
 
 Start by collecting evidence, identifying information gaps, and brainstorming only the questions that matter for this project's harness.
 
+Prefer running this skill after `brainstorm` or `plan` when enough requirement context exists: goal, non-goals, success criteria, rough implementation shape, and verification strategy. If the user asks for a direct harness audit or repair, the skill can run directly, but it must still build the harness from repo evidence and gap-driven questions instead of installing a generic template.
+
 The working model is:
 
 ```text
@@ -71,7 +73,7 @@ Follow this sequence unless the user asks for a narrower task.
 
 4. **Capability Discovery**
    - First decide what capability the current task actually needs.
-   - For skill capabilities, call `$find-skills` to search strongly relevant reusable skills beyond the current installed inventory.
+   - For skill capabilities, call the bundled `find-skills` helper (`$find-skills` when invoking by name) to search strongly relevant reusable skills beyond the current installed inventory.
    - For MCP, hooks, or external agent capabilities, use targeted web search for official docs, mature implementations, or task-specific integrations.
    - Classify each candidate as `Required`, `Recommended`, `Deferred`, or `Rejected` by value, enablement, risk/cost, and fallback.
    - Do not install or recommend skills, MCP, hooks, or subagents merely because they might be useful.

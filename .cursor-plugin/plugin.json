@@ -1,7 +1,7 @@
 {
   "name": "harness-workflow",
   "displayName": "Harness Workflow",
-  "description": "Workflow skills and rules for project harness setup, planning, implementation, diagnosis, review, verification, and knowledge cleanup.",
+  "description": "Workflow skills and rules for project harness setup, planning, implementation, diagnosis, review, verification, knowledge cleanup, and skill discovery.",
   "version": "0.1.0",
   "author": {
     "name": "harness-workflow maintainers"

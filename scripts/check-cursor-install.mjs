@@ -17,6 +17,8 @@ const activeWorkflows = [
   "verify",
   "cleanup",
 ];
+const helperSkills = ["find-skills"];
+const bundledSkills = [...activeWorkflows, ...helperSkills];
 
 const fail = (message) => {
   console.error(`FAIL: ${message}`);
@@ -113,12 +115,16 @@ for (const workflow of activeWorkflows) {
 }
 if (!process.exitCode) pass("Cursor rules cover all active workflows");
 
+for (const skill of bundledSkills) {
+  if (!exists(`skills/${skill}/SKILL.md`)) fail(`missing bundled skill for Cursor adapter: ${skill}`);
+}
+
 const installer = "scripts/install-cursor.mjs";
 if (!exists(installer)) {
   fail("Cursor project adapter installer is missing");
 } else {
   const installerBody = read(installer);
-  for (const token of ["--target", "--dry-run", ".cursor", "rules", "skills"]) {
+  for (const token of ["--target", "--dry-run", ".cursor", "rules", "skills", "find-skills"]) {
     if (!installerBody.includes(token)) fail(`Cursor installer missing token: ${token}`);
   }
   pass("Cursor project adapter installer exists");
@@ -160,6 +166,7 @@ if (!exists(installDoc)) {
     "rules/",
     ".cursor/rules",
     ".cursor/skills",
+    "find-skills",
     "project rules",
     "project adapter",
     "node scripts/install-cursor.mjs --target",
@@ -190,8 +197,8 @@ if (!exists(readme)) {
   const body = read(readme);
   for (const token of [
     "Cursor plugin",
-    ".cursor-plugin/plugin.json",
-    "project adapter",
+    "project-local",
+    "adapter installs `.cursor/rules/` and `.cursor/skills/`",
     "docs/install/cursor.md",
     "node scripts/install-cursor.mjs --target",
     "node scripts/check-cursor-install.mjs",
@@ -208,9 +215,9 @@ if (!exists(readme)) {
 console.log("");
 console.log("Manual Cursor recognition check:");
 console.log("1. For marketplace usage, install with /add-plugin harness-workflow and confirm the plugin appears.");
-console.log("2. For project adapter usage, run node scripts/install-cursor.mjs --target <project>.");
+console.log("2. For project adapter usage, run node scripts/install-cursor.mjs --target . from the target project.");
 console.log("3. Open the target project in Cursor and inspect active rules in Settings > Rules or the Agent sidebar.");
-console.log("4. Confirm Harness Workflow overview, eight workflow rules, and .cursor/skills appear.");
+console.log("4. Confirm Harness Workflow overview, eight workflow rules, and .cursor/skills appear, including find-skills.");
 console.log("5. Test prompt: Use Harness Workflow to plan a scoped implementation.");
 
 if (!process.exitCode) pass("Cursor install workflow checks passed");

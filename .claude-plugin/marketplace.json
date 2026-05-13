@@ -3,12 +3,14 @@
   "owner": {
     "name": "harness-workflow maintainers"
   },
-  "description": "Workflow skills for project harness setup, planning, implementation, diagnosis, review, verification, and knowledge cleanup.",
+  "metadata": {
+    "description": "Workflow skills for project harness setup, planning, implementation, diagnosis, review, verification, knowledge cleanup, and skill discovery."
+  },
   "plugins": [
     {
       "name": "harness-workflow",
       "source": "./",
-      "description": "Workflow skills for project harness setup, planning, implementation, diagnosis, review, verification, and knowledge cleanup.",
+      "description": "Workflow skills for project harness setup, planning, implementation, diagnosis, review, verification, knowledge cleanup, and skill discovery.",
       "category": "productivity",
       "tags": [
         "workflow",

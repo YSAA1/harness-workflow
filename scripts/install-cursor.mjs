@@ -14,6 +14,7 @@ const activeSkills = [
   "review",
   "verify",
   "cleanup",
+  "find-skills",
 ];
 
 const args = process.argv.slice(2);
@@ -33,7 +34,7 @@ for (let index = 0; index < args.length; index += 1) {
   } else if (arg === "--dry-run") {
     dryRun = true;
   } else if (arg === "--help" || arg === "-h") {
-    console.log("Usage: node scripts/install-cursor.mjs [--target <project>] [--dry-run]");
+    console.log("Usage: node scripts/install-cursor.mjs [--target TARGET_DIR] [--dry-run]");
     process.exit(0);
   } else {
     console.error(`FAIL: unknown argument ${arg}`);
