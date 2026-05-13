@@ -7,6 +7,7 @@ const cwd = process.cwd();
 const root = fs.existsSync(path.join(cwd, ".codex-plugin", "plugin.json"))
   ? cwd
   : path.resolve(cwd, "plugins/harness-workflow");
+const packagedRoot = path.join(root, "plugins", "harness-workflow");
 const fail = (message) => {
   console.error(`FAIL: ${message}`);
   process.exitCode = 1;
@@ -14,7 +15,9 @@ const fail = (message) => {
 const pass = (message) => console.log(`PASS: ${message}`);
 const info = (message) => console.log(`INFO: ${message}`);
 const exists = (relativePath) => fs.existsSync(path.join(root, relativePath));
+const packageExists = (relativePath) => fs.existsSync(path.join(packagedRoot, relativePath));
 const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "utf8");
+const packageRead = (relativePath) => fs.readFileSync(path.join(packagedRoot, relativePath), "utf8");
 const skillPath = (skill) => `skills/${skill}/SKILL.md`;
 const readJson = (relativePath) => JSON.parse(read(relativePath));
 
@@ -31,6 +34,11 @@ try {
   const expectedCapabilities = ["Read", "Write"];
   if (JSON.stringify(capabilities) !== JSON.stringify(expectedCapabilities)) {
     fail("manifest capabilities must be exactly Read and Write");
+  }
+  const defaultPrompts = manifest.interface?.defaultPrompt ?? [];
+  if (defaultPrompts.length > 3) fail("manifest defaultPrompt must have at most 3 prompts");
+  for (const prompt of defaultPrompts) {
+    if (prompt.length > 128) fail(`manifest defaultPrompt is too long: ${prompt}`);
   }
   const manifestText = JSON.stringify(manifest);
   for (const token of ["bootstrap", "state-contract", "resume", "save-session"]) {
@@ -64,10 +72,25 @@ if (!exists(".agents/plugins/marketplace.json")) {
     if (marketplace.name !== "harness-workflow") fail("Codex marketplace name must be harness-workflow");
     const plugin = marketplace.plugins?.find((entry) => entry.name === "harness-workflow");
     if (!plugin) fail("Codex marketplace must expose harness-workflow");
-    if (plugin?.source?.path !== "./") fail("Codex marketplace source path must point at repository root");
+    if (plugin?.source?.path !== "./plugins/harness-workflow") {
+      fail("Codex marketplace source path must point at plugins/harness-workflow");
+    }
     pass("Codex marketplace manifest parses");
   } catch (error) {
     fail(`Codex marketplace JSON is invalid: ${error.message}`);
+  }
+}
+
+if (!fs.existsSync(packagedRoot)) {
+  fail("missing packaged plugin root: plugins/harness-workflow");
+} else {
+  for (const file of [
+    ".codex-plugin/plugin.json",
+    ".claude-plugin/plugin.json",
+    ".cursor-plugin/plugin.json",
+  ]) {
+    if (!packageExists(file)) fail(`packaged plugin missing ${file}`);
+    else if (packageRead(file) !== read(file)) fail(`packaged plugin drifted from root file: ${file}`);
   }
 }
 
@@ -94,15 +117,26 @@ const removedSkills = ["bootstrap", "state-contract", "resume", "save-session"];
 
 for (const skill of activeSkills) {
   if (!exists(skillPath(skill))) fail(`missing skill ${skill}`);
+  if (!packageExists(skillPath(skill))) fail(`packaged plugin missing skill ${skill}`);
+  else if (packageRead(skillPath(skill)) !== read(skillPath(skill))) {
+    fail(`packaged plugin skill drifted from root skill: ${skill}`);
+  }
 }
 for (const skill of removedSkills) {
   if (exists(skillPath(skill))) fail(`removed skill still exposed: ${skill}`);
+  if (packageExists(skillPath(skill))) fail(`removed skill still exposed in packaged plugin: ${skill}`);
 }
 if (exists("skills/harness-builder/references/legacy-bootstrap/SKILL.md")) {
   fail("legacy bootstrap reference must not be named SKILL.md; recursive skill scanners may expose it");
 }
+if (packageExists("skills/harness-builder/references/legacy-bootstrap/SKILL.md")) {
+  fail("packaged legacy bootstrap reference must not be named SKILL.md");
+}
 if (!exists("skills/harness-builder/references/legacy-bootstrap/bootstrap-legacy.md")) {
   fail("legacy bootstrap reference document is missing");
+}
+if (!packageExists("skills/harness-builder/references/legacy-bootstrap/bootstrap-legacy.md")) {
+  fail("packaged legacy bootstrap reference document is missing");
 }
 if (!process.exitCode) pass("active skill set matches boundary model plus helper skills");
 

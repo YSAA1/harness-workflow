@@ -1,0 +1,24 @@
+{
+  "name": "harness-workflow",
+  "owner": {
+    "name": "harness-workflow maintainers"
+  },
+  "metadata": {
+    "description": "Workflow skills for project harness setup, Research Route, planning, implementation, diagnosis, review, verification, knowledge cleanup, and skill discovery."
+  },
+  "plugins": [
+    {
+      "name": "harness-workflow",
+      "source": "./",
+      "description": "Workflow skills for project harness setup, Research Route, planning, implementation, diagnosis, review, verification, knowledge cleanup, and skill discovery.",
+      "category": "productivity",
+      "tags": [
+        "workflow",
+        "skills",
+        "harness",
+        "planning",
+        "verification"
+      ]
+    }
+  ]
+}

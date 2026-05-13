@@ -5,8 +5,10 @@ This guide is for **global Codex plugin installation**. The public distribution 
 Codex uses:
 
 - `.agents/plugins/marketplace.json`: marketplace catalog.
-- `.codex-plugin/plugin.json`: plugin manifest.
-- `skills/`: bundled Codex skills.
+- `plugins/harness-workflow/.codex-plugin/plugin.json`: installable plugin manifest.
+- `plugins/harness-workflow/skills/`: bundled Codex skills.
+
+The repository also keeps root-level `.codex-plugin/` and `skills/` copies for direct review and adapter checks. `node scripts/check-plugin.mjs` verifies that the installable package under `plugins/harness-workflow/` has not drifted from those root copies.
 
 No default MCP servers, hooks, apps, connectors, or user-level Codex config are installed by this plugin.
 
@@ -77,9 +79,10 @@ node scripts/check-plugin.mjs
 
 The script checks:
 
-- `.agents/plugins/marketplace.json` exists and points to the plugin.
+- `.agents/plugins/marketplace.json` exists and points to `plugins/harness-workflow`.
 - `.codex-plugin/plugin.json` is valid.
 - `skills/` contains the 8 workflow skills plus `find-skills` with valid frontmatter.
+- `plugins/harness-workflow/` contains the installable Codex package and matches the root manifest and skills.
 - removed skills are not exposed.
 - no default MCP, hooks, apps, connectors, or Codex config are bundled.
 - the local Codex CLI exposes the marketplace command surface when available.

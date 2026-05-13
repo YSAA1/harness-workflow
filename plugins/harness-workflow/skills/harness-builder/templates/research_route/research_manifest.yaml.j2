@@ -1,0 +1,36 @@
+version: 1
+mode: research_route
+
+research:
+  goal: "{{ research_goal }}"
+  hypothesis: "{{ hypothesis }}"
+  baseline: "{{ baseline }}"
+  metric: "{{ metric }}"
+  verify: "{{ verify_command }}"
+  guard: "{{ guard }}"
+  iterations: {{ iterations }}
+  stop_rule: "{{ stop_rule }}"
+
+recovery:
+  plan: docs/research/research_plan.md
+  evidence_log: docs/research/evidence_log.md
+  iteration_protocol: docs/research/iteration_protocol.md
+  manifest: .harness/research_manifest.yaml
+
+git_policy:
+  isolation: "{{ git_isolation }}"
+  require_clean_tree: true
+  record_failure_before_rollback: true
+  allow_git_reset_hard: "{{ allow_git_reset_hard }}"
+  reset_boundary: "{{ reset_boundary }}"
+
+artifacts:
+  logs: "{{ log_dir }}"
+  checkpoints: "{{ checkpoint_dir }}"
+  reports: "{{ report_dir }}"
+  keep_policy: "{{ artifact_keep_policy }}"
+
+review:
+  baseline_fairness_required: true
+  reproducibility_note_required: true
+  final_decision: continue | stop | convert_to_implementation
