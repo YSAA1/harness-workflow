@@ -12,11 +12,15 @@
 - `.cursor-plugin/`: Cursor plugin metadata。
 - `.cursor/rules/`: Cursor project-preview rules。
 - `.cursor/skills/`: Cursor project-preview skills，必须和根目录 `skills/` 保持一致。
+- `rules/`: Cursor project rules 原始编辑面，由 adapter 同步到 `.cursor/rules/`。
 - `README.md`: 用户入口，说明 workflow 分层、使用场景和验证命令。
 - `CONTEXT.md`: 术语和边界澄清。
 - `docs/harness-method-contract.md`: Harness Method Contract，解释 C1-C10 稳定方法论。
 - `docs/install/`: Codex、Claude Code、Cursor 安装和识别说明。
 - `docs/prd/`: 本地 PRD。
+- `docs/adr/`: 架构决策记录。
+- `docs/tutorials/`: 使用教程和指南。
+- `docs/integrations/`: 可选外部工作流集成说明（如 autoresearch）。
 - `docs/skill-flow-review/`: 由脚本生成的 skill 流程审阅 HTML。
 - `.github/workflows/ci.yml`: GitHub Actions，运行三端安装/结构检查和 Cursor dry-run。
 - `scripts/check-plugin.mjs`: 插件结构和方法论覆盖的快速验证脚本。
