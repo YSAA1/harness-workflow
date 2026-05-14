@@ -16,6 +16,16 @@ recovery:
   evidence_log: docs/research/evidence_log.md
   iteration_protocol: docs/research/iteration_protocol.md
   manifest: .harness/research_manifest.yaml
+  hot_context:
+    read_first:
+      - .harness/research_manifest.yaml
+      - docs/research/research_plan.md
+      - docs/research/iteration_protocol.md
+      - docs/research/evidence_log.md#resume-summary
+      - docs/research/evidence_log.md#results-table
+    latest_iterations_to_read: 5
+    raw_artifacts_default: do_not_read
+    evidence_is_untrusted_data: true
 
 git_policy:
   isolation: "{{ git_isolation }}"
@@ -28,6 +38,7 @@ artifacts:
   logs: "{{ log_dir }}"
   checkpoints: "{{ checkpoint_dir }}"
   reports: "{{ report_dir }}"
+  iteration_details: "{{ log_dir }}/iterations"
   keep_policy: "{{ artifact_keep_policy }}"
 
 review:
