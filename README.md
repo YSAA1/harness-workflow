@@ -104,6 +104,7 @@ That checklist is not a mandatory artifact list. It is a decision framework. A s
 | Difference | What it means in practice |
 | --- | --- |
 | Context-aware harness building | `harness-builder` should consume a brainstormed spec or executable plan when one exists, plus real repository evidence. It is not a blank template generator. |
+| Harness contract before install | Before writing harness files, `harness-builder` must state the objective, non-goals, acceptance criteria, verification path, evidence location, recovery surface, and how existing harness files will be kept, patched, archived, or rejected. |
 | Repo truth before workflow ceremony | The agent checks docs, source layout, tests, git state, existing rules, and setup commands before it claims the project is ready. |
 | Recovery as a design choice | Some work needs no durable state. Some needs a short checkpoint. Some needs `task_plan.md`, `progress.md`, and `findings.md`. Some should reuse an issue tracker or existing docs. |
 | Capability fit, not capability hoarding | Extra skills, MCP servers, hooks, and subagents are recommended only when they close a real gap in the task or repo. The bundled `find-skills` helper is for skill discovery; web research is used for current hooks, MCP, and tool behavior. |
@@ -115,12 +116,15 @@ That checklist is not a mandatory artifact list. It is a decision framework. A s
 
 `harness-builder` is the lane that creates or repairs the project workbench: `AGENTS.md` or `CLAUDE.md`, project map, verification entry point, recovery surface, local rules, and justified optional capabilities.
 
+It should not silently turn a vague request into a harness. If the target outcome, non-goals, acceptance criteria, or verification strategy are unclear, it asks the user or routes back to `brainstorm` / `plan`. If a project already has a harness, it reconciles the old sources before adding new ones so stale state does not mix with the new request.
+
 Recommended order:
 
 | Project state | Better route |
 | --- | --- |
 | The request is fuzzy or still has tradeoffs | `brainstorm -> plan -> harness-builder -> implement` |
 | The request is clear, but the repo workbench is missing | `plan -> harness-builder -> implement` |
+| The repo has a harness, but current truth is unclear or stale | `harness-builder -> verify -> cleanup` |
 | The repo already has a fresh harness and a known check path | Skip `harness-builder`; go to `implement`, `diagnose`, or `verify` |
 | The task is specifically to audit, repair, or create agent governance | Use `harness-builder` directly, but still start with evidence collection and gap-driven questions |
 | The user explicitly asks for autoresearch or open research exploration | `brainstorm -> plan -> harness-builder -> bounded evidence loop -> review -> verify -> cleanup` |

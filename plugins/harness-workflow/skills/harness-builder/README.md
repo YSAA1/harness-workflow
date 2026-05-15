@@ -8,6 +8,8 @@ v3 adds:
 
 - evidence-first, gap-driven brainstorm;
 - Harness Hypothesis before Harness Plan;
+- Harness Charter before installation: objective, non-goals, acceptance criteria, verification, evidence location, recovery surface, and existing-harness decisions;
+- existing harness reconciliation before patching so old state does not mix with a new request;
 - Learn Harness Engineering course alignment checklist;
 - optional subagent orchestration for read-only discovery, research, and plan review;
 - explicit rule: subagents read/research/review, main agent writes;
@@ -19,6 +21,8 @@ v3 adds:
 - Audits a project before agent coding starts.
 - Identifies missing information needed to build the right harness.
 - Designs a harness plan.
+- Negotiates or states user-facing acceptance criteria before installing files.
+- Reconciles existing harness artifacts as keep, patch, archive/deprecate, or reject.
 - Installs project-local AGENTS.md, docs, check scripts, state files, skills, hooks, and reviewer agents when justified.
 - Installs project-local Research Route artifacts when the user explicitly asks for autoresearch or repeated research exploration.
 - Records manifest and decisions for auditability.

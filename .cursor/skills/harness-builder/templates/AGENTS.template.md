@@ -23,7 +23,7 @@
 ## 项目铁律
 
 - 仓库是真相来源；聊天不是唯一恢复面。
-- 保持 `AGENTS.md` 薄入口；临时状态写入 workflow state backend。
+- 保持 `AGENTS.md` 薄入口；临时状态写入 selected recovery surface。
 - 先诊断 harness 层：任务、上下文、工具、状态、验证、生命周期。
 - WIP=1：一个 active slice verified 或 blocked 前，不开无关工作。
 - 没有 fresh evidence，不声明 ready/done。
@@ -32,13 +32,14 @@
 
 ## Workflow state
 
-本项目使用当前声明的 workflow state backend。默认 rigorous backend 是三文件：
+本项目使用当前声明的 selected recovery surface。不要并行创建第二套状态系统。
 
-- `task_plan.md`: active slice、non-goals、success criteria、verification path
-- `progress.md`: append-only evidence log
-- `findings.md`: accepted spec、decisions、risks、root causes、rejected options
+需要能恢复这些语义字段：
 
-如 `.harness/manifest.yaml` 或 `.harness/state.md` 声明其他 backend，按该 backend 读取和写入状态。
+- objective、active slice、non-goals、success criteria、verification path
+- evidence log、decisions、risks、blockers、next actions
+
+如 `.harness/manifest.yaml`、`.harness/state.md`、issue tracker、roadmap 或三文件声明当前 backend，按该 backend 读取和写入状态。
 
 ## Harness map
 

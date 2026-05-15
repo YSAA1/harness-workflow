@@ -3,6 +3,7 @@
 Harness Builder should not ask a fixed questionnaire.
 
 The purpose of brainstorming is to discover the missing information needed to build the right harness for this project.
+It must not turn an unclear user request into a harness template by guessing acceptance criteria.
 
 ## Principle
 
@@ -37,6 +38,21 @@ Before asking, collect what is already known from:
 - tests, scripts, CI, Makefile, package scripts;
 - existing `.harness/`, `.agents/skills/`, `.codex/`, `.claude/`;
 - visible protected or generated directories.
+
+## Minimum contract fields
+
+Before a Harness Plan is written, evidence or user answers must cover:
+
+| Field | Why it matters | If missing |
+| --- | --- | --- |
+| Target outcome | Decides which harness gaps matter | Ask the user or route to `brainstorm` |
+| Non-goals | Prevents harness scope creep | Ask or state a conservative exclusion |
+| Acceptance criteria | Defines what "harness works" means | Ask; do not invent silently |
+| Verification path | Connects harness to fresh evidence | Ask or propose a conservative default for approval |
+| Evidence location | Lets future agents recover proof | Choose the selected recovery surface explicitly |
+| Source-of-truth priority | Prevents old and new harness files from mixing | Reconcile existing artifacts first |
+
+`No user questions needed` is valid only when these fields are already answered by the user request, approved Spec/Plan, or repo artifacts. List the evidence for each assumption.
 
 ## Gap categories
 

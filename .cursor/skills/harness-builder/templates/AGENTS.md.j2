@@ -45,6 +45,8 @@ These are non-negotiable project rules. Do not violate them to make a task appea
 4. Inspect `scripts/agent/check.sh` before claiming success.
 5. Read task-specific docs or skills listed above.
 
+Do not treat old state as current just because it exists. If sources conflict, prefer the latest user-approved Spec/Plan, current git tree, selected recovery surface, and durable `AGENTS.md` rules in that order unless this project declares a different priority.
+
 ## Verification
 
 Run:
@@ -71,5 +73,5 @@ A task is done only when:
 
 - the change is minimal and task-scoped;
 - relevant verification was run or the failure is reported;
-- state/progress is updated for multi-session work;
+- selected recovery surface is updated for multi-session work;
 - remaining risks are listed.

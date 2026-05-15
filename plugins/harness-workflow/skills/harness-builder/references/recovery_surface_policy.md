@@ -43,6 +43,38 @@ Three-file remains a strong rigorous backend, but it is not a synonym for workfl
 
 Do not create a parallel recovery surface if an existing one can represent the required fields.
 
+## Existing Harness Reconciliation
+
+When a repo already has harness artifacts, Harness Builder must reconcile before installing:
+
+| Artifact type | Check |
+| --- | --- |
+| `AGENTS.md` / `CLAUDE.md` | Is it a thin durable entry, or does it contain stale active work? |
+| README / docs | Do setup, verification, architecture, and user-visible behavior match current files? |
+| `.harness/` or state files | Can they answer objective, active slice, evidence, decisions, risks, and next actions? |
+| scripts / CI | Are the documented verification commands real and current? |
+| local skills/hooks/MCP/subagents | Are they still used, justified, and safe? |
+
+Then classify each component:
+
+- `keep`: current, useful, and already points to the selected source of truth.
+- `patch`: useful but stale or missing a pointer.
+- `archive/deprecate`: no longer authoritative but worth preserving for history.
+- `reject/remove`: misleading, duplicate, or unsafe. Destructive removal still requires user approval.
+
+Before writing, state the source-of-truth priority for conflicts. Example:
+
+```text
+Source-of-truth priority:
+1. User-approved Spec / Plan for current task
+2. Current git tree and validation scripts
+3. Selected recovery surface
+4. AGENTS.md durable rules
+5. Older notes and stale generated artifacts
+```
+
+Do not merge an old active slice with a new request. Either close/archive the old slice, update it as the selected current slice, or ask the user which work is current.
+
 ## Drift Repair
 
 When recovery artifacts conflict with code or git state:

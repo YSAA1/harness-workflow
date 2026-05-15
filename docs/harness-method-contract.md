@@ -7,6 +7,7 @@
 | Term | Meaning |
 | --- | --- |
 | Harness Builder | 设计或修复项目级 harness、verification entry、Capability Discovery 和 recovery surface 的 skill |
+| Harness Charter | `harness-builder` 安装前的短合同，说明目标、非目标、用户可见验收标准、验证路径、证据落点和已有 harness 处理方式 |
 | Spec | `brainstorm` 的独立产物，说明要建什么、为什么、如何证明 |
 | Executable Plan | `plan` 的产物，说明 active slice、non-goals、success criteria、verification path 和 next actions |
 | Recovery surface | 让未来 agent 恢复工作的项目工件，可以是 none、lightweight、three-file、feature-list 或 existing system |
@@ -44,6 +45,13 @@ Agent 质量来自项目周围的系统：入口、规则、上下文、验证�
 ## C4 Workbench Before Implementation
 
 当项目入口、验证命令、recovery surface 或能力边界不清楚时，先用 Harness Builder 修工作面；当这些已经清楚时，不要把 Harness Builder 变成强制前置步骤。
+
+要求：
+
+- Harness Builder 不能从空泛意图直接生成模板；必须先有证据支持的 Harness Charter。
+- Harness Charter 至少包含 objective、non-goals、user-facing acceptance criteria、verification path、evidence location、selected recovery surface 和 source-of-truth priority。
+- 如果这些字段无法从用户请求、已批准 Spec/Plan 或仓库证据推出，应先提问或回到 `brainstorm` / `plan`。
+- 已有 harness 的仓库必须先 reconcile：keep、patch、archive/deprecate、reject/remove，再安装新内容。
 
 主要 skill：`harness-builder`。
 
@@ -90,6 +98,7 @@ Capability Discovery 要求：
 
 - 改命令、配置、API、用户可见行为时同步相关 docs。
 - 生成物只能通过生成器更新。
+- 新需求进入已有 harness 时，先声明当前 source of truth，避免旧 active slice 和新需求混写。
 - Review 可以指出 drift；系统性 reconciliation 由 Knowledge Cleanup 完成。
 
 主要 skill：`review`、`cleanup`。
@@ -103,6 +112,7 @@ Capability Discovery 要求：
 - `AGENTS.md` 保持薄入口。
 - README 和 docs 面向读者且不过期。
 - selected recovery surface 能回答当前状态、证据、风险和下一步。
+- `AGENTS.md` 只接收稳定规则和入口指针；当前任务状态、一次性结论和短期 TODO 必须留在 selected recovery surface。
 - 未解决 drift 记录为明确 follow-up。
 - 不用 cleanup 隐藏未完成工作。
 - 对 Research Route，cleanup 前必须确认失败尝试的证据仍可读，即使失败代码已经 revert 或 reset。
