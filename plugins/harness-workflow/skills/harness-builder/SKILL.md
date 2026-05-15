@@ -51,6 +51,68 @@ Use `references/harness_subsystems.md` for the detailed model.
 
 ---
 
+## Mandatory execution gates
+
+These gates are required unless the user explicitly asks for a read-only explanation or a narrower single-file task. If a gate is skipped, state the reason in the final report.
+
+1. **Question gate**
+   - After evidence collection, ask the smallest set of questions that materially changes the harness.
+   - If no question is needed, say `No user questions needed` and list the evidence-backed assumptions.
+   - Verification is never optional: if the repo does not expose a clear fast check and deeper smoke path, ask at least one verification question before writing the Harness Plan.
+
+2. **Capability Discovery gate**
+   - Always produce a Capability Discovery table with `Required`, `Recommended`, `Deferred`, and `Rejected` rows.
+   - For skill gaps, invoke `find-skills` or state `No reusable skill search needed` with the reason.
+   - For hooks, MCP, subagents, agent config, or recently changed external tool behavior, use targeted web search or state `No web research needed` with the reason.
+
+3. **Verification design gate**
+   - Before installation, propose the validation ladder: fast default check, deeper smoke/E2E/manual check, evidence location, and known unverified risks.
+   - If any validation command is unknown, ask the user whether to adopt a conservative default, such as syntax/import/config smoke or dry-run.
+
+4. **User checkpoint gate**
+   - Before writing or installing harness files, show the Harness Plan and ask for approval.
+   - Exact checkpoint text:
+
+```text
+USER CHECKPOINT
+Approve this Harness Plan before I install project-local files:
+- Install:
+- Defer:
+- Reject:
+- Verification:
+Reply approve / change / stop.
+```
+
+   - Do not install on silence. Install only after explicit approval, unless the user already authorized direct changes in this turn.
+
+5. **Verification gate**
+   - After installation, run the selected validation command or state the concrete blocker.
+   - Do not claim the harness works without fresh evidence.
+
+## Required output shape
+
+During a normal `harness-builder` run, emit these sections in order:
+
+```text
+HARNESS EVIDENCE
+HARNESS QUESTIONS
+CAPABILITY DISCOVERY
+VERIFICATION DESIGN
+HARNESS PLAN
+USER CHECKPOINT
+```
+
+After approved installation, emit:
+
+```text
+HARNESS INSTALL REPORT
+VERIFICATION
+RECORDED STATE
+NEXT
+```
+
+---
+
 ## Default flow
 
 Follow this sequence unless the user asks for a narrower task.
@@ -64,6 +126,7 @@ Follow this sequence unless the user asks for a narrower task.
    - Do not ask a fixed questionnaire.
    - Ask only questions that change the harness design.
    - For each question, explain why it matters, which harness component it affects, and the conservative default if unanswered.
+   - Include at least one verification question when fast/deep validation is unclear.
    - Produce a **Harness Hypothesis**.
    - Use `references/brainstorming_policy.md` and `references/course_alignment.md`.
 
@@ -78,6 +141,7 @@ Follow this sequence unless the user asks for a narrower task.
    - For skill capabilities, call the bundled `find-skills` helper (`$find-skills` when invoking by name) to search strongly relevant reusable skills beyond the current installed inventory.
    - For MCP, hooks, or external agent capabilities, use targeted web search for official docs, mature implementations, or task-specific integrations.
    - Classify each candidate as `Required`, `Recommended`, `Deferred`, or `Rejected` by value, enablement, risk/cost, and fallback.
+   - If no skill search or web research is needed, explicitly say why under `CAPABILITY DISCOVERY`.
    - Do not install or recommend skills, MCP, hooks, or subagents merely because they might be useful.
    - Use `scripts/find_skills.py` only as local availability support; it is not the discovery boundary.
    - Use `references/skill_policy.md`, `references/web_research_policy.md`, `references/hook_policy.md`, and `references/mcp_policy.md`.
@@ -108,10 +172,12 @@ Follow this sequence unless the user asks for a narrower task.
    - Merge user intent, repo evidence, gap answers, capability candidates, subagent findings, research, and recovery-surface choice.
    - Produce `Required`, `Recommended`, `Deferred`, and `Rejected`.
    - Include orchestration strategy and course coverage check.
+   - Include `VERIFICATION DESIGN` with fast check, smoke/E2E/manual check, evidence path, and unverified risks.
    - Use `references/profiles.md` and `references/decision_matrix.md`.
 
 9. **User checkpoint**
    - Before installing, show the plan and ask for confirmation unless the user explicitly authorized direct install.
+   - Use the exact `USER CHECKPOINT` block from Mandatory execution gates.
    - Do not install if the Harness Hypothesis has not considered the relevant course dimensions.
 
 10. **Install only approved project-local components**
