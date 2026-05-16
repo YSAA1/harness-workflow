@@ -17,10 +17,4 @@ Use this matrix to decide where a requirement belongs.
 | Why this exists | `.harness/decisions.md` | Auditability |
 | What is installed | `.harness/manifest.yaml` | Inventory and governance |
 
-## Add component only if
-
-1. It prevents a real or likely failure.
-2. It has a clear trigger or purpose.
-3. It can be verified or audited.
-4. It does not duplicate a better existing component.
-5. It will not add more entropy than it removes.
+Add a component only if it prevents a real or likely failure, has a clear trigger/purpose, can be verified/audited, does not duplicate a better component, and will not add more entropy than it removes.

@@ -19,58 +19,11 @@ Harnesses can rot. Treat harness maintenance as part of the project.
 
 ## Repair moves
 
-### AGENTS.md too long
+Keep root instructions thin, split slow checks, classify skills, narrow hooks, defer MCP unless justified, reconcile existing harness drift, and prefer read-only GC/drift scans before cleanup automation.
 
-Keep project overview, project map, quick start, iron laws, harness map, protected paths, verification, and DoD. Move details to `docs/agent/`, local `AGENTS.md`, or project skills.
+## Read-only GC / drift scan
 
-### check.sh too slow
-
-Split into:
-- `check.sh`: fast default
-- `smoke.sh`: moderate smoke
-- `full_check.sh`: slow/manual
-
-### skills too many
-
-Classify into keep, merge, specialize, archive, or delete. Keep only skills with clear triggers and repeated value.
-
-### hooks noisy
-
-Narrow patterns, document false positives, move subjective checks to review/tests, and disable hooks that block normal work.
-
-### MCP overreach
-
-Prefer read-only, remove unused servers, require approval for write tools, and document risk/reason.
-
-### Existing harness drift
-
-Before adding new files, reconcile the old harness:
-
-- identify the current source of truth for objective, active slice, verification, decisions, and next actions;
-- classify old harness components as keep, patch, archive/deprecate, or reject;
-- move durable rules into `AGENTS.md` only when they are stable;
-- move current task status into the selected recovery surface;
-- record unresolved conflicts as risks instead of blending them into new instructions.
-
-### Read-only GC / drift scan
-
-When drift repeats or the repo is long-lived, recommend a read-only scan before recommending cleanup automation.
-
-Good scan targets:
-
-- docs that describe commands, paths, APIs, or architecture no longer present in code;
-- stale recovery state or multiple active-slice claims;
-- generated artifacts that were hand-edited or not regenerated;
-- architecture boundary violations when a layer map exists;
-- project rules duplicated across root and local instruction files;
-- known-violation baselines that grew.
-
-Safety rules:
-
-- default scans must report only;
-- scheduled scans must not auto-fix or delete;
-- any `--fix` behavior requires explicit user approval;
-- report findings with file paths and remediation hints, not vague warnings.
+Default scans must report only; scheduled scans must not auto-fix or delete; any `--fix` behavior requires explicit user approval; findings must include file paths and remediation hints.
 
 ## Principle
 

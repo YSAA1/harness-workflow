@@ -31,37 +31,8 @@ Choose the lowest level that prevents the real failure.
 
 ## Baseline And Ratchet
 
-For existing repos:
-
-1. Scan current violations.
-2. Store known violations in a project-local baseline when a mechanical check is installed.
-3. Fail or warn only on new violations at first.
-4. Let the baseline shrink over time; do not allow it to grow without explicit approval.
-
-For new or clean repos, strict checks may be acceptable after user approval.
+For existing repos, scan current violations, store known violations in a project-local baseline when a mechanical check is installed, fail or warn only on new violations at first, and let the baseline shrink over time.
 
 ## Agent-Readable Errors
 
-Error output should tell the next agent what failed and where to look.
-
-Good:
-
-```text
-VIOLATION: src/ui/UserCard.tsx imports src/db/userRepo.
-UI cannot import data access. See docs/architecture/LAYERS.md for allowed directions.
-```
-
-Bad:
-
-```text
-import violation
-```
-
-## When To Defer
-
-Defer architecture enforcement when:
-
-- the project has no stable source layout yet;
-- layer ownership is unclear and the user has not approved a model;
-- current violations are too noisy and no baseline can be created safely;
-- a simpler verification command already prevents the current failure.
+Good errors name the file, import, failed layer relation, and point to `docs/architecture/LAYERS.md`.

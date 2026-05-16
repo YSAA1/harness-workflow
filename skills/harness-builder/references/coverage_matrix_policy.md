@@ -49,14 +49,6 @@ Every proposed file, script, skill, hook, MCP, subagent, CI job, or GC scan must
 
 If a candidate cannot name the failure it prevents, reject or defer it.
 
-Examples:
-
-- `boundary.test.ts` binds to architecture boundaries.
-- `scripts/agent/check.sh` binds to verification entry.
-- `docs/golden-principles/TESTING.md` binds to static docs and durable rules.
-- A web-docs MCP binds to capability fit only when external current docs are required.
-- A pre-tool hook binds to capability fit only when it blocks a specific dangerous action better than tests or review.
-
 ## Existing Repo Rules
 
 - Prefer patching authoritative artifacts over creating parallel ones.

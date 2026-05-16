@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+PROTECTED = {{ protected_paths | default(['data/raw/', '.env', 'checkpoints/', 'runs/', 'outputs/']) }}
+
+def main() -> int:
+    payload = sys.stdin.read()
+    try:
+        event = json.loads(payload) if payload.strip() else {}
+    except Exception:
+        event = {}
+    path = str(event.get('path') or event.get('file') or '')
+    for prefix in PROTECTED:
+        if path.startswith(prefix):
+            print(f"Blocked edit to protected path: {path}. See AGENTS.md and .harness/decisions.md.", file=sys.stderr)
+            return 2
+    return 0
+
+if __name__ == '__main__':
+    raise SystemExit(main())

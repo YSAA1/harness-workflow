@@ -1,0 +1,10 @@
+{
+  "hooks": [
+    {
+      "name": "protected-paths",
+      "event": "pre_edit",
+      "command": "python .codex/hooks/protected_paths.py",
+      "reason": "Block accidental edits to protected data, secrets, checkpoints, and generated artifacts."
+    }
+  ]
+}

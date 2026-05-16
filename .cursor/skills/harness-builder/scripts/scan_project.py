@@ -27,7 +27,6 @@ DIRS = [
 
 def infer_project_type(root: Path) -> list[str]:
     types = []
-    names = {p.name for p in root.iterdir()} if root.exists() else set()
     if (root / "pyproject.toml").exists() or (root / "requirements.txt").exists():
         types.append("python")
     if (root / "package.json").exists():

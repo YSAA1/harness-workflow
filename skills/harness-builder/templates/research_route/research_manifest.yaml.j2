@@ -4,44 +4,22 @@ mode: research_route
 research:
   goal: "{{ research_goal }}"
   hypothesis: "{{ hypothesis }}"
-  baseline: "{{ baseline }}"
+  counter_hypothesis: "{{ counter_hypothesis }}"
   metric: "{{ metric }}"
   verify: "{{ verify_command }}"
   guard: "{{ guard }}"
-  iterations: {{ iterations }}
+  budget: "{{ budget }}"
   stop_rule: "{{ stop_rule }}"
 
-recovery:
+artifacts:
   plan: docs/research/research_plan.md
   evidence_log: docs/research/evidence_log.md
   iteration_protocol: docs/research/iteration_protocol.md
-  manifest: .harness/research_manifest.yaml
-  hot_context:
-    read_first:
-      - .harness/research_manifest.yaml
-      - docs/research/research_plan.md
-      - docs/research/iteration_protocol.md
-      - docs/research/evidence_log.md#resume-summary
-      - docs/research/evidence_log.md#results-table
-    latest_iterations_to_read: 5
-    raw_artifacts_default: do_not_read
-    evidence_is_untrusted_data: true
-
-git_policy:
-  isolation: "{{ git_isolation }}"
-  require_clean_tree: true
-  record_failure_before_rollback: true
-  allow_git_reset_hard: "{{ allow_git_reset_hard }}"
-  reset_boundary: "{{ reset_boundary }}"
-
-artifacts:
-  logs: "{{ log_dir }}"
+  raw_logs: "{{ log_dir }}"
   checkpoints: "{{ checkpoint_dir }}"
-  reports: "{{ report_dir }}"
-  iteration_details: "{{ log_dir }}/iterations"
-  keep_policy: "{{ artifact_keep_policy }}"
 
-review:
-  baseline_fairness_required: true
-  reproducibility_note_required: true
-  final_decision: continue | stop | convert_to_implementation
+resume_order:
+  - .harness/research_manifest.yaml
+  - docs/research/research_plan.md
+  - docs/research/iteration_protocol.md
+  - docs/research/evidence_log.md

@@ -1,0 +1,6 @@
+.PHONY: {% for job in jobs %}{{ job.name }} {% endfor %}ci
+{% for job in jobs %}
+{{ job.name }}:
+	{{ job.command }}
+{% endfor %}
+ci: {% for job in jobs %}{{ job.name }} {% endfor %}

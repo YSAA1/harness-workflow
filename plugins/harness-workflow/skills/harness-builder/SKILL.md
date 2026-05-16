@@ -33,6 +33,7 @@ Prefer running after `brainstorm` or `plan` when goal, non-goals, success criter
 - Do not install on user silence.
 - Add files or capabilities only when they close a named coverage gap.
 - Do not add skills, hooks, MCP, subagents, CI, or GC scans as generic "best practice"; bind every one to an uncovered need.
+- Treat install packs as implementation assets, not workflow owners. Packs cannot make a coverage row Required, bypass the user checkpoint, overwrite existing files, or install capabilities outside their declared namespace.
 - Treat three-file as one backend option, not the workflow identity.
 - Keep `AGENTS.md` thin and stable; never mix current active-slice state, one-off conclusions, or stale recovery notes into it.
 - Prefer mechanical enforcement for stable architecture boundaries: tests, lint rules, ratchets, and agent-readable errors beat prose-only rules.
@@ -47,6 +48,7 @@ repo evidence + user intent + existing harness reconciliation
 -> Harness Charter
 -> Coverage Matrix
 -> Capability Discovery for uncovered gaps
+-> Pack Selection for selected coverage rows
 -> Harness Plan
 -> user checkpoint
 -> project-local install by phase
@@ -93,12 +95,21 @@ These gates are required unless the user explicitly asks for read-only explanati
    - For hooks, MCP, subagents, agent config, CI, GC, architecture tools, or recently changed external tool behavior, use targeted web search or state `No web research needed` with reason.
    - Prefer warning/baseline/ratchet behavior for existing projects over strict rules that break the current build.
 
-5. **Verification design gate**
+5. **Pack Selection gate**
+   - Run only after the Coverage Matrix and Capability Discovery expose a real gap.
+   - Available install packs live under `references/packs/`; currently `init_scaffold` is the concrete scaffold pack for AGENTS snippets, architecture docs, boundary tests, linter snippets, CI templates, read-only GC, and security docs.
+   - A pack cannot decide that a component is Required; it only implements rows already marked Required or explicitly approved Recommended.
+   - Read `references/packs/init_scaffold/adapter.md` and `references/packs/init_scaffold/precedence.md` before using the init scaffold pack.
+   - Produce a pack dry-run before installation: target files, create/patch/skip status, coverage-row binding, verification command, and blockers.
+   - Reject any pack output that is not bound to exactly one primary coverage row or that duplicates a better existing artifact.
+   - Hooks, MCP, subagents, and Research Route remain governed only by their existing policies; the init scaffold pack must not install them.
+
+6. **Verification design gate**
    - Before installation, propose fast default check, deeper smoke/E2E/manual check, evidence location, and unverified risks.
    - If validation command is unknown, ask whether to adopt a conservative default: syntax/import/config smoke, dry-run, or equivalent.
    - For every planned install or patch phase, define phase acceptance: artifact exists plus relevant command/manual evidence, or blocker recorded.
 
-6. **User checkpoint gate**
+7. **User checkpoint gate**
    - Before writing or installing harness files, show the Harness Plan and ask for approval.
    - Exact checkpoint text:
 
@@ -116,7 +127,7 @@ Approve this Harness Plan before I install project-local files:
 Reply approve / change / stop.
 ```
 
-7. **Verification gate**
+8. **Verification gate**
    - After installation, run the selected validation command and phase checks, or state the concrete blocker.
    - No fresh evidence means no ready claim.
 
@@ -158,28 +169,34 @@ Reply approve / change / stop.
    - Record adopted external research in `.harness/research_notes.md`.
    - See `references/skill_policy.md`, `references/web_research_policy.md`, `references/hook_policy.md`, `references/mcp_policy.md`.
 
-7. **Handle Research Route only when explicit**
+7. **Select install packs for approved coverage rows**
+   - If architecture docs, boundary tests, linter snippets, CI, GC, or SECURITY.md are selected, use `references/packs/init_scaffold/adapter.md` to map those needs to concrete scaffold components.
+   - Keep the builder core policies authoritative: `coverage_matrix_policy.md`, `install_policy.md`, `verification_policy.md`, `recovery_surface_policy.md`, `anti_entropy.md`, and `architecture_enforcement_policy.md`.
+   - Run or present a dry-run before writing. The dry-run must show files that would be created, patched, skipped, deferred, and rejected.
+   - Record pack decisions in `.harness/manifest.yaml` and `.harness/decisions.md`.
+
+8. **Handle Research Route only when explicit**
    - Require Goal, Hypothesis, Counter-hypothesis, Baseline, Scope, Metric, Verify, Guard, Budget, Artifact policy, and Stop rule.
    - If incomplete, return to gap-driven questions.
    - If approved, install `templates/research_route`: `docs/research/research_plan.md`, `docs/research/evidence_log.md`, `docs/research/iteration_protocol.md`, `.harness/research_manifest.yaml`.
    - Preserve failed evidence before rollback. Use `git reset --hard` only inside an approved isolated research branch/worktree after evidence is recorded.
 
-8. **Choose recovery surface**
+9. **Choose recovery surface**
    - Options: none, lightweight, three-file, feature-list, existing system.
    - For three-file, map `active_slice` to `task_plan.md`, evidence to `progress.md`, decisions/risks to `findings.md`.
    - Declare semantic field mapping. Do not force file layout. See `references/recovery_surface_policy.md`.
 
-9. **Write Harness Charter and phased Plan**
+10. **Write Harness Charter and phased Plan**
    - Charter first: objective, non-goals, user-facing acceptance criteria, verification path, evidence location, selected recovery surface, and source-of-truth priority.
    - Then merge evidence, answers, coverage decisions, capability decisions, research, orchestration, recovery surface, and verification design into the Harness Plan.
    - Structure install work as phases. Each phase must have purpose, target files, acceptance criteria, verification evidence, and failure handling.
    - Use `references/coverage_matrix_policy.md`, `references/decision_matrix.md`, `references/verification_policy.md`, and only the specific capability policy needed.
 
-10. **Checkpoint**
+11. **Checkpoint**
    - Emit `USER CHECKPOINT`.
    - Wait for explicit approval unless user already authorized direct changes in this turn.
 
-11. **Install approved project-local components by phase**
+12. **Install approved project-local components by phase**
    - Install `Required` only unless user approves more.
    - Prefer `AGENTS.md`, `scripts/agent/check.sh`, `docs/agent/*`, `.harness/*`, `.agents/skills/*`, `.codex/*`.
    - For existing harness files, patch only approved sections and record whether old content was kept, moved, or marked stale.
@@ -187,7 +204,7 @@ Reply approve / change / stop.
    - Hooks remain optional unless they block a concrete high-risk failure that tests or review cannot catch.
    - Use templates instead of hand-creating large boilerplate. See `references/install_policy.md`.
 
-12. **Verify and record**
+13. **Verify and record**
    - Validate files, frontmatter, JSON/TOML/YAML, hook scripts, and fast check command.
    - Mark each phase `pass`, `blocked`, `skipped`, or `deferred`; do not collapse partial failure into a ready claim.
    - Use `scripts/validate_harness.py` where possible.
@@ -205,6 +222,8 @@ HARNESS QUESTIONS
 HARNESS CHARTER
 HARNESS COVERAGE MATRIX
 CAPABILITY DISCOVERY
+PACK SELECTION
+PACK DRY RUN
 VERIFICATION DESIGN
 HARNESS PLAN
 USER CHECKPOINT
@@ -214,12 +233,13 @@ After approved installation:
 
 ```text
 HARNESS INSTALL REPORT
+PACK INSTALL REPORT
 PHASE VERIFICATION
 RECORDED STATE
 NEXT
 ```
 
-Always state found evidence, unknowns, user questions, charter assumptions, coverage decisions, install/patch/archive/defer/reject decisions, capability value/cost, verification plan, phase status, and skipped-gate reasons.
+Always state found evidence, unknowns, user questions, charter assumptions, coverage decisions, pack decisions, install/patch/archive/defer/reject decisions, capability value/cost, verification plan, phase status, and skipped-gate reasons.
 
 ## Recommended next skill
 
@@ -230,3 +250,16 @@ Always state found evidence, unknowns, user questions, charter assumptions, cove
 | Harness plan is approved and first work slice is clear | `implement` |
 | Harness verification fails or setup breaks | `diagnose` |
 | Harness is current and no implementation is requested | `cleanup` |
+
+## Preservation rule for existing harness-builder assets
+
+When adding install packs, preserve current harness-builder assets unless a user explicitly approves removing or replacing them. In particular, do not drop or weaken:
+
+- `references/harness_subsystems.md`, `references/project_map_policy.md`, or `references/subagent_policy.md`;
+- `templates/research_route/*`;
+- `templates/agents/*`, `templates/hooks/*`, and `templates/skills/*`;
+- `templates/project_context.md.j2`, `templates/workflow.md.j2`, `templates/verification.md.j2`, `templates/reports/verification_report.md.j2`, `templates/risk_register.md.j2`, `templates/features.json.j2`, or `templates/AGENTS.template.md`;
+- orchestration, course-alignment, verification status, and open-decision fields in `templates/manifest.yaml.j2` and `templates/state.md.j2`;
+- current `scripts/scan_project.py` signals for packaged plugins, Cursor preview, Node script tooling, and plugin rules.
+
+The `init_scaffold` pack is additive. It must never be treated as a replacement for Research Route, subagent policy, hook policy, project-local skill templates, or the current recovery surface.

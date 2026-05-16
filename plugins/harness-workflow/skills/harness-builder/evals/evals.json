@@ -10,7 +10,7 @@
     {
       "id": 2,
       "prompt": "这是一个已有的 RL 机器人项目，里面有 mujoco 环境和训练脚本。我想让 Codex 接手开发，但怕它乱改 reward 和 data。请先 audit，不要改文件，可以推荐是否用 subagents。",
-      "expected_output": "Should recommend parallel_readonly if helpful, dispatch/read-only scouts conceptually, identify gaps around env/reward verification, protected paths, state, local AGENTS, RL skills, and produce Harness Hypothesis before plan.",
+      "expected_output": "Should recommend parallel_readonly if helpful, identify gaps around env/reward verification, protected paths, state, local AGENTS, RL skills, and produce Harness Hypothesis before plan.",
       "files": []
     },
     {

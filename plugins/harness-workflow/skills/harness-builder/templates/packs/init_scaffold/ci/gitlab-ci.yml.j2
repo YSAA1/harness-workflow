@@ -1,0 +1,12 @@
+default:
+  image: {{ runtime_image }}
+
+stages: [{% for job in jobs %}{{ job.name }}{% if not loop.last %}, {% endif %}{% endfor %}]
+
+{% for job in jobs %}
+{{ job.name }}:
+  stage: {{ job.name }}
+  script:
+    - {{ install_command }}
+    - {{ job.command }}
+{% endfor %}

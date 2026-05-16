@@ -31,7 +31,6 @@
 - `skills/*/SKILL.md`: 每个 active workflow skill 的主入口和执行协议。
 - `skills/*/references/`: 按需读取的细节政策、检查表和参考资料。
 - `skills/*/templates/`: skill 使用或 backend 生成时复用的模板。
-- `skills/harness-builder/references/legacy-bootstrap/`: 旧版历史参考，不是当前主路径。
 
 ## 快速开始
 
@@ -78,7 +77,6 @@
 ## Protected Paths
 
 - `.codex-plugin/plugin.json`: 改 name、skills path、capabilities 或 prompt 前必须确认影响面并跑验证。
-- `skills/harness-builder/references/legacy-bootstrap/`: 历史参考区，除非任务明确要求迁移或修订旧资料，否则不要改。
 - `docs/skill-flow-review/*.html`: 生成物；不要手改，改生成脚本后重建。
 - 用户级配置、全局 skills、MCP、hooks、外部 plugin marketplace：只有用户明确要求时才能修改。
 

@@ -49,3 +49,19 @@ Project-local is recommended when the harness builder itself should be versioned
 请根据项目证据和 Learn Harness Engineering 的思想，判断还缺哪些信息才能设计 harness。
 如有必要，推荐是否使用只读 subagents 加速 discover/research/review。
 ```
+
+
+## v4 init scaffold pack integration
+
+This version keeps Harness Builder as the only controller and adds a namespaced `init_scaffold` install pack.
+
+The pack provides concrete scaffold assets from harness-init, but it is not a second workflow and must not be invoked before the Harness Charter, Coverage Matrix, Capability Discovery, and User Checkpoint gates. The builder core references remain authoritative; the pack only implements approved coverage rows.
+
+Pack namespace:
+
+```text
+references/packs/init_scaffold/
+templates/packs/init_scaffold/
+```
+
+Use `scripts/render_harness.py --pack init_scaffold --dry-run` to preview pack output and `scripts/install_pack.py --pack init_scaffold --approved-plan-id <id>` only after explicit approval.

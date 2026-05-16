@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import subprocess
+import sys
+from pathlib import Path
+
+CHECKS = [
+    Path(__file__).with_name("doc_drift.py"),
+    Path(__file__).with_name("architecture_drift.py"),
+]
+
+
+def main() -> int:
+    failures = 0
+    for check in CHECKS:
+        if not check.exists():
+            continue
+        proc = subprocess.run([sys.executable, str(check)], text=True)
+        if proc.returncode != 0:
+            failures += 1
+    return 1 if failures else 0
+
+if __name__ == "__main__":
+    raise SystemExit(main())

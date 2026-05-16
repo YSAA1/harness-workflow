@@ -1,0 +1,23 @@
+# Security
+
+Do not include real secrets, exact credential paths, internal hostnames/IPs/ports, or unpatched vulnerability details.
+
+## Authentication
+
+{{ authentication_summary | default("No authentication model recorded. Omit or update this section if the project has no auth.") }}
+
+## Authorization
+
+{{ authorization_summary | default("No authorization model recorded.") }}
+
+## Secrets management
+
+{{ secrets_summary | default("Secrets, if any, should be loaded from approved runtime configuration or a secrets manager using generic documentation only.") }}
+
+## Sensitive data
+
+{{ sensitive_data_summary | default("No sensitive data model recorded.") }}
+
+## Incident response
+
+{{ incident_response | default("Report suspected security issues through the project-approved channel.") }}

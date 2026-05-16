@@ -1,0 +1,70 @@
+import ast
+import json
+from pathlib import Path
+
+LAYER_RULES = {{ layer_rules_json }}
+SOURCE_ROOTS = {{ source_roots_json }}
+KNOWN_VIOLATIONS_PATH = Path("tests/architecture/known-violations.json")
+
+
+def get_layer(file_path: Path) -> str | None:
+    parts = file_path.parts
+    for root in SOURCE_ROOTS:
+        if parts and parts[0] == root and len(parts) >= 2 and parts[1] in LAYER_RULES:
+            return parts[1]
+    return None
+
+
+def scan_imports(file_path: Path) -> list[dict]:
+    violations = []
+    try:
+        tree = ast.parse(file_path.read_text(encoding="utf-8"))
+    except SyntaxError:
+        return violations
+    from_layer = get_layer(file_path)
+    if not from_layer:
+        return violations
+
+    def check_target(target: str, node: ast.AST) -> None:
+        for layer in LAYER_RULES:
+            if layer in target.split(".") and layer != from_layer and layer not in LAYER_RULES[from_layer]:
+                violations.append({
+                    "file": str(file_path),
+                    "line": getattr(node, "lineno", 0),
+                    "imports": target,
+                    "from_layer": from_layer,
+                    "to_layer": layer,
+                })
+                break
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                check_target(alias.name, node)
+        elif isinstance(node, ast.ImportFrom) and node.module:
+            check_target(node.module, node)
+    return violations
+
+
+def all_violations() -> list[dict]:
+    result = []
+    for root in SOURCE_ROOTS:
+        for py_file in Path(root).rglob("*.py"):
+            result.extend(scan_imports(py_file))
+    return result
+
+
+def test_no_new_architecture_violations():
+    known = json.loads(KNOWN_VIOLATIONS_PATH.read_text()) if KNOWN_VIOLATIONS_PATH.exists() else []
+    known_set = {(v["file"], v["imports"]) for v in known}
+    new = [v for v in all_violations() if (v["file"], v["imports"]) not in known_set]
+    assert not new, "\n".join(
+        f"VIOLATION: {v['file']}:{v['line']} imports {v['imports']} — {v['from_layer']} cannot import {v['to_layer']}. See docs/architecture/LAYERS.md"
+        for v in new
+    )
+
+
+def test_known_violation_count_does_not_grow():
+    known = json.loads(KNOWN_VIOLATIONS_PATH.read_text()) if KNOWN_VIOLATIONS_PATH.exists() else []
+    current = all_violations()
+    assert len(current) <= len(known), f"Violation count increased: {len(current)} > baseline {len(known)}. Fix violations or seek explicit approval to update baseline."

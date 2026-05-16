@@ -164,12 +164,6 @@ if (exists("skills/harness-builder/references/legacy-bootstrap/SKILL.md")) {
 if (packageExists("skills/harness-builder/references/legacy-bootstrap/SKILL.md")) {
   fail("packaged legacy bootstrap reference must not be named SKILL.md");
 }
-if (!exists("skills/harness-builder/references/legacy-bootstrap/bootstrap-legacy.md")) {
-  fail("legacy bootstrap reference document is missing");
-}
-if (!packageExists("skills/harness-builder/references/legacy-bootstrap/bootstrap-legacy.md")) {
-  fail("packaged legacy bootstrap reference document is missing");
-}
 if (!process.exitCode) pass("active skill set matches boundary model plus helper skills");
 
 for (const skill of activeSkills) {

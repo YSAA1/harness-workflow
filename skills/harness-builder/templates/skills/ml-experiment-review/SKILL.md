@@ -1,27 +1,37 @@
 ---
 name: ml-experiment-review
-description: Review ML experiment changes for reproducibility, metric validity, config hygiene, tiny-run verification, and honest reporting. Use when the user creates or modifies training scripts, evaluation scripts, experiment configs, metrics, logging, model selection, or experiment reports.
+description: "Use when reviewing model training, evaluation, metrics, baselines, or experiment claims."
 ---
 
 # ML Experiment Review
 
-Focus on whether an experiment can be reproduced, validated, and interpreted honestly.
+## Use when
 
-## Check
+Use when reviewing model training, evaluation, metrics, baselines, or experiment claims.
 
-- seed handling;
-- config-driven hyperparameters;
-- train/eval separation;
-- metric definition;
-- baseline comparison;
-- tiny dry-run or smoke test;
-- output directory hygiene;
-- no claims from synthetic/tiny data;
-- artifact naming and versioning.
+## Checklist
+
+- Confirm baseline and metric.
+- Check config, seeds, data version, and eval path.
+- Prefer tiny run evidence over claims.
+- Separate improvement from noise.
 
 ## Output
 
-- findings by severity;
-- missing tests;
-- suggested minimal fixes;
-- whether the experiment is ready to run seriously.
+```markdown
+# Finding
+
+# Evidence
+
+# Risks
+
+# Recommended action
+
+# Confidence
+```
+
+## Rules
+
+- Do not claim validity without evidence.
+- Prefer small reproducible checks.
+- Record unresolved risk instead of hiding it.

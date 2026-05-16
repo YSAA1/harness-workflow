@@ -1,48 +1,37 @@
 ---
 name: rl-env-review
-description: Review RL environment, reward, reset/step, observation/action space, termination, truncation, seeding, wrappers, and rollout evaluation logic. Use whenever the user touches environment code, reward code, simulator wrappers, policy evaluation, or tiny rollout checks.
+description: "Use when reviewing RL environments, reset/step APIs, rewards, rollouts, or sim interfaces."
 ---
 
 # RL Environment Review
 
-RL bugs often look like algorithm failures. Review environment semantics before trusting training curves.
+## Use when
 
-## Check
+Use when reviewing RL environments, reset/step APIs, rewards, rollouts, or sim interfaces.
 
-1. API
-   - reset/step signatures;
-   - observation and action shapes;
-   - vectorized environment compatibility;
-   - info fields.
+## Checklist
 
-2. Termination
-   - terminated vs truncated;
-   - max episode length;
-   - success/failure conditions;
-   - early termination.
-
-3. Reward
-   - scale;
-   - reward hacking;
-   - future information;
-   - sparse/dense behavior;
-   - edge-case tests.
-
-4. Reproducibility
-   - seed propagation;
-   - train/eval seed separation;
-   - deterministic tiny rollout where possible.
-
-5. Tests
-   - reset smoke;
-   - one-step transition;
-   - reward edge cases;
-   - tiny rollout.
+- Check reset/step contract.
+- Check observation/action space consistency.
+- Review reward termination and truncation logic.
+- Require tiny rollout evidence when feasible.
 
 ## Output
 
-- concrete issues;
-- files/functions;
-- why it matters;
-- minimal fix;
-- test to add.
+```markdown
+# Finding
+
+# Evidence
+
+# Risks
+
+# Recommended action
+
+# Confidence
+```
+
+## Rules
+
+- Do not claim validity without evidence.
+- Prefer small reproducible checks.
+- Record unresolved risk instead of hiding it.
