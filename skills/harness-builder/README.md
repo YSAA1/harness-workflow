@@ -9,6 +9,8 @@ v3 adds:
 - evidence-first, gap-driven brainstorm;
 - Harness Hypothesis before Harness Plan;
 - Harness Charter before installation: objective, non-goals, acceptance criteria, verification, evidence location, recovery surface, and existing-harness decisions;
+- integrated Coverage Matrix before capability installation, so skills, hooks, MCP, subagents, CI, and GC close named gaps instead of forming a separate shopping list;
+- phased installation with acceptance evidence or explicit blockers for each phase;
 - existing harness reconciliation before patching so old state does not mix with a new request;
 - Learn Harness Engineering course alignment checklist;
 - optional subagent orchestration for read-only discovery, research, and plan review;
@@ -23,6 +25,8 @@ v3 adds:
 - Designs a harness plan.
 - Negotiates or states user-facing acceptance criteria before installing files.
 - Reconciles existing harness artifacts as keep, patch, archive/deprecate, or reject.
+- Distinguishes static rules from dynamic context and records both in the selected recovery surface.
+- Recommends mechanical architecture enforcement and read-only drift scans only when they close real gaps.
 - Installs project-local AGENTS.md, docs, check scripts, state files, skills, hooks, and reviewer agents when justified.
 - Installs project-local Research Route artifacts when the user explicitly asks for autoresearch or repeated research exploration.
 - Records manifest and decisions for auditability.

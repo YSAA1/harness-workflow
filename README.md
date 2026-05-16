@@ -105,6 +105,7 @@ That checklist is not a mandatory artifact list. It is a decision framework. A s
 | --- | --- |
 | Context-aware harness building | `harness-builder` should consume a brainstormed spec or executable plan when one exists, plus real repository evidence. It is not a blank template generator. |
 | Harness contract before install | Before writing harness files, `harness-builder` must state the objective, non-goals, acceptance criteria, verification path, evidence location, recovery surface, and how existing harness files will be kept, patched, archived, or rejected. |
+| One coverage matrix | Instructions, recovery, verification, architecture boundaries, anti-entropy, dynamic context, and extra capabilities are judged in one table. Skills, MCP, hooks, subagents, CI, and GC are installed only when they close a named gap. |
 | Repo truth before workflow ceremony | The agent checks docs, source layout, tests, git state, existing rules, and setup commands before it claims the project is ready. |
 | Recovery as a design choice | Some work needs no durable state. Some needs a short checkpoint. Some needs `task_plan.md`, `progress.md`, and `findings.md`. Some should reuse an issue tracker or existing docs. |
 | Capability fit, not capability hoarding | Extra skills, MCP servers, hooks, and subagents are recommended only when they close a real gap in the task or repo. The bundled `find-skills` helper is for skill discovery; web research is used for current hooks, MCP, and tool behavior. |
@@ -117,6 +118,8 @@ That checklist is not a mandatory artifact list. It is a decision framework. A s
 `harness-builder` is the lane that creates or repairs the project workbench: `AGENTS.md` or `CLAUDE.md`, project map, verification entry point, recovery surface, local rules, and justified optional capabilities.
 
 It should not silently turn a vague request into a harness. If the target outcome, non-goals, acceptance criteria, or verification strategy are unclear, it asks the user or routes back to `brainstorm` / `plan`. If a project already has a harness, it reconciles the old sources before adding new ones so stale state does not mix with the new request.
+
+For repo initialization, it borrows the useful discipline of phased setup without adding a separate mode system: discovery first, thin entry, docs as system of record, verification entry, optional architecture enforcement, optional read-only drift scans, and optional hooks. Each phase needs acceptance evidence or an explicit blocker.
 
 Recommended order:
 

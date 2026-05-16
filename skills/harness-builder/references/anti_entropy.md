@@ -52,6 +52,26 @@ Before adding new files, reconcile the old harness:
 - move current task status into the selected recovery surface;
 - record unresolved conflicts as risks instead of blending them into new instructions.
 
+### Read-only GC / drift scan
+
+When drift repeats or the repo is long-lived, recommend a read-only scan before recommending cleanup automation.
+
+Good scan targets:
+
+- docs that describe commands, paths, APIs, or architecture no longer present in code;
+- stale recovery state or multiple active-slice claims;
+- generated artifacts that were hand-edited or not regenerated;
+- architecture boundary violations when a layer map exists;
+- project rules duplicated across root and local instruction files;
+- known-violation baselines that grew.
+
+Safety rules:
+
+- default scans must report only;
+- scheduled scans must not auto-fix or delete;
+- any `--fix` behavior requires explicit user approval;
+- report findings with file paths and remediation hints, not vague warnings.
+
 ## Principle
 
 If a harness component cannot explain what failure it prevents, remove or downgrade it.

@@ -11,6 +11,8 @@ A harness is the repo-local operating system around the agent: project map, Proj
 
 Default to project-local output. Do not modify user-global config unless explicitly requested.
 
+Harness Builder uses one integrated gap model. Do not create a separate "profile" lane that competes with Capability Discovery. First decide which harness coverage areas are missing, then decide whether files, scripts, skills, hooks, MCP, or subagents are the right way to close each gap.
+
 ## When to use
 
 - User asks to bootstrap, initialize, onboard, build harness, create project rules, or repair agent governance.
@@ -29,22 +31,26 @@ Prefer running after `brainstorm` or `plan` when goal, non-goals, success criter
 - Do not install a harness until the Harness Charter states what this harness must make possible and how the user will know it worked.
 - When a repo already has harness files, reconcile the existing system before adding or replacing anything.
 - Do not install on user silence.
-- Add capabilities only when they close a real verification, observability, automation, or domain gap.
+- Add files or capabilities only when they close a named coverage gap.
+- Do not add skills, hooks, MCP, subagents, CI, or GC scans as generic "best practice"; bind every one to an uncovered need.
 - Treat three-file as one backend option, not the workflow identity.
 - Keep `AGENTS.md` thin and stable; never mix current active-slice state, one-off conclusions, or stale recovery notes into it.
+- Prefer mechanical enforcement for stable architecture boundaries: tests, lint rules, ratchets, and agent-readable errors beat prose-only rules.
 - Do not claim the harness works without fresh evidence.
 - Use `references/research_route_policy.md` before Research Route work.
 
 Working model:
 
 ```text
-repo evidence + user intent + existing harness reconciliation + Capability Discovery + optional research
+repo evidence + user intent + existing harness reconciliation
 -> Harness Hypothesis
 -> Harness Charter
+-> Coverage Matrix
+-> Capability Discovery for uncovered gaps
 -> Harness Plan
 -> user checkpoint
--> project-local install
--> verification and audit records
+-> project-local install by phase
+-> phase verification and audit records
 ```
 
 ## Mandatory execution gates
@@ -66,16 +72,33 @@ These gates are required unless the user explicitly asks for read-only explanati
      - existing harness components to keep, patch, archive, or reject.
    - If any required field is unknown, ask the user or route to `brainstorm` / `plan`; do not fill it with template text.
 
-3. **Capability Discovery gate**
-   - Always produce a `Required / Recommended / Deferred / Rejected` table.
-   - For skill gaps, invoke `$find-skills` / `find-skills` or state `No reusable skill search needed` with reason.
-   - For hooks, MCP, subagents, agent config, or recently changed external tool behavior, use targeted web search or state `No web research needed` with reason.
+3. **Coverage Matrix gate**
+   - Always produce a single `Required / Recommended / Deferred / Rejected` table across these coverage areas:
+     - agent entry and project map;
+     - static documentation and durable rules;
+     - selected recovery surface;
+     - verification entry and deeper checks;
+     - architecture boundaries and mechanical enforcement;
+     - anti-entropy and stale-state detection;
+     - capability fit: skills, hooks, MCP, subagents, external research;
+     - dynamic context: git, diagnostics, CI, logs, or available runtime signals.
+   - For each row, say whether existing artifacts already satisfy it, need patching, need a new install, or should be deferred/rejected.
+   - If architecture boundaries are requested or implied, decide whether prose is enough or whether `LAYERS.md`, boundary tests, lint rules, or ratchets are needed.
+   - Use `references/coverage_matrix_policy.md`, `references/architecture_enforcement_policy.md`, and `references/anti_entropy.md`.
 
-4. **Verification design gate**
+4. **Capability Discovery gate**
+   - Evaluate skills, hooks, MCP, subagents, external research, CI, GC, and helper scripts only after the Coverage Matrix exposes a real gap.
+   - Bind every candidate capability to one coverage row. If no row needs it, reject it.
+   - For skill gaps, invoke `$find-skills` / `find-skills` or state `No reusable skill search needed` with reason.
+   - For hooks, MCP, subagents, agent config, CI, GC, architecture tools, or recently changed external tool behavior, use targeted web search or state `No web research needed` with reason.
+   - Prefer warning/baseline/ratchet behavior for existing projects over strict rules that break the current build.
+
+5. **Verification design gate**
    - Before installation, propose fast default check, deeper smoke/E2E/manual check, evidence location, and unverified risks.
    - If validation command is unknown, ask whether to adopt a conservative default: syntax/import/config smoke, dry-run, or equivalent.
+   - For every planned install or patch phase, define phase acceptance: artifact exists plus relevant command/manual evidence, or blocker recorded.
 
-5. **User checkpoint gate**
+6. **User checkpoint gate**
    - Before writing or installing harness files, show the Harness Plan and ask for approval.
    - Exact checkpoint text:
 
@@ -83,6 +106,7 @@ These gates are required unless the user explicitly asks for read-only explanati
 USER CHECKPOINT
 Approve this Harness Plan before I install project-local files:
 - Charter:
+- Coverage:
 - Install:
 - Patch existing:
 - Archive/deprecate:
@@ -92,14 +116,16 @@ Approve this Harness Plan before I install project-local files:
 Reply approve / change / stop.
 ```
 
-6. **Verification gate**
-   - After installation, run the selected validation command or state the concrete blocker.
+7. **Verification gate**
+   - After installation, run the selected validation command and phase checks, or state the concrete blocker.
    - No fresh evidence means no ready claim.
 
 ## Workflow
 
 1. **Collect evidence**
    - Read user intent, `AGENTS.md`/`CLAUDE.md`, README, docs, scripts, tests, CI, git state, existing `.harness/`, `.agents/skills/`, `.codex/`, `.claude/`, protected/generated paths.
+   - Detect stack and workbench facts when relevant: language, framework, package manager, build tool, test runner, linter, source roots, import patterns, and available verification commands.
+   - Probe dynamic context when cheap and safe: `git status`, recent commits, diagnostics/lint, CI status if available, current recovery state, known broken checks, logs or runtime signals if already exposed.
    - For existing harnesses, identify authoritative vs stale sources and note conflicting claims before planning changes.
    - Use `scripts/scan_project.py` if useful.
 
@@ -110,7 +136,7 @@ Reply approve / change / stop.
    - Use `references/recovery_surface_policy.md`, `references/anti_entropy.md`, and `references/install_policy.md`.
 
 3. **Form Harness Hypothesis**
-   - Summarize known repo facts, known user intent, missing info, questions, assumptions, and course coverage.
+   - Summarize known repo facts, dynamic state, known user intent, missing info, questions, assumptions, and course coverage.
    - Use `references/brainstorming_policy.md` and `references/course_alignment.md`.
 
 4. **Choose orchestration mode**
@@ -118,41 +144,52 @@ Reply approve / change / stop.
    - Recommend read-only subagents only for specific gaps: repo map, verification, risk, skills, research, or plan review.
    - Main agent installs files. See `references/subagent_orchestration.md`.
 
-5. **Run Capability Discovery**
-   - For reusable skills, use `find-skills` when a real skill gap exists.
-   - For hooks/MCP/external agent behavior, use targeted web search against official docs or mature sources.
+5. **Build the Coverage Matrix**
+   - Classify each coverage area as `Required`, `Recommended`, `Deferred`, or `Rejected`.
+   - Record how each selected row will be satisfied: existing artifact, small patch, new project-local file, script, test, lint rule, CI, GC scan, skill, hook, MCP, subagent, or manual practice.
+   - Keep hooks, MCP, subagents, and project-local skills inside this matrix; do not evaluate them as a separate shopping list.
+   - If user only asked for a narrow coverage area, keep unrelated rows deferred and explain why.
+
+6. **Run Capability Discovery for uncovered gaps**
+   - For reusable skills, use `find-skills` when a real coverage row needs repeatable workflow knowledge.
+   - For hooks/MCP/external agent behavior/CI/GC/architecture tooling, use targeted web search against official docs or mature sources when current external behavior matters.
    - Classify each candidate by value, enablement, risk/cost, and fallback.
+   - Reject candidates that do not close a named gap or duplicate a simpler file/script/test.
    - Record adopted external research in `.harness/research_notes.md`.
    - See `references/skill_policy.md`, `references/web_research_policy.md`, `references/hook_policy.md`, `references/mcp_policy.md`.
 
-6. **Handle Research Route only when explicit**
+7. **Handle Research Route only when explicit**
    - Require Goal, Hypothesis, Counter-hypothesis, Baseline, Scope, Metric, Verify, Guard, Budget, Artifact policy, and Stop rule.
    - If incomplete, return to gap-driven questions.
    - If approved, install `templates/research_route`: `docs/research/research_plan.md`, `docs/research/evidence_log.md`, `docs/research/iteration_protocol.md`, `.harness/research_manifest.yaml`.
    - Preserve failed evidence before rollback. Use `git reset --hard` only inside an approved isolated research branch/worktree after evidence is recorded.
 
-7. **Choose recovery surface**
+8. **Choose recovery surface**
    - Options: none, lightweight, three-file, feature-list, existing system.
    - For three-file, map `active_slice` to `task_plan.md`, evidence to `progress.md`, decisions/risks to `findings.md`.
    - Declare semantic field mapping. Do not force file layout. See `references/recovery_surface_policy.md`.
 
-8. **Write Harness Charter and Plan**
+9. **Write Harness Charter and phased Plan**
    - Charter first: objective, non-goals, user-facing acceptance criteria, verification path, evidence location, selected recovery surface, and source-of-truth priority.
-   - Then merge evidence, answers, capability decisions, research, orchestration, recovery surface, and verification design into the Harness Plan.
-   - Use `references/profiles.md` and `references/decision_matrix.md`.
+   - Then merge evidence, answers, coverage decisions, capability decisions, research, orchestration, recovery surface, and verification design into the Harness Plan.
+   - Structure install work as phases. Each phase must have purpose, target files, acceptance criteria, verification evidence, and failure handling.
+   - Use `references/coverage_matrix_policy.md`, `references/decision_matrix.md`, `references/verification_policy.md`, and only the specific capability policy needed.
 
-9. **Checkpoint**
+10. **Checkpoint**
    - Emit `USER CHECKPOINT`.
    - Wait for explicit approval unless user already authorized direct changes in this turn.
 
-10. **Install approved project-local components**
+11. **Install approved project-local components by phase**
    - Install `Required` only unless user approves more.
    - Prefer `AGENTS.md`, `scripts/agent/check.sh`, `docs/agent/*`, `.harness/*`, `.agents/skills/*`, `.codex/*`.
    - For existing harness files, patch only approved sections and record whether old content was kept, moved, or marked stale.
+   - When adding architecture boundaries to an existing repo, establish baseline/warn-first behavior before strict enforcement.
+   - Hooks remain optional unless they block a concrete high-risk failure that tests or review cannot catch.
    - Use templates instead of hand-creating large boilerplate. See `references/install_policy.md`.
 
-11. **Verify and record**
+12. **Verify and record**
    - Validate files, frontmatter, JSON/TOML/YAML, hook scripts, and fast check command.
+   - Mark each phase `pass`, `blocked`, `skipped`, or `deferred`; do not collapse partial failure into a ready claim.
    - Use `scripts/validate_harness.py` where possible.
    - Update `.harness/manifest.yaml`, `.harness/decisions.md`, `.harness/state.md`, skill inventory, and research notes.
    - Use `references/anti_entropy.md` for cleanup drift.
@@ -166,6 +203,7 @@ HARNESS EVIDENCE
 EXISTING HARNESS RECONCILIATION
 HARNESS QUESTIONS
 HARNESS CHARTER
+HARNESS COVERAGE MATRIX
 CAPABILITY DISCOVERY
 VERIFICATION DESIGN
 HARNESS PLAN
@@ -176,12 +214,12 @@ After approved installation:
 
 ```text
 HARNESS INSTALL REPORT
-VERIFICATION
+PHASE VERIFICATION
 RECORDED STATE
 NEXT
 ```
 
-Always state found evidence, unknowns, user questions, charter assumptions, install/patch/archive/defer/reject decisions, capability value/cost, verification plan, and skipped-gate reasons.
+Always state found evidence, unknowns, user questions, charter assumptions, coverage decisions, install/patch/archive/defer/reject decisions, capability value/cost, verification plan, phase status, and skipped-gate reasons.
 
 ## Recommended next skill
 
