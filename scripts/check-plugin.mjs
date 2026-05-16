@@ -20,6 +20,21 @@ const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "u
 const packageRead = (relativePath) => fs.readFileSync(path.join(packagedRoot, relativePath), "utf8");
 const skillPath = (skill) => `skills/${skill}/SKILL.md`;
 const readJson = (relativePath) => JSON.parse(read(relativePath));
+const listFiles = (baseRoot, relativeDir) => {
+  const absoluteDir = path.join(baseRoot, relativeDir);
+  if (!fs.existsSync(absoluteDir)) return [];
+  const out = [];
+  const walk = (absoluteCurrent, relativeCurrent) => {
+    for (const entry of fs.readdirSync(absoluteCurrent, { withFileTypes: true })) {
+      const absoluteEntry = path.join(absoluteCurrent, entry.name);
+      const relativeEntry = path.join(relativeCurrent, entry.name);
+      if (entry.isDirectory()) walk(absoluteEntry, relativeEntry);
+      else out.push(relativeEntry.replaceAll(path.sep, "/"));
+    }
+  };
+  walk(absoluteDir, "");
+  return out.sort();
+};
 
 if (!fs.existsSync(root)) {
   fail("plugin root is missing");
@@ -92,6 +107,23 @@ if (!fs.existsSync(packagedRoot)) {
     if (!packageExists(file)) fail(`packaged plugin missing ${file}`);
     else if (packageRead(file) !== read(file)) fail(`packaged plugin drifted from root file: ${file}`);
   }
+
+  const rootSkillFiles = listFiles(root, "skills");
+  const packagedSkillFiles = listFiles(packagedRoot, "skills");
+  let packagedSkillDrift = false;
+  if (JSON.stringify(rootSkillFiles) !== JSON.stringify(packagedSkillFiles)) {
+    packagedSkillDrift = true;
+    fail("packaged plugin skills have a different recursive file list from root skills");
+  }
+  for (const file of rootSkillFiles) {
+    const relativePath = `skills/${file}`;
+    if (!packageExists(relativePath)) continue;
+    if (packageRead(relativePath) !== read(relativePath)) {
+      packagedSkillDrift = true;
+      fail(`packaged plugin skill support file drifted from root: ${relativePath}`);
+    }
+  }
+  if (!packagedSkillDrift) pass("packaged plugin skills match root skills recursively");
 }
 
 if (exists(".mcp.json")) fail("plugin must not include default MCP config");
