@@ -1,0 +1,818 @@
+{
+  "kind": "ppt-composer-deck-protocol",
+  "version": "0.1",
+  "mode": "reference_grounded_mode",
+  "source": {
+    "brief": "Teaching-oriented image-first deck explaining Harness Workflow as specification-driven Agent development and Harness engineering.",
+    "inputs": [
+      "docs/specs/2026-05-17--harness-workflow-teaching-deck.md",
+      "docs/plans/2026-05-17--harness-workflow-teaching-deck-plan.md",
+      "README.md",
+      "CONTEXT.md",
+      "docs/harness-method-contract.md",
+      "skills/harness-builder/SKILL.md",
+      "skills/brainstorm/SKILL.md",
+      "skills/plan/SKILL.md",
+      "skills/implement/SKILL.md",
+      "skills/diagnose/SKILL.md",
+      "skills/review/SKILL.md",
+      "skills/verify/SKILL.md",
+      "skills/cleanup/SKILL.md"
+    ],
+    "reference_mode_note": "References are local Markdown repository sources and generated reference intake assets. No OCR or external document extraction is required."
+  },
+  "deck": {
+    "title": "规范驱动的 Agent 开发：Harness Workflow 工程思想课件",
+    "language": "zh",
+    "audience": "已经会使用 Codex / Claude Code / Cursor 等 Agent 编程工具，但需要理解如何用规范、工作面、证据和清理纪律驾驭复杂 Agent 任务的开发者、维护者和教学读者。",
+    "page_count": 28,
+    "aspect_ratio": "16:9",
+    "output_pptx": "docs/decks/harness-workflow-teaching-deck.pptx"
+  },
+  "style": {
+    "description": "Restrained cyberpunk engineering console for a dense teaching deck: dark graphite canvas, cyan/green/blue-violet accents, thin grids, status lights, evidence chains, compact matrices and lifecycle diagrams. Teaching clarity comes first; avoid neon poster decoration.",
+    "template_image_ids": [],
+    "logo_ids": [],
+    "palette": [
+      "#070B10",
+      "#0E1726",
+      "#13F2A3",
+      "#22D3EE",
+      "#7C3AED",
+      "#F59E0B",
+      "#E5F3FF"
+    ],
+    "typography": "Chinese-first sans-serif similar to Microsoft YaHei / Noto Sans CJK. Large readable headings, compact but legible body text, no microscopic paragraphs. Use diagram labels instead of long prose blocks.",
+    "page_number_policy": "Use a consistent small bottom-right page/total footer on every slide: 01/28 through 28/28.",
+    "visible_text_policy": "Render only reader-facing Chinese teaching content. Do not render asset ids, filenames, paths, source labels, protocol metadata, parser labels, or internal method-code labels."
+  },
+  "assets": [
+    {
+      "id": "spec_teaching",
+      "type": "text_evidence",
+      "path": "docs/specs/2026-05-17--harness-workflow-teaching-deck.md",
+      "summary": "Approved teaching deck spec: 25+ pages, Chinese-first, for readers already using Agent tools; focus on specification-driven development and Harness engineering, not a skill catalog.",
+      "usage": "deck scope, page outline, negative constraints, success criteria"
+    },
+    {
+      "id": "plan_teaching",
+      "type": "text_evidence",
+      "path": "docs/plans/2026-05-17--harness-workflow-teaching-deck-plan.md",
+      "summary": "Executable plan for the teaching deck: output path, image-first workflow, QA path, commit units, and content negative checks.",
+      "usage": "production route, verification and artifact map"
+    },
+    {
+      "id": "readme_workflow",
+      "type": "text_evidence",
+      "path": "README.md",
+      "summary": "Harness Workflow is a context-aware agent workbench for real repositories, giving agents repo evidence, requirement context, recovery state, verification discipline, and cleanup paths.",
+      "usage": "Harness overview, practical routes, workflow framing"
+    },
+    {
+      "id": "context_terms",
+      "type": "text_evidence",
+      "path": "CONTEXT.md",
+      "summary": "Defines core terms: Harness Builder, Skill Independence, Recovery Surface, Workflow State Backend, Executable Plan, Spec, Review, Verification, Knowledge Cleanup.",
+      "usage": "terminology and boundary rules"
+    },
+    {
+      "id": "method_contract",
+      "type": "text_evidence",
+      "path": "docs/harness-method-contract.md",
+      "summary": "Stable method contract for harness-as-system, repo truth, thin instructions, workbench before action, scoped work, fresh evidence, capability fit, artifact freshness, cleanup, and backend decoupling.",
+      "usage": "engineering principles without visible course-code markers"
+    },
+    {
+      "id": "skill_harness_builder",
+      "type": "text_evidence",
+      "path": "skills/harness-builder/SKILL.md",
+      "summary": "Harness Builder designs or repairs the project workbench and recovery surface: project map, rules, verification entry, reusable skills, capability discovery, and anti-entropy guardrails.",
+      "usage": "initialization and workbench pages"
+    },
+    {
+      "id": "skill_brainstorm",
+      "type": "text_evidence",
+      "path": "skills/brainstorm/SKILL.md",
+      "summary": "Brainstorm clarifies fuzzy intent into a Spec with goals, non-goals, options, risks, and verification strategy before planning.",
+      "usage": "clarification and spec pages"
+    },
+    {
+      "id": "skill_plan",
+      "type": "text_evidence",
+      "path": "skills/plan/SKILL.md",
+      "summary": "Plan turns an approved Spec or clear request into an Executable Plan with active slice, success criteria, verification path, phases, risks, and commit units.",
+      "usage": "planning and active slice pages"
+    },
+    {
+      "id": "skill_implement",
+      "type": "text_evidence",
+      "path": "skills/implement/SKILL.md",
+      "summary": "Implement executes a scoped change using existing project context, narrow edits, risk-matched checks, and routing to diagnose/review/verify.",
+      "usage": "action phase pages"
+    },
+    {
+      "id": "skill_diagnose",
+      "type": "text_evidence",
+      "path": "skills/diagnose/SKILL.md",
+      "summary": "Diagnose handles unexplained failures through reproduce, minimize, single hypothesis, instrumentation, root cause, fix, and regression evidence.",
+      "usage": "failure phase pages"
+    },
+    {
+      "id": "skill_review",
+      "type": "text_evidence",
+      "path": "skills/review/SKILL.md",
+      "summary": "Review checks correctness, scope, evidence gaps, docs drift, artifacts, and entropy before ready claims.",
+      "usage": "review gate pages"
+    },
+    {
+      "id": "skill_verify",
+      "type": "text_evidence",
+      "path": "skills/verify/SKILL.md",
+      "summary": "Verify maps a concrete ready claim to fresh evidence using an evidence ladder and routes failing evidence to diagnosis.",
+      "usage": "verification and fresh evidence pages"
+    },
+    {
+      "id": "skill_cleanup",
+      "type": "text_evidence",
+      "path": "skills/cleanup/SKILL.md",
+      "summary": "Cleanup reconciles documentation, generated artifacts, recovery surfaces, and residual risks so knowledge does not rot after a batch.",
+      "usage": "cleanup and handoff pages"
+    }
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "title": "从会用 Agent 到会驾驭 Agent",
+      "claim": "会用工具不等于具备工程流程；真正难点是让 Agent 稳定、可控、可验证地完成复杂任务。",
+      "content_inputs": {
+        "text": [
+          "spec_teaching",
+          "readme_workflow"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "spec_teaching",
+        "readme_workflow"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 01/28. Title: 从会用 Agent 到会驾驭 Agent. Main claim: 会用工具不等于具备工程流程；真正难点是让 Agent 稳定、可控、可验证地完成复杂任务。 Required teaching points: 会用 Codex/Claude/Cursor 只是操作层；复杂任务需要目标、边界、状态、证据和交接；Harness Workflow 关注的是工作环境，不是模型炫技。Visual structure: two-layer contrast: user who can operate Agent tools vs engineered Agent workbench; central thesis strip. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 01/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-01.png",
+      "speaker_notes": "本页讲解重点：会用工具不等于具备工程流程；真正难点是让 Agent 稳定、可控、可验证地完成复杂任务。 讲的时候先点出本页结论，再按这几个教学点展开：会用 Codex/Claude/Cursor 只是操作层；复杂任务需要目标、边界、状态、证据和交接；Harness Workflow 关注的是工作环境，不是模型炫技。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 2,
+      "title": "Agent 开发为什么会失控",
+      "claim": "失控往往来自工程环境缺口：需求漂移、上下文丢失、验证缺失、文档过期和范围膨胀。",
+      "content_inputs": {
+        "text": [
+          "spec_teaching",
+          "readme_workflow",
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "spec_teaching",
+        "readme_workflow",
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 02/28. Title: Agent 开发为什么会失控. Main claim: 失控往往来自工程环境缺口：需求漂移、上下文丢失、验证缺失、文档过期和范围膨胀。 Required teaching points: 需求在聊天里变化但没有落成合同；上下文压缩后缺少恢复面；完成声明没有新鲜证据；文档和生成物跟不上真实代码。Visual structure: failure map with symptoms on left and missing harness controls on right. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 02/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-02.png",
+      "speaker_notes": "本页讲解重点：失控往往来自工程环境缺口：需求漂移、上下文丢失、验证缺失、文档过期和范围膨胀。 讲的时候先点出本页结论，再按这几个教学点展开：需求在聊天里变化但没有落成合同；上下文压缩后缺少恢复面；完成声明没有新鲜证据；文档和生成物跟不上真实代码。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 3,
+      "title": "对话驱动的局限",
+      "claim": "聊天适合探索，但不适合承载长期任务的边界、验收、状态和责任。",
+      "content_inputs": {
+        "text": [
+          "spec_teaching",
+          "context_terms"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "spec_teaching",
+        "context_terms"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 03/28. Title: 对话驱动的局限. Main claim: 聊天适合探索，但不适合承载长期任务的边界、验收、状态和责任。 Required teaching points: 对话容易把临时假设当事实；长任务跨轮次后难以恢复；人类很难审查 Agent 是否越界；缺少可重复的验收路径。Visual structure: conversation stream dissolving into lost requirements, contrasted with durable artifacts. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 03/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-03.png",
+      "speaker_notes": "本页讲解重点：聊天适合探索，但不适合承载长期任务的边界、验收、状态和责任。 讲的时候先点出本页结论，再按这几个教学点展开：对话容易把临时假设当事实；长任务跨轮次后难以恢复；人类很难审查 Agent 是否越界；缺少可重复的验收路径。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 4,
+      "title": "规范驱动开发的核心思想",
+      "claim": "把“想让 Agent 做什么”转成可执行、可验证、可恢复的工程规范。",
+      "content_inputs": {
+        "text": [
+          "spec_teaching",
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "spec_teaching",
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 04/28. Title: 规范驱动开发的核心思想. Main claim: 把“想让 Agent 做什么”转成可执行、可验证、可恢复的工程规范。 Required teaching points: 规范不是写给人看的装饰文档；规范定义目标、非目标、行为、约束和验证；Agent 依据规范行动，人类依据规范审查。Visual structure: spec contract panel connected to action, evidence, recovery, review nodes. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 04/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-04.png",
+      "speaker_notes": "本页讲解重点：把“想让 Agent 做什么”转成可执行、可验证、可恢复的工程规范。 讲的时候先点出本页结论，再按这几个教学点展开：规范不是写给人看的装饰文档；规范定义目标、非目标、行为、约束和验证；Agent 依据规范行动，人类依据规范审查。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 5,
+      "title": "Harness 到底是什么",
+      "claim": "Harness 是围绕 Agent 的工作台：规则、上下文、状态、工具、验证和收尾共同约束工作。",
+      "content_inputs": {
+        "text": [
+          "readme_workflow",
+          "context_terms",
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "readme_workflow",
+        "context_terms",
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 05/28. Title: Harness 到底是什么. Main claim: Harness 是围绕 Agent 的工作台：规则、上下文、状态、工具、验证和收尾共同约束工作。 Required teaching points: 不是提示词模板；不是某一个 AGENTS.md；不是固定三文件；是让 Agent 在项目中可靠工作的运行环境。Visual structure: central Agent surrounded by six workbench modules with concise labels. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 05/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-05.png",
+      "speaker_notes": "本页讲解重点：Harness 是围绕 Agent 的工作台：规则、上下文、状态、工具、验证和收尾共同约束工作。 讲的时候先点出本页结论，再按这几个教学点展开：不是提示词模板；不是某一个 AGENTS.md；不是固定三文件；是让 Agent 在项目中可靠工作的运行环境。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 6,
+      "title": "可靠 Agent 工作流的组件",
+      "claim": "一个可靠工作流至少需要入口规则、项目地图、任务规格、执行计划、验证路径、恢复状态和清理纪律。",
+      "content_inputs": {
+        "text": [
+          "readme_workflow",
+          "context_terms",
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "readme_workflow",
+        "context_terms",
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 06/28. Title: 可靠 Agent 工作流的组件. Main claim: 一个可靠工作流至少需要入口规则、项目地图、任务规格、执行计划、验证路径、恢复状态和清理纪律。 Required teaching points: 入口规则告诉 Agent 不能乱动什么；项目地图降低探索成本；验证路径把 ready claim 接到证据；恢复状态让下个会话能接上。Visual structure: component checklist matrix: component / purpose / failure prevented. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 06/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-06.png",
+      "speaker_notes": "本页讲解重点：一个可靠工作流至少需要入口规则、项目地图、任务规格、执行计划、验证路径、恢复状态和清理纪律。 讲的时候先点出本页结论，再按这几个教学点展开：入口规则告诉 Agent 不能乱动什么；项目地图降低探索成本；验证路径把 ready claim 接到证据；恢复状态让下个会话能接上。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 7,
+      "title": "规范驱动闭环总览",
+      "claim": "澄清、规格、计划、初始化、行动、诊断、审查、验证、清理，组成可恢复的工程闭环。",
+      "content_inputs": {
+        "text": [
+          "spec_teaching",
+          "context_terms"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "spec_teaching",
+        "context_terms"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 07/28. Title: 规范驱动闭环总览. Main claim: 澄清、规格、计划、初始化、行动、诊断、审查、验证、清理，组成可恢复的工程闭环。 Required teaching points: 每一环都产出可检查的状态或证据；失败可以回路由，不必假装线性；闭环完成后项目知识要回到真实状态。Visual structure: large lifecycle loop with nine nodes and route-back arrows, not a rigid pipeline. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 07/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-07.png",
+      "speaker_notes": "本页讲解重点：澄清、规格、计划、初始化、行动、诊断、审查、验证、清理，组成可恢复的工程闭环。 讲的时候先点出本页结论，再按这几个教学点展开：每一环都产出可检查的状态或证据；失败可以回路由，不必假装线性；闭环完成后项目知识要回到真实状态。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 8,
+      "title": "第一步：不要急着实现",
+      "claim": "模糊需求直接进实现，会让 Agent 自己补全目标并把隐藏假设写进代码或产物。",
+      "content_inputs": {
+        "text": [
+          "spec_teaching",
+          "skill_brainstorm"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "spec_teaching",
+        "skill_brainstorm"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 08/28. Title: 第一步：不要急着实现. Main claim: 模糊需求直接进实现，会让 Agent 自己补全目标并把隐藏假设写进代码或产物。 Required teaching points: 先识别问题是否清楚；先问边界而不是先改文件；先定义成功标准而不是先追速度。Visual structure: split screen: rush-to-code chaos vs clarify-first checkpoint. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 08/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-08.png",
+      "speaker_notes": "本页讲解重点：模糊需求直接进实现，会让 Agent 自己补全目标并把隐藏假设写进代码或产物。 讲的时候先点出本页结论，再按这几个教学点展开：先识别问题是否清楚；先问边界而不是先改文件；先定义成功标准而不是先追速度。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 9,
+      "title": "澄清需求：把想法变成问题结构",
+      "claim": "澄清阶段要把目标、用户、边界、非目标、约束、验收方式和风险摆上桌面。",
+      "content_inputs": {
+        "text": [
+          "skill_brainstorm",
+          "spec_teaching"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_brainstorm",
+        "spec_teaching"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 09/28. Title: 澄清需求：把想法变成问题结构. Main claim: 澄清阶段要把目标、用户、边界、非目标、约束、验收方式和风险摆上桌面。 Required teaching points: 目标：到底要改变什么；非目标：明确不做什么；约束：风格、路径、权限、时间；验收：用什么证明完成。Visual structure: question grid turning a fuzzy request into structured requirement blocks. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 09/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-09.png",
+      "speaker_notes": "本页讲解重点：澄清阶段要把目标、用户、边界、非目标、约束、验收方式和风险摆上桌面。 讲的时候先点出本页结论，再按这几个教学点展开：目标：到底要改变什么；非目标：明确不做什么；约束：风格、路径、权限、时间；验收：用什么证明完成。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 10,
+      "title": "Spec 的意义：不是文档，是执行合同",
+      "claim": "Spec 同时约束 Agent 行为，也让人类能审查它是否做对。",
+      "content_inputs": {
+        "text": [
+          "skill_brainstorm",
+          "context_terms"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_brainstorm",
+        "context_terms"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 10/28. Title: Spec 的意义：不是文档，是执行合同. Main claim: Spec 同时约束 Agent 行为，也让人类能审查它是否做对。 Required teaching points: Spec 是行为合同，不是会议纪要；它把需求、边界、验证和残余风险固定下来；后续 Plan 和 Review 都应回看 Spec。Visual structure: contract document in center with clauses mapped to agent actions and human review. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 10/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-10.png",
+      "speaker_notes": "本页讲解重点：Spec 同时约束 Agent 行为，也让人类能审查它是否做对。 讲的时候先点出本页结论，再按这几个教学点展开：Spec 是行为合同，不是会议纪要；它把需求、边界、验证和残余风险固定下来；后续 Plan 和 Review 都应回看 Spec。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 11,
+      "title": "好 Spec 应该包含什么",
+      "claim": "好 Spec 要覆盖背景、目标、非目标、行为要求、约束、验证策略和残余风险。",
+      "content_inputs": {
+        "text": [
+          "spec_teaching",
+          "skill_brainstorm"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "spec_teaching",
+        "skill_brainstorm"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 11/28. Title: 好 Spec 应该包含什么. Main claim: 好 Spec 要覆盖背景、目标、非目标、行为要求、约束、验证策略和残余风险。 Required teaching points: 背景说明为什么做；目标和非目标限制范围；行为要求定义可观察结果；验证策略提前定义证据。Visual structure: dense but readable anatomy diagram of a Spec with labeled sections. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 11/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-11.png",
+      "speaker_notes": "本页讲解重点：好 Spec 要覆盖背景、目标、非目标、行为要求、约束、验证策略和残余风险。 讲的时候先点出本页结论，再按这几个教学点展开：背景说明为什么做；目标和非目标限制范围；行为要求定义可观察结果；验证策略提前定义证据。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 12,
+      "title": "为什么验证策略必须前置",
+      "claim": "如果一开始不知道怎么证明做对，后面所有“完成”都可能只是幻觉。",
+      "content_inputs": {
+        "text": [
+          "skill_verify",
+          "method_contract",
+          "spec_teaching"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_verify",
+        "method_contract",
+        "spec_teaching"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 12/28. Title: 为什么验证策略必须前置. Main claim: 如果一开始不知道怎么证明做对，后面所有“完成”都可能只是幻觉。 Required teaching points: 验证不是最后补票；不同任务需要不同证据强度；没有证据路径的计划不可执行；验证策略会反过来修正范围。Visual structure: evidence ladder planned before action, with red warning for proof-after-the-fact. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 12/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-12.png",
+      "speaker_notes": "本页讲解重点：如果一开始不知道怎么证明做对，后面所有“完成”都可能只是幻觉。 讲的时候先点出本页结论，再按这几个教学点展开：验证不是最后补票；不同任务需要不同证据强度；没有证据路径的计划不可执行；验证策略会反过来修正范围。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 13,
+      "title": "从 Spec 到 Plan",
+      "claim": "Plan 不是 TODO list，而是把目标切成 active slice、成功标准、验证路径和 commit 单元。",
+      "content_inputs": {
+        "text": [
+          "skill_plan",
+          "plan_teaching"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_plan",
+        "plan_teaching"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 13/28. Title: 从 Spec 到 Plan. Main claim: Plan 不是 TODO list，而是把目标切成 active slice、成功标准、验证路径和 commit 单元。 Required teaching points: Spec 回答要什么；Plan 回答下一片怎么做；每个阶段都应有可验证出口；commit 单元让历史可追溯。Visual structure: transformation flow: Spec contract -> Executable Plan -> slice cards -> verification gates. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 13/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-13.png",
+      "speaker_notes": "本页讲解重点：Plan 不是 TODO list，而是把目标切成 active slice、成功标准、验证路径和 commit 单元。 讲的时候先点出本页结论，再按这几个教学点展开：Spec 回答要什么；Plan 回答下一片怎么做；每个阶段都应有可验证出口；commit 单元让历史可追溯。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 14,
+      "title": "Active Slice：一次只做一件可验证的事",
+      "claim": "WIP=1 是防止范围膨胀的核心纪律：当前只推进一个能被证明的切片。",
+      "content_inputs": {
+        "text": [
+          "skill_plan",
+          "skill_implement"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_plan",
+        "skill_implement"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 14/28. Title: Active Slice：一次只做一件可验证的事. Main claim: WIP=1 是防止范围膨胀的核心纪律：当前只推进一个能被证明的切片。 Required teaching points: active slice 要小到能验证；不要在一个切片里混实现、重构、清理和实验；切片结束必须留下证据或明确阻塞。Visual structure: single highlighted work lane with other tempting tasks parked in backlog. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 14/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-14.png",
+      "speaker_notes": "本页讲解重点：WIP=1 是防止范围膨胀的核心纪律：当前只推进一个能被证明的切片。 讲的时候先点出本页结论，再按这几个教学点展开：active slice 要小到能验证；不要在一个切片里混实现、重构、清理和实验；切片结束必须留下证据或明确阻塞。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 15,
+      "title": "初始化工作面：让 Agent 进入真实仓库",
+      "claim": "行动前先确认项目地图、验证命令、保护路径、已有状态和能力缺口。",
+      "content_inputs": {
+        "text": [
+          "skill_harness_builder",
+          "readme_workflow",
+          "context_terms"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_harness_builder",
+        "readme_workflow",
+        "context_terms"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 15/28. Title: 初始化工作面：让 Agent 进入真实仓库. Main claim: 行动前先确认项目地图、验证命令、保护路径、已有状态和能力缺口。 Required teaching points: 读 AGENTS/README/CONTEXT 不是形式；验证命令必须来自项目真实入口；保护路径和脏工作树决定改动边界；能力缺口要显式评估。Visual structure: agent docking into repo workbench with panels: map, rules, status, checks, capabilities. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 15/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-15.png",
+      "speaker_notes": "本页讲解重点：行动前先确认项目地图、验证命令、保护路径、已有状态和能力缺口。 讲的时候先点出本页结论，再按这几个教学点展开：读 AGENTS/README/CONTEXT 不是形式；验证命令必须来自项目真实入口；保护路径和脏工作树决定改动边界；能力缺口要显式评估。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 16,
+      "title": "Recovery Surface：任务不能只活在聊天里",
+      "claim": "恢复面保存目标、范围、证据、风险和下一步，让未来会话能从工件恢复任务状态。",
+      "content_inputs": {
+        "text": [
+          "context_terms",
+          "plan_teaching"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "context_terms",
+        "plan_teaching"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 16/28. Title: Recovery Surface：任务不能只活在聊天里. Main claim: 恢复面保存目标、范围、证据、风险和下一步，让未来会话能从工件恢复任务状态。 Required teaching points: 短任务可以轻量；长任务需要 durable artifact；后端可以是 docs plan、issue、feature list 或既有系统；关键是语义字段可恢复。Visual structure: backend selector with semantic fields above multiple storage options. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 16/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-16.png",
+      "speaker_notes": "本页讲解重点：恢复面保存目标、范围、证据、风险和下一步，让未来会话能从工件恢复任务状态。 讲的时候先点出本页结论，再按这几个教学点展开：短任务可以轻量；长任务需要 durable artifact；后端可以是 docs plan、issue、feature list 或既有系统；关键是语义字段可恢复。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 17,
+      "title": "能力适配：工具不是越多越好",
+      "claim": "skills、MCP、hooks、subagents 都应该服务具体缺口，而不是堆能力。",
+      "content_inputs": {
+        "text": [
+          "skill_harness_builder",
+          "readme_workflow"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_harness_builder",
+        "readme_workflow"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 17/28. Title: 能力适配：工具不是越多越好. Main claim: skills、MCP、hooks、subagents 都应该服务具体缺口，而不是堆能力。 Required teaching points: 先问缺口是什么；再评估收益、成本和风险；能用项目已有脚本就不要发明新工具；能力发现是辅助，不是主流程。Visual structure: capability fit decision matrix: gap/value/cost/risk/fallback. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 17/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-17.png",
+      "speaker_notes": "本页讲解重点：skills、MCP、hooks、subagents 都应该服务具体缺口，而不是堆能力。 讲的时候先点出本页结论，再按这几个教学点展开：先问缺口是什么；再评估收益、成本和风险；能用项目已有脚本就不要发明新工具；能力发现是辅助，不是主流程。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 18,
+      "title": "行动阶段：小步执行，小步验证",
+      "claim": "实现阶段要保持 scope，做最小必要改动，并用窄验证不断校准方向。",
+      "content_inputs": {
+        "text": [
+          "skill_implement",
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_implement",
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 18/28. Title: 行动阶段：小步执行，小步验证. Main claim: 实现阶段要保持 scope，做最小必要改动，并用窄验证不断校准方向。 Required teaching points: 改动必须能追溯到 active slice；优先复用现有模式和脚本；改变行为就同步必要文档或状态；检查失败要记录而不是绕过。Visual structure: green execution loop: inspect -> edit -> focused check -> evidence -> next. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 18/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-18.png",
+      "speaker_notes": "本页讲解重点：实现阶段要保持 scope，做最小必要改动，并用窄验证不断校准方向。 讲的时候先点出本页结论，再按这几个教学点展开：改动必须能追溯到 active slice；优先复用现有模式和脚本；改变行为就同步必要文档或状态；检查失败要记录而不是绕过。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 19,
+      "title": "失败阶段：不要盲改",
+      "claim": "失败要复现、最小化、提出单一假设、验证根因，然后再修复。",
+      "content_inputs": {
+        "text": [
+          "skill_diagnose",
+          "skill_implement"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_diagnose",
+        "skill_implement"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 19/28. Title: 失败阶段：不要盲改. Main claim: 失败要复现、最小化、提出单一假设、验证根因，然后再修复。 Required teaching points: 错误变化说明假设可能错了；连续失败应切到诊断模式；根因要写入恢复面或证据记录；修复后要有回归证据。Visual structure: red diagnosis loop with reproduce/minimize/hypothesize/instrument/root cause/fix/regression. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 19/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-19.png",
+      "speaker_notes": "本页讲解重点：失败要复现、最小化、提出单一假设、验证根因，然后再修复。 讲的时候先点出本页结论，再按这几个教学点展开：错误变化说明假设可能错了；连续失败应切到诊断模式；根因要写入恢复面或证据记录；修复后要有回归证据。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 20,
+      "title": "Review 和 Verify 的区别",
+      "claim": "Review 判断有没有做错、越界、缺证据；Verify 用当前证据证明 ready claim。",
+      "content_inputs": {
+        "text": [
+          "skill_review",
+          "skill_verify"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_review",
+        "skill_verify"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 20/28. Title: Review 和 Verify 的区别. Main claim: Review 判断有没有做错、越界、缺证据；Verify 用当前证据证明 ready claim。 Required teaching points: Review 是结构性判断；Verify 是证据性证明；Review 发现问题回实现或诊断；Verify 失败说明 ready claim 不成立。Visual structure: two-gate diagram: review gate then evidence gate, with route-back arrows. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 20/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-20.png",
+      "speaker_notes": "本页讲解重点：Review 判断有没有做错、越界、缺证据；Verify 用当前证据证明 ready claim。 讲的时候先点出本页结论，再按这几个教学点展开：Review 是结构性判断；Verify 是证据性证明；Review 发现问题回实现或诊断；Verify 失败说明 ready claim 不成立。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 21,
+      "title": "Fresh Evidence：旧证据不能证明新结果",
+      "claim": "只要文件、配置、数据或生成物变了，之前的测试、截图和口头结论就可能过期。",
+      "content_inputs": {
+        "text": [
+          "skill_verify",
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_verify",
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 21/28. Title: Fresh Evidence：旧证据不能证明新结果. Main claim: 只要文件、配置、数据或生成物变了，之前的测试、截图和口头结论就可能过期。 Required teaching points: 证据必须在最后一次相关改动之后产生；验证命令要覆盖 ready claim；绿色状态不能替代需求覆盖；截图/QA/manifest 也要检查覆盖范围。Visual structure: timeline showing stale evidence before change vs fresh evidence after change. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 21/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-21.png",
+      "speaker_notes": "本页讲解重点：只要文件、配置、数据或生成物变了，之前的测试、截图和口头结论就可能过期。 讲的时候先点出本页结论，再按这几个教学点展开：证据必须在最后一次相关改动之后产生；验证命令要覆盖 ready claim；绿色状态不能替代需求覆盖；截图/QA/manifest 也要检查覆盖范围。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 22,
+      "title": "Cleanup：工程流程真正闭环的地方",
+      "claim": "清理不是寒暄收尾，而是同步 README、状态、生成物、风险和交接信息。",
+      "content_inputs": {
+        "text": [
+          "skill_cleanup",
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_cleanup",
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 22/28. Title: Cleanup：工程流程真正闭环的地方. Main claim: 清理不是寒暄收尾，而是同步 README、状态、生成物、风险和交接信息。 Required teaching points: 文档要回到真实状态；生成物要和源工件一致；残余风险要可见；不要把临时计划塞进长期入口。Visual structure: anti-entropy closing loop: artifacts reconcile into clean handoff package. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 22/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-22.png",
+      "speaker_notes": "本页讲解重点：清理不是寒暄收尾，而是同步 README、状态、生成物、风险和交接信息。 讲的时候先点出本页结论，再按这几个教学点展开：文档要回到真实状态；生成物要和源工件一致；残余风险要可见；不要把临时计划塞进长期入口。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 23,
+      "title": "Skill 是职责映射，不是主角",
+      "claim": "规范驱动流程决定何时需要哪个 skill；skill 只是把职责落到可执行协议上。",
+      "content_inputs": {
+        "text": [
+          "context_terms",
+          "skill_brainstorm",
+          "skill_plan",
+          "skill_harness_builder",
+          "skill_implement",
+          "skill_diagnose",
+          "skill_review",
+          "skill_verify",
+          "skill_cleanup"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "context_terms",
+        "skill_brainstorm",
+        "skill_plan",
+        "skill_harness_builder",
+        "skill_implement",
+        "skill_diagnose",
+        "skill_review",
+        "skill_verify",
+        "skill_cleanup"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 23/28. Title: Skill 是职责映射，不是主角. Main claim: 规范驱动流程决定何时需要哪个 skill；skill 只是把职责落到可执行协议上。 Required teaching points: brainstorm 负责澄清；plan 负责执行合同；harness-builder 负责工作面；implement/diagnose/review/verify/cleanup 分别承担行动和质量闭环。Visual structure: role mapping table from workflow phase to skill responsibility, compact not catalog-like. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 23/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-23.png",
+      "speaker_notes": "本页讲解重点：规范驱动流程决定何时需要哪个 skill；skill 只是把职责落到可执行协议上。 讲的时候先点出本页结论，再按这几个教学点展开：brainstorm 负责澄清；plan 负责执行合同；harness-builder 负责工作面；implement/diagnose/review/verify/cleanup 分别承担行动和质量闭环。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 24,
+      "title": "贯穿案例：一个 PPT 需求如何被规范驱动",
+      "claim": "“帮我做 PPT”会先被转成教学目标、Spec、Plan、Protocol、PNG、QA 和提交证据。",
+      "content_inputs": {
+        "text": [
+          "spec_teaching",
+          "plan_teaching"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "spec_teaching",
+        "plan_teaching"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 24/28. Title: 贯穿案例：一个 PPT 需求如何被规范驱动. Main claim: “帮我做 PPT”会先被转成教学目标、Spec、Plan、Protocol、PNG、QA 和提交证据。 Required teaching points: 模糊请求先澄清教学目标；Spec 定义不做 skill 清单；Plan 定义 image-first 产物和验证；Protocol 锁定每页教学点；QA 证明 PPTX 结构符合路线。Visual structure: timeline using this deck production as case: request -> spec -> plan -> protocol -> images -> manifest -> pptx -> qa -> commit. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 24/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-24.png",
+      "speaker_notes": "本页讲解重点：“帮我做 PPT”会先被转成教学目标、Spec、Plan、Protocol、PNG、QA 和提交证据。 讲的时候先点出本页结论，再按这几个教学点展开：模糊请求先澄清教学目标；Spec 定义不做 skill 清单；Plan 定义 image-first 产物和验证；Protocol 锁定每页教学点；QA 证明 PPTX 结构符合路线。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 25,
+      "title": "如果没有规范会怎样",
+      "claim": "直接生成很容易内容跑偏、风格过头、无法验收、无法复用，下次也接不上。",
+      "content_inputs": {
+        "text": [
+          "spec_teaching",
+          "plan_teaching"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "spec_teaching",
+        "plan_teaching"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 25/28. Title: 如果没有规范会怎样. Main claim: 直接生成很容易内容跑偏、风格过头、无法验收、无法复用，下次也接不上。 Required teaching points: 看似更快，实际返工更多；没有验收标准就无法判断好坏；没有 protocol 就无法定位哪页失败；没有 cleanup 就留下知识债。Visual structure: before/after failure comparison: prompt-only deck chaos vs protocol-driven deck traceability. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 25/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-25.png",
+      "speaker_notes": "本页讲解重点：直接生成很容易内容跑偏、风格过头、无法验收、无法复用，下次也接不上。 讲的时候先点出本页结论，再按这几个教学点展开：看似更快，实际返工更多；没有验收标准就无法判断好坏；没有 protocol 就无法定位哪页失败；没有 cleanup 就留下知识债。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 26,
+      "title": "常见误区",
+      "claim": "常见误区包括把 Harness 当单个文件、把 Plan 当 TODO、把 Verify 当跑一次命令、把 Cleanup 当可选。",
+      "content_inputs": {
+        "text": [
+          "context_terms",
+          "method_contract",
+          "skill_verify",
+          "skill_cleanup"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "context_terms",
+        "method_contract",
+        "skill_verify",
+        "skill_cleanup"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 26/28. Title: 常见误区. Main claim: 常见误区包括把 Harness 当单个文件、把 Plan 当 TODO、把 Verify 当跑一次命令、把 Cleanup 当可选。 Required teaching points: Harness 是系统，不是一个入口文件；Plan 要有 active slice 和证据路径；Verify 要匹配 ready claim；Cleanup 是防止项目知识腐烂的工程动作。Visual structure: myth vs reality matrix with four misconceptions and corrections. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 26/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-26.png",
+      "speaker_notes": "本页讲解重点：常见误区包括把 Harness 当单个文件、把 Plan 当 TODO、把 Verify 当跑一次命令、把 Cleanup 当可选。 讲的时候先点出本页结论，再按这几个教学点展开：Harness 是系统，不是一个入口文件；Plan 要有 active slice 和证据路径；Verify 要匹配 ready claim；Cleanup 是防止项目知识腐烂的工程动作。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 27,
+      "title": "方法论总结：Agent 不是被命令，而是被约束",
+      "claim": "好流程不是限制 Agent，而是让它在正确边界内发挥能力。",
+      "content_inputs": {
+        "text": [
+          "method_contract",
+          "readme_workflow"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "method_contract",
+        "readme_workflow"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 27/28. Title: 方法论总结：Agent 不是被命令，而是被约束. Main claim: 好流程不是限制 Agent，而是让它在正确边界内发挥能力。 Required teaching points: 约束目标让 Agent 不漂移；约束范围让改动可审查；约束证据让完成可证明；约束收尾让项目可持续。Visual structure: central statement surrounded by four constraint rails: goal, scope, evidence, cleanup. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 27/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-27.png",
+      "speaker_notes": "本页讲解重点：好流程不是限制 Agent，而是让它在正确边界内发挥能力。 讲的时候先点出本页结论，再按这几个教学点展开：约束目标让 Agent 不漂移；约束范围让改动可审查；约束证据让完成可证明；约束收尾让项目可持续。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    },
+    {
+      "page": 28,
+      "title": "最终 Takeaway",
+      "claim": "规范驱动开发让 Agent 工作可控、可验、可恢复、可交接。",
+      "content_inputs": {
+        "text": [
+          "spec_teaching",
+          "readme_workflow",
+          "context_terms"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "spec_teaching",
+        "readme_workflow",
+        "context_terms"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 28/28. Title: 最终 Takeaway. Main claim: 规范驱动开发让 Agent 工作可控、可验、可恢复、可交接。 Required teaching points: 从对话到规范；从工具到工作台；从一次性输出到可恢复工程流程；下一次任务先问：状态是什么，证据在哪里，如何收尾。Visual structure: final high-density takeaway board with lifecycle loop and five concise principles. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 28/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "output_png": "slides/slide-28.png",
+      "speaker_notes": "本页讲解重点：规范驱动开发让 Agent 工作可控、可验、可恢复、可交接。 讲的时候先点出本页结论，再按这几个教学点展开：从对话到规范；从工具到工作台；从一次性输出到可恢复工程流程；下一次任务先问：状态是什么，证据在哪里，如何收尾。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "free_generation": false
+    }
+  ]
+}

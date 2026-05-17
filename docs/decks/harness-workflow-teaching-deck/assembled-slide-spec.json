@@ -1,0 +1,756 @@
+{
+  "version": "0.1",
+  "deck": {
+    "title": "规范驱动的 Agent 开发：Harness Workflow 工程思想课件",
+    "audience": "general",
+    "language": "en",
+    "format": "16:9",
+    "editability": "image-first",
+    "visualPolicy": "image-first"
+  },
+  "theme": {
+    "template": "image-gallery",
+    "palette": [
+      "#111827",
+      "#2563EB",
+      "#F8FAFC",
+      "#E5E7EB"
+    ],
+    "fonts": {
+      "heading": "Aptos Display",
+      "body": "Aptos"
+    }
+  },
+  "assets": [
+    {
+      "id": "img1",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-01.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-01.png"
+    },
+    {
+      "id": "img2",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-02.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-02.png"
+    },
+    {
+      "id": "img3",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-03.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-03.png"
+    },
+    {
+      "id": "img4",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-04.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-04.png"
+    },
+    {
+      "id": "img5",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-05.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-05.png"
+    },
+    {
+      "id": "img6",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-06.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-06.png"
+    },
+    {
+      "id": "img7",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-07.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-07.png"
+    },
+    {
+      "id": "img8",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-08.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-08.png"
+    },
+    {
+      "id": "img9",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-09.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-09.png"
+    },
+    {
+      "id": "img10",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-10.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-10.png"
+    },
+    {
+      "id": "img11",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-11.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-11.png"
+    },
+    {
+      "id": "img12",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-12.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-12.png"
+    },
+    {
+      "id": "img13",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-13.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-13.png"
+    },
+    {
+      "id": "img14",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-14.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-14.png"
+    },
+    {
+      "id": "img15",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-15.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-15.png"
+    },
+    {
+      "id": "img16",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-16.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-16.png"
+    },
+    {
+      "id": "img17",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-17.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-17.png"
+    },
+    {
+      "id": "img18",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-18.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-18.png"
+    },
+    {
+      "id": "img19",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-19.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-19.png"
+    },
+    {
+      "id": "img20",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-20.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-20.png"
+    },
+    {
+      "id": "img21",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-21.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-21.png"
+    },
+    {
+      "id": "img22",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-22.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-22.png"
+    },
+    {
+      "id": "img23",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-23.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-23.png"
+    },
+    {
+      "id": "img24",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-24.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-24.png"
+    },
+    {
+      "id": "img25",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-25.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-25.png"
+    },
+    {
+      "id": "img26",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-26.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-26.png"
+    },
+    {
+      "id": "img27",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-27.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-27.png"
+    },
+    {
+      "id": "img28",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-28.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-28.png"
+    }
+  ],
+  "slides": [
+    {
+      "id": "s1",
+      "layout": "full-slide-image",
+      "title": "slide-01",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img1",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：会用工具不等于具备工程流程；真正难点是让 Agent 稳定、可控、可验证地完成复杂任务。 讲的时候先点出本页结论，再按这几个教学点展开：会用 Codex/Claude/Cursor 只是操作层；复杂任务需要目标、边界、状态、证据和交接；Harness Workflow 关注的是工作环境，不是模型炫技。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s2",
+      "layout": "full-slide-image",
+      "title": "slide-02",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img2",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：失控往往来自工程环境缺口：需求漂移、上下文丢失、验证缺失、文档过期和范围膨胀。 讲的时候先点出本页结论，再按这几个教学点展开：需求在聊天里变化但没有落成合同；上下文压缩后缺少恢复面；完成声明没有新鲜证据；文档和生成物跟不上真实代码。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s3",
+      "layout": "full-slide-image",
+      "title": "slide-03",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img3",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：聊天适合探索，但不适合承载长期任务的边界、验收、状态和责任。 讲的时候先点出本页结论，再按这几个教学点展开：对话容易把临时假设当事实；长任务跨轮次后难以恢复；人类很难审查 Agent 是否越界；缺少可重复的验收路径。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s4",
+      "layout": "full-slide-image",
+      "title": "slide-04",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img4",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：把“想让 Agent 做什么”转成可执行、可验证、可恢复的工程规范。 讲的时候先点出本页结论，再按这几个教学点展开：规范不是写给人看的装饰文档；规范定义目标、非目标、行为、约束和验证；Agent 依据规范行动，人类依据规范审查。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s5",
+      "layout": "full-slide-image",
+      "title": "slide-05",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img5",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：Harness 是围绕 Agent 的工作台：规则、上下文、状态、工具、验证和收尾共同约束工作。 讲的时候先点出本页结论，再按这几个教学点展开：不是提示词模板；不是某一个 AGENTS.md；不是固定三文件；是让 Agent 在项目中可靠工作的运行环境。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s6",
+      "layout": "full-slide-image",
+      "title": "slide-06",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img6",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：一个可靠工作流至少需要入口规则、项目地图、任务规格、执行计划、验证路径、恢复状态和清理纪律。 讲的时候先点出本页结论，再按这几个教学点展开：入口规则告诉 Agent 不能乱动什么；项目地图降低探索成本；验证路径把 ready claim 接到证据；恢复状态让下个会话能接上。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s7",
+      "layout": "full-slide-image",
+      "title": "slide-07",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img7",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：澄清、规格、计划、初始化、行动、诊断、审查、验证、清理，组成可恢复的工程闭环。 讲的时候先点出本页结论，再按这几个教学点展开：每一环都产出可检查的状态或证据；失败可以回路由，不必假装线性；闭环完成后项目知识要回到真实状态。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s8",
+      "layout": "full-slide-image",
+      "title": "slide-08",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img8",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：模糊需求直接进实现，会让 Agent 自己补全目标并把隐藏假设写进代码或产物。 讲的时候先点出本页结论，再按这几个教学点展开：先识别问题是否清楚；先问边界而不是先改文件；先定义成功标准而不是先追速度。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s9",
+      "layout": "full-slide-image",
+      "title": "slide-09",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img9",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：澄清阶段要把目标、用户、边界、非目标、约束、验收方式和风险摆上桌面。 讲的时候先点出本页结论，再按这几个教学点展开：目标：到底要改变什么；非目标：明确不做什么；约束：风格、路径、权限、时间；验收：用什么证明完成。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s10",
+      "layout": "full-slide-image",
+      "title": "slide-10",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img10",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：Spec 同时约束 Agent 行为，也让人类能审查它是否做对。 讲的时候先点出本页结论，再按这几个教学点展开：Spec 是行为合同，不是会议纪要；它把需求、边界、验证和残余风险固定下来；后续 Plan 和 Review 都应回看 Spec。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s11",
+      "layout": "full-slide-image",
+      "title": "slide-11",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img11",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：好 Spec 要覆盖背景、目标、非目标、行为要求、约束、验证策略和残余风险。 讲的时候先点出本页结论，再按这几个教学点展开：背景说明为什么做；目标和非目标限制范围；行为要求定义可观察结果；验证策略提前定义证据。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s12",
+      "layout": "full-slide-image",
+      "title": "slide-12",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img12",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：如果一开始不知道怎么证明做对，后面所有“完成”都可能只是幻觉。 讲的时候先点出本页结论，再按这几个教学点展开：验证不是最后补票；不同任务需要不同证据强度；没有证据路径的计划不可执行；验证策略会反过来修正范围。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s13",
+      "layout": "full-slide-image",
+      "title": "slide-13",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img13",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：Plan 不是 TODO list，而是把目标切成 active slice、成功标准、验证路径和 commit 单元。 讲的时候先点出本页结论，再按这几个教学点展开：Spec 回答要什么；Plan 回答下一片怎么做；每个阶段都应有可验证出口；commit 单元让历史可追溯。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s14",
+      "layout": "full-slide-image",
+      "title": "slide-14",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img14",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：WIP=1 是防止范围膨胀的核心纪律：当前只推进一个能被证明的切片。 讲的时候先点出本页结论，再按这几个教学点展开：active slice 要小到能验证；不要在一个切片里混实现、重构、清理和实验；切片结束必须留下证据或明确阻塞。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s15",
+      "layout": "full-slide-image",
+      "title": "slide-15",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img15",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：行动前先确认项目地图、验证命令、保护路径、已有状态和能力缺口。 讲的时候先点出本页结论，再按这几个教学点展开：读 AGENTS/README/CONTEXT 不是形式；验证命令必须来自项目真实入口；保护路径和脏工作树决定改动边界；能力缺口要显式评估。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s16",
+      "layout": "full-slide-image",
+      "title": "slide-16",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img16",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：恢复面保存目标、范围、证据、风险和下一步，让未来会话能从工件恢复任务状态。 讲的时候先点出本页结论，再按这几个教学点展开：短任务可以轻量；长任务需要 durable artifact；后端可以是 docs plan、issue、feature list 或既有系统；关键是语义字段可恢复。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s17",
+      "layout": "full-slide-image",
+      "title": "slide-17",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img17",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：skills、MCP、hooks、subagents 都应该服务具体缺口，而不是堆能力。 讲的时候先点出本页结论，再按这几个教学点展开：先问缺口是什么；再评估收益、成本和风险；能用项目已有脚本就不要发明新工具；能力发现是辅助，不是主流程。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s18",
+      "layout": "full-slide-image",
+      "title": "slide-18",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img18",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：实现阶段要保持 scope，做最小必要改动，并用窄验证不断校准方向。 讲的时候先点出本页结论，再按这几个教学点展开：改动必须能追溯到 active slice；优先复用现有模式和脚本；改变行为就同步必要文档或状态；检查失败要记录而不是绕过。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s19",
+      "layout": "full-slide-image",
+      "title": "slide-19",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img19",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：失败要复现、最小化、提出单一假设、验证根因，然后再修复。 讲的时候先点出本页结论，再按这几个教学点展开：错误变化说明假设可能错了；连续失败应切到诊断模式；根因要写入恢复面或证据记录；修复后要有回归证据。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s20",
+      "layout": "full-slide-image",
+      "title": "slide-20",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img20",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：Review 判断有没有做错、越界、缺证据；Verify 用当前证据证明 ready claim。 讲的时候先点出本页结论，再按这几个教学点展开：Review 是结构性判断；Verify 是证据性证明；Review 发现问题回实现或诊断；Verify 失败说明 ready claim 不成立。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s21",
+      "layout": "full-slide-image",
+      "title": "slide-21",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img21",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：只要文件、配置、数据或生成物变了，之前的测试、截图和口头结论就可能过期。 讲的时候先点出本页结论，再按这几个教学点展开：证据必须在最后一次相关改动之后产生；验证命令要覆盖 ready claim；绿色状态不能替代需求覆盖；截图/QA/manifest 也要检查覆盖范围。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s22",
+      "layout": "full-slide-image",
+      "title": "slide-22",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img22",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：清理不是寒暄收尾，而是同步 README、状态、生成物、风险和交接信息。 讲的时候先点出本页结论，再按这几个教学点展开：文档要回到真实状态；生成物要和源工件一致；残余风险要可见；不要把临时计划塞进长期入口。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s23",
+      "layout": "full-slide-image",
+      "title": "slide-23",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img23",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：规范驱动流程决定何时需要哪个 skill；skill 只是把职责落到可执行协议上。 讲的时候先点出本页结论，再按这几个教学点展开：brainstorm 负责澄清；plan 负责执行合同；harness-builder 负责工作面；implement/diagnose/review/verify/cleanup 分别承担行动和质量闭环。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s24",
+      "layout": "full-slide-image",
+      "title": "slide-24",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img24",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：“帮我做 PPT”会先被转成教学目标、Spec、Plan、Protocol、PNG、QA 和提交证据。 讲的时候先点出本页结论，再按这几个教学点展开：模糊请求先澄清教学目标；Spec 定义不做 skill 清单；Plan 定义 image-first 产物和验证；Protocol 锁定每页教学点；QA 证明 PPTX 结构符合路线。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s25",
+      "layout": "full-slide-image",
+      "title": "slide-25",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img25",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：直接生成很容易内容跑偏、风格过头、无法验收、无法复用，下次也接不上。 讲的时候先点出本页结论，再按这几个教学点展开：看似更快，实际返工更多；没有验收标准就无法判断好坏；没有 protocol 就无法定位哪页失败；没有 cleanup 就留下知识债。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s26",
+      "layout": "full-slide-image",
+      "title": "slide-26",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img26",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：常见误区包括把 Harness 当单个文件、把 Plan 当 TODO、把 Verify 当跑一次命令、把 Cleanup 当可选。 讲的时候先点出本页结论，再按这几个教学点展开：Harness 是系统，不是一个入口文件；Plan 要有 active slice 和证据路径；Verify 要匹配 ready claim；Cleanup 是防止项目知识腐烂的工程动作。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s27",
+      "layout": "full-slide-image",
+      "title": "slide-27",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img27",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：好流程不是限制 Agent，而是让它在正确边界内发挥能力。 讲的时候先点出本页结论，再按这几个教学点展开：约束目标让 Agent 不漂移；约束范围让改动可审查；约束证据让完成可证明；约束收尾让项目可持续。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    },
+    {
+      "id": "s28",
+      "layout": "full-slide-image",
+      "title": "slide-28",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img28",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "本页讲解重点：规范驱动开发让 Agent 工作可控、可验、可恢复、可交接。 讲的时候先点出本页结论，再按这几个教学点展开：从对话到规范；从工具到工作台；从一次性输出到可恢复工程流程；下一次任务先问：状态是什么，证据在哪里，如何收尾。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。"
+    }
+  ]
+}

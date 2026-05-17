@@ -1,0 +1,1167 @@
+{
+  "kind": "ppt-composer-visual-qa",
+  "version": "0.1",
+  "status": "pass",
+  "checkedAt": "2026-05-17T06:52:27.747Z",
+  "summary": {
+    "pages": 28,
+    "findings": 0,
+    "failures": 0,
+    "warnings": 0,
+    "deterministicFailures": 0,
+    "visualReviewFailures": 0,
+    "hardFailures": 0,
+    "overrideableFailures": 0
+  },
+  "deterministicFindings": [],
+  "visualReview": {
+    "enabled": false,
+    "dimensions": [
+      "consistency",
+      "protocol_alignment",
+      "reference_fidelity",
+      "text_legibility",
+      "artifact_quality"
+    ],
+    "pages": [
+      {
+        "page": 1,
+        "title": "从会用 Agent 到会驾驭 Agent",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-01.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "spec_teaching",
+            "readme_workflow"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-01.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1682065
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 2,
+        "title": "Agent 开发为什么会失控",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-02.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "spec_teaching",
+            "readme_workflow",
+            "method_contract"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-02.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1698465
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 3,
+        "title": "对话驱动的局限",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-03.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "spec_teaching",
+            "context_terms"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-03.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1822755
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 4,
+        "title": "规范驱动开发的核心思想",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-04.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "spec_teaching",
+            "method_contract"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-04.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1599104
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 5,
+        "title": "Harness 到底是什么",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-05.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "readme_workflow",
+            "context_terms",
+            "method_contract"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-05.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1818512
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 6,
+        "title": "可靠 Agent 工作流的组件",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-06.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "readme_workflow",
+            "context_terms",
+            "method_contract"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-06.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1810421
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 7,
+        "title": "规范驱动闭环总览",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-07.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "spec_teaching",
+            "context_terms"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-07.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1858965
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 8,
+        "title": "第一步：不要急着实现",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-08.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "spec_teaching",
+            "skill_brainstorm"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-08.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1819406
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 9,
+        "title": "澄清需求：把想法变成问题结构",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-09.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "skill_brainstorm",
+            "spec_teaching"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-09.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1909848
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 10,
+        "title": "Spec 的意义：不是文档，是执行合同",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-10.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "skill_brainstorm",
+            "context_terms"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-10.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 2031829
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 11,
+        "title": "好 Spec 应该包含什么",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-11.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "spec_teaching",
+            "skill_brainstorm"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-11.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1713773
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 12,
+        "title": "为什么验证策略必须前置",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-12.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "skill_verify",
+            "method_contract",
+            "spec_teaching"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-12.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1861609
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 13,
+        "title": "从 Spec 到 Plan",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-13.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "skill_plan",
+            "plan_teaching"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-13.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1714704
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 14,
+        "title": "Active Slice：一次只做一件可验证的事",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-14.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "skill_plan",
+            "skill_implement"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-14.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1673957
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 15,
+        "title": "初始化工作面：让 Agent 进入真实仓库",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-15.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "skill_harness_builder",
+            "readme_workflow",
+            "context_terms"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-15.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1984333
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 16,
+        "title": "Recovery Surface：任务不能只活在聊天里",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-16.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "context_terms",
+            "plan_teaching"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-16.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1790746
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 17,
+        "title": "能力适配：工具不是越多越好",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-17.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "skill_harness_builder",
+            "readme_workflow"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-17.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1796878
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 18,
+        "title": "行动阶段：小步执行，小步验证",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-18.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "skill_implement",
+            "method_contract"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-18.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1853832
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 19,
+        "title": "失败阶段：不要盲改",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-19.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "skill_diagnose",
+            "skill_implement"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-19.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1862254
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 20,
+        "title": "Review 和 Verify 的区别",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-20.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "skill_review",
+            "skill_verify"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-20.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1811100
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 21,
+        "title": "Fresh Evidence：旧证据不能证明新结果",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-21.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "skill_verify",
+            "method_contract"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-21.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1981465
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 22,
+        "title": "Cleanup：工程流程真正闭环的地方",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-22.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "skill_cleanup",
+            "method_contract"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-22.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1790158
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 23,
+        "title": "Skill 是职责映射，不是主角",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-23.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "context_terms",
+            "skill_brainstorm",
+            "skill_plan",
+            "skill_harness_builder",
+            "skill_implement",
+            "skill_diagnose",
+            "skill_review",
+            "skill_verify",
+            "skill_cleanup"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-23.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1872596
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 24,
+        "title": "贯穿案例：一个 PPT 需求如何被规范驱动",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-24.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "spec_teaching",
+            "plan_teaching"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-24.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1848044
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 25,
+        "title": "如果没有规范会怎样",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-25.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "spec_teaching",
+            "plan_teaching"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-25.png",
+            "png": {
+              "width": 1671,
+              "height": 941,
+              "size": 1804621
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 26,
+        "title": "常见误区",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-26.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "context_terms",
+            "method_contract",
+            "skill_verify",
+            "skill_cleanup"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-26.png",
+            "png": {
+              "width": 1670,
+              "height": 941,
+              "size": 1721343
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 27,
+        "title": "方法论总结：Agent 不是被命令，而是被约束",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-27.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "method_contract",
+            "readme_workflow"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-27.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1877006
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      },
+      {
+        "page": 28,
+        "title": "最终 Takeaway",
+        "status": "generated",
+        "currentPng": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-28.png",
+        "acceptedPng": null,
+        "supersededPngs": [],
+        "verdict": null,
+        "reviewStatus": null,
+        "categories": null,
+        "note": "",
+        "revisionSuggestion": "",
+        "protocolChecks": {
+          "consistency": "reviewer-verdict",
+          "protocol_alignment": "reviewer-verdict",
+          "reference_fidelity": "reviewer-verdict",
+          "text_legibility": "reviewer-verdict",
+          "artifact_quality": "deterministic-and-reviewer-verdict",
+          "fidelity": "light_redraw",
+          "reference_asset_ids": [
+            "spec_teaching",
+            "readme_workflow",
+            "context_terms"
+          ]
+        },
+        "executionSummary": null,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "generated",
+            "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-28.png",
+            "png": {
+              "width": 1672,
+              "height": 941,
+              "size": 1857799
+            },
+            "review": null,
+            "supersededAt": null
+          }
+        ]
+      }
+    ],
+    "findings": []
+  },
+  "manualOverride": null,
+  "findings": []
+}

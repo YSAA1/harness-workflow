@@ -1,0 +1,1972 @@
+{
+  "kind": "ppt-composer-imagegen-jobs",
+  "version": "0.1",
+  "createdAt": "2026-05-17T04:01:21.507Z",
+  "protocol": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\deck-protocol.json",
+  "style_lock": {
+    "id": "deck-style-lock-v1",
+    "source": "deck-protocol.json",
+    "purpose": "Keep all image-generation and visual-review workers aligned even when subagent history forking fails.",
+    "deck": {
+      "title": "规范驱动的 Agent 开发：Harness Workflow 工程思想课件",
+      "language": "zh",
+      "audience": "已经会使用 Codex / Claude Code / Cursor 等 Agent 编程工具，但需要理解如何用规范、工作面、证据和清理纪律驾驭复杂 Agent 任务的开发者、维护者和教学读者。",
+      "page_count": 28,
+      "aspect_ratio": "16:9"
+    },
+    "style": {
+      "description": "Restrained cyberpunk engineering console for a dense teaching deck: dark graphite canvas, cyan/green/blue-violet accents, thin grids, status lights, evidence chains, compact matrices and lifecycle diagrams. Teaching clarity comes first; avoid neon poster decoration.",
+      "palette": [
+        "#070B10",
+        "#0E1726",
+        "#13F2A3",
+        "#22D3EE",
+        "#7C3AED",
+        "#F59E0B",
+        "#E5F3FF"
+      ],
+      "typography": "Chinese-first sans-serif similar to Microsoft YaHei / Noto Sans CJK. Large readable headings, compact but legible body text, no microscopic paragraphs. Use diagram labels instead of long prose blocks.",
+      "density": "medium",
+      "font_scale": "readable slide-scale titles and labels",
+      "chart_style": "clean consulting/research charts with legible labels",
+      "margins": "consistent margins and controlled whitespace",
+      "page_number_policy": "Use a consistent small bottom-right page/total footer on every slide: 01/28 through 28/28.",
+      "visible_text_policy": "Render only reader-facing Chinese teaching content. Do not render asset ids, filenames, paths, source labels, protocol metadata, parser labels, or internal method-code labels.",
+      "template_image_ids": [],
+      "logo_ids": [],
+      "forbidden": []
+    },
+    "page_list": [
+      {
+        "page": 1,
+        "title": "从会用 Agent 到会驾驭 Agent",
+        "claim": "会用工具不等于具备工程流程；真正难点是让 Agent 稳定、可控、可验证地完成复杂任务。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 2,
+        "title": "Agent 开发为什么会失控",
+        "claim": "失控往往来自工程环境缺口：需求漂移、上下文丢失、验证缺失、文档过期和范围膨胀。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 3,
+        "title": "对话驱动的局限",
+        "claim": "聊天适合探索，但不适合承载长期任务的边界、验收、状态和责任。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 4,
+        "title": "规范驱动开发的核心思想",
+        "claim": "把“想让 Agent 做什么”转成可执行、可验证、可恢复的工程规范。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 5,
+        "title": "Harness 到底是什么",
+        "claim": "Harness 是围绕 Agent 的工作台：规则、上下文、状态、工具、验证和收尾共同约束工作。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 6,
+        "title": "可靠 Agent 工作流的组件",
+        "claim": "一个可靠工作流至少需要入口规则、项目地图、任务规格、执行计划、验证路径、恢复状态和清理纪律。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 7,
+        "title": "规范驱动闭环总览",
+        "claim": "澄清、规格、计划、初始化、行动、诊断、审查、验证、清理，组成可恢复的工程闭环。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 8,
+        "title": "第一步：不要急着实现",
+        "claim": "模糊需求直接进实现，会让 Agent 自己补全目标并把隐藏假设写进代码或产物。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 9,
+        "title": "澄清需求：把想法变成问题结构",
+        "claim": "澄清阶段要把目标、用户、边界、非目标、约束、验收方式和风险摆上桌面。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 10,
+        "title": "Spec 的意义：不是文档，是执行合同",
+        "claim": "Spec 同时约束 Agent 行为，也让人类能审查它是否做对。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 11,
+        "title": "好 Spec 应该包含什么",
+        "claim": "好 Spec 要覆盖背景、目标、非目标、行为要求、约束、验证策略和残余风险。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 12,
+        "title": "为什么验证策略必须前置",
+        "claim": "如果一开始不知道怎么证明做对，后面所有“完成”都可能只是幻觉。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 13,
+        "title": "从 Spec 到 Plan",
+        "claim": "Plan 不是 TODO list，而是把目标切成 active slice、成功标准、验证路径和 commit 单元。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 14,
+        "title": "Active Slice：一次只做一件可验证的事",
+        "claim": "WIP=1 是防止范围膨胀的核心纪律：当前只推进一个能被证明的切片。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 15,
+        "title": "初始化工作面：让 Agent 进入真实仓库",
+        "claim": "行动前先确认项目地图、验证命令、保护路径、已有状态和能力缺口。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 16,
+        "title": "Recovery Surface：任务不能只活在聊天里",
+        "claim": "恢复面保存目标、范围、证据、风险和下一步，让未来会话能从工件恢复任务状态。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 17,
+        "title": "能力适配：工具不是越多越好",
+        "claim": "skills、MCP、hooks、subagents 都应该服务具体缺口，而不是堆能力。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 18,
+        "title": "行动阶段：小步执行，小步验证",
+        "claim": "实现阶段要保持 scope，做最小必要改动，并用窄验证不断校准方向。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 19,
+        "title": "失败阶段：不要盲改",
+        "claim": "失败要复现、最小化、提出单一假设、验证根因，然后再修复。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 20,
+        "title": "Review 和 Verify 的区别",
+        "claim": "Review 判断有没有做错、越界、缺证据；Verify 用当前证据证明 ready claim。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 21,
+        "title": "Fresh Evidence：旧证据不能证明新结果",
+        "claim": "只要文件、配置、数据或生成物变了，之前的测试、截图和口头结论就可能过期。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 22,
+        "title": "Cleanup：工程流程真正闭环的地方",
+        "claim": "清理不是寒暄收尾，而是同步 README、状态、生成物、风险和交接信息。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 23,
+        "title": "Skill 是职责映射，不是主角",
+        "claim": "规范驱动流程决定何时需要哪个 skill；skill 只是把职责落到可执行协议上。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 24,
+        "title": "贯穿案例：一个 PPT 需求如何被规范驱动",
+        "claim": "“帮我做 PPT”会先被转成教学目标、Spec、Plan、Protocol、PNG、QA 和提交证据。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 25,
+        "title": "如果没有规范会怎样",
+        "claim": "直接生成很容易内容跑偏、风格过头、无法验收、无法复用，下次也接不上。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 26,
+        "title": "常见误区",
+        "claim": "常见误区包括把 Harness 当单个文件、把 Plan 当 TODO、把 Verify 当跑一次命令、把 Cleanup 当可选。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 27,
+        "title": "方法论总结：Agent 不是被命令，而是被约束",
+        "claim": "好流程不是限制 Agent，而是让它在正确边界内发挥能力。",
+        "fidelity": "light_redraw"
+      },
+      {
+        "page": 28,
+        "title": "最终 Takeaway",
+        "claim": "规范驱动开发让 Agent 工作可控、可验、可恢复、可交接。",
+        "fidelity": "light_redraw"
+      }
+    ],
+    "assets": [
+      {
+        "id": "spec_teaching",
+        "type": "text_evidence",
+        "caption": "Approved teaching deck spec: 25+ pages, Chinese-first, for readers already using Agent tools; focus on specification-driven development and Harness engineering, not a skill catalog.",
+        "usage": "deck scope, page outline, negative constraints, success criteria",
+        "path": "docs/specs/2026-05-17--harness-workflow-teaching-deck.md"
+      },
+      {
+        "id": "plan_teaching",
+        "type": "text_evidence",
+        "caption": "Executable plan for the teaching deck: output path, image-first workflow, QA path, commit units, and content negative checks.",
+        "usage": "production route, verification and artifact map",
+        "path": "docs/plans/2026-05-17--harness-workflow-teaching-deck-plan.md"
+      },
+      {
+        "id": "readme_workflow",
+        "type": "text_evidence",
+        "caption": "Harness Workflow is a context-aware agent workbench for real repositories, giving agents repo evidence, requirement context, recovery state, verification discipline, and cleanup paths.",
+        "usage": "Harness overview, practical routes, workflow framing",
+        "path": "README.md"
+      },
+      {
+        "id": "context_terms",
+        "type": "text_evidence",
+        "caption": "Defines core terms: Harness Builder, Skill Independence, Recovery Surface, Workflow State Backend, Executable Plan, Spec, Review, Verification, Knowledge Cleanup.",
+        "usage": "terminology and boundary rules",
+        "path": "CONTEXT.md"
+      },
+      {
+        "id": "method_contract",
+        "type": "text_evidence",
+        "caption": "Stable method contract for harness-as-system, repo truth, thin instructions, workbench before action, scoped work, fresh evidence, capability fit, artifact freshness, cleanup, and backend decoupling.",
+        "usage": "engineering principles without visible course-code markers",
+        "path": "docs/harness-method-contract.md"
+      },
+      {
+        "id": "skill_harness_builder",
+        "type": "text_evidence",
+        "caption": "Harness Builder designs or repairs the project workbench and recovery surface: project map, rules, verification entry, reusable skills, capability discovery, and anti-entropy guardrails.",
+        "usage": "initialization and workbench pages",
+        "path": "skills/harness-builder/SKILL.md"
+      },
+      {
+        "id": "skill_brainstorm",
+        "type": "text_evidence",
+        "caption": "Brainstorm clarifies fuzzy intent into a Spec with goals, non-goals, options, risks, and verification strategy before planning.",
+        "usage": "clarification and spec pages",
+        "path": "skills/brainstorm/SKILL.md"
+      },
+      {
+        "id": "skill_plan",
+        "type": "text_evidence",
+        "caption": "Plan turns an approved Spec or clear request into an Executable Plan with active slice, success criteria, verification path, phases, risks, and commit units.",
+        "usage": "planning and active slice pages",
+        "path": "skills/plan/SKILL.md"
+      },
+      {
+        "id": "skill_implement",
+        "type": "text_evidence",
+        "caption": "Implement executes a scoped change using existing project context, narrow edits, risk-matched checks, and routing to diagnose/review/verify.",
+        "usage": "action phase pages",
+        "path": "skills/implement/SKILL.md"
+      },
+      {
+        "id": "skill_diagnose",
+        "type": "text_evidence",
+        "caption": "Diagnose handles unexplained failures through reproduce, minimize, single hypothesis, instrumentation, root cause, fix, and regression evidence.",
+        "usage": "failure phase pages",
+        "path": "skills/diagnose/SKILL.md"
+      },
+      {
+        "id": "skill_review",
+        "type": "text_evidence",
+        "caption": "Review checks correctness, scope, evidence gaps, docs drift, artifacts, and entropy before ready claims.",
+        "usage": "review gate pages",
+        "path": "skills/review/SKILL.md"
+      },
+      {
+        "id": "skill_verify",
+        "type": "text_evidence",
+        "caption": "Verify maps a concrete ready claim to fresh evidence using an evidence ladder and routes failing evidence to diagnosis.",
+        "usage": "verification and fresh evidence pages",
+        "path": "skills/verify/SKILL.md"
+      },
+      {
+        "id": "skill_cleanup",
+        "type": "text_evidence",
+        "caption": "Cleanup reconciles documentation, generated artifacts, recovery surfaces, and residual risks so knowledge does not rot after a batch.",
+        "usage": "cleanup and handoff pages",
+        "path": "skills/cleanup/SKILL.md"
+      }
+    ],
+    "format_contract": [
+      "Every slide is one complete 16:9 full-slide PNG unless the protocol says otherwise.",
+      "All visible title, claim, labels, chart text, captions, and logos must be rendered inside the PNG.",
+      "Do not create a blank background, prompt-only handoff, SVG, HTML screenshot, or later PowerPoint text overlay.",
+      "Use the same visual system, typography, palette, density, margins, and hierarchy across all pages.",
+      "Use one consistent page number/footer policy across the deck; do not randomly add page numbers to only some pages.",
+      "Do not invent or alter facts, numbers, curves, table headers, logos, or captions on strict_embed pages."
+    ],
+    "negative_contract": [
+      "No watermark.",
+      "No unreadable text.",
+      "No inconsistent per-page art direction.",
+      "No visible asset ids, filenames, file paths, source labels, protocol field names, or 'source: ... table' metadata.",
+      "No decorative clutter that breaks the confirmed deck style.",
+      "No background-only slide."
+    ],
+    "worker_rule": "Every worker prompt must include this style_lock verbatim plus only the assigned protocol page slice. Forked chat history is never the source of truth for visual consistency."
+  },
+  "worker_dispatch": {
+    "required": true,
+    "reason": "7+ confirmed pages require bounded image-generation subagent dispatch before direct generation fallback",
+    "max_concurrency": 6,
+    "default_reasoning_effort": "low",
+    "medium_escalation_rule": "strict_embed, dense table/scientific evidence, multiple reference assets, prior failure, or explicit user extra-care request",
+    "assignments": [
+      {
+        "id": "image-worker-01",
+        "pages": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "page_range": "1-4",
+        "reasoning_effort": "medium",
+        "medium_reason": "p1:multiple_reference_assets; p2:multiple_reference_assets; p3:multiple_reference_assets; p4:multiple_reference_assets",
+        "status": "planned",
+        "spawn_attempt": null
+      },
+      {
+        "id": "image-worker-02",
+        "pages": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "page_range": "5-9",
+        "reasoning_effort": "medium",
+        "medium_reason": "p5:multiple_reference_assets; p6:multiple_reference_assets; p7:multiple_reference_assets; p8:multiple_reference_assets; p9:multiple_reference_assets",
+        "status": "planned",
+        "spawn_attempt": null
+      },
+      {
+        "id": "image-worker-03",
+        "pages": [
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "page_range": "10-14",
+        "reasoning_effort": "medium",
+        "medium_reason": "p10:multiple_reference_assets; p11:multiple_reference_assets; p12:multiple_reference_assets; p13:multiple_reference_assets; p14:multiple_reference_assets",
+        "status": "planned",
+        "spawn_attempt": null
+      },
+      {
+        "id": "image-worker-04",
+        "pages": [
+          15,
+          16,
+          17,
+          18
+        ],
+        "page_range": "15-18",
+        "reasoning_effort": "medium",
+        "medium_reason": "p15:multiple_reference_assets; p16:multiple_reference_assets; p17:multiple_reference_assets; p18:multiple_reference_assets",
+        "status": "planned",
+        "spawn_attempt": null
+      },
+      {
+        "id": "image-worker-05",
+        "pages": [
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        "page_range": "19-23",
+        "reasoning_effort": "medium",
+        "medium_reason": "p19:multiple_reference_assets; p20:multiple_reference_assets; p21:multiple_reference_assets; p22:multiple_reference_assets; p23:multiple_reference_assets",
+        "status": "planned",
+        "spawn_attempt": null
+      },
+      {
+        "id": "image-worker-06",
+        "pages": [
+          24,
+          25,
+          26,
+          27,
+          28
+        ],
+        "page_range": "24-28",
+        "reasoning_effort": "medium",
+        "medium_reason": "p24:multiple_reference_assets; p25:multiple_reference_assets; p26:multiple_reference_assets; p27:multiple_reference_assets; p28:multiple_reference_assets",
+        "status": "planned",
+        "spawn_attempt": null
+      }
+    ],
+    "fallback_requires_recorded_spawn_blocker": true
+  },
+  "visualReview": {
+    "enabled": false,
+    "dimensions": [
+      "consistency",
+      "protocol_alignment",
+      "reference_fidelity",
+      "text_legibility",
+      "artifact_quality"
+    ],
+    "maxAutoRevisions": 2
+  },
+  "pages": [
+    {
+      "page": 1,
+      "title": "从会用 Agent 到会驾驭 Agent",
+      "slideId": "p01",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-01.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 01/28. Title: 从会用 Agent 到会驾驭 Agent. Main claim: 会用工具不等于具备工程流程；真正难点是让 Agent 稳定、可控、可验证地完成复杂任务。 Required teaching points: 会用 Codex/Claude/Cursor 只是操作层；复杂任务需要目标、边界、状态、证据和交接；Harness Workflow 关注的是工作环境，不是模型炫技。Visual structure: two-layer contrast: user who can operate Agent tools vs engineered Agent workbench; central thesis strip. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 01/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：会用工具不等于具备工程流程；真正难点是让 Agent 稳定、可控、可验证地完成复杂任务。 讲的时候先点出本页结论，再按这几个教学点展开：会用 Codex/Claude/Cursor 只是操作层；复杂任务需要目标、边界、状态、证据和交接；Harness Workflow 关注的是工作环境，不是模型炫技。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:12.823Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-01.png",
+          "createdAt": "2026-05-17T06:50:12.822Z",
+          "updatedAt": "2026-05-17T06:50:12.823Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1682065
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-01.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1682065
+      }
+    },
+    {
+      "page": 2,
+      "title": "Agent 开发为什么会失控",
+      "slideId": "p02",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-02.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 02/28. Title: Agent 开发为什么会失控. Main claim: 失控往往来自工程环境缺口：需求漂移、上下文丢失、验证缺失、文档过期和范围膨胀。 Required teaching points: 需求在聊天里变化但没有落成合同；上下文压缩后缺少恢复面；完成声明没有新鲜证据；文档和生成物跟不上真实代码。Visual structure: failure map with symptoms on left and missing harness controls on right. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 02/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：失控往往来自工程环境缺口：需求漂移、上下文丢失、验证缺失、文档过期和范围膨胀。 讲的时候先点出本页结论，再按这几个教学点展开：需求在聊天里变化但没有落成合同；上下文压缩后缺少恢复面；完成声明没有新鲜证据；文档和生成物跟不上真实代码。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:13.677Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-02.png",
+          "createdAt": "2026-05-17T06:50:13.676Z",
+          "updatedAt": "2026-05-17T06:50:13.677Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1698465
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-02.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1698465
+      }
+    },
+    {
+      "page": 3,
+      "title": "对话驱动的局限",
+      "slideId": "p03",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-03.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 03/28. Title: 对话驱动的局限. Main claim: 聊天适合探索，但不适合承载长期任务的边界、验收、状态和责任。 Required teaching points: 对话容易把临时假设当事实；长任务跨轮次后难以恢复；人类很难审查 Agent 是否越界；缺少可重复的验收路径。Visual structure: conversation stream dissolving into lost requirements, contrasted with durable artifacts. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 03/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：聊天适合探索，但不适合承载长期任务的边界、验收、状态和责任。 讲的时候先点出本页结论，再按这几个教学点展开：对话容易把临时假设当事实；长任务跨轮次后难以恢复；人类很难审查 Agent 是否越界；缺少可重复的验收路径。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:14.518Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-03.png",
+          "createdAt": "2026-05-17T06:50:14.517Z",
+          "updatedAt": "2026-05-17T06:50:14.518Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1822755
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-03.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1822755
+      }
+    },
+    {
+      "page": 4,
+      "title": "规范驱动开发的核心思想",
+      "slideId": "p04",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-04.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 04/28. Title: 规范驱动开发的核心思想. Main claim: 把“想让 Agent 做什么”转成可执行、可验证、可恢复的工程规范。 Required teaching points: 规范不是写给人看的装饰文档；规范定义目标、非目标、行为、约束和验证；Agent 依据规范行动，人类依据规范审查。Visual structure: spec contract panel connected to action, evidence, recovery, review nodes. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 04/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：把“想让 Agent 做什么”转成可执行、可验证、可恢复的工程规范。 讲的时候先点出本页结论，再按这几个教学点展开：规范不是写给人看的装饰文档；规范定义目标、非目标、行为、约束和验证；Agent 依据规范行动，人类依据规范审查。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:15.392Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-04.png",
+          "createdAt": "2026-05-17T06:50:15.392Z",
+          "updatedAt": "2026-05-17T06:50:15.392Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1599104
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-04.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1599104
+      }
+    },
+    {
+      "page": 5,
+      "title": "Harness 到底是什么",
+      "slideId": "p05",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-05.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 05/28. Title: Harness 到底是什么. Main claim: Harness 是围绕 Agent 的工作台：规则、上下文、状态、工具、验证和收尾共同约束工作。 Required teaching points: 不是提示词模板；不是某一个 AGENTS.md；不是固定三文件；是让 Agent 在项目中可靠工作的运行环境。Visual structure: central Agent surrounded by six workbench modules with concise labels. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 05/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：Harness 是围绕 Agent 的工作台：规则、上下文、状态、工具、验证和收尾共同约束工作。 讲的时候先点出本页结论，再按这几个教学点展开：不是提示词模板；不是某一个 AGENTS.md；不是固定三文件；是让 Agent 在项目中可靠工作的运行环境。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:16.197Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-05.png",
+          "createdAt": "2026-05-17T06:50:16.197Z",
+          "updatedAt": "2026-05-17T06:50:16.197Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1818512
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-05.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1818512
+      }
+    },
+    {
+      "page": 6,
+      "title": "可靠 Agent 工作流的组件",
+      "slideId": "p06",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-06.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 06/28. Title: 可靠 Agent 工作流的组件. Main claim: 一个可靠工作流至少需要入口规则、项目地图、任务规格、执行计划、验证路径、恢复状态和清理纪律。 Required teaching points: 入口规则告诉 Agent 不能乱动什么；项目地图降低探索成本；验证路径把 ready claim 接到证据；恢复状态让下个会话能接上。Visual structure: component checklist matrix: component / purpose / failure prevented. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 06/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：一个可靠工作流至少需要入口规则、项目地图、任务规格、执行计划、验证路径、恢复状态和清理纪律。 讲的时候先点出本页结论，再按这几个教学点展开：入口规则告诉 Agent 不能乱动什么；项目地图降低探索成本；验证路径把 ready claim 接到证据；恢复状态让下个会话能接上。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:17.035Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-06.png",
+          "createdAt": "2026-05-17T06:50:17.034Z",
+          "updatedAt": "2026-05-17T06:50:17.035Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1810421
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-06.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1810421
+      }
+    },
+    {
+      "page": 7,
+      "title": "规范驱动闭环总览",
+      "slideId": "p07",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-07.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 07/28. Title: 规范驱动闭环总览. Main claim: 澄清、规格、计划、初始化、行动、诊断、审查、验证、清理，组成可恢复的工程闭环。 Required teaching points: 每一环都产出可检查的状态或证据；失败可以回路由，不必假装线性；闭环完成后项目知识要回到真实状态。Visual structure: large lifecycle loop with nine nodes and route-back arrows, not a rigid pipeline. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 07/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：澄清、规格、计划、初始化、行动、诊断、审查、验证、清理，组成可恢复的工程闭环。 讲的时候先点出本页结论，再按这几个教学点展开：每一环都产出可检查的状态或证据；失败可以回路由，不必假装线性；闭环完成后项目知识要回到真实状态。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:17.857Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-07.png",
+          "createdAt": "2026-05-17T06:50:17.856Z",
+          "updatedAt": "2026-05-17T06:50:17.856Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1858965
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-07.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1858965
+      }
+    },
+    {
+      "page": 8,
+      "title": "第一步：不要急着实现",
+      "slideId": "p08",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-08.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 08/28. Title: 第一步：不要急着实现. Main claim: 模糊需求直接进实现，会让 Agent 自己补全目标并把隐藏假设写进代码或产物。 Required teaching points: 先识别问题是否清楚；先问边界而不是先改文件；先定义成功标准而不是先追速度。Visual structure: split screen: rush-to-code chaos vs clarify-first checkpoint. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 08/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：模糊需求直接进实现，会让 Agent 自己补全目标并把隐藏假设写进代码或产物。 讲的时候先点出本页结论，再按这几个教学点展开：先识别问题是否清楚；先问边界而不是先改文件；先定义成功标准而不是先追速度。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:18.700Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-08.png",
+          "createdAt": "2026-05-17T06:50:18.700Z",
+          "updatedAt": "2026-05-17T06:50:18.700Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1819406
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-08.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1819406
+      }
+    },
+    {
+      "page": 9,
+      "title": "澄清需求：把想法变成问题结构",
+      "slideId": "p09",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-09.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 09/28. Title: 澄清需求：把想法变成问题结构. Main claim: 澄清阶段要把目标、用户、边界、非目标、约束、验收方式和风险摆上桌面。 Required teaching points: 目标：到底要改变什么；非目标：明确不做什么；约束：风格、路径、权限、时间；验收：用什么证明完成。Visual structure: question grid turning a fuzzy request into structured requirement blocks. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 09/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：澄清阶段要把目标、用户、边界、非目标、约束、验收方式和风险摆上桌面。 讲的时候先点出本页结论，再按这几个教学点展开：目标：到底要改变什么；非目标：明确不做什么；约束：风格、路径、权限、时间；验收：用什么证明完成。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:19.520Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-09.png",
+          "createdAt": "2026-05-17T06:50:19.519Z",
+          "updatedAt": "2026-05-17T06:50:19.520Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1909848
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-09.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1909848
+      }
+    },
+    {
+      "page": 10,
+      "title": "Spec 的意义：不是文档，是执行合同",
+      "slideId": "p10",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-10.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 10/28. Title: Spec 的意义：不是文档，是执行合同. Main claim: Spec 同时约束 Agent 行为，也让人类能审查它是否做对。 Required teaching points: Spec 是行为合同，不是会议纪要；它把需求、边界、验证和残余风险固定下来；后续 Plan 和 Review 都应回看 Spec。Visual structure: contract document in center with clauses mapped to agent actions and human review. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 10/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：Spec 同时约束 Agent 行为，也让人类能审查它是否做对。 讲的时候先点出本页结论，再按这几个教学点展开：Spec 是行为合同，不是会议纪要；它把需求、边界、验证和残余风险固定下来；后续 Plan 和 Review 都应回看 Spec。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:20.336Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-10.png",
+          "createdAt": "2026-05-17T06:50:20.335Z",
+          "updatedAt": "2026-05-17T06:50:20.336Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 2031829
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-10.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 2031829
+      }
+    },
+    {
+      "page": 11,
+      "title": "好 Spec 应该包含什么",
+      "slideId": "p11",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-11.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 11/28. Title: 好 Spec 应该包含什么. Main claim: 好 Spec 要覆盖背景、目标、非目标、行为要求、约束、验证策略和残余风险。 Required teaching points: 背景说明为什么做；目标和非目标限制范围；行为要求定义可观察结果；验证策略提前定义证据。Visual structure: dense but readable anatomy diagram of a Spec with labeled sections. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 11/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：好 Spec 要覆盖背景、目标、非目标、行为要求、约束、验证策略和残余风险。 讲的时候先点出本页结论，再按这几个教学点展开：背景说明为什么做；目标和非目标限制范围；行为要求定义可观察结果；验证策略提前定义证据。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:21.100Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-11.png",
+          "createdAt": "2026-05-17T06:50:21.100Z",
+          "updatedAt": "2026-05-17T06:50:21.100Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1713773
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-11.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1713773
+      }
+    },
+    {
+      "page": 12,
+      "title": "为什么验证策略必须前置",
+      "slideId": "p12",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-12.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 12/28. Title: 为什么验证策略必须前置. Main claim: 如果一开始不知道怎么证明做对，后面所有“完成”都可能只是幻觉。 Required teaching points: 验证不是最后补票；不同任务需要不同证据强度；没有证据路径的计划不可执行；验证策略会反过来修正范围。Visual structure: evidence ladder planned before action, with red warning for proof-after-the-fact. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 12/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：如果一开始不知道怎么证明做对，后面所有“完成”都可能只是幻觉。 讲的时候先点出本页结论，再按这几个教学点展开：验证不是最后补票；不同任务需要不同证据强度；没有证据路径的计划不可执行；验证策略会反过来修正范围。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:21.891Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-12.png",
+          "createdAt": "2026-05-17T06:50:21.891Z",
+          "updatedAt": "2026-05-17T06:50:21.891Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1861609
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-12.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1861609
+      }
+    },
+    {
+      "page": 13,
+      "title": "从 Spec 到 Plan",
+      "slideId": "p13",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-13.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 13/28. Title: 从 Spec 到 Plan. Main claim: Plan 不是 TODO list，而是把目标切成 active slice、成功标准、验证路径和 commit 单元。 Required teaching points: Spec 回答要什么；Plan 回答下一片怎么做；每个阶段都应有可验证出口；commit 单元让历史可追溯。Visual structure: transformation flow: Spec contract -> Executable Plan -> slice cards -> verification gates. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 13/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：Plan 不是 TODO list，而是把目标切成 active slice、成功标准、验证路径和 commit 单元。 讲的时候先点出本页结论，再按这几个教学点展开：Spec 回答要什么；Plan 回答下一片怎么做；每个阶段都应有可验证出口；commit 单元让历史可追溯。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:22.801Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-13.png",
+          "createdAt": "2026-05-17T06:50:22.800Z",
+          "updatedAt": "2026-05-17T06:50:22.801Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1714704
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-13.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1714704
+      }
+    },
+    {
+      "page": 14,
+      "title": "Active Slice：一次只做一件可验证的事",
+      "slideId": "p14",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-14.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 14/28. Title: Active Slice：一次只做一件可验证的事. Main claim: WIP=1 是防止范围膨胀的核心纪律：当前只推进一个能被证明的切片。 Required teaching points: active slice 要小到能验证；不要在一个切片里混实现、重构、清理和实验；切片结束必须留下证据或明确阻塞。Visual structure: single highlighted work lane with other tempting tasks parked in backlog. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 14/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：WIP=1 是防止范围膨胀的核心纪律：当前只推进一个能被证明的切片。 讲的时候先点出本页结论，再按这几个教学点展开：active slice 要小到能验证；不要在一个切片里混实现、重构、清理和实验；切片结束必须留下证据或明确阻塞。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:23.611Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-14.png",
+          "createdAt": "2026-05-17T06:50:23.611Z",
+          "updatedAt": "2026-05-17T06:50:23.611Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1673957
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-14.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1673957
+      }
+    },
+    {
+      "page": 15,
+      "title": "初始化工作面：让 Agent 进入真实仓库",
+      "slideId": "p15",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-15.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 15/28. Title: 初始化工作面：让 Agent 进入真实仓库. Main claim: 行动前先确认项目地图、验证命令、保护路径、已有状态和能力缺口。 Required teaching points: 读 AGENTS/README/CONTEXT 不是形式；验证命令必须来自项目真实入口；保护路径和脏工作树决定改动边界；能力缺口要显式评估。Visual structure: agent docking into repo workbench with panels: map, rules, status, checks, capabilities. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 15/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：行动前先确认项目地图、验证命令、保护路径、已有状态和能力缺口。 讲的时候先点出本页结论，再按这几个教学点展开：读 AGENTS/README/CONTEXT 不是形式；验证命令必须来自项目真实入口；保护路径和脏工作树决定改动边界；能力缺口要显式评估。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:24.389Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-15.png",
+          "createdAt": "2026-05-17T06:50:24.388Z",
+          "updatedAt": "2026-05-17T06:50:24.389Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1984333
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-15.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1984333
+      }
+    },
+    {
+      "page": 16,
+      "title": "Recovery Surface：任务不能只活在聊天里",
+      "slideId": "p16",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-16.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 16/28. Title: Recovery Surface：任务不能只活在聊天里. Main claim: 恢复面保存目标、范围、证据、风险和下一步，让未来会话能从工件恢复任务状态。 Required teaching points: 短任务可以轻量；长任务需要 durable artifact；后端可以是 docs plan、issue、feature list 或既有系统；关键是语义字段可恢复。Visual structure: backend selector with semantic fields above multiple storage options. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 16/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：恢复面保存目标、范围、证据、风险和下一步，让未来会话能从工件恢复任务状态。 讲的时候先点出本页结论，再按这几个教学点展开：短任务可以轻量；长任务需要 durable artifact；后端可以是 docs plan、issue、feature list 或既有系统；关键是语义字段可恢复。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:25.171Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-16.png",
+          "createdAt": "2026-05-17T06:50:25.170Z",
+          "updatedAt": "2026-05-17T06:50:25.171Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1790746
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-16.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1790746
+      }
+    },
+    {
+      "page": 17,
+      "title": "能力适配：工具不是越多越好",
+      "slideId": "p17",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-17.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 17/28. Title: 能力适配：工具不是越多越好. Main claim: skills、MCP、hooks、subagents 都应该服务具体缺口，而不是堆能力。 Required teaching points: 先问缺口是什么；再评估收益、成本和风险；能用项目已有脚本就不要发明新工具；能力发现是辅助，不是主流程。Visual structure: capability fit decision matrix: gap/value/cost/risk/fallback. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 17/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：skills、MCP、hooks、subagents 都应该服务具体缺口，而不是堆能力。 讲的时候先点出本页结论，再按这几个教学点展开：先问缺口是什么；再评估收益、成本和风险；能用项目已有脚本就不要发明新工具；能力发现是辅助，不是主流程。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:26.015Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-17.png",
+          "createdAt": "2026-05-17T06:50:26.015Z",
+          "updatedAt": "2026-05-17T06:50:26.015Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1796878
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-17.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1796878
+      }
+    },
+    {
+      "page": 18,
+      "title": "行动阶段：小步执行，小步验证",
+      "slideId": "p18",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-18.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 18/28. Title: 行动阶段：小步执行，小步验证. Main claim: 实现阶段要保持 scope，做最小必要改动，并用窄验证不断校准方向。 Required teaching points: 改动必须能追溯到 active slice；优先复用现有模式和脚本；改变行为就同步必要文档或状态；检查失败要记录而不是绕过。Visual structure: green execution loop: inspect -> edit -> focused check -> evidence -> next. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 18/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：实现阶段要保持 scope，做最小必要改动，并用窄验证不断校准方向。 讲的时候先点出本页结论，再按这几个教学点展开：改动必须能追溯到 active slice；优先复用现有模式和脚本；改变行为就同步必要文档或状态；检查失败要记录而不是绕过。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:26.850Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-18.png",
+          "createdAt": "2026-05-17T06:50:26.849Z",
+          "updatedAt": "2026-05-17T06:50:26.850Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1853832
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-18.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1853832
+      }
+    },
+    {
+      "page": 19,
+      "title": "失败阶段：不要盲改",
+      "slideId": "p19",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-19.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 19/28. Title: 失败阶段：不要盲改. Main claim: 失败要复现、最小化、提出单一假设、验证根因，然后再修复。 Required teaching points: 错误变化说明假设可能错了；连续失败应切到诊断模式；根因要写入恢复面或证据记录；修复后要有回归证据。Visual structure: red diagnosis loop with reproduce/minimize/hypothesize/instrument/root cause/fix/regression. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 19/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：失败要复现、最小化、提出单一假设、验证根因，然后再修复。 讲的时候先点出本页结论，再按这几个教学点展开：错误变化说明假设可能错了；连续失败应切到诊断模式；根因要写入恢复面或证据记录；修复后要有回归证据。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:27.611Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-19.png",
+          "createdAt": "2026-05-17T06:50:27.611Z",
+          "updatedAt": "2026-05-17T06:50:27.611Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1862254
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-19.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1862254
+      }
+    },
+    {
+      "page": 20,
+      "title": "Review 和 Verify 的区别",
+      "slideId": "p20",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-20.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 20/28. Title: Review 和 Verify 的区别. Main claim: Review 判断有没有做错、越界、缺证据；Verify 用当前证据证明 ready claim。 Required teaching points: Review 是结构性判断；Verify 是证据性证明；Review 发现问题回实现或诊断；Verify 失败说明 ready claim 不成立。Visual structure: two-gate diagram: review gate then evidence gate, with route-back arrows. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 20/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：Review 判断有没有做错、越界、缺证据；Verify 用当前证据证明 ready claim。 讲的时候先点出本页结论，再按这几个教学点展开：Review 是结构性判断；Verify 是证据性证明；Review 发现问题回实现或诊断；Verify 失败说明 ready claim 不成立。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:28.438Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-20.png",
+          "createdAt": "2026-05-17T06:50:28.437Z",
+          "updatedAt": "2026-05-17T06:50:28.437Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1811100
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-20.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1811100
+      }
+    },
+    {
+      "page": 21,
+      "title": "Fresh Evidence：旧证据不能证明新结果",
+      "slideId": "p21",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-21.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 21/28. Title: Fresh Evidence：旧证据不能证明新结果. Main claim: 只要文件、配置、数据或生成物变了，之前的测试、截图和口头结论就可能过期。 Required teaching points: 证据必须在最后一次相关改动之后产生；验证命令要覆盖 ready claim；绿色状态不能替代需求覆盖；截图/QA/manifest 也要检查覆盖范围。Visual structure: timeline showing stale evidence before change vs fresh evidence after change. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 21/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：只要文件、配置、数据或生成物变了，之前的测试、截图和口头结论就可能过期。 讲的时候先点出本页结论，再按这几个教学点展开：证据必须在最后一次相关改动之后产生；验证命令要覆盖 ready claim；绿色状态不能替代需求覆盖；截图/QA/manifest 也要检查覆盖范围。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:29.304Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-21.png",
+          "createdAt": "2026-05-17T06:50:29.304Z",
+          "updatedAt": "2026-05-17T06:50:29.304Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1981465
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-21.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1981465
+      }
+    },
+    {
+      "page": 22,
+      "title": "Cleanup：工程流程真正闭环的地方",
+      "slideId": "p22",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-22.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 22/28. Title: Cleanup：工程流程真正闭环的地方. Main claim: 清理不是寒暄收尾，而是同步 README、状态、生成物、风险和交接信息。 Required teaching points: 文档要回到真实状态；生成物要和源工件一致；残余风险要可见；不要把临时计划塞进长期入口。Visual structure: anti-entropy closing loop: artifacts reconcile into clean handoff package. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 22/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：清理不是寒暄收尾，而是同步 README、状态、生成物、风险和交接信息。 讲的时候先点出本页结论，再按这几个教学点展开：文档要回到真实状态；生成物要和源工件一致；残余风险要可见；不要把临时计划塞进长期入口。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:30.121Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-22.png",
+          "createdAt": "2026-05-17T06:50:30.121Z",
+          "updatedAt": "2026-05-17T06:50:30.121Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1790158
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-22.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1790158
+      }
+    },
+    {
+      "page": 23,
+      "title": "Skill 是职责映射，不是主角",
+      "slideId": "p23",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-23.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 23/28. Title: Skill 是职责映射，不是主角. Main claim: 规范驱动流程决定何时需要哪个 skill；skill 只是把职责落到可执行协议上。 Required teaching points: brainstorm 负责澄清；plan 负责执行合同；harness-builder 负责工作面；implement/diagnose/review/verify/cleanup 分别承担行动和质量闭环。Visual structure: role mapping table from workflow phase to skill responsibility, compact not catalog-like. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 23/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：规范驱动流程决定何时需要哪个 skill；skill 只是把职责落到可执行协议上。 讲的时候先点出本页结论，再按这几个教学点展开：brainstorm 负责澄清；plan 负责执行合同；harness-builder 负责工作面；implement/diagnose/review/verify/cleanup 分别承担行动和质量闭环。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:30.875Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-23.png",
+          "createdAt": "2026-05-17T06:50:30.874Z",
+          "updatedAt": "2026-05-17T06:50:30.875Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1872596
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-23.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1872596
+      }
+    },
+    {
+      "page": 24,
+      "title": "贯穿案例：一个 PPT 需求如何被规范驱动",
+      "slideId": "p24",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-24.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 24/28. Title: 贯穿案例：一个 PPT 需求如何被规范驱动. Main claim: “帮我做 PPT”会先被转成教学目标、Spec、Plan、Protocol、PNG、QA 和提交证据。 Required teaching points: 模糊请求先澄清教学目标；Spec 定义不做 skill 清单；Plan 定义 image-first 产物和验证；Protocol 锁定每页教学点；QA 证明 PPTX 结构符合路线。Visual structure: timeline using this deck production as case: request -> spec -> plan -> protocol -> images -> manifest -> pptx -> qa -> commit. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 24/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：“帮我做 PPT”会先被转成教学目标、Spec、Plan、Protocol、PNG、QA 和提交证据。 讲的时候先点出本页结论，再按这几个教学点展开：模糊请求先澄清教学目标；Spec 定义不做 skill 清单；Plan 定义 image-first 产物和验证；Protocol 锁定每页教学点；QA 证明 PPTX 结构符合路线。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:31.743Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-24.png",
+          "createdAt": "2026-05-17T06:50:31.743Z",
+          "updatedAt": "2026-05-17T06:50:31.743Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1848044
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-24.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1848044
+      }
+    },
+    {
+      "page": 25,
+      "title": "如果没有规范会怎样",
+      "slideId": "p25",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-25.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 25/28. Title: 如果没有规范会怎样. Main claim: 直接生成很容易内容跑偏、风格过头、无法验收、无法复用，下次也接不上。 Required teaching points: 看似更快，实际返工更多；没有验收标准就无法判断好坏；没有 protocol 就无法定位哪页失败；没有 cleanup 就留下知识债。Visual structure: before/after failure comparison: prompt-only deck chaos vs protocol-driven deck traceability. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 25/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：直接生成很容易内容跑偏、风格过头、无法验收、无法复用，下次也接不上。 讲的时候先点出本页结论，再按这几个教学点展开：看似更快，实际返工更多；没有验收标准就无法判断好坏；没有 protocol 就无法定位哪页失败；没有 cleanup 就留下知识债。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:32.589Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-25.png",
+          "createdAt": "2026-05-17T06:50:32.588Z",
+          "updatedAt": "2026-05-17T06:50:32.588Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1671,
+            "height": 941,
+            "size": 1804621
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-25.png",
+      "png": {
+        "width": 1671,
+        "height": 941,
+        "size": 1804621
+      }
+    },
+    {
+      "page": 26,
+      "title": "常见误区",
+      "slideId": "p26",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-26.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 26/28. Title: 常见误区. Main claim: 常见误区包括把 Harness 当单个文件、把 Plan 当 TODO、把 Verify 当跑一次命令、把 Cleanup 当可选。 Required teaching points: Harness 是系统，不是一个入口文件；Plan 要有 active slice 和证据路径；Verify 要匹配 ready claim；Cleanup 是防止项目知识腐烂的工程动作。Visual structure: myth vs reality matrix with four misconceptions and corrections. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 26/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：常见误区包括把 Harness 当单个文件、把 Plan 当 TODO、把 Verify 当跑一次命令、把 Cleanup 当可选。 讲的时候先点出本页结论，再按这几个教学点展开：Harness 是系统，不是一个入口文件；Plan 要有 active slice 和证据路径；Verify 要匹配 ready claim；Cleanup 是防止项目知识腐烂的工程动作。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:33.443Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-26.png",
+          "createdAt": "2026-05-17T06:50:33.442Z",
+          "updatedAt": "2026-05-17T06:50:33.443Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1670,
+            "height": 941,
+            "size": 1721343
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-26.png",
+      "png": {
+        "width": 1670,
+        "height": 941,
+        "size": 1721343
+      }
+    },
+    {
+      "page": 27,
+      "title": "方法论总结：Agent 不是被命令，而是被约束",
+      "slideId": "p27",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-27.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 27/28. Title: 方法论总结：Agent 不是被命令，而是被约束. Main claim: 好流程不是限制 Agent，而是让它在正确边界内发挥能力。 Required teaching points: 约束目标让 Agent 不漂移；约束范围让改动可审查；约束证据让完成可证明；约束收尾让项目可持续。Visual structure: central statement surrounded by four constraint rails: goal, scope, evidence, cleanup. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 27/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：好流程不是限制 Agent，而是让它在正确边界内发挥能力。 讲的时候先点出本页结论，再按这几个教学点展开：约束目标让 Agent 不漂移；约束范围让改动可审查；约束证据让完成可证明；约束收尾让项目可持续。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:34.203Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-27.png",
+          "createdAt": "2026-05-17T06:50:34.203Z",
+          "updatedAt": "2026-05-17T06:50:34.203Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1877006
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-27.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1877006
+      }
+    },
+    {
+      "page": 28,
+      "title": "最终 Takeaway",
+      "slideId": "p28",
+      "status": "generated",
+      "output_png": "docs/decks/harness-workflow-teaching-deck/slides/slide-28.png",
+      "fidelity": "light_redraw",
+      "prompt": "Create a complete finished full-slide 16:9 PNG for a Chinese teaching PPT. Slide 28/28. Title: 最终 Takeaway. Main claim: 规范驱动开发让 Agent 工作可控、可验、可恢复、可交接。 Required teaching points: 从对话到规范；从工具到工作台；从一次性输出到可恢复工程流程；下一次任务先问：状态是什么，证据在哪里，如何收尾。Visual structure: final high-density takeaway board with lifecycle loop and five concise principles. Global style: restrained cyberpunk engineering console, dark graphite background, cyan green and blue violet accents, thin grid lines, status lights, evidence-chain connectors, dense but readable Chinese teaching content, clear hierarchy, diagram/table/process visual, professional internal training deck. Make it information-dense but readable, suitable for readers who already use Agent coding tools. All visible text must be inside the image. Include the consistent footer 28/28.",
+      "negative_prompt": "No later PPT text overlay, no placeholder art, no screenshot of prompt, no visible file paths, no asset ids, no protocol metadata, no source labels, no watermarks, no low-information hero-only page, no decorative neon clutter, no course-number method-code labels, no skill catalog layout, no tiny unreadable Chinese text.",
+      "speaker_notes": "本页讲解重点：规范驱动开发让 Agent 工作可控、可验、可恢复、可交接。 讲的时候先点出本页结论，再按这几个教学点展开：从对话到规范；从工具到工作台；从一次性输出到可恢复工程流程；下一次任务先问：状态是什么，证据在哪里，如何收尾。这一页要服务整套主线：从对话驱动转向规范驱动，让 Harness 被理解为工程工作台而不是工具清单。过渡到下一页时，强调下一个环节如何继续收紧目标、状态或证据。",
+      "updatedAt": "2026-05-17T06:50:35.058Z",
+      "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "generated",
+          "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-28.png",
+          "createdAt": "2026-05-17T06:50:35.057Z",
+          "updatedAt": "2026-05-17T06:50:35.058Z",
+          "note": "Generated by bounded imagegen worker; execution summaries captured in worker responses.",
+          "png": {
+            "width": 1672,
+            "height": 941,
+            "size": 1857799
+          },
+          "execution_summary": null,
+          "review": null
+        }
+      ],
+      "currentAttempt": 1,
+      "execution_summary": null,
+      "review": null,
+      "revision": null,
+      "accepted_png": null,
+      "superseded_pngs": [],
+      "worker_context": {
+        "style_lock_id": "deck-style-lock-v1",
+        "source": "style_lock + protocol page slice",
+        "default_spawn": "context_packet_low_reasoning",
+        "prompt_contract": "Use the same style_lock for every page; forked chat history is supplemental only.",
+        "packet_contract": [
+          "verbatim style_lock",
+          "assigned page protocol slice",
+          "relevant reference assets",
+          "output_png path",
+          "execution checklist"
+        ]
+      },
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\slides\\slide-28.png",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "size": 1857799
+      }
+    }
+  ],
+  "outPath": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-teaching-deck\\imagegen-jobs.json"
+}

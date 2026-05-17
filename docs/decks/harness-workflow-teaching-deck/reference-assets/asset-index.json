@@ -1,0 +1,97 @@
+{
+  "kind": "ppt-composer-asset-index",
+  "version": "0.1",
+  "assets": [
+    {
+      "id": "spec_teaching",
+      "type": "text_evidence",
+      "path": "docs/specs/2026-05-17--harness-workflow-teaching-deck.md",
+      "summary": "Approved teaching deck spec: 25+ pages, Chinese-first, for readers already using Agent tools; focus on specification-driven development and Harness engineering, not a skill catalog.",
+      "usage": "deck scope, page outline, negative constraints, success criteria"
+    },
+    {
+      "id": "plan_teaching",
+      "type": "text_evidence",
+      "path": "docs/plans/2026-05-17--harness-workflow-teaching-deck-plan.md",
+      "summary": "Executable plan for the teaching deck: output path, image-first workflow, QA path, commit units, and content negative checks.",
+      "usage": "production route, verification and artifact map"
+    },
+    {
+      "id": "readme_workflow",
+      "type": "text_evidence",
+      "path": "README.md",
+      "summary": "Harness Workflow is a context-aware agent workbench for real repositories, giving agents repo evidence, requirement context, recovery state, verification discipline, and cleanup paths.",
+      "usage": "Harness overview, practical routes, workflow framing"
+    },
+    {
+      "id": "context_terms",
+      "type": "text_evidence",
+      "path": "CONTEXT.md",
+      "summary": "Defines core terms: Harness Builder, Skill Independence, Recovery Surface, Workflow State Backend, Executable Plan, Spec, Review, Verification, Knowledge Cleanup.",
+      "usage": "terminology and boundary rules"
+    },
+    {
+      "id": "method_contract",
+      "type": "text_evidence",
+      "path": "docs/harness-method-contract.md",
+      "summary": "Stable method contract for harness-as-system, repo truth, thin instructions, workbench before action, scoped work, fresh evidence, capability fit, artifact freshness, cleanup, and backend decoupling.",
+      "usage": "engineering principles without visible course-code markers"
+    },
+    {
+      "id": "skill_harness_builder",
+      "type": "text_evidence",
+      "path": "skills/harness-builder/SKILL.md",
+      "summary": "Harness Builder designs or repairs the project workbench and recovery surface: project map, rules, verification entry, reusable skills, capability discovery, and anti-entropy guardrails.",
+      "usage": "initialization and workbench pages"
+    },
+    {
+      "id": "skill_brainstorm",
+      "type": "text_evidence",
+      "path": "skills/brainstorm/SKILL.md",
+      "summary": "Brainstorm clarifies fuzzy intent into a Spec with goals, non-goals, options, risks, and verification strategy before planning.",
+      "usage": "clarification and spec pages"
+    },
+    {
+      "id": "skill_plan",
+      "type": "text_evidence",
+      "path": "skills/plan/SKILL.md",
+      "summary": "Plan turns an approved Spec or clear request into an Executable Plan with active slice, success criteria, verification path, phases, risks, and commit units.",
+      "usage": "planning and active slice pages"
+    },
+    {
+      "id": "skill_implement",
+      "type": "text_evidence",
+      "path": "skills/implement/SKILL.md",
+      "summary": "Implement executes a scoped change using existing project context, narrow edits, risk-matched checks, and routing to diagnose/review/verify.",
+      "usage": "action phase pages"
+    },
+    {
+      "id": "skill_diagnose",
+      "type": "text_evidence",
+      "path": "skills/diagnose/SKILL.md",
+      "summary": "Diagnose handles unexplained failures through reproduce, minimize, single hypothesis, instrumentation, root cause, fix, and regression evidence.",
+      "usage": "failure phase pages"
+    },
+    {
+      "id": "skill_review",
+      "type": "text_evidence",
+      "path": "skills/review/SKILL.md",
+      "summary": "Review checks correctness, scope, evidence gaps, docs drift, artifacts, and entropy before ready claims.",
+      "usage": "review gate pages"
+    },
+    {
+      "id": "skill_verify",
+      "type": "text_evidence",
+      "path": "skills/verify/SKILL.md",
+      "summary": "Verify maps a concrete ready claim to fresh evidence using an evidence ladder and routes failing evidence to diagnosis.",
+      "usage": "verification and fresh evidence pages"
+    },
+    {
+      "id": "skill_cleanup",
+      "type": "text_evidence",
+      "path": "skills/cleanup/SKILL.md",
+      "summary": "Cleanup reconciles documentation, generated artifacts, recovery surfaces, and residual risks so knowledge does not rot after a batch.",
+      "usage": "cleanup and handoff pages"
+    }
+  ]
+}
