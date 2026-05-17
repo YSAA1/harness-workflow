@@ -1,0 +1,23 @@
+{
+  "pptx": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview.pptx",
+  "spec": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\assembled-slide-spec.json",
+  "status": "pass",
+  "summary": {
+    "slides": 16,
+    "textShapes": 0,
+    "pictures": 16,
+    "charts": 0,
+    "tables": 0,
+    "missingAssets": 0,
+    "warnings": 1,
+    "errors": 0,
+    "generatedContentImages": 0
+  },
+  "findings": [
+    {
+      "severity": "warning",
+      "code": "image_first",
+      "message": "Deck is image-first; core slide content is intentionally low-editability."
+    }
+  ]
+}

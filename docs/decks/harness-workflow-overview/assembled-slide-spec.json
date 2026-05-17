@@ -1,0 +1,444 @@
+{
+  "version": "0.1",
+  "deck": {
+    "title": "Harness Workflow",
+    "audience": "general",
+    "language": "en",
+    "format": "16:9",
+    "editability": "image-first",
+    "visualPolicy": "image-first"
+  },
+  "theme": {
+    "template": "image-gallery",
+    "palette": [
+      "#111827",
+      "#2563EB",
+      "#F8FAFC",
+      "#E5E7EB"
+    ],
+    "fonts": {
+      "heading": "Aptos Display",
+      "body": "Aptos"
+    }
+  },
+  "assets": [
+    {
+      "id": "img1",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\slides\\slide-01.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-01.png"
+    },
+    {
+      "id": "img2",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\slides\\slide-02.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-02.png"
+    },
+    {
+      "id": "img3",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\slides\\slide-03.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-03.png"
+    },
+    {
+      "id": "img4",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\slides\\slide-04.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-04.png"
+    },
+    {
+      "id": "img5",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\slides\\slide-05.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-05.png"
+    },
+    {
+      "id": "img6",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\slides\\slide-06.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-06.png"
+    },
+    {
+      "id": "img7",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\slides\\slide-07.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-07.png"
+    },
+    {
+      "id": "img8",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\slides\\slide-08.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-08.png"
+    },
+    {
+      "id": "img9",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\slides\\slide-09.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-09.png"
+    },
+    {
+      "id": "img10",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\slides\\slide-10.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-10.png"
+    },
+    {
+      "id": "img11",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\slides\\slide-11.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-11.png"
+    },
+    {
+      "id": "img12",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\slides\\slide-12.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-12.png"
+    },
+    {
+      "id": "img13",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\slides\\slide-13.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-13.png"
+    },
+    {
+      "id": "img14",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\slides\\slide-14.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-14.png"
+    },
+    {
+      "id": "img15",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\slides\\slide-15.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-15.png"
+    },
+    {
+      "id": "img16",
+      "type": "image",
+      "path": "C:\\Users\\shash\\Desktop\\harness-workflow\\docs\\decks\\harness-workflow-overview\\slides\\slide-16.png",
+      "source": "user_provided",
+      "usage": "full-slide",
+      "caption": "slide-16.png"
+    }
+  ],
+  "slides": [
+    {
+      "id": "s1",
+      "layout": "full-slide-image",
+      "title": "slide-01",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img1",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "开场先把定位讲清楚：这个插件不是把几句提示词打包，而是把 agent 在真实仓库里需要的入口、证据、状态、验证和收尾变成一套可以执行的工作面。下一页解释为什么这种系统必要。"
+    },
+    {
+      "id": "s2",
+      "layout": "full-slide-image",
+      "title": "slide-02",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img2",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "这一页把问题从“模型聪不聪明”转到“工作环境是否足够工程化”。强调这些失败在真实仓库里反复出现，所以需要 harness，而不是再加一段万能 prompt。"
+    },
+    {
+      "id": "s3",
+      "layout": "full-slide-image",
+      "title": "slide-03",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img3",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "这里定义 harness engineering 的实战含义。它不是单个文件或一个技能，而是一组能让 agent 有边界、有反馈、有恢复路径的项目设施。"
+    },
+    {
+      "id": "s4",
+      "layout": "full-slide-image",
+      "title": "slide-04",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img4",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "这一页把方法论压缩成合同视图。重点说明：后面所有 skill 都是这些原则的执行形态，尤其是仓库真相、新鲜证据、后端解耦和知识收尾。"
+    },
+    {
+      "id": "s5",
+      "layout": "full-slide-image",
+      "title": "slide-05",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img5",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "这里要纠正误解：workflow skills 的价值在于路由和边界，不是制造流程负担。一个小改动可能 implement -> verify 就结束；复杂任务才需要更多车道。"
+    },
+    {
+      "id": "s6",
+      "layout": "full-slide-image",
+      "title": "slide-06",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img6",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "这一页解释设计初衷：每个 skill 只负责一个活动，交接的是目标、范围、证据、风险这些语义字段。三文件只是后端之一，不是 workflow 的本体。"
+    },
+    {
+      "id": "s7",
+      "layout": "full-slide-image",
+      "title": "slide-07",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img7",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "说明 harness-builder 不是每次都必须跑，但当工作面缺失时它是最关键的基础设施 skill。它的核心不是写文件，而是先建立证据、合同和覆盖矩阵。"
+    },
+    {
+      "id": "s8",
+      "layout": "full-slide-image",
+      "title": "slide-08",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img8",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "这一页把需求收敛和实施计划分开。brainstorm 解决模糊性，plan 解决可执行性。两者都必须提前考虑验证，而不是最后才想怎么证明。"
+    },
+    {
+      "id": "s9",
+      "layout": "full-slide-image",
+      "title": "slide-09",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img9",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "这里强调 implementation 和 diagnosis 的边界。正常红绿循环里的红是预期；不明失败、命令异常或错误变化才进入 diagnose。"
+    },
+    {
+      "id": "s10",
+      "layout": "full-slide-image",
+      "title": "slide-10",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img10",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "这页让读者记住两个门的分工：review 是结构性判断，verify 是 fresh evidence。没有当前证据不能说 ready。"
+    },
+    {
+      "id": "s11",
+      "layout": "full-slide-image",
+      "title": "slide-11",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img11",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "cleanup 不是简单说 done，而是让下一个 agent 或人能相信文档、生成物和状态。find-skills 也不是主流程，而是在能力缺口真实存在时提供发现能力。"
+    },
+    {
+      "id": "s12",
+      "layout": "full-slide-image",
+      "title": "slide-12",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img12",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "这里讲 C10。关键不是固定用哪个文件，而是未来能恢复目标、范围、证据、风险和下一步。本次 PPT 计划就用了 docs plan 作为恢复面。"
+    },
+    {
+      "id": "s13",
+      "layout": "full-slide-image",
+      "title": "slide-13",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img13",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "这一页把前面的抽象原则转成使用手册。读者应该能看到：不同任务状态对应不同路线，workflow 是帮助少走弯路，不是增加步骤。"
+    },
+    {
+      "id": "s14",
+      "layout": "full-slide-image",
+      "title": "slide-14",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img14",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "用当前任务做例子，读者会更容易理解。尤其强调 protocol gate 和 verification gate：这不是为了形式，而是为了避免不可追溯、不可恢复的产物。"
+    },
+    {
+      "id": "s15",
+      "layout": "full-slide-image",
+      "title": "slide-15",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img15",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "收束到可执行记忆点。读者不需要背所有 skill 文档，但应该能用这五条判断下一步该走哪个 lane。"
+    },
+    {
+      "id": "s16",
+      "layout": "full-slide-image",
+      "title": "slide-16",
+      "objects": [
+        {
+          "type": "image",
+          "assetId": "img16",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "w": 13.333,
+            "h": 7.5
+          }
+        }
+      ],
+      "notes": "最后给一个参考表，方便读者回看。再次强调 find-skills 是辅助能力发现，不是第九条 workflow lane。"
+    }
+  ]
+}

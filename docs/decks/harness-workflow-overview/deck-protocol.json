@@ -1,0 +1,485 @@
+{
+  "kind": "ppt-composer-deck-protocol",
+  "version": "0.1",
+  "mode": "reference_grounded_mode",
+  "source": {
+    "brief": "Image-first PNG deck for explaining harness-workflow skill design, Harness Engineering intent, and each skill's actual workflow role.",
+    "inputs": [
+      "docs/plans/2026-05-17--harness-workflow-ppt-plan.md",
+      "README.md",
+      "CONTEXT.md",
+      "docs/harness-method-contract.md",
+      "skills/harness-builder/SKILL.md",
+      "skills/brainstorm/SKILL.md",
+      "skills/plan/SKILL.md",
+      "skills/implement/SKILL.md",
+      "skills/diagnose/SKILL.md",
+      "skills/review/SKILL.md",
+      "skills/verify/SKILL.md",
+      "skills/cleanup/SKILL.md",
+      "skills/find-skills/SKILL.md"
+    ],
+    "reference_mode_note": "All references are local Markdown repository sources. No OCR or document extraction is required."
+  },
+  "deck": {
+    "title": "Harness Workflow: 把 Agent 工作变成可恢复、可验证、可交接的工程系统",
+    "language": "zh",
+    "audience": "已经知道 Codex / Claude Code / Cursor，但还不理解 harness engineering 和本插件 workflow skill 设计的项目维护者、使用者和未来协作者。",
+    "page_count": 16,
+    "aspect_ratio": "16:9",
+    "output_pptx": "docs/decks/harness-workflow-overview.pptx"
+  },
+  "style": {
+    "description": "High-density editorial technical deck. White or near-white canvas, deep ink text, cyan-green accent, restrained amber warning accent. Use crisp system diagrams, lane maps, evidence chains, compact matrices, and workbench/control-room metaphors. Slides must be vivid through structure and visual explanation, not decorative stock imagery. Chinese-first typography, readable large headings, dense but organized body panels.",
+    "template_image_ids": [],
+    "logo_ids": [],
+    "palette": [
+      "#0B1117",
+      "#F7FAFC",
+      "#12B886",
+      "#0EA5E9",
+      "#F59E0B",
+      "#64748B"
+    ],
+    "typography": "Chinese-first sans-serif style similar to Microsoft YaHei / Noto Sans CJK. Use bold section titles, compact labels, and table-like information blocks. Avoid tiny unreadable paragraphs.",
+    "page_number_policy": "Use a consistent small bottom-right page/total footer on every slide except the cover: 02/16 through 16/16.",
+    "visible_text_policy": "Do not render asset ids, filenames, file paths, source labels, protocol metadata, parser labels, or internal evidence labels. Render only reader-facing Chinese content."
+  },
+  "assets": [
+    {
+      "id": "plan_ppt",
+      "type": "text_evidence",
+      "path": "docs/plans/2026-05-17--harness-workflow-ppt-plan.md",
+      "summary": "The approved executable plan requires a dense, vivid, reader-useful PPT explaining why the skills exist, Harness Engineering design intent, each active skill's actual job, and non-rigid skill cooperation.",
+      "usage": "deck scope, slide sequence, success criteria, output and verification plan"
+    },
+    {
+      "id": "readme_overview",
+      "type": "text_evidence",
+      "path": "README.md",
+      "summary": "Harness Workflow is a context-aware agent workbench for real repositories. It gives agents repo evidence, requirement context, recovery state, and verification discipline for work that does not fit in one chat.",
+      "usage": "title thesis, pain points, practical harness explanation, skill map, common routes"
+    },
+    {
+      "id": "context_terms",
+      "type": "text_evidence",
+      "path": "CONTEXT.md",
+      "summary": "Defines canonical terms: Harness Builder, Skill Independence, Capability Discovery, Recovery Surface, Workflow State Backend, Executable Plan, Spec, Review, Verification, and Knowledge Cleanup. It warns against treating bootstrap, three-file state, or fixed sequencing as universal.",
+      "usage": "terminology, coupling boundaries, backend decoupling"
+    },
+    {
+      "id": "method_contract",
+      "type": "text_evidence",
+      "path": "docs/harness-method-contract.md",
+      "summary": "C1-C10 stable method contract: harness as system, repo as truth, thin instructions, workbench before implementation, scoped work, fresh evidence, capability fit, artifact freshness, knowledge cleanup, and backend decoupling.",
+      "usage": "method contract, principle matrix, verification criteria"
+    },
+    {
+      "id": "skill_harness_builder",
+      "type": "text_evidence",
+      "path": "skills/harness-builder/SKILL.md",
+      "summary": "Harness Builder collects repo evidence, reconciles existing harnesses, writes a Harness Charter, builds a Coverage Matrix, runs Capability Discovery, selects packs when justified, and verifies project-local harness changes.",
+      "usage": "harness-builder slide, coverage matrix, capability fit"
+    },
+    {
+      "id": "skill_brainstorm_plan",
+      "type": "text_evidence",
+      "path": "skills/brainstorm/SKILL.md; skills/plan/SKILL.md",
+      "summary": "Brainstorm turns fuzzy intent into an approved Spec with goals, non-goals, options and verification strategy. Plan turns a clear request or Spec into an Executable Plan with active slice, success criteria, verification path, risks and commit units.",
+      "usage": "thinking-to-contract slide"
+    },
+    {
+      "id": "skill_execute_diagnose",
+      "type": "text_evidence",
+      "path": "skills/implement/SKILL.md; skills/diagnose/SKILL.md",
+      "summary": "Implement executes one scoped slice with WIP=1 and risk-matched checks. Diagnose handles unexplained failures through reproduce, minimize, hypothesis, instrumentation, root cause, fix and regression evidence.",
+      "usage": "execution and debugging slide"
+    },
+    {
+      "id": "skill_review_verify",
+      "type": "text_evidence",
+      "path": "skills/review/SKILL.md; skills/verify/SKILL.md",
+      "summary": "Review checks correctness, scope, evidence gaps, docs drift and entropy before ready claims. Verify maps a concrete ready claim to fresh evidence using an evidence ladder and routes failure to diagnose.",
+      "usage": "quality gates slide"
+    },
+    {
+      "id": "skill_cleanup_find",
+      "type": "text_evidence",
+      "path": "skills/cleanup/SKILL.md; skills/find-skills/SKILL.md",
+      "summary": "Cleanup reconciles docs, generated artifacts and recovery surface to prevent knowledge rot. Find-skills is an auxiliary discovery helper for reusable capabilities, not a ninth active workflow lane.",
+      "usage": "cleanup and capability slide"
+    }
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "title": "Harness Workflow",
+      "claim": "这不是 prompt 包，而是让 Agent 在真实仓库里可靠工作的项目级操作系统。",
+      "content_inputs": {
+        "text": [
+          "plan_ppt",
+          "readme_overview"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "plan_ppt",
+        "readme_overview"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Design a finished 16:9 Chinese title slide. Visible title: Harness Workflow. Subtitle: 把 Agent 工作变成可恢复、可验证、可交接的工程系统. Use a vivid but professional workbench/control-room metaphor: central agent console surrounded by five labeled subsystems: 入口规则, 仓库真相, 状态恢复, 新鲜证据, 知识收尾. Include a compact thesis strip: 不是 prompt 包 / 不是固定流程 / 是 repo-local operating system. High-density but clean, no decorative emptiness.",
+      "negative_prompt": "No stock-photo people, no magic robot, no visible file paths, no source labels, no metadata, no watermarks, no tiny unreadable text, no purple gradient, no dark-only cyber theme.",
+      "output_png": "docs/decks/harness-workflow-overview/slides/slide-01.png",
+      "speaker_notes": "开场先把定位讲清楚：这个插件不是把几句提示词打包，而是把 agent 在真实仓库里需要的入口、证据、状态、验证和收尾变成一套可以执行的工作面。下一页解释为什么这种系统必要。"
+    },
+    {
+      "page": 2,
+      "title": "为什么能力强的 Agent 仍会失败",
+      "claim": "失败通常不是模型不会写代码，而是仓库周围缺少可恢复、可验证、可约束的工作环境。",
+      "content_inputs": {
+        "text": [
+          "readme_overview",
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "readme_overview",
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a dense diagnostic map slide in Chinese. Left side: six failure symptoms in compact cards: stale docs, unclear scope, dirty git state, missing tests, context compaction, weak ready claims. Right side: missing harness component for each symptom: project map, active slice, recovery surface, verification entry, evidence log, cleanup discipline. Bottom bar: 核心判断: Agent 质量 = 模型能力 + 仓库周围的系统. Use arrows, warning amber accents, and cyan-green solution labels.",
+      "negative_prompt": "No generic AI failure slogans, no fake metrics, no visible repository paths, no internal asset ids, no long paragraphs, no unreadable microtext.",
+      "output_png": "docs/decks/harness-workflow-overview/slides/slide-02.png",
+      "speaker_notes": "这一页把问题从“模型聪不聪明”转到“工作环境是否足够工程化”。强调这些失败在真实仓库里反复出现，所以需要 harness，而不是再加一段万能 prompt。"
+    },
+    {
+      "page": 3,
+      "title": "Harness Engineering: 围绕 Agent 的工程系统",
+      "claim": "Harness 是模型周围的运行环境：指令、状态、反馈、工具和收尾纪律共同决定可靠性。",
+      "content_inputs": {
+        "text": [
+          "readme_overview",
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "readme_overview",
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a five-part system diagram slide in Chinese. Center: Agent. Around it: Instructions 指令面, State 状态恢复, Feedback 验证反馈, Tools 能力工具, Cleanup 知识收尾. For each subsystem include two concrete examples: AGENTS.md / protected paths; docs plan / issue / three-file; tests / smoke / screenshots; scripts / skills / MCP / subagents; README sync / generated artifacts / handoff. Show that these form one operating environment.",
+      "negative_prompt": "No abstract cloud diagram, no meaningless icons, no fake tool names, no visible file paths, no source labels, no excessive decorative gradients.",
+      "output_png": "docs/decks/harness-workflow-overview/slides/slide-03.png",
+      "speaker_notes": "这里定义 harness engineering 的实战含义。它不是单个文件或一个技能，而是一组能让 agent 有边界、有反馈、有恢复路径的项目设施。"
+    },
+    {
+      "page": 4,
+      "title": "C1-C10: 稳定方法论合同",
+      "claim": "skill 名称可以演进，但 C1-C10 规定了这个插件必须长期守住的工程原则。",
+      "content_inputs": {
+        "text": [
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Design a compact Chinese method-contract matrix. Group C1-C10 into five bands: 系统观 C1, 仓库真相 C2-C3, 范围与工作面 C4-C5, 证据与能力 C6-C7, 新鲜度与后端解耦 C8-C10. Each cell has code, short Chinese label, and one sentence. Highlight C6 Fresh Evidence and C10 Backend Decoupling. Dense but legible table, with cyan-green highlights and amber risk markers.",
+      "negative_prompt": "No invented principles beyond C1-C10, no visible source labels, no illegible ten-column tiny text, no decorative filler.",
+      "output_png": "docs/decks/harness-workflow-overview/slides/slide-04.png",
+      "speaker_notes": "这一页把方法论压缩成合同视图。重点说明：后面所有 skill 都是这些原则的执行形态，尤其是仓库真相、新鲜证据、后端解耦和知识收尾。"
+    },
+    {
+      "page": 5,
+      "title": "Workflow Lanes: 不是流水线，而是路由系统",
+      "claim": "每个 skill 是一个活动车道；根据当前状态路由，不要求所有任务按固定顺序走完。",
+      "content_inputs": {
+        "text": [
+          "readme_overview",
+          "context_terms",
+          "plan_ppt"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "readme_overview",
+        "context_terms",
+        "plan_ppt"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a route-map slide in Chinese. Show lanes: brainstorm -> plan -> harness-builder -> implement -> review -> verify -> cleanup, with diagnose as a red loop from failing commands back to fix, and find-skills as a small auxiliary helper attached to Capability Discovery. Use optional branch arrows and labels: unclear goal, clear slice, workbench gap, failure, ready claim, handoff. Make explicit visual label: 不是强制线性流程.",
+      "negative_prompt": "No rigid pipeline that implies every task must pass every box, no source metadata, no overdecorated arrows, no tiny unreadable labels.",
+      "output_png": "docs/decks/harness-workflow-overview/slides/slide-05.png",
+      "speaker_notes": "这里要纠正误解：workflow skills 的价值在于路由和边界，不是制造流程负担。一个小改动可能 implement -> verify 就结束；复杂任务才需要更多车道。"
+    },
+    {
+      "page": 6,
+      "title": "Skill Independence: 解耦设计",
+      "claim": "skill 之间靠语义输出交接，而不是共享一个固定文件布局或固定执行序列。",
+      "content_inputs": {
+        "text": [
+          "context_terms",
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "context_terms",
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Design a coupling-boundary slide in Chinese. Use a three-column model: Activity Lane, Canonical Output, Next Routing. Rows: brainstorm->Spec, plan->Executable Plan, implement->scoped change with evidence, diagnose->root cause, review->findings, verify->fresh evidence, cleanup->aligned artifacts. Add side panel: Recovery Surface can be none, lightweight, docs plan, issue, feature list, three-file, existing system. Big note: 语义字段 > 固定文件布局.",
+      "negative_prompt": "No implication that three-file backend is mandatory, no hidden file paths, no asset ids, no source labels, no unreadable table cells.",
+      "output_png": "docs/decks/harness-workflow-overview/slides/slide-06.png",
+      "speaker_notes": "这一页解释设计初衷：每个 skill 只负责一个活动，交接的是目标、范围、证据、风险这些语义字段。三文件只是后端之一，不是 workflow 的本体。"
+    },
+    {
+      "page": 7,
+      "title": "harness-builder: 先修工作面",
+      "claim": "当项目入口、验证命令、恢复面或能力边界不清楚时，先构建最小有用的项目 harness。",
+      "content_inputs": {
+        "text": [
+          "skill_harness_builder",
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_harness_builder",
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a dense Harness Builder slide in Chinese. Main visual: Coverage Matrix mini-table with rows: project map, durable rules, recovery surface, verification entry, architecture boundaries, anti-entropy, capability fit, dynamic context. Flow across top: repo evidence -> Harness Charter -> Coverage Matrix -> Capability Discovery -> phased install -> fresh verification. Include output chips: AGENTS.md thin entry, docs/agent, .harness, project-local skills, checks. State clearly: 不是空模板生成器.",
+      "negative_prompt": "No generic bootstrap metaphor, no installing random tools as best practice, no source paths, no internal metadata, no tiny text.",
+      "output_png": "docs/decks/harness-workflow-overview/slides/slide-07.png",
+      "speaker_notes": "说明 harness-builder 不是每次都必须跑，但当工作面缺失时它是最关键的基础设施 skill。它的核心不是写文件，而是先建立证据、合同和覆盖矩阵。"
+    },
+    {
+      "page": 8,
+      "title": "brainstorm + plan: 从想法到可执行合同",
+      "claim": "先把要建什么和如何证明说清，再把它切成唯一 active slice 和 commit-sized work units。",
+      "content_inputs": {
+        "text": [
+          "skill_brainstorm_plan",
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_brainstorm_plan",
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Design a two-stage funnel slide in Chinese. Left: fuzzy intent with questions: goal, boundary, user, constraints, success, verification. Middle: Spec with goals/non-goals/options/rejected options/verification strategy. Right: Executable Plan with active slice, success criteria, verification path, phases, risks, commit units. Add warning: plan 不负责补问需求; 需求不清回 brainstorm. Include small example phrase: “制作 workflow PPT” -> deck plan.",
+      "negative_prompt": "No implying brainstorm writes implementation code, no source metadata, no huge paragraphs, no generic planning stock icons.",
+      "output_png": "docs/decks/harness-workflow-overview/slides/slide-08.png",
+      "speaker_notes": "这一页把需求收敛和实施计划分开。brainstorm 解决模糊性，plan 解决可执行性。两者都必须提前考虑验证，而不是最后才想怎么证明。"
+    },
+    {
+      "page": 9,
+      "title": "implement + diagnose: 执行与失败处理",
+      "claim": "实现时 WIP=1；失败不靠猜，必须复现、假设、验证根因再修复。",
+      "content_inputs": {
+        "text": [
+          "skill_execute_diagnose",
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_execute_diagnose",
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a split-loop slide in Chinese. Left green loop: implement = confirm active slice -> minimal step -> focused check -> minimal change -> adjacent verification -> docs/recovery sync. Right red loop: diagnose = capture failure -> reproduce twice -> minimize -> one hypothesis -> instrument -> root cause -> regression evidence. Center rule: 连续失败或根因不清，转 diagnose. Use contrasting green/red lanes with compact checklists.",
+      "negative_prompt": "No chaotic bug imagery, no fake stack traces, no source labels, no tiny unreadable command output, no oversized decorative icons.",
+      "output_png": "docs/decks/harness-workflow-overview/slides/slide-09.png",
+      "speaker_notes": "这里强调 implementation 和 diagnosis 的边界。正常红绿循环里的红是预期；不明失败、命令异常或错误变化才进入 diagnose。"
+    },
+    {
+      "page": 10,
+      "title": "review + verify: 判断与证明分开",
+      "claim": "review 判断是否正确、越界、缺证据；verify 用当前命令和证据证明 ready claim。",
+      "content_inputs": {
+        "text": [
+          "skill_review_verify",
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_review_verify",
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Design a two-gate quality slide in Chinese. Gate 1: review checks Spec coverage, correctness, evidence gap, docs/artifacts, entropy; outputs Pass/Conditional/Block. Gate 2: verify checks ready claim against evidence ladder: static parse, build, typecheck, lint, unit, integration, smoke, E2E, manual signal. Big distinction: review judges; verify proves. Add route labels: finding -> implement/diagnose; failing evidence -> diagnose; pass -> cleanup.",
+      "negative_prompt": "No confusing review with testing, no source metadata, no fake checkmarks without evidence, no unreadable ladder text.",
+      "output_png": "docs/decks/harness-workflow-overview/slides/slide-10.png",
+      "speaker_notes": "这页让读者记住两个门的分工：review 是结构性判断，verify 是 fresh evidence。没有当前证据不能说 ready。"
+    },
+    {
+      "page": 11,
+      "title": "cleanup + find-skills: 防熵增与能力适配",
+      "claim": "收尾要让项目知识回到真实状态；能力发现只服务真实缺口，不是囤工具。",
+      "content_inputs": {
+        "text": [
+          "skill_cleanup_find",
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "skill_cleanup_find",
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a dense slide in Chinese with two panels. Left: Knowledge Cleanup checklist: README current, AGENTS thin, generated artifacts regenerated, recovery surface aligned, residual drift recorded, no hiding unfinished work. Right: Capability Fit card for find-skills: value, enablement, risk/cost, fallback; helper for Capability Discovery, not ninth workflow lane. Use anti-entropy visual motif: messy state collapsing into clean handoff.",
+      "negative_prompt": "No broom/cleaning cartoon, no implying cleanup fixes bugs, no visible file paths, no internal labels, no tool-hoarding imagery.",
+      "output_png": "docs/decks/harness-workflow-overview/slides/slide-11.png",
+      "speaker_notes": "cleanup 不是简单说 done，而是让下一个 agent 或人能相信文档、生成物和状态。find-skills 也不是主流程，而是在能力缺口真实存在时提供发现能力。"
+    },
+    {
+      "page": 12,
+      "title": "Recovery Surface: 后端是选择，不是信仰",
+      "claim": "恢复面保存语义字段；none、docs plan、issue、feature list、three-file 或 existing system 都可以是合理后端。",
+      "content_inputs": {
+        "text": [
+          "context_terms",
+          "method_contract",
+          "skill_brainstorm_plan"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "context_terms",
+        "method_contract",
+        "skill_brainstorm_plan"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Design a backend selector slide in Chinese. Show semantic fields at top: objective, active slice, non-goals, evidence, decisions, risks, next action. Under it show backend options as cards: none, lightweight, docs plan, issue tracker, feature list, three-file, existing system. Add decision rule strip: 任务越长/风险越高/协作越多 -> 越需要 durable recovery. Highlight: three-file 是选项，不是概念前提.",
+      "negative_prompt": "No making three-file look mandatory, no raw filenames as visible content except generic backend names, no source labels, no cramped unreadable card text.",
+      "output_png": "docs/decks/harness-workflow-overview/slides/slide-12.png",
+      "speaker_notes": "这里讲 C10。关键不是固定用哪个文件，而是未来能恢复目标、范围、证据、风险和下一步。本次 PPT 计划就用了 docs plan 作为恢复面。"
+    },
+    {
+      "page": 13,
+      "title": "常见路由: 按状态选 skill",
+      "claim": "正确路线来自当前证据状态，而不是固定仪式感。",
+      "content_inputs": {
+        "text": [
+          "readme_overview",
+          "context_terms",
+          "plan_ppt"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "readme_overview",
+        "context_terms",
+        "plan_ppt"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a route cookbook slide in Chinese. Use six compact route cards: Tiny edit: implement -> verify. Unclear feature: brainstorm -> plan -> harness-builder -> implement -> review -> verify -> cleanup. Clear task unfamiliar repo: plan -> harness-builder -> implement -> review -> verify. Broken command: diagnose -> implement -> verify. Harness audit: harness-builder -> verify -> cleanup. Research route: brainstorm -> plan -> harness-builder -> bounded evidence loop -> review -> verify -> cleanup. Use small arrows and condition badges.",
+      "negative_prompt": "No one giant unreadable flowchart, no rigid mandatory pipeline framing, no source labels, no decorative empty space.",
+      "output_png": "docs/decks/harness-workflow-overview/slides/slide-13.png",
+      "speaker_notes": "这一页把前面的抽象原则转成使用手册。读者应该能看到：不同任务状态对应不同路线，workflow 是帮助少走弯路，不是增加步骤。"
+    },
+    {
+      "page": 14,
+      "title": "一次真实工作如何穿过 Harness",
+      "claim": "从用户请求到交付，关键不是多跑几个 skill，而是每一步都留下可恢复和可验证的工件。",
+      "content_inputs": {
+        "text": [
+          "plan_ppt",
+          "readme_overview",
+          "method_contract"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "plan_ppt",
+        "readme_overview",
+        "method_contract"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Design a concrete walkthrough timeline in Chinese using this PPT task as the example. Steps: user asks for dense PPT -> plan creates docs plan -> harness-builder checks workbench and capability route -> protocol is drafted -> PNG slides generated -> PPT assembled -> review/verify -> cleanup/commit. For each step show artifact type: request, docs plan, deck-protocol.json, slide PNGs, pptx, validation evidence, git commit. Emphasize evidence and handoff.",
+      "negative_prompt": "No actual file paths visible, no internal metadata, no fake screenshots, no huge text blocks, no implying protocol confirmation can be skipped.",
+      "output_png": "docs/decks/harness-workflow-overview/slides/slide-14.png",
+      "speaker_notes": "用当前任务做例子，读者会更容易理解。尤其强调 protocol gate 和 verification gate：这不是为了形式，而是为了避免不可追溯、不可恢复的产物。"
+    },
+    {
+      "page": 15,
+      "title": "读者应该带走的操作清单",
+      "claim": "可靠 Agent 工作的最低标准：范围清楚、仓库为真、证据新鲜、状态可恢复、收尾不留熵。",
+      "content_inputs": {
+        "text": [
+          "method_contract",
+          "context_terms",
+          "readme_overview"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "method_contract",
+        "context_terms",
+        "readme_overview"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Create a one-page operating checklist slide in Chinese. Five big checklist rows: 1 目标和 non-goals 清楚; 2 truth lives in repo artifacts; 3 active slice WIP=1; 4 ready claim has fresh evidence; 5 cleanup aligns docs/artifacts/recovery. Add small decision prompt: 当前状态是什么? 需求不清->brainstorm, 计划不清->plan, 工作面不清->harness-builder, 失败不清->diagnose, 准备完成->verify/cleanup.",
+      "negative_prompt": "No motivational poster style, no generic productivity slogans, no source labels, no tiny dense paragraph.",
+      "output_png": "docs/decks/harness-workflow-overview/slides/slide-15.png",
+      "speaker_notes": "收束到可执行记忆点。读者不需要背所有 skill 文档，但应该能用这五条判断下一步该走哪个 lane。"
+    },
+    {
+      "page": 16,
+      "title": "Reference Map: 每个 skill 的责任边界",
+      "claim": "八个 active workflow skills 加一个辅助发现 skill，共同覆盖从构思到收尾的工程闭环。",
+      "content_inputs": {
+        "text": [
+          "plan_ppt",
+          "method_contract",
+          "skill_harness_builder",
+          "skill_brainstorm_plan",
+          "skill_execute_diagnose",
+          "skill_review_verify",
+          "skill_cleanup_find"
+        ],
+        "tables": [],
+        "images": []
+      },
+      "reference_asset_ids": [
+        "plan_ppt",
+        "method_contract",
+        "skill_harness_builder",
+        "skill_brainstorm_plan",
+        "skill_execute_diagnose",
+        "skill_review_verify",
+        "skill_cleanup_find"
+      ],
+      "fidelity": "light_redraw",
+      "final_image_prompt": "Design a dense appendix reference slide in Chinese. Create a compact table with columns: skill, when to use, canonical output, next route. Rows: harness-builder, brainstorm, plan, implement, diagnose, review, verify, cleanup, find-skills auxiliary. Use visual tags: Spec, Plan, Harness, Change, Root Cause, Findings, Evidence, Cleanup, Discovery. Make it readable and useful as a reference map.",
+      "negative_prompt": "No omitting any listed skill, no treating find-skills as active workflow lane, no source labels, no visible paths, no unreadable table text.",
+      "output_png": "docs/decks/harness-workflow-overview/slides/slide-16.png",
+      "speaker_notes": "最后给一个参考表，方便读者回看。再次强调 find-skills 是辅助能力发现，不是第九条 workflow lane。"
+    }
+  ]
+}
