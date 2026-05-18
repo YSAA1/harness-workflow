@@ -10,6 +10,7 @@ v3 adds:
 - Harness Hypothesis before Harness Plan;
 - Harness Charter before installation: objective, non-goals, acceptance criteria, verification, evidence location, recovery surface, and existing-harness decisions;
 - integrated Coverage Matrix before capability installation, so skills, hooks, MCP, subagents, CI, and GC close named gaps instead of forming a separate shopping list;
+- signal-bound Capability Shortlist rows before recommending or installing skills, hooks, MCP, subagents, or helper scripts;
 - phased installation with acceptance evidence or explicit blockers for each phase;
 - existing harness reconciliation before patching so old state does not mix with a new request;
 - Learn Harness Engineering course alignment checklist;

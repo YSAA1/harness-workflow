@@ -12,6 +12,7 @@ CORE_REFERENCES = {
     "verification_policy.md",
     "anti_entropy.md",
     "decision_matrix.md",
+    "capability_signal_policy.md",
     "skill_policy.md",
     "hook_policy.md",
     "mcp_policy.md",

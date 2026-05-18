@@ -20,6 +20,7 @@ Existing core policy files remain present:
 - `verification_policy.md`
 - `anti_entropy.md`
 - `decision_matrix.md`
+- `capability_signal_policy.md`
 - `skill_policy.md`
 - `hook_policy.md`
 - `mcp_policy.md`
@@ -34,6 +35,7 @@ Existing core policy files remain present:
 - Pack Selection gate.
 - Pack dry-run output.
 - Pack install report output.
+- Capability Shortlist pass for signal-bound recommendations.
 
 ## Added safety
 

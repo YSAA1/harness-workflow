@@ -246,6 +246,7 @@ for (const token of [
   "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
   "Harness Builder", "recovery surface", "three-file", "Spec", "Executable Plan",
   "Knowledge Cleanup", "Capability Discovery", "AGENTS.md", "项目铁律", "fresh evidence",
+  "Capability Shortlist",
   "Research Route", "autoresearch", "Evidence Loop", "Research Reset Policy",
 ]) {
   if (!activeDocs.includes(token)) fail(`docs missing boundary token: ${token}`);
@@ -273,6 +274,9 @@ if (exists(skillPath("harness-builder"))) {
     "Mandatory execution gates",
     "Question gate",
     "Capability Discovery gate",
+    "Capability Shortlist pass",
+    "capability_signal_policy.md",
+    "recommendation report",
     "Verification design gate",
     "User checkpoint gate",
     "USER CHECKPOINT",

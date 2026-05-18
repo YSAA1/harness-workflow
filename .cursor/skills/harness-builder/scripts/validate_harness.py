@@ -16,6 +16,7 @@ CORE_REFERENCES = [
     "install_policy.md",
     "verification_policy.md",
     "anti_entropy.md",
+    "capability_signal_policy.md",
 ]
 
 
@@ -40,7 +41,7 @@ def check_instruction_skill(root: Path, issues: list[str]) -> None:
         if not ok:
             issues.append(f"invalid root SKILL.md: {msg}")
         text = skill.read_text(encoding="utf-8", errors="replace")
-        required_phrases = ["Pack Selection gate", "USER CHECKPOINT", "Coverage Matrix", "Capability Discovery"]
+        required_phrases = ["Pack Selection gate", "USER CHECKPOINT", "Coverage Matrix", "Capability Discovery", "Capability Shortlist pass"]
         for phrase in required_phrases:
             if phrase not in text:
                 issues.append(f"SKILL.md missing required phrase: {phrase}")
@@ -140,7 +141,7 @@ def validate_preserved_assets(root: Path, issues: list[str]) -> None:
     scan = root / "scripts" / "scan_project.py"
     if scan.exists():
         text = scan.read_text(encoding="utf-8", errors="replace")
-        for token in ["node_script_tooling", "cursor_plugin_or_adapter", "harness_workflow_plugin", "cursor_preview", "packaged_plugin", "plugin_rules"]:
+        for token in ["node_script_tooling", "cursor_plugin_or_adapter", "harness_workflow_plugin", "cursor_preview", "packaged_plugin", "plugin_rules", "automation_signals", "frontend_framework", "github_remote"]:
             if token not in text:
                 issues.append(f"scan_project.py missing current signal: {token}")
 

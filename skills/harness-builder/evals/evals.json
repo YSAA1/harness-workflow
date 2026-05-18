@@ -10,7 +10,7 @@
     {
       "id": 2,
       "prompt": "这是一个已有的 RL 机器人项目，里面有 mujoco 环境和训练脚本。我想让 Codex 接手开发，但怕它乱改 reward 和 data。请先 audit，不要改文件，可以推荐是否用 subagents。",
-      "expected_output": "Should recommend parallel_readonly if helpful, identify gaps around env/reward verification, protected paths, state, local AGENTS, RL skills, and produce Harness Hypothesis before plan.",
+      "expected_output": "Should stay read-only, identify gaps around env/reward verification, protected paths, state, local AGENTS, RL skills, and produce Harness Hypothesis plus signal-bound Capability Shortlist rows before any plan.",
       "files": []
     },
     {
@@ -28,7 +28,7 @@
     {
       "id": 5,
       "prompt": "这个项目我不确定要不要做 skill、hooks、subagents、MCP。请先根据 learn-harness-engineering 的课程思想，告诉我还缺什么信息才能设计这套 harness。",
-      "expected_output": "Should not ask a fixed questionnaire; should produce missing information table with why it matters, affected artifact, conservative default, and course coverage check.",
+      "expected_output": "Should not ask a fixed questionnaire; should produce missing information table with why it matters, affected artifact, conservative default, course coverage check, and no install plan until Coverage Matrix gaps justify a Capability Shortlist.",
       "files": []
     }
   ]

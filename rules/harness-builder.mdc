@@ -28,21 +28,22 @@ Canonical source: `skills/harness-builder/SKILL.md`.
 2. Identify known facts, unknowns, protected paths, verification signals, and recovery options.
 3. Ask gap-driven user questions when answers affect the harness. If fast/deep verification is unclear, ask at least one verification question.
 4. Produce a Harness Hypothesis when important gaps remain.
-5. Run Capability Discovery only for capabilities that materially help verification, observability, automation, or domain work.
+5. Run Capability Discovery only after the Coverage Matrix exposes a real gap. Include a Capability Shortlist pass for candidates that materially help verification, observability, automation, or domain work.
 6. For skill gaps, invoke `find-skills` or state why no reusable skill search is needed.
 7. For hooks, MCP, subagents, agent config, or recently changed external tool behavior, use targeted web search or state why no web research is needed.
-8. Classify candidates as Required, Recommended, Deferred, or Rejected by value, enablement, risk/cost, and fallback.
-9. Propose verification design before installation: fast check, deeper smoke/E2E/manual check, evidence path, and unverified risks.
-10. Show a user checkpoint before installation and wait for explicit approval unless direct changes were already authorized.
-11. For Research Route, require goal, hypothesis, baseline, metric, verification, guardrails, iteration budget, artifact policy, and stop rule before any evidence loop.
-12. Choose or repair the recovery surface as a semantic contract; do not force three-file state.
-13. Install only approved project-local components.
-14. Verify the installed harness with the narrowest real command.
+8. For every candidate, state repo signal, coverage row, why, install surface, risk/cost, fallback, and Required / Recommended / Deferred / Rejected classification.
+9. If the user asked only for analysis or recommendations, stay read-only and output a recommendation report without writing files or creating an install plan.
+10. Propose verification design before installation: fast check, deeper smoke/E2E/manual check, evidence path, and unverified risks.
+11. Show a user checkpoint before installation and wait for explicit approval unless direct changes were already authorized.
+12. For Research Route, require goal, hypothesis, baseline, metric, verification, guardrails, iteration budget, artifact policy, and stop rule before any evidence loop.
+13. Choose or repair the recovery surface as a semantic contract; do not force three-file state.
+14. Install only approved project-local components.
+15. Verify the installed harness with the narrowest real command.
 
 ## Outputs
 
 - Harness Hypothesis or Harness Plan.
-- User questions, Capability Discovery decisions, and verification design before installation.
+- User questions, Capability Discovery decisions, Capability Shortlist rows, and verification design before installation.
 - Project-local rules, docs, validation entry points, and recovery-surface declaration when approved.
 - For approved Research Route: research plan, evidence log, iteration protocol, and research manifest.
 - Capability Discovery decisions with rejected and deferred options.

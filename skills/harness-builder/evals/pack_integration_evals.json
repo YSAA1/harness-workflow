@@ -75,7 +75,7 @@
     {
       "id": "preserve-current-scan-signals",
       "prompt": "Validate merged harness-builder.",
-      "expected_output": "scan_project.py keeps node_script_tooling, cursor_preview, packaged_plugin, and plugin_rules signals."
+      "expected_output": "scan_project.py keeps node_script_tooling, cursor_preview, packaged_plugin, plugin_rules, and evidence-only automation_signals."
     }
   ]
 }

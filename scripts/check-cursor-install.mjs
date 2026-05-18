@@ -183,6 +183,7 @@ for (const token of [
   "recovery surface",
   "WIP=1",
   "Capability Discovery",
+  "Capability Shortlist",
   "rules adapter",
   "three-file",
 ]) {

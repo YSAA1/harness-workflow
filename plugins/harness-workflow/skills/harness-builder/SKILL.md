@@ -48,6 +48,7 @@ repo evidence + user intent + existing harness reconciliation
 -> Harness Charter
 -> Coverage Matrix
 -> Capability Discovery for uncovered gaps
+-> Capability Shortlist pass for selected rows
 -> Pack Selection for selected coverage rows
 -> Harness Plan
 -> user checkpoint
@@ -91,9 +92,13 @@ These gates are required unless the user explicitly asks for read-only explanati
 4. **Capability Discovery gate**
    - Evaluate skills, hooks, MCP, subagents, external research, CI, GC, and helper scripts only after the Coverage Matrix exposes a real gap.
    - Bind every candidate capability to one coverage row. If no row needs it, reject it.
+   - Run a `Capability Shortlist pass` for uncovered or weak rows: each candidate must state repo signal, candidate, coverage row, why, install surface, risk/cost, fallback, and `Required / Recommended / Deferred / Rejected`.
+   - Default to 1-2 candidates per capability category; put extra plausible options in `Deferred`.
+   - If the user only asked for read-only analysis or recommendations, output a recommendation report only. Do not write files, create install plans, or proceed to Pack Selection.
    - For skill gaps, invoke `$find-skills` / `find-skills` or state `No reusable skill search needed` with reason.
    - For hooks, MCP, subagents, agent config, CI, GC, architecture tools, or recently changed external tool behavior, use targeted web search or state `No web research needed` with reason.
    - Prefer warning/baseline/ratchet behavior for existing projects over strict rules that break the current build.
+   - Use `references/capability_signal_policy.md`.
 
 5. **Pack Selection gate**
    - Run only after the Coverage Matrix and Capability Discovery expose a real gap.
@@ -164,10 +169,12 @@ Reply approve / change / stop.
 6. **Run Capability Discovery for uncovered gaps**
    - For reusable skills, use `find-skills` when a real coverage row needs repeatable workflow knowledge.
    - For hooks/MCP/external agent behavior/CI/GC/architecture tooling, use targeted web search against official docs or mature sources when current external behavior matters.
-   - Classify each candidate by value, enablement, risk/cost, and fallback.
-   - Reject candidates that do not close a named gap or duplicate a simpler file/script/test.
+   - Run the Capability Shortlist pass after evidence gathering: repo signal -> candidate -> coverage row -> why -> install surface -> risk/cost -> fallback -> classification.
+   - Classify each candidate as `Required`, `Recommended`, `Deferred`, or `Rejected` by value, enablement, risk/cost, and fallback.
+   - Reject candidates that do not close exactly one named gap or duplicate a simpler file/script/test.
+   - In recommendation-only mode, stop at the report and do not write files or install capabilities.
    - Record adopted external research in `.harness/research_notes.md`.
-   - See `references/skill_policy.md`, `references/web_research_policy.md`, `references/hook_policy.md`, `references/mcp_policy.md`.
+   - See `references/capability_signal_policy.md`, `references/skill_policy.md`, `references/web_research_policy.md`, `references/hook_policy.md`, `references/mcp_policy.md`.
 
 7. **Select install packs for approved coverage rows**
    - If architecture docs, boundary tests, linter snippets, CI, GC, or SECURITY.md are selected, use `references/packs/init_scaffold/adapter.md` to map those needs to concrete scaffold components.
@@ -240,6 +247,7 @@ NEXT
 ```
 
 Always state found evidence, unknowns, user questions, charter assumptions, coverage decisions, pack decisions, install/patch/archive/defer/reject decisions, capability value/cost, verification plan, phase status, and skipped-gate reasons.
+For each capability recommendation, include repo signal, coverage-row binding, install surface, risk/cost, fallback, and classification.
 
 ## Recommended next skill
 
@@ -260,6 +268,6 @@ When adding install packs, preserve current harness-builder assets unless a user
 - `templates/agents/*`, `templates/hooks/*`, and `templates/skills/*`;
 - `templates/project_context.md.j2`, `templates/workflow.md.j2`, `templates/verification.md.j2`, `templates/reports/verification_report.md.j2`, `templates/risk_register.md.j2`, `templates/features.json.j2`, or `templates/AGENTS.template.md`;
 - orchestration, course-alignment, verification status, and open-decision fields in `templates/manifest.yaml.j2` and `templates/state.md.j2`;
-- current `scripts/scan_project.py` signals for packaged plugins, Cursor preview, Node script tooling, and plugin rules.
+- current `scripts/scan_project.py` signals for packaged plugins, Cursor preview, Node script tooling, plugin rules, and evidence-only automation signals.
 
 The `init_scaffold` pack is additive. It must never be treated as a replacement for Research Route, subagent policy, hook policy, project-local skill templates, or the current recovery surface.
