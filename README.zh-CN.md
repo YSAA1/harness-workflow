@@ -108,7 +108,7 @@ harness 不是一个更长的 prompt。它是围绕模型的一套项目运行�
 | 恢复面是设计决策 | 有些任务不需要持久状态；有些只要短 checkpoint；有些需要 `task_plan.md`、`progress.md`、`findings.md`；有些应该复用 issue tracker 或已有 docs。 |
 | 能力必须匹配真实缺口 | 额外 skills、MCP、hooks、subagents 只有在补上当前任务或仓库缺口时才推荐。插件内置的 `find-skills` 辅助 skill 用于 skill 发现；hooks、MCP 和工具行为优先查当前官方资料或成熟实现。 |
 | 面向开放研究的 Research Route | 当用户明确要求 autoresearch 或研究性探索时，`harness-builder` 可以生成项目本地 research harness：假设、baseline、metric、evidence log、bounded iterations 和 rollback policy。 |
-| ready claim 必须有新证据 | `verify` 会把每个“完成了”的声明绑定到当前证据：测试、构建输出、smoke check、截图、人工检查，或明确说明为什么无法验证。 |
+| ready claim 必须有新证据 | `verify` 是唯一 ready gate。它会把每个“完成了”的声明绑定到当前证据：测试、构建输出、smoke check、截图、人工检查，或明确说明为什么无法验证。 |
 | cleanup 是交付的一部分 | README 过期、生成物残留、状态不清、恢复笔记缺失，都不是小问题。下一个 agent 读不懂现场，工作就没有真正结束。 |
 
 ## `harness-builder` 应该放在哪里
@@ -174,12 +174,12 @@ stop rule.
 | Skill | 什么时候用 | 应该留下什么 | 推荐下一步 |
 | --- | --- | --- | --- |
 | `brainstorm` | 目标、边界、取舍或成功标准还不够清楚。 | 聚焦的 spec：goals、non-goals、考虑过的方案、成功标准和验证策略。 | `plan`，如果任务本身是 harness 设计则转 `harness-builder` |
-| `plan` | spec 或用户请求已经清楚，可以选择第一个可执行 slice。 | 写入 selected planning surface 的计划，包括 active slice、proof path 和 commit-sized work units。 | 工作台缺失时转 `harness-builder`，否则转 `implement` |
+| `plan` | spec 或用户请求已经清楚，可以选择第一个可执行 slice。 | 写入 selected planning surface 的计划，包括 active slice、`verification_path_status`、所需验证能力、fallback evidence、final integration claim 和 commit-sized work units。 | 工作台或证明路径 blocked 时转 `harness-builder`；纯证明任务转 `verify`；否则转 `implement` |
 | `harness-builder` | 仓库缺少可靠工作台、恢复面、验证入口或能力决策。 | 基于仓库证据的最小 project-local harness plan，以及经过批准安装的组件。 | `verify`，再进入 `implement` 或 `cleanup` |
-| `implement` | 一个 slice 已经 ready，项目工作面也足够清楚。 | 小范围改动，以及本地检查证据；如果检查不能跑，要说明原因。 | 有意义改动转 `review`，小改动可直接 `verify` |
+| `implement` | 一个 slice 已经 scoped，项目工作面也足够清楚。 | 小范围改动，以及作为实现反馈的本地检查；如果检查不能跑，要说明原因。它不声明 ready。 | 有意义改动转 `review`，小改动可直接 `verify` |
 | `diagnose` | build、test、lint、typecheck、CI 或运行时行为失败，且根因未知。 | 复现、一个已验证假设、根因、最小修复和回归证据。 | 需要修复时转 `implement`，已修好时转 `verify` |
-| `review` | 有意义的改动已经稳定，需要在 ready 前检查。 | 关于正确性、测试缺口、文档漂移、范围膨胀和残余风险的 findings。 | 通过后转 `verify`，有 findings 转 `implement` 或 `diagnose` |
-| `verify` | agent 准备声明 work ready。 | 绑定具体成功标准的 fresh evidence。 | 通过转 `cleanup`，失败或缺能力转 `diagnose` / `harness-builder` |
+| `review` | 有意义的改动已经稳定，需要在 ready 前做结构性检查。 | 关于正确性、测试缺口、文档漂移、范围膨胀、entropy 和残余风险的 findings。它不替代 verify。 | 通过后转 `verify` 或 verify fast-path，有 findings 转 `implement` 或 `diagnose` |
+| `verify` | agent 准备声明 work ready。 | 绑定具体成功标准、最后改动、命令、跳过项、unknown 和 ready verdict 的结构化 verification record。 | 通过转 `cleanup`，失败或缺能力转 `diagnose` / `harness-builder` |
 | `cleanup` | 工作完成、阻塞、放弃或准备交接。 | 更新后的项目知识、清理后的残留物，以及下个 agent 能读的恢复状态。 | stop，或把明确 follow-up 交给 `plan` / `implement` |
 | `find-skills` | 当前任务可能受益于已有可复用 skill。 | 搜索候选 skill，并在推荐或安装前检查质量。 | 要纳入项目能力时转 `harness-builder` |
 

@@ -140,13 +140,13 @@ pre {
   <div class="toolbar">
     <a class="button" href="../../skills/verify/SKILL.md">打开 SKILL.md</a>
     <span class="button">最终验证</span>
-    <span class="button">176 行</span>
+    <span class="button">205 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>把&quot;可以结束&quot;转化为可追溯证据：每条成功标准都必须对应 fresh command、smoke/E2E 或明确的未验证限制。</p>
+    <p>把&quot;可以结束&quot;转化为可追溯证据：每条成功标准都必须对应 fresh command、smoke/E2E 或明确的未验证限制。 用结构化 verification record 绑定 claim、路径、最后改动、命令、跳过项、unknown 和 ready verdict。</p>
   </section>
 
   <section class="section grid">
@@ -160,7 +160,7 @@ pre {
     </div>
     <div class="panel">
       <h2>先读输入</h2>
-      <ul><li>ready claim：active slice、success criteria、verification path。</li><li>selected recovery surface：最近 implementation/review evidence、risks、capability gaps。</li><li>git status --short：确认最后改动后哪些证据已过期。</li><li>项目验证入口：README、AGENTS.md、package/build/test config。</li><li>当前 slice 涉及的 source/test/docs 路径。</li></ul>
+      <ul><li>ready claim：active slice、success criteria、verification path、verification path status、required capabilities、fallback evidence。</li><li>selected recovery surface：最近 implementation/review evidence、risks、capability gaps。</li><li>git status --short：确认最后改动后哪些证据已过期。</li><li>项目验证入口：README、AGENTS.md、package/build/test config。</li><li>当前 slice 涉及的 source/test/docs 路径。</li></ul>
     </div>
   </section>
 
@@ -181,7 +181,7 @@ pre {
         <div><h3>第 4 步 — Run Checks</h3><p>按文档命令运行，记录 command、cwd、result、输出摘要、freshness 和跳过原因。检查失败就转 diagnose。</p></div>
       </div><div class="step">
         <div class="num">5</div>
-        <div><h3>第 5 步 — Compare Against Success Criteria</h3><p>把每条成功标准映射到 evidence，状态只能是 pass/fail/unknown。unknown 不是 ready。</p></div>
+        <div><h3>第 5 步 — Compare Against Success Criteria</h3><p>把每条成功标准映射到 evidence，状态只能是 pass/fail/unknown。unknown 不是 ready。多阶段或多 commit unit 任务还必须覆盖 final_integration_claim。</p></div>
       </div><div class="step">
         <div class="num">6</div>
         <div><h3>第 6 步 — Update Artifacts</h3><p>按 selected recovery surface 记录 verification entry、skipped checks、capability gaps 和 residual risk。</p></div>
@@ -195,7 +195,7 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text VERIFICATION: PASS|FAIL|INSUFFICIENT Claim: - Active slice: ... - Success criteria checked: ... Evidence: - Build: &lt;command -&gt; pass|fail|not applicable&gt; - Typecheck: ... - Lint: ... - Unit: ... - Integration: ... - Smoke/E2E: ... Freshness: - Latest relevant change: ... - Evidence after change: yes|no Capabilities: - recommended: &lt;none | capability + value/enablement/risk/fallback&gt; Risks: - ... Ready: - YES|N...</pre>
+      <pre>``text VERIFICATION: PASS|FAIL|INSUFFICIENT Verification record: claim_id: &lt;stable short id&gt; claim: &lt;ready claim&gt; covered_paths: - &lt;path or behavior surface&gt; latest_change_ref: &lt;git diff summary | commit | file timestamp basis&gt; success_criteria: - criterion: &lt;text&gt; evidence: &lt;command/smoke/manual signal&gt; status: pass|fail|unknown commands: - command: &lt;exact command&gt; cwd: &lt;path&gt; result: pass|fail evidence_after_chang...</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
@@ -211,7 +211,7 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] Active slice and ready claim are stated.</li><li>[ ] Every success criterion is mapped to fresh evidence or marked unknown.</li><li>[ ] Relevant evidence ladder rungs are run or skipped with reasons.</li><li>[ ] Capability gap is absent or documented with value/enablement/risk/fallback.</li><li>[ ] selected recovery surface records commands, results, timestamp, and limits when required.</li><li>[ ] Output routes to the next skill.</li></ul>
+      <ul><li>[ ] Active slice and ready claim are stated.</li><li>[ ] Every success criterion is mapped to fresh evidence or marked unknown.</li><li>[ ] Multi-stage work maps final_integration_claim to evidence.</li><li>[ ] Verification record includes claim_id、covered_paths、latest_change_ref、commands、skipped checks、unknowns 和 ready verdict。</li><li>[ ] Relevant evidence ladder rungs are run or skipped with reasons.</li><li>[ ] Capability gap is absent or documented with value/enablement/risk/fallback.</li><li>[ ] selected recovery surface records commands, results, timestamp, and limits when required.</li><li>[ ] Output routes to the next skill.</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>

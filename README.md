@@ -110,7 +110,7 @@ That checklist is not a mandatory artifact list. It is a decision framework. A s
 | Recovery as a design choice | Some work needs no durable state. Some needs a short checkpoint. Some needs `task_plan.md`, `progress.md`, and `findings.md`. Some should reuse an issue tracker or existing docs. |
 | Capability fit, not capability hoarding | Extra skills, MCP servers, hooks, and subagents are recommended only when they close a real gap in the task or repo. The bundled `find-skills` helper is for skill discovery; web research is used for current hooks, MCP, and tool behavior. |
 | Research Route for open-ended work | When the user explicitly asks for autoresearch or method exploration, `harness-builder` can build a project-local research harness with hypothesis, baseline, metric, evidence log, bounded iterations, and rollback rules. |
-| Fresh evidence for ready claims | `verify` ties every "done" claim to current evidence: tests, build output, smoke checks, screenshots, manual checks, or a clearly stated reason verification is blocked. |
+| Fresh evidence for ready claims | `verify` is the only ready gate. It ties every "done" claim to current evidence: tests, build output, smoke checks, screenshots, manual checks, or a clearly stated reason verification is blocked. |
 | Cleanup before handoff | The workflow treats stale README text, leftover generated files, unclear state, and missing recovery notes as part of the work, not as optional polish. |
 
 ## Where `harness-builder` fits
@@ -181,12 +181,12 @@ stop rule.
 | Skill | Use it when | What it should leave behind | Recommended next |
 | --- | --- | --- | --- |
 | `brainstorm` | The goal, boundary, tradeoff, or success criteria is not clear enough to plan. | A focused spec: goals, non-goals, options considered, success criteria, and verification strategy. | `plan`, or `harness-builder` for direct harness work |
-| `plan` | The spec or user request is clear enough to choose a first executable slice. | A plan in the selected planning surface, with active slice, proof path, and commit-sized work units. | `harness-builder` when the workbench is missing; otherwise `implement` |
+| `plan` | The spec or user request is clear enough to choose a first executable slice. | A plan in the selected planning surface, with active slice, `verification_path_status`, required capabilities, fallback evidence, final integration claim, and commit-sized work units. | `harness-builder` when the workbench or proof path is blocked; `verify` for proof-only work; otherwise `implement` |
 | `harness-builder` | The repo lacks a reliable workbench, recovery surface, verification entry point, or capability decision. | A minimal project-local harness plan and approved installed components, grounded in repo evidence. | `verify`, then `implement` or `cleanup` |
-| `implement` | One slice is ready and the workbench is clear enough to change files. | A small scoped change, with local checks or a clear reason checks cannot run. | `review` for meaningful changes; `verify` for tiny changes |
+| `implement` | One slice is scoped and the workbench is clear enough to change files. | A small scoped change, with local checks as implementation feedback or a clear reason checks cannot run. It does not declare ready. | `review` for meaningful changes; `verify` for tiny changes |
 | `diagnose` | A build, test, lint, typecheck, CI run, or runtime behavior fails without a known root cause. | Reproduction, one tested hypothesis, root cause, minimal fix, and regression evidence. | `implement` for the fix, or `verify` when already fixed |
-| `review` | A meaningful change looks stable and needs scrutiny before a ready claim. | Findings about correctness, missed tests, docs drift, scope creep, and residual risk. | `verify` on pass; `implement` or `diagnose` on findings |
-| `verify` | The agent wants to say the work is ready. | Fresh evidence tied to the exact success criteria. | `cleanup` on pass; `diagnose` or `harness-builder` on gaps |
+| `review` | A meaningful change looks stable and needs structural scrutiny before a ready claim. | Findings about correctness, missed tests, docs drift, scope creep, entropy, and residual risk. It does not replace verification. | `verify` on pass or verify fast-path; `implement` or `diagnose` on findings |
+| `verify` | The agent wants to say the work is ready. | A structured verification record tied to the exact success criteria, latest change, commands, skipped checks, unknowns, and ready verdict. | `cleanup` on pass; `diagnose` or `harness-builder` on gaps |
 | `cleanup` | Work is done, blocked, abandoned, or being handed off. | Updated project knowledge, removed leftovers, and a recovery state the next agent can read. | stop, or reopen with `plan` / `implement` for explicit follow-up |
 | `find-skills` | The current task may benefit from an existing reusable skill. | Search and quality checks before recommending or installing a skill. | `harness-builder` when adopting a project capability |
 

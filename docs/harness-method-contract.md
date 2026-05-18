@@ -10,7 +10,7 @@
 | Harness Charter | `harness-builder` 安装前的短合同，说明目标、非目标、用户可见验收标准、验证路径、证据落点和已有 harness 处理方式 |
 | Coverage Matrix | `harness-builder` 的统一缺口表，把入口、文档、恢复、验证、架构边界、反漂移、动态状态和额外能力放在同一张 Required / Recommended / Deferred / Rejected 表里 |
 | Spec | `brainstorm` 的独立产物，说明要建什么、为什么、如何证明 |
-| Executable Plan | `plan` 的产物，说明 active slice、non-goals、success criteria、verification path 和 next actions |
+| Executable Plan | `plan` 的产物，说明 active slice、non-goals、success criteria、verification path、verification path status、required capabilities、fallback evidence、final integration claim 和 next actions |
 | Recovery surface | 让未来 agent 恢复工作的项目工件，可以是 none、lightweight、three-file、feature-list 或 existing system |
 | Knowledge Cleanup | `cleanup` 的目标：防止 docs、生成物、AGENTS.md 和 recovery surface 漂移 |
 | Capability Discovery | 为当前任务搜索并评估 skills、MCP、hooks、subagents 或外部 agent 能力 |
@@ -66,6 +66,9 @@ Agent 质量来自项目周围的系统：入口、规则、上下文、验证�
 - active slice 唯一。
 - non-goals 明确。
 - success criteria 可证伪。
+- verification path status 必须是 `runnable` 或 `blocked`。
+- blocked 时必须转 `harness-builder`，或记录用户接受的 fallback evidence。
+- 多阶段或多 commit unit 工作必须定义 `final_integration_claim`。
 - WIP=1。
 - 发现范围扩大时回 `plan` 或请求用户确认。
 - Research Route 还必须有 hypothesis、baseline、metric、verify、guard、budget 和 stop rule。
@@ -74,7 +77,15 @@ Agent 质量来自项目周围的系统：入口、规则、上下文、验证�
 
 ## C6 Fresh Evidence
 
-Ready claim 必须有当前证据。旧命令、聊天记忆和过期截图不能证明最新工作树。
+Ready claim 必须由 `verify` 作为唯一 ready gate 证明。旧命令、聊天记忆和过期截图不能证明最新工作树。
+
+要求：
+
+- `implement` 可以跑局部检查，但这些检查只是 implementation feedback，不是 final ready proof。
+- `review` 做 scope、spec、diff、docs、entropy 和 risk 的结构性评审；它不能替代 `verify`。
+- `verify` 必须把每条 success criterion 映射到 fresh evidence，状态只能是 pass、fail 或 unknown。
+- unknown 不能算 ready。
+- 结构化 verification record 至少包含 claim、covered paths、latest change、commands、skipped high-value checks、unknowns 和 ready verdict。
 
 主要 skill：`verify`、`review`、`diagnose`。
 
@@ -102,7 +113,7 @@ Capability Discovery 要求：
 - 生成物只能通过生成器更新。
 - 新需求进入已有 harness 时，先声明当前 source of truth，避免旧 active slice 和新需求混写。
 - 稳定架构边界优先用测试、lint、baseline/ratchet 或只读扫描机械化；不清晰或高噪声时先记录为 deferred gap。
-- Review 可以指出 drift；系统性 reconciliation 由 Knowledge Cleanup 完成。
+- Review 可以指出 drift；ready claim 仍先进入 `verify`。系统性 reconciliation 由 Knowledge Cleanup 完成。
 
 主要 skill：`review`、`cleanup`。
 

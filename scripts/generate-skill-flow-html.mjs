@@ -27,6 +27,7 @@ const routeMap = [
   ["brainstorm", "harness-builder"],
   ["plan", "harness-builder"],
   ["plan", "implement"],
+  ["plan", "verify"],
   ["implement", "review"],
   ["implement", "diagnose"],
   ["implement", "plan"],
@@ -36,7 +37,6 @@ const routeMap = [
   ["review", "verify"],
   ["review", "diagnose"],
   ["review", "implement"],
-  ["review", "cleanup"],
   ["verify", "cleanup"],
   ["verify", "diagnose"],
   ["verify", "harness-builder"],
@@ -60,7 +60,7 @@ const branchFlows = [
   ["评审发现问题", ["review", "implement", "review"]],
   ["最终验证失败", ["verify", "diagnose", "review"]],
   ["能力缺口", ["verify", "harness-builder", "verify"]],
-  ["知识漂移", ["review", "cleanup"]],
+  ["知识漂移", ["review", "verify", "cleanup"]],
 ];
 
 const pageTitle = "Harness Workflow Skill 流程审阅";

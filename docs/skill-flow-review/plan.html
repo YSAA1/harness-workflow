@@ -140,13 +140,13 @@ pre {
   <div class="toolbar">
     <a class="button" href="../../skills/plan/SKILL.md">打开 SKILL.md</a>
     <span class="button">Executable Plan</span>
-    <span class="button">165 行</span>
+    <span class="button">182 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>这个 skill 解决&quot;计划只活在聊天里&quot;的问题，同时避免把所有项目强绑到同一种状态文件。 - agent 被压缩或新会话开启后，仍能从项目 artifact 恢复执行边界。 - 多人/多 agent 协作时，能回答&quot;现在做到哪、下一步是什么&quot;。 - 范围不会在追加讨论中悄悄扩张。</p>
+    <p>这个 skill 解决&quot;计划只活在聊天里&quot;的问题，同时避免把所有项目强绑到同一种状态文件。 - agent 被压缩或新会话开启后，仍能从项目 artifact 恢复执行边界和证明方式。 - 多人/多 agent 协作时，能回答&quot;现在做到哪、下一步是什么&quot;。 - 范围不会在追加讨论中悄悄扩张。 - 验证能力在计划阶段暴露，避免做完后才发现无法证明。</p>
   </section>
 
   <section class="section grid">
@@ -172,7 +172,7 @@ pre {
         <div><h3>第 0 步 — 选择或确认 planning surface</h3><p>如果项目已经声明 recovery surface，写入该 surface。若没有声明且任务不需要 durable state，可以输出轻量 plan 并停下。若缺口影响后续恢复，转 harness-builder。</p></div>
       </div><div class="step">
         <div class="num">2</div>
-        <div><h3>第 1 步 — 写 Executable Plan</h3><p>计划必须包含： - Objective - Active slice - Non-goals - Success criteria - Verification path - 3-7 个阶段或 work items - 当前唯一 in-progress/next item</p></div>
+        <div><h3>第 1 步 — 写 Executable Plan</h3><p>计划必须包含： - Objective - Active slice - Non-goals - Success criteria - Verification path - Verification path status: runnable | blocked - Required capabilities</p></div>
       </div><div class="step">
         <div class="num">3</div>
         <div><h3>第 2 步 — 写入选定 artifact</h3><p>- docs plan：写到 docs/plans/ 或项目指定路径。 - issue：写成可发布 issue 或更新 issue body。 - feature-list：更新对应 feature entry。 - existing system：按项目惯例更新，不复制第二套状态。 - three-file backend：使用 templates/task_plan.md、templates/progress.md、templates/findings.md。</p></div>
@@ -181,7 +181,7 @@ pre {
         <div><h3>第 3 步 — 检查可执行性</h3><p>每个阶段必须有具体动作和验证含义。不允许&quot;继续优化&quot;、&quot;完善逻辑&quot;这类不可恢复动作。</p></div>
       </div><div class="step">
         <div class="num">5</div>
-        <div><h3>第 4 步 — 停在计划边界</h3><p>除非用户明确要求继续，否则产出计划后停止。给出下一步建议：implement、diagnose 或 harness-builder。</p></div>
+        <div><h3>第 4 步 — 停在计划边界</h3><p>除非用户明确要求继续，否则产出计划后停止。给出下一步建议：implement、verify、diagnose 或 harness-builder。</p></div>
       </div>
     </div>
   </section>
@@ -189,7 +189,7 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text EXECUTABLE PLAN WRITTEN Planning surface: &lt;docs plan | issue | feature-list | existing | three-file&gt; Artifact: &lt;path | issue | entry id&gt; Spec source: &lt;path | explicit small-task exception&gt; Active slice: &lt;一句话&gt; Success criteria: &lt;可证伪条件&gt; Next skill: &lt;implement | diagnose | harness-builder&gt; Reason: &lt;一句话&gt; ``</pre>
+      <pre>``text EXECUTABLE PLAN WRITTEN Planning surface: &lt;docs plan | issue | feature-list | existing | three-file&gt; Artifact: &lt;path | issue | entry id&gt; Spec source: &lt;path | explicit small-task exception&gt; Active slice: &lt;一句话&gt; Success criteria: &lt;可证伪条件&gt; Verification path status: &lt;runnable | blocked&gt; Required capabilities: &lt;list&gt; Fallback evidence: &lt;none | accepted fallback&gt; Final integration claim: &lt;none | claim&gt; Next skill: &lt;i...</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
@@ -199,13 +199,13 @@ pre {
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>Spec 明确，需要计划 artifact</td><td>本 skill</td></tr><tr><td>项目工作面或 recovery surface 不清楚</td><td>harness-builder</td></tr><tr><td>计划写好且可以实现</td><td>implement</td></tr><tr><td>已知失败正在发生</td><td>diagnose</td></tr><tr><td>需求或验证策略不清</td><td>brainstorm</td></tr><tr><td>仅小补丁</td><td>直接执行并按需记录 evidence</td></tr></tbody></table>
+    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>Spec 明确，需要计划 artifact</td><td>本 skill</td></tr><tr><td>项目工作面或 recovery surface 不清楚</td><td>harness-builder</td></tr><tr><td>计划写好且可以实现</td><td>implement</td></tr><tr><td>计划只需要证明当前状态或发布就绪</td><td>verify</td></tr><tr><td>已知失败正在发生</td><td>diagnose</td></tr><tr><td>需求或验证策略不清</td><td>brainstorm</td></tr><tr><td>仅小补丁</td><td>直接执行并按需记录 evidence</td></tr></tbody></table>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] 已读取并引用用户批准的 Spec；若没有独立 Spec，已说明为什么该任务足够小且验证策略已明确。</li><li>[ ] 已选择 planning surface 并说明原因。</li><li>[ ] Executable Plan 含目标、active slice、non-goals、成功标准、验证路径、阶段、风险、下一步。</li><li>[ ] 恰好一个当前 item 是 in-progress 或 next。</li><li>[ ] 没有默认创建第二套 recovery surface。</li><li>[ ] 如使用 three-file backend，模板取自 templates/。</li><li>[ ] 已显式给出下一步 skill，且除非用户要求继续，否则停在计划边界。</li></ul>
+      <ul><li>[ ] 已读取并引用用户批准的 Spec；若没有独立 Spec，已说明为什么该任务足够小且验证策略已明确。</li><li>[ ] 已选择 planning surface 并说明原因。</li><li>[ ] Executable Plan 含目标、active slice、non-goals、成功标准、验证路径、验证路径状态、所需能力、fallback、阶段、风险、下一步。</li><li>[ ] 多阶段或多 commit unit 计划含 final_integration_claim。</li><li>[ ] 若 verification path blocked，已转 harness-builder 或记录用户接受的 fallback evidence。</li><li>[ ] 恰好一个当前 item 是 in-progress 或 next。</li><li>[ ] 没有默认创建第二套 recovery surface。</li><li>[ ] 如使用 three-file backend，模板取自 templates/。</li><li>[ ] 已显式给出下一步 skill，且除非用户要求继续，否则停在计划边界。</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>

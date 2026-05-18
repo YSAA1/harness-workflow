@@ -3,13 +3,13 @@ name: review
 description: "当一段有意义的代码或文档改动已稳定、准备声明 ready/done/merge 前使用。典型触发语：review 一下、检查我的改动、commit 前看下、phase 完成了、Spec 已实现、sanity check、有没有漏。通常在 verify 之前、diagnose 修复之后使用；WIP 未稳定时不要使用。"
 ---
 
-# 工作流评审
+# 工作流结构评审
 
-`review` 用 **Spec / scope / evidence / docs / entropy** 五把尺检查当前结果。它抓正确性、范围、设计风险和缺失测试；文档漂移可以成为 finding，但系统性 reconciliation 属于 `cleanup`。
+`review` 用 **Spec / scope / diff / docs / entropy / risk** 六把尺检查当前结果。它抓正确性、范围、设计风险、缺失测试和文档漂移；fresh evidence sufficiency 与 ready judgement 归 `verify`。
 
 ## 目的
 
-review 必须同时检查"做超了"和"做欠了"。缺 fresh evidence 时，review 仍可完成结构判断，并把 evidence gap 标成 Important 后路由到 `verify`。
+review 必须同时检查"做超了"和"做欠了"。它可以判断"没有结构性 blocker"，但不能作为最终 ready gate。通过后仍路由到 `verify`；若已有 fresh evidence，则走 `verify` fast-path 做短重检和 claim mapping。
 
 ## 何时使用
 
@@ -36,7 +36,7 @@ review 必须同时检查"做超了"和"做欠了"。缺 fresh evidence 时，re
 | review 找出 Critical/Important findings | `implement` |
 | review 发现 Spec 漂移 | `brainstorm` 或 `plan` |
 | 发现项目工作面缺口 | `harness-builder` |
-| 文档/知识漂移需要整理 | `cleanup` |
+| 文档/知识漂移需要整理 | 先 `verify` ready claim；通过后 `cleanup` |
 
 ## 先读取这些输入
 
@@ -49,7 +49,7 @@ review 必须同时检查"做超了"和"做欠了"。缺 fresh evidence 时，re
 ## 检查重点
 
 - **Spec coverage**：是否实现 goals，是否越过 non-goals。
-- **Evidence**：每个完成声明是否有 fresh evidence，缺口是否明确。
+- **Evidence routing**：是否存在 evidence gap，是否需要 `verify` fast-path；不在 review 中做 ready 判定。
 - **Correctness and design risk**：边界、错误处理、数据、并发、兼容性是否合理。
 - **Docs/artifacts**：命令、配置、用户可见行为、API 是否同步。
 - **Entropy**：调试输出、TODO、未使用代码、未批准依赖或第二套状态来源。
@@ -60,7 +60,7 @@ review 必须同时检查"做超了"和"做欠了"。缺 fresh evidence 时，re
 
 一句话回答本次 review 的 active slice、改动文件和完成声明。
 
-### 第 2 步 — 用五把尺逐项过
+### 第 2 步 — 用六把尺逐项过
 
 对每条问题给状态、证据和严重级。
 
@@ -69,7 +69,7 @@ review 必须同时检查"做超了"和"做欠了"。缺 fresh evidence 时，re
 | 级别 | 含义 | 处置 |
 | --- | --- | --- |
 | Critical | 正确性错误、安全漏洞、数据丢失、核心行为破坏、违反 accepted Spec | 必须修复 |
-| Important | 设计缺陷、关键测试缺失、文档严重失真、scope creep | 应修或明确 deferred |
+| Important | 设计缺陷、关键测试缺失、文档严重失真、scope creep；等同于 broader audit 里的 Major | 应修或明确 deferred |
 | Minor | 风格、可读性、非阻塞清理 | 可选 |
 
 ### 第 4 步 — 列 Open Questions / Residual Risks
@@ -92,7 +92,7 @@ REVIEW: PASS | CONDITIONAL | BLOCK
 Scope:
   - Active slice: <一句话>
   - Files reviewed: <list 或 git stat>
-  - Fresh evidence base: <command or missing>
+  - Evidence base for review: <command/diff/manual read or missing>
 
 Findings:
   Critical:
@@ -107,12 +107,12 @@ Open Questions / Residual Risks:
 
 Assessment:
   - Spec coverage: <ok|partial|miss>
-  - Evidence sufficiency: <ok|gap|missing>
+  - Evidence routing: <verify required|verify fast-path|blocked>
   - Docs sync: <ok|drift>
   - Entropy: <ok|residue>
 
 Next:
-  - Skill: <implement | diagnose | verify | cleanup | plan>
+  - Skill: <implement | diagnose | verify | plan>
 ```
 
 ## Recommended next skill
@@ -122,7 +122,7 @@ Use review findings to route the next lane; review itself should not quietly bec
 | Situation | Recommended next skill |
 | --- | --- |
 | Pass, but fresh evidence is missing or stale | `verify` |
-| Pass and evidence is already fresh | `cleanup` |
+| Pass and evidence is already fresh | `verify` fast-path |
 | Correctness, docs, or scope findings need edits | `implement` |
 | A finding needs root-cause work before a fix | `diagnose` |
 | The implementation no longer matches the plan or Spec | `plan` |
@@ -133,12 +133,13 @@ Use review findings to route the next lane; review itself should not quietly bec
 - **鼓励性总结，无证据。**
 - **只看 diff，不对 Spec。**
 - **把缺测试当成以后补。**
-- **review 与 verify 混淆。**
+- **review 与 verify 混淆。** review 不声明 ready。
 - **改 `AGENTS.md` 写本次结论。**
 
 ## 验收标准
 
-- [ ] 至少检查了 Spec / evidence / docs / entropy。
+- [ ] 至少检查了 Spec / scope / diff / docs / entropy / risk。
+- [ ] 未把 review 通过当作 ready；pass 状态仍路由到 `verify`。
 - [ ] 每条 Critical / Important finding 有文件路径或命令级证据。
 - [ ] Open Questions 与 Residual Risks 明确。
 - [ ] Assessment 是 Pass / Conditional / Block 之一。

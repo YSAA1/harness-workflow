@@ -19,7 +19,7 @@ description: "当 build、test、lint、typecheck、CI 或运行时检查失败�
 
 ### 触发信号
 
-- `implement` 中同一 slice 连续两次失败，或同一命令两次返回不同错误。
+- `implement` 中一个明确假设循环仍无法解释失败，或同一命令两次返回不同错误。
 - `npm test` / build / lint / typecheck 等命令红，且错误不能直接对应刚改的几行。
 - 本地和 CI 结果不一致。
 - 构建突然慢、卡住、内存爆。

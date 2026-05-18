@@ -5,7 +5,7 @@ description: "当已批准 Spec 或足够明确的用户请求需要变成可执
 
 # Executable Plan
 
-`plan` 把已批准 Spec 或足够明确的请求转成 **Executable Plan**：范围、阶段、验证路径、下一步和 commit unit 清楚到可以直接交给 `implement`。
+`plan` 把已批准 Spec 或足够明确的请求转成 **Executable Plan**：范围、阶段、验证路径、验证能力、下一步和 commit unit 清楚到可以直接交给 `implement` 或 `verify`。
 
 它不负责发散需求，也不替代 Spec review。它默认不创建三文件；只有当前项目 recovery surface 已选择 three-file backend，或用户明确要求三文件时，才使用 `templates/` 下的 three-file 模板。
 
@@ -13,9 +13,10 @@ description: "当已批准 Spec 或足够明确的用户请求需要变成可执
 
 这个 skill 解决"计划只活在聊天里"的问题，同时避免把所有项目强绑到同一种状态文件。
 
-- agent 被压缩或新会话开启后，仍能从项目 artifact 恢复执行边界。
+- agent 被压缩或新会话开启后，仍能从项目 artifact 恢复执行边界和证明方式。
 - 多人/多 agent 协作时，能回答"现在做到哪、下一步是什么"。
 - 范围不会在追加讨论中悄悄扩张。
+- 验证能力在计划阶段暴露，避免做完后才发现无法证明。
 
 ## 何时使用
 
@@ -40,6 +41,7 @@ description: "当已批准 Spec 或足够明确的用户请求需要变成可执
 | Spec 明确，需要计划 artifact | **本 skill** |
 | 项目工作面或 recovery surface 不清楚 | `harness-builder` |
 | 计划写好且可以实现 | `implement` |
+| 计划只需要证明当前状态或发布就绪 | `verify` |
 | 已知失败正在发生 | `diagnose` |
 | 需求或验证策略不清 | `brainstorm` |
 | 仅小补丁 | 直接执行并按需记录 evidence |
@@ -71,7 +73,7 @@ Three-file 模板仍保留在 `templates/`，但只是 backend 选项，不是 `
 
 ### 第 -1 步 — Spec readiness gate
 
-确认输入能回答：做什么、不做什么、如何证明做对、哪些验证能力不足。回答不了就回 `brainstorm`。
+确认输入能回答：做什么、不做什么、如何证明做对、哪些验证能力不足、验证路径现在是 `runnable` 还是 `blocked`。回答不了就回 `brainstorm`。
 
 ### 第 0 步 — 选择或确认 planning surface
 
@@ -86,11 +88,17 @@ Three-file 模板仍保留在 `templates/`，但只是 backend 选项，不是 `
 - Non-goals
 - Success criteria
 - Verification path
+- Verification path status: `runnable | blocked`
+- Required capabilities
+- Fallback evidence if full verification is unavailable
+- `final_integration_claim` for multi-stage or multi-commit work
 - 3-7 个阶段或 work items
 - 当前唯一 in-progress/next item
 - Commit units
 - Known risks / blockers
 - Handoff to next skill
+
+如果唯一有意义的 verification path 是 `blocked`，计划不能直接路由到 `implement`，除非同时写明用户接受的 fallback evidence。否则转 `harness-builder` 修复验证能力。
 
 ### 第 2 步 — 写入选定 artifact
 
@@ -106,7 +114,7 @@ Three-file 模板仍保留在 `templates/`，但只是 backend 选项，不是 `
 
 ### 第 4 步 — 停在计划边界
 
-除非用户明确要求继续，否则产出计划后停止。给出下一步建议：`implement`、`diagnose` 或 `harness-builder`。
+除非用户明确要求继续，否则产出计划后停止。给出下一步建议：`implement`、`verify`、`diagnose` 或 `harness-builder`。
 
 ## 输出格式
 
@@ -118,7 +126,11 @@ Artifact: <path | issue | entry id>
 Spec source: <path | explicit small-task exception>
 Active slice: <一句话>
 Success criteria: <可证伪条件>
-Next skill: <implement | diagnose | harness-builder>
+Verification path status: <runnable | blocked>
+Required capabilities: <list>
+Fallback evidence: <none | accepted fallback>
+Final integration claim: <none | claim>
+Next skill: <implement | diagnose | harness-builder | verify>
 Reason: <一句话>
 ```
 
@@ -129,9 +141,10 @@ Use this as a routing recommendation, not as permission to keep working after pl
 | Situation | Recommended next skill |
 | --- | --- |
 | Repo workbench, recovery surface, or verification entry is missing | `harness-builder` |
-| Active slice is clear and the workbench is adequate | `implement` |
+| Active slice is clear, verification path is runnable, and implementation is needed | `implement` |
 | The plan starts from a failing command without root-cause evidence | `diagnose` |
 | The plan is only a proof or release-readiness check | `verify` |
+| The required verification capability is blocked and no fallback is accepted | `harness-builder` |
 
 ## 常见反模式
 
@@ -139,13 +152,17 @@ Use this as a routing recommendation, not as permission to keep working after pl
 - **把所有计划都变成三文件。** Three-file 是 backend，不是默认身份。
 - **多个阶段同时 in_progress。** 这会让 active slice 失效。
 - **写成愿望清单。** 每个 item 必须可执行、可验证、可恢复。
+- **验证能力最后才发现。** `verification_path_status` 必须在计划阶段写清楚。
+- **多阶段只验局部。** 多 commit unit 必须有 `final_integration_claim`。
 - **忘了 hand off。** 不指明下一步 skill，会让 agent 默认继续在 planning lane 里磨。
 
 ## 验收标准
 
 - [ ] 已读取并引用用户批准的 Spec；若没有独立 Spec，已说明为什么该任务足够小且验证策略已明确。
 - [ ] 已选择 planning surface 并说明原因。
-- [ ] Executable Plan 含目标、active slice、non-goals、成功标准、验证路径、阶段、风险、下一步。
+- [ ] Executable Plan 含目标、active slice、non-goals、成功标准、验证路径、验证路径状态、所需能力、fallback、阶段、风险、下一步。
+- [ ] 多阶段或多 commit unit 计划含 `final_integration_claim`。
+- [ ] 若 verification path blocked，已转 `harness-builder` 或记录用户接受的 fallback evidence。
 - [ ] 恰好一个当前 item 是 in-progress 或 next。
 - [ ] 没有默认创建第二套 recovery surface。
 - [ ] 如使用 three-file backend，模板取自 `templates/`。

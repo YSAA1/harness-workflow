@@ -7,11 +7,13 @@ description: "当 change 准备声明 ready，需要 fresh verification evidence
 
 `verify` 为一个具体 claim 收集 fresh evidence。它不修复、不重做计划、不清理无关文件，只用当前命令或可用 evidence source 证明当前状态，记录证据边界，并把失败路由到正确 skill。
 
-核心规则：**没有 fresh evidence，就不能声明 ready**。
+核心规则：**`verify` 是唯一 ready gate；没有 fresh evidence，就不能声明 ready**。
 
 ## 目的
 
 把"可以结束"转化为可追溯证据：每条成功标准都必须对应 fresh command、smoke/E2E 或明确的未验证限制。
+
+用结构化 verification record 绑定 claim、路径、最后改动、命令、跳过项、unknown 和 ready verdict。
 
 ## 何时使用
 
@@ -33,7 +35,7 @@ description: "当 change 准备声明 ready，需要 fresh verification evidence
 
 ## 先读取这些输入
 
-1. ready claim：active slice、success criteria、verification path。
+1. ready claim：active slice、success criteria、verification path、verification path status、required capabilities、fallback evidence。
 2. selected recovery surface：最近 implementation/review evidence、risks、capability gaps。
 3. `git status --short`：确认最后改动后哪些证据已过期。
 4. 项目验证入口：README、`AGENTS.md`、package/build/test config。
@@ -86,7 +88,7 @@ description: "当 change 准备声明 ready，需要 fresh verification evidence
 
 ### 第 5 步 — Compare Against Success Criteria
 
-把每条成功标准映射到 evidence，状态只能是 pass/fail/unknown。unknown 不是 ready。
+把每条成功标准映射到 evidence，状态只能是 pass/fail/unknown。unknown 不是 ready。多阶段或多 commit unit 任务还必须覆盖 `final_integration_claim`。
 
 ### 第 6 步 — Update Artifacts
 
@@ -105,6 +107,30 @@ description: "当 change 准备声明 ready，需要 fresh verification evidence
 
 ```text
 VERIFICATION: PASS|FAIL|INSUFFICIENT
+
+Verification record:
+  claim_id: <stable short id>
+  claim: <ready claim>
+  covered_paths:
+    - <path or behavior surface>
+  latest_change_ref: <git diff summary | commit | file timestamp basis>
+  success_criteria:
+    - criterion: <text>
+      evidence: <command/smoke/manual signal>
+      status: pass|fail|unknown
+  commands:
+    - command: <exact command>
+      cwd: <path>
+      result: pass|fail
+      evidence_after_change: yes|no
+  skipped_high_value_checks:
+    - check: <name>
+      reason: <why skipped>
+      risk: <risk>
+      fallback: <current substitute>
+  unknowns:
+    - <what remains unproven>
+  ready: yes|no
 
 Claim:
   - Active slice: ...
@@ -152,11 +178,14 @@ Verification should produce the next lane from evidence, not from optimism.
 - **Skipping E2E silently.**
 - **Fixing during verification.** If a command fails, switch to `diagnose`.
 - **Claiming ready with unknowns.** Unknown is not pass.
+- **Missing final integration claim.** Local slice proof is not enough for multi-stage work.
 
 ## 验收标准
 
 - [ ] Active slice and ready claim are stated.
 - [ ] Every success criterion is mapped to fresh evidence or marked unknown.
+- [ ] Multi-stage work maps `final_integration_claim` to evidence.
+- [ ] Verification record includes claim_id、covered_paths、latest_change_ref、commands、skipped checks、unknowns 和 ready verdict。
 - [ ] Relevant evidence ladder rungs are run or skipped with reasons.
 - [ ] Capability gap is absent or documented with value/enablement/risk/fallback.
 - [ ] selected recovery surface records commands, results, timestamp, and limits when required.

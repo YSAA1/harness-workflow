@@ -13,6 +13,10 @@
 - Non-goals：[本轮明确不做的事情]
 - Success criteria：[如何判断 active slice 完成]
 - Verification path：[需要运行的命令、smoke / E2E 或人工信号]
+- Verification path status：`runnable | blocked`
+- Required capabilities：[验证所需脚本、服务、浏览器、MCP、人工检查等]
+- Fallback evidence：[完整验证不可用时，用户接受的替代证据；没有则写 `none`]
+- Final integration claim：[多阶段或多 commit unit 的最终整体验收声明；不适用写 `none`]
 - Project map：[项目地图位置，例如 `docs/project-map.md` 或 `AGENTS.md#项目地图`]
 
 ## 当前阶段
@@ -23,7 +27,8 @@
 
 - [可观察的完成标准 1]
 - [可观察的完成标准 2]
-- [需要 fresh evidence 的验证标准]
+- [需要 fresh evidence 的验证标准，必须对应 Verification path]
+- [多阶段任务的 final integration claim 已被最终 verify 覆盖]
 
 ## 阶段
 
@@ -33,7 +38,7 @@
 
 - [ ] 明确用户意图、约束和 non-goals。
 - [ ] 将已接受规格、拒绝选项和风险记录到 `findings.md`。
-- [ ] 定义 active slice、验证路径和完成标准。
+- [ ] 定义 active slice、验证路径、验证路径状态、能力缺口和完成标准。
 
 ### 阶段 2 - 项目工作面准备
 
@@ -41,7 +46,8 @@
 
 - [ ] 确认项目地图、入口和相关文件。
 - [ ] 确认 `AGENTS.md`、三文件或等价状态入口可用。
-- [ ] 确认验证命令、smoke / E2E 候选和能力缺口。
+- [ ] 确认验证命令、smoke / E2E 候选、fallback evidence 和能力缺口。
+- [ ] 如果 verification path blocked 且没有用户接受的 fallback，先转 `harness-builder`。
 
 ### 阶段 3 - 实现
 
@@ -55,8 +61,8 @@
 
 状态：`pending`
 
-- [ ] 对照 accepted spec、风险和 non-goals 做 review。
-- [ ] 运行相关验证命令，记录 fresh evidence。
+- [ ] 对照 accepted spec、风险和 non-goals 做 structural review。
+- [ ] 用 `verify` 运行相关验证命令，记录 fresh evidence。
 - [ ] 如果验证能力不足，记录 recommended capability 和替代路径。
 
 ### 阶段 5 - 收尾与交接

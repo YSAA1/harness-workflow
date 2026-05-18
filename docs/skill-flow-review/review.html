@@ -140,13 +140,13 @@ pre {
   <div class="toolbar">
     <a class="button" href="../../skills/review/SKILL.md">打开 SKILL.md</a>
     <span class="button">证据评审</span>
-    <span class="button">158 行</span>
+    <span class="button">159 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>review 必须同时检查&quot;做超了&quot;和&quot;做欠了&quot;。缺 fresh evidence 时，review 仍可完成结构判断，并把 evidence gap 标成 Important 后路由到 verify。</p>
+    <p>review 必须同时检查&quot;做超了&quot;和&quot;做欠了&quot;。它可以判断&quot;没有结构性 blocker&quot;，但不能作为最终 ready gate。通过后仍路由到 verify；若已有 fresh evidence，则走 verify fast-path 做短重检和 claim mapping。</p>
   </section>
 
   <section class="section grid">
@@ -172,10 +172,10 @@ pre {
         <div><h3>第 1 步 — 重述 scope</h3><p>一句话回答本次 review 的 active slice、改动文件和完成声明。</p></div>
       </div><div class="step">
         <div class="num">2</div>
-        <div><h3>第 2 步 — 用五把尺逐项过</h3><p>对每条问题给状态、证据和严重级。</p></div>
+        <div><h3>第 2 步 — 用六把尺逐项过</h3><p>对每条问题给状态、证据和严重级。</p></div>
       </div><div class="step">
         <div class="num">3</div>
-        <div><h3>第 3 步 — 分级 findings</h3><p>| 级别 | 含义 | 处置 | | --- | --- | --- | | Critical | 正确性错误、安全漏洞、数据丢失、核心行为破坏、违反 accepted Spec | 必须修复 | | Important | 设计缺陷、关键测试缺失、文档严重失真、scope creep | 应修或明确 deferred | | Minor | 风格、可读性、非阻塞清理 | 可选 |</p></div>
+        <div><h3>第 3 步 — 分级 findings</h3><p>| 级别 | 含义 | 处置 | | --- | --- | --- | | Critical | 正确性错误、安全漏洞、数据丢失、核心行为破坏、违反 accepted Spec | 必须修复 | | Important | 设计缺陷、关键测试缺失、文档严重失真、scope creep；等同于 broader audit 里的 Major | 应修或明确 deferred | | Minor | 风格、可读性、非阻塞清理 | 可选 |</p></div>
       </div><div class="step">
         <div class="num">4</div>
         <div><h3>第 4 步 — 列 Open Questions / Residual Risks</h3><p>把无法判断的项明确列出，不把不确定伪装成通过。</p></div>
@@ -192,7 +192,7 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text REVIEW: PASS | CONDITIONAL | BLOCK Scope: - Active slice: &lt;一句话&gt; - Files reviewed: &lt;list 或 git stat&gt; - Fresh evidence base: &lt;command or missing&gt; Findings: Critical: - &lt;一句话&gt; (file:line) - &lt;evidence&gt; Important: - &lt;一句话&gt; (file:line) - &lt;evidence&gt; Minor: - &lt;一句话&gt; Open Questions / Residual Risks: - ... Assessment: - Spec coverage: &lt;ok|partial|miss&gt; - Evidence sufficiency: &lt;ok|gap|missing&gt; - Docs sync: &lt;ok|drift&gt; - Ent...</pre>
+      <pre>``text REVIEW: PASS | CONDITIONAL | BLOCK Scope: - Active slice: &lt;一句话&gt; - Files reviewed: &lt;list 或 git stat&gt; - Evidence base for review: &lt;command/diff/manual read or missing&gt; Findings: Critical: - &lt;一句话&gt; (file:line) - &lt;evidence&gt; Important: - &lt;一句话&gt; (file:line) - &lt;evidence&gt; Minor: - &lt;一句话&gt; Open Questions / Residual Risks: - ... Assessment: - Spec coverage: &lt;ok|partial|miss&gt; - Evidence routing: &lt;verify required|verify fast...</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
@@ -202,13 +202,13 @@ pre {
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>review 通过或仅有 evidence gap</td><td>verify</td></tr><tr><td>review 找出 Critical/Important findings</td><td>implement</td></tr><tr><td>review 发现 Spec 漂移</td><td>brainstorm 或 plan</td></tr><tr><td>发现项目工作面缺口</td><td>harness-builder</td></tr><tr><td>文档/知识漂移需要整理</td><td>cleanup</td></tr></tbody></table>
+    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>review 通过或仅有 evidence gap</td><td>verify</td></tr><tr><td>review 找出 Critical/Important findings</td><td>implement</td></tr><tr><td>review 发现 Spec 漂移</td><td>brainstorm 或 plan</td></tr><tr><td>发现项目工作面缺口</td><td>harness-builder</td></tr><tr><td>文档/知识漂移需要整理</td><td>先 verify ready claim；通过后 cleanup</td></tr></tbody></table>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] 至少检查了 Spec / evidence / docs / entropy。</li><li>[ ] 每条 Critical / Important finding 有文件路径或命令级证据。</li><li>[ ] Open Questions 与 Residual Risks 明确。</li><li>[ ] Assessment 是 Pass / Conditional / Block 之一。</li><li>[ ] blocking findings 按需写入 selected recovery surface。</li><li>[ ] 下一步 skill 与原因显式。</li></ul>
+      <ul><li>[ ] 至少检查了 Spec / scope / diff / docs / entropy / risk。</li><li>[ ] 未把 review 通过当作 ready；pass 状态仍路由到 verify。</li><li>[ ] 每条 Critical / Important finding 有文件路径或命令级证据。</li><li>[ ] Open Questions 与 Residual Risks 明确。</li><li>[ ] Assessment 是 Pass / Conditional / Block 之一。</li><li>[ ] blocking findings 按需写入 selected recovery surface。</li><li>[ ] 下一步 skill 与原因显式。</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>

@@ -152,7 +152,7 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>进入条件</h2>
-      <ul><li>implement 中同一 slice 连续两次失败，或同一命令两次返回不同错误。</li><li>npm test / build / lint / typecheck 等命令红，且错误不能直接对应刚改的几行。</li><li>本地和 CI 结果不一致。</li><li>构建突然慢、卡住、内存爆。</li><li>用户说「为什么报这个错」「再试一下还是不行」「flaky 了」「CI 红了」。</li></ul>
+      <ul><li>implement 中一个明确假设循环仍无法解释失败，或同一命令两次返回不同错误。</li><li>npm test / build / lint / typecheck 等命令红，且错误不能直接对应刚改的几行。</li><li>本地和 CI 结果不一致。</li><li>构建突然慢、卡住、内存爆。</li><li>用户说「为什么报这个错」「再试一下还是不行」「flaky 了」「CI 红了」。</li></ul>
     </div>
     <div class="panel">
       <h2>禁用条件</h2>

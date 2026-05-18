@@ -313,6 +313,32 @@ const plan = read(skillPath("plan"));
 if (!/Executable Plan/i.test(plan) || /默认使用 three-file backend/.test(plan)) {
   fail("plan must produce an Executable Plan without default three-file identity");
 }
+for (const token of [
+  "Verification path status",
+  "Required capabilities",
+  "Fallback evidence",
+  "Final integration claim",
+  "Next skill: <implement | diagnose | harness-builder | verify>",
+  "final_integration_claim",
+]) {
+  if (!plan.includes(token)) fail(`plan contract missing verification-gate token: ${token}`);
+}
+const implement = read(skillPath("implement"));
+for (const token of ["Ready claim: not made; route to verify", "implementation feedback", "ready claim 只能由 `verify` 证明"]) {
+  if (!implement.includes(token)) fail(`implement contract missing ready-gate token: ${token}`);
+}
+if (/连续两次失败/.test(implement)) fail("implement must not use mechanical two-failure routing");
+const review = read(skillPath("review"));
+for (const token of ["verify` fast-path", "review 不声明 ready", "Evidence routing"]) {
+  if (!review.includes(token)) fail(`review contract missing structural-review token: ${token}`);
+}
+if (/Pass and evidence is already fresh\s*\|\s*`cleanup`/.test(review)) {
+  fail("review must not route pass directly to final cleanup");
+}
+const verify = read(skillPath("verify"));
+for (const token of ["`verify` 是唯一 ready gate", "Verification record:", "claim_id", "covered_paths", "latest_change_ref", "skipped_high_value_checks", "unknowns", "ready: yes|no"]) {
+  if (!verify.includes(token)) fail(`verify contract missing structured-evidence token: ${token}`);
+}
 const cleanup = read(skillPath("cleanup"));
 if (!/Knowledge Cleanup/i.test(cleanup) || /save-session/.test(cleanup)) {
   fail("cleanup must center Knowledge Cleanup and not route to save-session");
@@ -324,6 +350,18 @@ for (const token of ["npx skills find", "npx skills add", "skills.sh", "Verify Q
 
 const flowReviewScript = "scripts/generate-skill-flow-html.mjs";
 if (!exists(flowReviewScript)) fail("skill flow HTML generator is missing");
+else {
+  const flowReviewSource = read(flowReviewScript);
+  if (/\["review",\s*"cleanup"\]/.test(flowReviewSource)) {
+    fail("skill flow generator must not show review as direct final cleanup route");
+  }
+  if (!flowReviewSource.includes('["plan", "verify"]')) {
+    fail("skill flow generator must show proof-only plan to verify route");
+  }
+  if (!flowReviewSource.includes('["知识漂移", ["review", "verify", "cleanup"]]')) {
+    fail("skill flow generator must route knowledge drift through verify before cleanup");
+  }
+}
 
 if (!process.exitCode) pass("contract coverage checks passed");
 
