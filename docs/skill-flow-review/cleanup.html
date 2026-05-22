@@ -140,7 +140,7 @@ pre {
   <div class="toolbar">
     <a class="button" href="../../skills/cleanup/SKILL.md">打开 SKILL.md</a>
     <span class="button">Knowledge Cleanup</span>
-    <span class="button">181 行</span>
+    <span class="button">182 行</span>
   </div>
 </header>
 <main>
@@ -172,7 +172,7 @@ pre {
         <div><h3>第 1 步 — Enumerate Docs And Artifacts</h3><p>修改前列出相关 docs、generated files、recovery artifacts 和 dirty files。不要凭记忆改。</p></div>
       </div><div class="step">
         <div class="num">2</div>
-        <div><h3>第 2 步 — Compare Truth Sources</h3><p>比较代码、README、docs、generated artifacts、AGENTS.md 和 selected recovery surface。找出 drift、膨胀、重复和过期命令。</p></div>
+        <div><h3>第 2 步 — Compare Truth Sources</h3><p>比较代码、README、docs、generated artifacts、AGENTS.md 和 selected recovery surface。找出 drift、膨胀、重复和过期命令。当 plan 有 commit unit 时，比较 plan 的阶段状态、recovery surface 的 milestone 记录和 git log，找出不一致。</p></div>
       </div><div class="step">
         <div class="num">3</div>
         <div><h3>第 3 步 — Pick Closure State</h3><p>选择一个状态： | State | Meaning | | --- | --- | | complete | success criteria met with fresh evidence | | blocked | cannot proceed without external decision or capability | | abandoned | tracked attempt intentionally stopped | | reopen | cleanup found missing work;...</p></div>
@@ -187,7 +187,7 @@ pre {
         <div><h3>第 6 步 — Record Residual Drift</h3><p>未解决的 drift 写成明确 follow-up：位置、风险、建议下一步、是否阻塞 ready。</p></div>
       </div><div class="step">
         <div class="num">7</div>
-        <div><h3>第 7 步 — Final Git State Summary</h3><p>报告 related changes、unrelated dirty files left alone、removed/deferred residue。</p></div>
+        <div><h3>第 7 步 — Final Git State Summary</h3><p>报告 related changes、unrelated dirty files left alone、removed/deferred residue。报告 milestone commits 完成情况。</p></div>
       </div>
     </div>
   </section>

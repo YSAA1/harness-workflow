@@ -29,7 +29,8 @@ Canonical source: `skills/implement/SKILL.md`.
 5. Make the smallest implementation needed.
 6. Run adjacent validation and refactor only while green.
 7. Sync docs and selected recovery surface when behavior, commands, config, APIs, or validation entry points change.
-8. Route unexplained repeated failures to `diagnose`.
+8. When the plan defines commit units, do not make milestone commits before review + verify.
+9. Route unexplained repeated failures to `diagnose`.
 
 ## Outputs
 
@@ -42,3 +43,4 @@ Canonical source: `skills/implement/SKILL.md`.
 - The current slice has not crossed non-goals.
 - Focused checks cover the behavior at a risk-appropriate level.
 - Relevant checks pass after the latest change.
+- Milestone commits are not made before review and verify when commit units are defined.

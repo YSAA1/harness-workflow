@@ -13,6 +13,9 @@
 | scope creep | 做了 non-goal 或额外功能 | 拆 slice 或回滚 |
 | hidden TODO | 留下临时代码、注释代码、debug output | cleanup 或修复 |
 | capability gap 被忽略 | 需要浏览器/外部 API 却没工具 | 记录 recommendation 和替代证据 |
+| 未经 verify 就提交 | git log 显示 commit 但 verify 未 PASS | 补 verify 或标记 commit 为非里程碑 |
+| 阶段验收标准未逐条对照 | plan 有 acceptance_criteria 但 review 未提及 | 重新 review 对照验收标准 |
+| commit message 与阶段不对应 | commit message 无法映射到 plan 阶段 | 提交时引用阶段名称 |
 
 ## Finding 格式
 

@@ -93,3 +93,5 @@
 - Active slice: [smallest next verifiable implementation slice]
 - Suggested next skill: plan
 - Planning notes: [phase hints, dependency order, known blockers]
+- Suggested milestones: [粗粒度阶段建议，帮助 plan 定义阶段划分；简单任务可写 `none`]
+- Per-milestone acceptance hints: [每个建议里程碑的验收标准提示，不是完整定义，留给 plan 细化；简单任务可写 `none`]

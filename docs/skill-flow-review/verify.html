@@ -140,7 +140,7 @@ pre {
   <div class="toolbar">
     <a class="button" href="../../skills/verify/SKILL.md">打开 SKILL.md</a>
     <span class="button">最终验证</span>
-    <span class="button">205 行</span>
+    <span class="button">216 行</span>
   </div>
 </header>
 <main>
@@ -184,10 +184,13 @@ pre {
         <div><h3>第 5 步 — Compare Against Success Criteria</h3><p>把每条成功标准映射到 evidence，状态只能是 pass/fail/unknown。unknown 不是 ready。多阶段或多 commit unit 任务还必须覆盖 final_integration_claim。</p></div>
       </div><div class="step">
         <div class="num">6</div>
-        <div><h3>第 6 步 — Update Artifacts</h3><p>按 selected recovery surface 记录 verification entry、skipped checks、capability gaps 和 residual risk。</p></div>
+        <div><h3>第 5.5 步 — Commit Eligibility 评估</h3><p>当 Executable Plan 定义了 commit unit 且当前 slice 属于某个 commit unit 时： - 检查 review 是否已对该 scope 产出 PASS 或 CONDITIONAL（无 Critical） - 若 verify PASS + review PASS/CONDITIONAL → commit eligibility = eligible，建议执行 milestone commit - 若 verify PASS 但 review 未做或有 Critical → ...</p></div>
       </div><div class="step">
         <div class="num">7</div>
-        <div><h3>第 7 步 — Route</h3><p>| Result | Next | | --- | --- | | All required evidence fresh and passing | cleanup | | Command failed or behavior wrong | diagnose | | Evidence insufficient due to missing capability | harness-builder 或用户决策 | | Spec / success criteria mismatch | plan |</p></div>
+        <div><h3>第 6 步 — Update Artifacts</h3><p>按 selected recovery surface 记录 verification entry、skipped checks、capability gaps 和 residual risk。</p></div>
+      </div><div class="step">
+        <div class="num">8</div>
+        <div><h3>第 7 步 — Route</h3><p>| Result | Next | | --- | --- | | All required evidence fresh and passing | commit milestone（当 eligible 时）-&gt; cleanup | | Command failed or behavior wrong | diagnose | | Evidence insufficient due to missing capability | harness-builder 或用户决策 | | Spec / success...</p></div>
       </div>
     </div>
   </section>
@@ -211,7 +214,7 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] Active slice and ready claim are stated.</li><li>[ ] Every success criterion is mapped to fresh evidence or marked unknown.</li><li>[ ] Multi-stage work maps final_integration_claim to evidence.</li><li>[ ] Verification record includes claim_id、covered_paths、latest_change_ref、commands、skipped checks、unknowns 和 ready verdict。</li><li>[ ] Relevant evidence ladder rungs are run or skipped with reasons.</li><li>[ ] Capability gap is absent or documented with value/enablement/risk/fallback.</li><li>[ ] selected recovery surface records commands, results, timestamp, and limits when required.</li><li>[ ] Output routes to the next skill.</li></ul>
+      <ul><li>[ ] Active slice and ready claim are stated.</li><li>[ ] Every success criterion is mapped to fresh evidence or marked unknown.</li><li>[ ] Multi-stage work maps final_integration_claim to evidence.</li><li>[ ] Verification record includes claim_id、covered_paths、latest_change_ref、commands、skipped checks、unknowns 和 ready verdict。</li><li>[ ] Relevant evidence ladder rungs are run or skipped with reasons.</li><li>[ ] Capability gap is absent or documented with value/enablement/risk/fallback.</li><li>[ ] selected recovery surface records commands, results, timestamp, and limits when required.</li><li>[ ] 当 commit unit 存在时，已评估 commit eligibility。</li><li>[ ] Output routes to the next skill.</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>

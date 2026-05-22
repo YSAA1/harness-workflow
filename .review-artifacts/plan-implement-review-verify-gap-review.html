@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plan / Implement / Review / Verify 流程评估</title>
+  <style>
+    :root {
+      --ink: #1f2528;
+      --muted: #5f6b70;
+      --line: #d8dedb;
+      --paper: #fbfaf6;
+      --panel: #ffffff;
+      --accent: #0f766e;
+      --warn: #b45309;
+      --risk: #b91c1c;
+      --ok: #2563eb;
+      --soft: #eef5f2;
+      --soft-warn: #fff6e8;
+      --soft-risk: #fff0ef;
+      --shadow: 0 12px 30px rgba(31, 37, 40, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(135deg, rgba(15, 118, 110, 0.08), transparent 34%),
+        linear-gradient(225deg, rgba(180, 83, 9, 0.08), transparent 32%),
+        var(--paper);
+      font-family: ui-serif, Georgia, "Times New Roman", serif;
+      line-height: 1.62;
+    }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    main { max-width: 1180px; margin: 0 auto; padding: 42px 22px 72px; }
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 28px;
+      align-items: end;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--line);
+    }
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(32px, 5vw, 62px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+    h2 {
+      margin: 0 0 14px;
+      font-size: 24px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+    h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+    p { margin: 0 0 12px; }
+    .lead {
+      font-size: 19px;
+      max-width: 760px;
+      color: #2d3639;
+    }
+    .meta {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid var(--line);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    .meta strong { display: block; font-size: 13px; color: var(--muted); font-family: ui-sans-serif, system-ui, sans-serif; }
+    .meta span { display: block; margin-top: 4px; font-size: 15px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+      margin-top: 26px;
+    }
+    .card {
+      background: rgba(255,255,255,0.82);
+      border: 1px solid var(--line);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .span-4 { grid-column: span 4; }
+    .span-6 { grid-column: span 6; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+    .verdict {
+      border-left: 6px solid var(--accent);
+      background: var(--soft);
+      padding: 20px 22px;
+      font-size: 18px;
+    }
+    .tag {
+      display: inline-block;
+      margin: 0 6px 8px 0;
+      padding: 4px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: #fff;
+      font: 12px ui-sans-serif, system-ui, sans-serif;
+    }
+    .score {
+      display: grid;
+      grid-template-columns: 132px 1fr 44px;
+      gap: 10px;
+      align-items: center;
+      margin: 10px 0;
+      font: 14px ui-sans-serif, system-ui, sans-serif;
+    }
+    .bar {
+      height: 10px;
+      background: #e7ece9;
+      overflow: hidden;
+    }
+    .bar > i {
+      display: block;
+      height: 100%;
+      background: var(--accent);
+    }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .step {
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 16px;
+      min-height: 150px;
+      position: relative;
+    }
+    .step::after {
+      content: "→";
+      position: absolute;
+      right: -13px;
+      top: 48%;
+      color: var(--muted);
+      font: 24px ui-sans-serif, system-ui, sans-serif;
+    }
+    .step:last-child::after { content: ""; }
+    .step b {
+      display: block;
+      margin-bottom: 8px;
+      font: 700 14px ui-sans-serif, system-ui, sans-serif;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+    .finding {
+      border-top: 1px solid var(--line);
+      padding: 16px 0 0;
+      margin-top: 16px;
+    }
+    .sev {
+      display: inline-block;
+      min-width: 76px;
+      padding: 3px 8px;
+      margin-right: 8px;
+      color: #fff;
+      background: var(--warn);
+      font: 12px ui-sans-serif, system-ui, sans-serif;
+      text-align: center;
+    }
+    .sev.critical { background: var(--risk); }
+    .sev.major { background: var(--warn); }
+    .sev.minor { background: var(--ok); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font: 700 12px ui-sans-serif, system-ui, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+    .source-list li { margin-bottom: 8px; }
+    ul { padding-left: 20px; margin: 8px 0 0; }
+    li { margin-bottom: 7px; }
+    .note {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    code {
+      background: #eef2ef;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+    }
+    .priority {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px 0;
+      border-top: 1px solid var(--line);
+    }
+    .num {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      background: var(--accent);
+      color: #fff;
+      font: 700 14px ui-sans-serif, system-ui, sans-serif;
+    }
+    @media (max-width: 860px) {
+      main { padding: 28px 16px 52px; }
+      header, .flow { grid-template-columns: 1fr; }
+      .span-4, .span-6, .span-8, .span-12 { grid-column: span 12; }
+      .step::after { content: "↓"; right: 16px; top: auto; bottom: -19px; }
+      .step:last-child::after { content: ""; }
+      .score { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <section>
+        <h1>Plan / Implement / Review / Verify 流程评估</h1>
+        <p class="lead">这份评估合并了本仓库真实 skill 协议、4 个 subagent 的独立结论、2025-2026 官方文章、近期热门 agent harness repo。结论很直接：路线主干是对的，短板不在“缺更多 lane”，而在 ready gate、结构化证据、长任务可恢复性和自动化外壳。</p>
+      </section>
+      <aside class="meta">
+        <strong>工作目录</strong><span>/home/ssy/桌面/harness-workflow</span>
+        <strong>评估日期</strong><span>2026-05-18</span>
+        <strong>产物类型</strong><span>一次性 review artifact，不是 durable source of truth</span>
+      </aside>
+    </header>
+
+    <section class="grid">
+      <div class="span-12 verdict">
+        <strong>总判断：</strong>你的四段路线已经避开了很多热门框架的重入口问题：不强绑三文件、保留轻路径、以 fresh evidence 为 ready 前提、把 harness-builder 从强前置改成 gap-driven 工作面修复。现在最该补的是把这些原则从“文本纪律”推进到“机器可校验的 gate 和结构化证据”。
+      </div>
+
+      <div class="span-6 card">
+        <h2>当前主干</h2>
+        <div class="flow">
+          <div class="step"><b>Plan</b>把明确 Spec 或请求变成 Executable Plan：active slice、non-goals、success criteria、verification path、commit units。</div>
+          <div class="step"><b>Implement</b>一次只推进一个 slice，按风险选择验证强度，失败不猜，转 diagnose。</div>
+          <div class="step"><b>Review</b>用 scope、spec、docs、entropy、risk 做结构审查，找 correctness 和 drift。</div>
+          <div class="step"><b>Verify</b>为 ready claim 收集 fresh evidence，把每条 success criterion 映射到当前证据。</div>
+        </div>
+      </div>
+
+      <div class="span-6 card">
+        <h2>对齐度</h2>
+        <div class="score"><span>轻路径</span><div class="bar"><i style="width:80%"></i></div><b>8.0</b></div>
+        <div class="score"><span>证据优先</span><div class="bar"><i style="width:90%"></i></div><b>9.0</b></div>
+        <div class="score"><span>不强绑三文件</span><div class="bar"><i style="width:95%"></i></div><b>9.5</b></div>
+        <div class="score"><span>review/verify 边界</span><div class="bar"><i style="width:75%"></i></div><b>7.5</b></div>
+        <p class="note">评分来自本地流程 subagent 的文件级审计，并用反方审计结果校正。</p>
+      </div>
+
+      <div class="span-8 card">
+        <h2>最高优先级缺口</h2>
+        <div class="finding">
+          <h3><span class="sev critical">Critical</span><code>verify</code> 还不是唯一 ready gate</h3>
+          <p><code>review</code> 的 recommended route 允许“Pass and evidence is already fresh -> cleanup”，但 README 和 <code>verify</code> 又把 ready claim 归给 <code>verify</code>。这会让 agent 用结构审查替代最终验证。</p>
+          <p><strong>建议：</strong>把 <code>review</code> pass 后统一路由到 <code>verify</code>；证据已新鲜时只允许 <code>verify fast-path</code>，不能直接 ready。</p>
+        </div>
+        <div class="finding">
+          <h3><span class="sev critical">Critical</span>fresh evidence 缺少 claim 级结构化记录</h3>
+          <p>当前主要靠自由文本记录 freshness、commands、covered behavior、unknowns。对多文件、多阶段、UI/E2E 任务，伪验证仍然容易混进来。</p>
+          <p><strong>建议：</strong><code>verify</code> 输出最小 schema：<code>claim_id</code>、<code>covered_paths</code>、<code>latest_change_ref</code>、<code>commands</code>、<code>skipped_high_value_checks</code>、<code>unknowns</code>。</p>
+        </div>
+        <div class="finding">
+          <h3><span class="sev major">Major</span><code>plan</code> 输出 schema 和路由不一致</h3>
+          <p><code>plan</code> 推荐“release-readiness check -> verify”，但正式输出格式只允许 <code>implement | diagnose | harness-builder</code>。</p>
+          <p><strong>建议：</strong>把 <code>verify</code> 纳入 <code>plan</code> 输出 schema，同时把 <code>verification_path_status: runnable | blocked</code> 前移到计划阶段。</p>
+        </div>
+        <div class="finding">
+          <h3><span class="sev major">Major</span>大任务缺少最终集成 claim</h3>
+          <p>WIP=1 能防止局部漂移，但多 slice 任务仍可能每段局部通过、整体未证明。</p>
+          <p><strong>建议：</strong><code>plan</code> 增加 <code>final_integration_claim</code>；<code>verify</code> 在多阶段或多 commit unit 时必须验证它。</p>
+        </div>
+      </div>
+
+      <div class="span-4 card">
+        <h2>外部趋势</h2>
+        <span class="tag">spec as living artifact</span>
+        <span class="tag">issue tracker as control plane</span>
+        <span class="tag">isolated workspace</span>
+        <span class="tag">trace / trajectory</span>
+        <span class="tag">trust layer</span>
+        <span class="tag">status / cancel / result</span>
+        <span class="tag">structured gates</span>
+        <p>热门文章和 repo 的共识不是“写更多 prompt”，而是把状态、执行、验证和恢复做成可观察、可回放、可阻断的系统。</p>
+        <p>你的仓库语义比很多框架干净，但缺少它们已有的一些工程外壳：状态命令、任务隔离、trace、可取消长任务、CI/action 级 review gate。</p>
+      </div>
+
+      <div class="span-12 card">
+        <h2>和热门实践的对照</h2>
+        <table>
+          <thead>
+            <tr><th>对标来源</th><th>它强调什么</th><th>你的现状</th><th>应该补什么</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>OpenAI Harness Engineering</td>
+              <td>设计环境、指定意图、反馈循环，让 agent 可靠工作。</td>
+              <td>方法契约和 skill 边界已经对齐。</td>
+              <td>把 review/verify loop 做成更硬的 gate。</td>
+            </tr>
+            <tr>
+              <td>GitHub Spec Kit</td>
+              <td>spec -> plan -> tasks -> implement，每阶段验证后再前进。</td>
+              <td>已有 brainstorm/plan/implement，但 tasks 层较轻。</td>
+              <td>给 single-slice 和 multi-slice 分别定义 task contract。</td>
+            </tr>
+            <tr>
+              <td>Anthropic Context Engineering</td>
+              <td>just-in-time context、compaction、轻量索引，避免 context rot。</td>
+              <td>要求读取 recovery surface，但缺少 context budget。</td>
+              <td>定义 hot context index 和“只读最近证据”的恢复规则。</td>
+            </tr>
+            <tr>
+              <td>GitHub Trust Layer</td>
+              <td>不要让 agent 自评；验证 essential states，而不是僵硬脚本。</td>
+              <td>verify 有 evidence ladder，但结构化不足。</td>
+              <td>为 UI/E2E/非确定任务加入 essential outcome schema。</td>
+            </tr>
+            <tr>
+              <td>Archon / Rigg / goat-flow</td>
+              <td>YAML workflow、audit、status dashboard、pass/fail checks。</td>
+              <td>你的流程更轻、更可解释。</td>
+              <td>补最小 audit/check，不照搬厚工作流引擎。</td>
+            </tr>
+            <tr>
+              <td>SWE-agent / AgentLens / Auto-harness</td>
+              <td>轨迹、失败挖掘、过程级评分、回归 gate。</td>
+              <td>Research Route 有 evidence loop，但日常四段路线较少 trace。</td>
+              <td>给 review/verify 增加 provenance 和 outcome ledger。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="span-6 card">
+        <h2>不建议照搬</h2>
+        <ul>
+          <li>不要学 SuperClaude 式大量 slash command 和人设入口；它会冲淡你现在的薄入口优势。</li>
+          <li>不要把 Archon/Rigg 的 YAML DAG 原样搬进来；你的仓库定位是 workflow skills，不是另一个 workflow runner。</li>
+          <li>不要默认开启厚 review gate；小任务会被 token 和上下文成本拖慢。</li>
+          <li>不要把 planning、knowledge、task state 拆到过多 surface；真相源会重新变得混乱。</li>
+        </ul>
+      </div>
+
+      <div class="span-6 card">
+        <h2>建议改造顺序</h2>
+        <div class="priority"><div class="num">1</div><div><strong>收紧 ready gate。</strong>所有 meaningful change 通过 <code>review</code> 后必须进入 <code>verify</code>；小任务仍可 <code>implement -> verify</code>。</div></div>
+        <div class="priority"><div class="num">2</div><div><strong>结构化 verification record。</strong>先加最小 claim schema，不急着做数据库或 runner。</div></div>
+        <div class="priority"><div class="num">3</div><div><strong>计划阶段前移验证可运行性。</strong>新增 <code>verification_path_status</code>，blocked 就回 <code>harness-builder</code>。</div></div>
+        <div class="priority"><div class="num">4</div><div><strong>给多 slice 加 final integration claim。</strong>避免局部通过、整体未证。</div></div>
+        <div class="priority"><div class="num">5</div><div><strong>补轻量状态/审计命令。</strong>类似 status/result/cancel 的思想可以借鉴，但应保持 repo-local、低耦合。</div></div>
+      </div>
+
+      <div class="span-12 card">
+        <h2>使用的主要来源</h2>
+        <ul class="source-list">
+          <li>本地文件：<code>skills/plan/SKILL.md</code>、<code>skills/implement/SKILL.md</code>、<code>skills/review/SKILL.md</code>、<code>skills/verify/SKILL.md</code>、<code>docs/harness-method-contract.md</code>、<code>README.md</code>、<code>scripts/check-plugin.mjs</code>。</li>
+          <li>OpenAI：<a href="https://openai.com/index/harness-engineering/">Harness engineering: leveraging Codex in an agent-first world</a>，<a href="https://openai.com/index/unlocking-the-codex-harness/">Unlocking the Codex harness</a>，<a href="https://openai.com/zh-Hant/index/open-source-codex-orchestration-symphony/">Symphony spec</a>。</li>
+          <li>GitHub：<a href="https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/">Spec-driven development with AI</a>，<a href="https://github.blog/ai-and-ml/generative-ai/validating-agentic-behavior-when-correct-isnt-deterministic/">Validating agentic behavior</a>，<a href="https://code.visualstudio.com/blogs/2026/05/15/agent-harnesses-github-copilot-vscode">The Coding Harness Behind GitHub Copilot in VS Code</a>。</li>
+          <li>Anthropic / Microsoft：<a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Effective context engineering for AI agents</a>，<a href="https://techcommunity.microsoft.com/blog/AppsonAzureBlog/context-engineering-lessons-from-building-azure-sre-agent/4481200">Azure SRE Agent context engineering lessons</a>。</li>
+          <li>Repos / tooling：<a href="https://github.com/coleam00/archon">Archon</a>、<a href="https://tryrigg.com/">Rigg</a>、<a href="https://goat-flow.com/">goat-flow</a>、<a href="https://github.com/neosigmaai/auto-harness">auto-harness</a>、<a href="https://github.com/mindfold-ai/trellis">Trellis</a>、<a href="https://github.com/OpenHands/OpenHands">OpenHands</a>、<a href="https://github.com/SWE-agent/SWE-agent">SWE-agent</a>。</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

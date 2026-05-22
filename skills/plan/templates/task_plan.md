@@ -35,6 +35,9 @@
 ### 阶段 1 - 需求与边界
 
 状态：`in_progress`
+Acceptance criteria：[可证伪的完成条件]
+Verification commands：[`命令1`, `命令2`]
+Success definition：[一句话：什么状态算成功]
 
 - [ ] 明确用户意图、约束和 non-goals。
 - [ ] 将已接受规格、拒绝选项和风险记录到 `findings.md`。
@@ -43,6 +46,9 @@
 ### 阶段 2 - 项目工作面准备
 
 状态：`pending`
+Acceptance criteria：[可证伪的完成条件]
+Verification commands：[`命令1`, `命令2`]
+Success definition：[一句话：什么状态算成功]
 
 - [ ] 确认项目地图、入口和相关文件。
 - [ ] 确认 `AGENTS.md`、三文件或等价状态入口可用。
@@ -52,6 +58,9 @@
 ### 阶段 3 - 实现
 
 状态：`pending`
+Acceptance criteria：[可证伪的完成条件]
+Verification commands：[`命令1`, `命令2`]
+Success definition：[一句话：什么状态算成功]
 
 - [ ] 按 active slice 小步实现，不扩大范围。
 - [ ] 修改代码、命令或用户可见行为时同步相关文档和三文件。
@@ -60,6 +69,9 @@
 ### 阶段 4 - 评审与验证
 
 状态：`pending`
+Acceptance criteria：[可证伪的完成条件]
+Verification commands：[`命令1`, `命令2`]
+Success definition：[一句话：什么状态算成功]
 
 - [ ] 对照 accepted spec、风险和 non-goals 做 structural review。
 - [ ] 用 `verify` 运行相关验证命令，记录 fresh evidence。
@@ -68,10 +80,20 @@
 ### 阶段 5 - 收尾与交接
 
 状态：`pending`
+Acceptance criteria：[可证伪的完成条件]
+Verification commands：[`命令1`, `命令2`]
+Success definition：[一句话：什么状态算成功]
 
 - [ ] 清理低风险临时工件、陈旧 TODO、重复规则和过期状态。
 - [ ] 更新 `progress.md` 和 `findings.md` 的最终证据与残余风险。
 - [ ] 确认下一次会话能从仓库工件恢复。
+
+## 提交协议
+
+| Commit unit | 对应阶段 | Scope | 前置条件 | Message 模板 |
+| --- | --- | --- | --- | --- |
+| M1 | 阶段 1-2 | [范围] | review 无 Critical + verify PASS | [模板] |
+| M2 | 阶段 3 | [范围] | review 无 Critical + verify PASS | [模板] |
 
 ## 关键问题
 

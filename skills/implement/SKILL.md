@@ -73,6 +73,17 @@ description: "当 scoped feature、bugfix 或 refactor 已经可以实现，且�
 
 详细决策见 `references/verification-intensity.md`。
 
+### Commit Discipline
+
+当 Executable Plan 定义了 commit unit 时：
+- 不在 review/verify 之前做正式 milestone commit
+- 实现过程中的中间保存不算正式里程碑
+- commit scope 对应 plan 中定义的 commit unit
+
+当没有 Executable Plan 或任务是直接修 bug 时：
+- 按项目惯例或用户指示提交
+- 仍建议在提交前至少跑过相关验证
+
 ## 执行流程
 
 ### 第 1 步 — 重新对账 active slice
@@ -124,6 +135,7 @@ Docs synced: yes|no|n/a
 Recovery surface updated: yes|no|n/a
 Files changed:
   - ...
+Commit status: not committed; pending review + verify | no commit unit defined
 Next: <repeat|review|verify|diagnose|plan>
 ```
 
@@ -147,6 +159,7 @@ Pick the next lane from current evidence instead of defaulting to more implement
 - **机械追求覆盖率。** 风险低的代码不需要厚测试；风险高的代码只看百分比也不够。
 - **把本地绿灯当 ready。** 本地检查只是实现反馈；ready 交给 `verify`。
 - **假设循环失败还接着试。** 转 `diagnose`。
+- **未经验证就提交里程碑。** 当 plan 定义了 commit unit 时，正式 commit 应在 review + verify 之后。
 
 ## 验收标准
 

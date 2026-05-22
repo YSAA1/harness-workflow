@@ -84,7 +84,7 @@ description: "当需求、边界、方案取舍、成功标准或验证策略还
 
 ### 第 5 步 — 写 Spec 文档
 
-使用 `templates/spec.md`。Spec 必须覆盖背景、Goals、Non-goals、用户/调用者、行为规格、约束、方案选择、Verification strategy、Capability gaps、Success criteria、Residual risks 和 Plan handoff。
+使用 `templates/spec.md`。Spec 必须覆盖背景、Goals、Non-goals、用户/调用者、行为规格、约束、方案选择、Verification strategy、Capability gaps、Success criteria、Residual risks 和 Plan handoff。Spec 应当在 Plan Handoff 中给出里程碑建议（Suggested milestones）和每个里程碑的验收标准提示（Per-milestone acceptance hints），帮助 `plan` 定义阶段级验收标准；简单任务可说明为什么不需要。
 
 ### 第 6 步 — Spec 自审
 
@@ -154,6 +154,7 @@ These recommendations guide handoff; do not invoke the next skill automatically 
 - [ ] Spec 含 Verification strategy、Capability gaps、Success criteria、Plan handoff。
 - [ ] 已按 `references/spec-review-checklist.md` 自审并修复问题。
 - [ ] 如 recovery surface 要求，已追加 Spec 摘要和 rejected options。
+- [ ] Plan Handoff 含里程碑建议和验收提示（复杂任务）或说明为什么不需要。
 - [ ] 已请求用户批准 Spec；未批准前没有调用 `plan` 或写实现代码。
 
 ## 工件更新
