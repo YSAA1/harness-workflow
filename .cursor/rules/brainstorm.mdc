@@ -34,6 +34,7 @@ Canonical source: `skills/brainstorm/SKILL.md`.
 ## Outputs
 
 - An approved-ready Spec that states goals, non-goals, users, behavior, constraints, chosen approach, verification strategy, capability gaps, success criteria, residual risks, and plan handoff.
+- Plan Handoff should include milestone suggestions for complex tasks.
 - Optional short summary in the selected recovery surface only if that surface requires it.
 
 ## Verification / Done Criteria

@@ -40,6 +40,7 @@ description: "当 build、test、lint、typecheck、CI 或运行时检查失败�
 | 根因影响多文件或范围 | `plan` |
 | 根因揭示需求边界错 | `brainstorm` |
 | 修复稳定 | `review` 或 `verify` |
+| 根因是已提交里程碑的回归 | 记录到 recovery surface + `implement` 修复 + 重新 verify |
 | 三轮诊断未果 | 记录 blocker 并向用户升级 |
 | 命令链路本身坏 | `harness-builder` |
 
@@ -63,7 +64,7 @@ description: "当 build、test、lint、typecheck、CI 或运行时检查失败�
 
 ### 第 3 步 — 定位变化面
 
-查看最近提交、本地 diff、相关配置和已知能跑通的锚点。
+查看最近提交、本地 diff、相关配置和已知能跑通的锚点。当失败出现在已提交里程碑的范围内时，先确认是否该里程碑引入了回归，查看该 commit 的 diff 和对应的 verify 证据是否仍有效。
 
 ### 第 4 步 — 提出单一 hypothesis
 

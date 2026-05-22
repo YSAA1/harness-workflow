@@ -29,7 +29,8 @@ Canonical source: `skills/diagnose/SKILL.md`.
 5. Instrument or run focused checks to support or falsify that hypothesis.
 6. Name the root cause only when evidence supports it.
 7. Make the smallest single-purpose fix.
-8. Re-run the reproduction command and adjacent validation for fresh evidence.
+8. When failure occurs in a committed milestone scope, check for regression.
+9. Re-run the reproduction command and adjacent validation for fresh evidence.
 
 ## Outputs
 

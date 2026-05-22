@@ -14,6 +14,8 @@ The selected recovery surface should answer:
 | What remains risky or blocked? | Prevents hidden uncertainty |
 | What should happen next? | Avoids vague "continue" handoffs |
 | What should not be retried? | Preserves rejected options and dead ends |
+| Which milestones are committed? | Prevents losing verified work across sessions |
+| Are there verified but uncommitted changes? | Ensures milestone commits are not forgotten |
 
 If an answer is unknown, write `unknown` with the reason instead of guessing.
 
@@ -33,3 +35,4 @@ If an answer is unknown, write `unknown` with the reason instead of guessing.
 - Creating a fourth handoff file when the selected recovery surface already exists.
 - Leaving next action as "continue".
 - Hiding failed commands or skipped checks.
+- Verified changes left uncommitted across session boundaries.

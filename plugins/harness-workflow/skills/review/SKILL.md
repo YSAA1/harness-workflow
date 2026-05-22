@@ -53,6 +53,7 @@ review 必须同时检查"做超了"和"做欠了"。它可以判断"没有结�
 - **Correctness and design risk**：边界、错误处理、数据、并发、兼容性是否合理。
 - **Docs/artifacts**：命令、配置、用户可见行为、API 是否同步。
 - **Entropy**：调试输出、TODO、未使用代码、未批准依赖或第二套状态来源。
+- **Phase acceptance criteria**（当 Executable Plan 存在时）：对照当前阶段的 acceptance_criteria 逐条检查是否满足。没有 Executable Plan 时，此项自动跳过，review 仍用上述六把尺正常工作。
 
 ## 执行流程
 
@@ -62,7 +63,7 @@ review 必须同时检查"做超了"和"做欠了"。它可以判断"没有结�
 
 ### 第 2 步 — 用六把尺逐项过
 
-对每条问题给状态、证据和严重级。
+对每条问题给状态、证据和严重级。当 Executable Plan 存在时，读取当前阶段的 acceptance_criteria 和 verification_commands 作为额外对照维度。
 
 ### 第 3 步 — 分级 findings
 
@@ -110,6 +111,8 @@ Assessment:
   - Evidence routing: <verify required|verify fast-path|blocked>
   - Docs sync: <ok|drift>
   - Entropy: <ok|residue>
+  - Phase acceptance: <all met|partial|unmet|no plan>
+  - Commit eligibility: <eligible|not eligible|no commit unit>
 
 Next:
   - Skill: <implement | diagnose | verify | plan>
@@ -135,6 +138,7 @@ Use review findings to route the next lane; review itself should not quietly bec
 - **把缺测试当成以后补。**
 - **review 与 verify 混淆。** review 不声明 ready。
 - **改 `AGENTS.md` 写本次结论。**
+- **有 plan 不对照。** 当存在 Executable Plan 时，review 必须对照阶段 acceptance criteria，不能只检查 Spec coverage。
 
 ## 验收标准
 
@@ -144,6 +148,7 @@ Use review findings to route the next lane; review itself should not quietly bec
 - [ ] Open Questions 与 Residual Risks 明确。
 - [ ] Assessment 是 Pass / Conditional / Block 之一。
 - [ ] blocking findings 按需写入 selected recovery surface。
+- [ ] 当 Executable Plan 存在时，已对照阶段 acceptance criteria 检查。
 - [ ] 下一步 skill 与原因显式。
 
 ## 工件更新

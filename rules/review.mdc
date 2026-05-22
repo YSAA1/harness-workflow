@@ -26,8 +26,10 @@ Canonical source: `skills/review/SKILL.md`.
 4. Check correctness and design risk around boundaries, errors, data, compatibility, and trust.
 5. Check docs, generated artifacts, and recovery surface for drift.
 6. Check entropy: debug leftovers, TODOs, unused code, unapproved dependencies, duplicate state.
-7. Classify findings as Critical, Important, or Minor.
-8. Conclude Pass, Conditional, or Block and route next.
+7. When an Executable Plan exists, also check phase acceptance criteria (7th lens).
+8. Assess commit eligibility when commit units are defined.
+9. Classify findings as Critical, Important, or Minor.
+10. Conclude Pass, Conditional, or Block and route next.
 
 ## Outputs
 
@@ -39,3 +41,4 @@ Canonical source: `skills/review/SKILL.md`.
 - Critical and Important findings have concrete evidence.
 - Missing fresh evidence is treated as a gap and routed to `verify`.
 - Blocking findings route back to `implement`, `diagnose`, `plan`, or `brainstorm`.
+- When an Executable Plan exists, phase acceptance criteria are checked.

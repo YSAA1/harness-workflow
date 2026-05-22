@@ -25,8 +25,10 @@ Canonical source: `skills/plan/SKILL.md`.
 1. Gate on readiness: goals, non-goals, success criteria, and verification path must be clear.
 2. Choose the planning surface: docs plan, issue, feature-list, existing tracker, lightweight note, or three-file backend.
 3. Write an Executable Plan with objective, active slice, non-goals, success criteria, verification path, phases, next item, commit units, risks, blockers, and handoff.
-4. Ensure exactly one current item is next or in progress.
-5. Stop at the planning boundary unless the user asked to continue.
+4. Each phase must include acceptance_criteria, verification_commands, and success_definition.
+5. When multi-phase, define commit units with pre-commit conditions (review no Critical + verify PASS).
+6. Ensure exactly one current item is next or in progress.
+7. Stop at the planning boundary unless the user asked to continue.
 
 ## Outputs
 
@@ -38,3 +40,4 @@ Canonical source: `skills/plan/SKILL.md`.
 - The plan is specific enough for another agent to resume without chat history.
 - It preserves WIP=1 and does not create a second recovery surface by default.
 - Every phase has an action and verification meaning.
+- Each phase has acceptance criteria that are falsifiable.

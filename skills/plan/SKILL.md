@@ -98,6 +98,18 @@ Three-file 模板仍保留在 `templates/`，但只是 backend 选项，不是 `
 - Known risks / blockers
 - Handoff to next skill
 
+每个阶段必须包含结构化验收块：
+
+- `acceptance_criteria`：可证伪的完成条件
+- `verification_commands`：验证命令列表
+- `success_definition`：一句话成功定义
+
+每个 commit unit 必须包含：
+
+- scope：提交范围
+- 对应阶段：绑定哪些阶段
+- 提交前置条件：review 无 Critical + verify PASS
+
 如果唯一有意义的 verification path 是 `blocked`，计划不能直接路由到 `implement`，除非同时写明用户接受的 fallback evidence。否则转 `harness-builder` 修复验证能力。
 
 ### 第 2 步 — 写入选定 artifact
@@ -115,6 +127,20 @@ Three-file 模板仍保留在 `templates/`，但只是 backend 选项，不是 `
 ### 第 4 步 — 停在计划边界
 
 除非用户明确要求继续，否则产出计划后停止。给出下一步建议：`implement`、`verify`、`diagnose` 或 `harness-builder`。
+
+## Commit Unit Protocol
+
+Commit unit 定义何时可以提交一个里程碑。这是计划产物，不是强制流程。
+
+当 plan 定义了 commit unit 时：
+1. 每个 commit unit 绑定一个或多个阶段
+2. 提交前置条件：该 scope 的实现完成 + review 无 Critical + verify PASS
+3. commit message 应引用阶段名称
+4. 提交后更新 recovery surface 的阶段状态
+
+当没有 plan 或任务简单到不需要 commit unit 时：
+- implement / review / verify 正常工作，不依赖 commit unit 定义
+- 提交时机由用户或项目惯例决定
 
 ## 输出格式
 
@@ -155,6 +181,8 @@ Use this as a routing recommendation, not as permission to keep working after pl
 - **验证能力最后才发现。** `verification_path_status` 必须在计划阶段写清楚。
 - **多阶段只验局部。** 多 commit unit 必须有 `final_integration_claim`。
 - **忘了 hand off。** 不指明下一步 skill，会让 agent 默认继续在 planning lane 里磨。
+- **阶段验收标准模糊。** acceptance_criteria 必须可证伪，不允许 "完成优化"、"基本实现"。
+- **Commit unit 无验证绑定。** 每个 commit unit 必须关联 review + verify 前置条件。
 
 ## 验收标准
 
@@ -166,6 +194,8 @@ Use this as a routing recommendation, not as permission to keep working after pl
 - [ ] 恰好一个当前 item 是 in-progress 或 next。
 - [ ] 没有默认创建第二套 recovery surface。
 - [ ] 如使用 three-file backend，模板取自 `templates/`。
+- [ ] 每个阶段含 acceptance_criteria、verification_commands 和 success_definition。
+- [ ] 多阶段计划定义了 commit unit 及其提交前置条件。
 - [ ] 已显式给出下一步 skill，且除非用户要求继续，否则停在计划边界。
 
 ## 工件更新

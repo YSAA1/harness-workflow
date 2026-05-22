@@ -25,8 +25,9 @@ Canonical source: `skills/cleanup/SKILL.md`.
 3. Pick closure state: complete, blocked, abandoned, or reopen.
 4. Apply Knowledge Cleanup with small documentation or artifact fixes only.
 5. Regenerate generated artifacts from their scripts; do not hand-edit generated HTML.
-6. Record residual drift as follow-up with location, risk, and next action.
-7. Summarize related changes and unrelated dirty files left alone.
+6. When the plan has commit units, verify milestone commit completeness.
+7. Record residual drift as follow-up with location, risk, and next action.
+8. Summarize related changes and unrelated dirty files left alone.
 
 ## Outputs
 

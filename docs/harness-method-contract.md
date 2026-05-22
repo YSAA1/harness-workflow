@@ -17,6 +17,9 @@
 | Capability Shortlist | Capability Discovery 中的证据绑定推荐表：repo signal -> candidate -> coverage row -> why -> install surface -> risk/cost -> fallback -> classification |
 | Skill discovery helper | `find-skills`，用于搜索可复用 skills；它辅助 Capability Discovery，不是第九条 workflow lane |
 | Research Route | `harness-builder` 在用户明确要求 autoresearch 或开放式研究时生成的项目本地研究 harness，不是第九条 workflow lane |
+| Commit Unit | `plan` 定义的提交单元，绑定一个或多个阶段和提交前置条件。是计划产物而非强制流程。 |
+| Milestone Commit | 经过 review + verify 后的正式提交，对应一个 commit unit |
+| Commit Eligibility | `verify` 在 PASS 后评估的提交资格：eligible / not eligible / no commit unit |
 | Evidence Loop | 有边界地反复提出 iteration hypothesis、修改、验证、记录证据、keep/revert/reset/discard/stop 的研究循环 |
 | Research Reset Policy | 失败代码可以在隔离研究分支或 worktree 内清掉，但失败原因、metric 和验证证据必须先保留 |
 
@@ -73,6 +76,8 @@ Agent 质量来自项目周围的系统：入口、规则、上下文、验证�
 - WIP=1。
 - 发现范围扩大时回 `plan` 或请求用户确认。
 - Research Route 还必须有 hypothesis、baseline、metric、verify、guard、budget 和 stop rule。
+- 当 Executable Plan 定义了 commit unit 时，每个 commit unit 绑定提交前置条件（review 无 Critical + verify PASS）。
+- commit unit 是计划产物，不是强制流程。没有 plan 的简单任务按项目惯例提交。
 
 主要 skill：`brainstorm`、`plan`、`implement`、`review`。
 
@@ -87,6 +92,7 @@ Ready claim 必须由 `verify` 作为唯一 ready gate 证明。旧命令、聊�
 - `verify` 必须把每条 success criterion 映射到 fresh evidence，状态只能是 pass、fail 或 unknown。
 - unknown 不能算 ready。
 - 结构化 verification record 至少包含 claim、covered paths、latest change、commands、skipped high-value checks、unknowns 和 ready verdict。
+- milestone commit 应当是 verified state 的产物。当 plan 定义了 commit unit 时，提交前须有对应的 verify PASS 记录。
 
 主要 skill：`verify`、`review`、`diagnose`。
 

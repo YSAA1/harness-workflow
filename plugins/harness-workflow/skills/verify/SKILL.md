@@ -90,6 +90,15 @@ description: "当 change 准备声明 ready，需要 fresh verification evidence
 
 把每条成功标准映射到 evidence，状态只能是 pass/fail/unknown。unknown 不是 ready。多阶段或多 commit unit 任务还必须覆盖 `final_integration_claim`。
 
+### 第 5.5 步 — Commit Eligibility 评估
+
+当 Executable Plan 定义了 commit unit 且当前 slice 属于某个 commit unit 时：
+- 检查 review 是否已对该 scope 产出 PASS 或 CONDITIONAL（无 Critical）
+- 若 verify PASS + review PASS/CONDITIONAL → commit eligibility = eligible，建议执行 milestone commit
+- 若 verify PASS 但 review 未做或有 Critical → commit eligibility = not eligible，建议先完成 review
+
+没有 Executable Plan 或 commit unit 时，跳过此步，verify 正常工作。
+
 ### 第 6 步 — Update Artifacts
 
 按 selected recovery surface 记录 verification entry、skipped checks、capability gaps 和 residual risk。
@@ -98,7 +107,7 @@ description: "当 change 准备声明 ready，需要 fresh verification evidence
 
 | Result | Next |
 | --- | --- |
-| All required evidence fresh and passing | `cleanup` |
+| All required evidence fresh and passing | commit milestone（当 eligible 时）-> `cleanup` |
 | Command failed or behavior wrong | `diagnose` |
 | Evidence insufficient due to missing capability | `harness-builder` 或用户决策 |
 | Spec / success criteria mismatch | `plan` |
@@ -130,6 +139,7 @@ Verification record:
       fallback: <current substitute>
   unknowns:
     - <what remains unproven>
+  commit_gate: eligible|not eligible|no commit unit|deferred
   ready: yes|no
 
 Claim:
@@ -189,6 +199,7 @@ Verification should produce the next lane from evidence, not from optimism.
 - [ ] Relevant evidence ladder rungs are run or skipped with reasons.
 - [ ] Capability gap is absent or documented with value/enablement/risk/fallback.
 - [ ] selected recovery surface records commands, results, timestamp, and limits when required.
+- [ ] 当 commit unit 存在时，已评估 commit eligibility。
 - [ ] Output routes to the next skill.
 
 ## 工件更新

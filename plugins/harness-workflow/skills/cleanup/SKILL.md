@@ -59,6 +59,7 @@ Never delete or rewrite uncertain files. Ask or defer.
 - User-visible behavior, config, env vars, ports, scripts, CLI flags, file paths are documented.
 - Generated artifacts are regenerated from scripts, not hand-edited.
 - Removed or renamed skills are not still advertised as active.
+- 当 plan 定义了 commit unit 时：所有 eligible commit unit 是否已提交；recovery surface 的阶段状态是否与 git log 一致；没有"已 verify PASS 但未提交"的遗漏。
 
 ## Low-Risk Entropy Cleanup
 
@@ -82,7 +83,7 @@ Allowed when obviously created by this task:
 
 ### 第 2 步 — Compare Truth Sources
 
-比较代码、README、docs、generated artifacts、`AGENTS.md` 和 selected recovery surface。找出 drift、膨胀、重复和过期命令。
+比较代码、README、docs、generated artifacts、`AGENTS.md` 和 selected recovery surface。找出 drift、膨胀、重复和过期命令。当 plan 有 commit unit 时，比较 plan 的阶段状态、recovery surface 的 milestone 记录和 git log，找出不一致。
 
 ### 第 3 步 — Pick Closure State
 
@@ -109,7 +110,7 @@ Allowed when obviously created by this task:
 
 ### 第 7 步 — Final Git State Summary
 
-报告 related changes、unrelated dirty files left alone、removed/deferred residue。
+报告 related changes、unrelated dirty files left alone、removed/deferred residue。报告 milestone commits 完成情况。
 
 ## 输出格式
 

@@ -25,8 +25,10 @@ Canonical source: `skills/verify/SKILL.md`.
 3. Select the smallest valuable evidence ladder: syntax, build, typecheck, lint, unit, integration, smoke, E2E, or manual signal.
 4. Run checks in the target cwd and environment.
 5. Map each success criterion to pass, fail, or unknown.
-6. Record skipped high-value checks and capability gaps with value, enablement, risk/cost, and fallback.
-7. Route failures to `diagnose`, unknowns to planning or harness work, and passing closure to `cleanup`.
+6. After mapping success criteria, evaluate commit eligibility when commit units exist.
+7. Record skipped high-value checks and capability gaps with value, enablement, risk/cost, and fallback.
+8. PASS routes to milestone commit (when eligible) then `cleanup`.
+9. Route failures to `diagnose`, unknowns to planning or harness work.
 
 ## Outputs
 
@@ -37,3 +39,4 @@ Canonical source: `skills/verify/SKILL.md`.
 - No ready claim is made without fresh evidence after the latest relevant change.
 - Unknown is not treated as pass.
 - Evidence covers the stated success criteria, not just a proxy green command.
+- Commit eligibility is assessed when commit units are defined.

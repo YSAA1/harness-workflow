@@ -84,7 +84,9 @@ These gates are required unless the user explicitly asks for read-only explanati
      - architecture boundaries and mechanical enforcement;
      - anti-entropy and stale-state detection;
      - capability fit: skills, hooks, MCP, subagents, external research;
-     - dynamic context: git, diagnostics, CI, logs, or available runtime signals.
+     - dynamic context: git, diagnostics, CI, logs, or available runtime signals;
+     - commit protocol and milestone discipline（当项目需要 tracked milestone commits 时）.
+   - commit protocol 默认 `Deferred`，只有项目明确需要 milestone tracking 或多 agent 协作时升为 `Recommended`。
    - For each row, say whether existing artifacts already satisfy it, need patching, need a new install, or should be deferred/rejected.
    - If architecture boundaries are requested or implied, decide whether prose is enough or whether `LAYERS.md`, boundary tests, lint rules, or ratchets are needed.
    - Use `references/coverage_matrix_policy.md`, `references/architecture_enforcement_policy.md`, and `references/anti_entropy.md`.
