@@ -1,0 +1,30 @@
+# Commit Convention
+
+Use concise Chinese commit messages for project milestones unless the repo already requires another convention.
+
+## Milestone commits
+
+- Commit after a coherent, verified phase.
+- Mention the user-visible or workflow reason, not only the files changed.
+- Keep unrelated cleanup in a separate commit or defer it.
+
+Examples:
+
+```text
+强化 harness-builder 研究收尾闸门
+补齐 capability 推荐策略
+同步 Cursor skill 预览面
+```
+
+## Research Route trailers
+
+Research commits may add trailers so iterations remain auditable:
+
+```text
+Iter: 2
+Result: pass
+Metric: accuracy=0.84
+Decision: keep
+```
+
+When research graduates, the final commit message should identify the winning hypothesis, metric delta, verification command, and rollback note.

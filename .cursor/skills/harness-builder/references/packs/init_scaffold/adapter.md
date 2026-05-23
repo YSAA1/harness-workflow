@@ -26,7 +26,7 @@ The pack must not:
 | Linter import rules | Architecture boundaries / Verification entry | Render snippets only when Lint level is selected. |
 | CI | Verification entry | Render only when CI is selected and commands are validated. |
 | GC / drift scan | Anti-entropy | Render read-only report-only scans only. |
-| Pre-commit hooks | Capability fit | Defer to `references/hook_policy.md`; not installed by this pack. |
+| Pre-commit hooks | Hook fit | Defer to `references/hook_policy.md`; not installed by this pack. |
 
 ## Dry-run contract
 

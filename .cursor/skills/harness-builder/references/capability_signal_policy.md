@@ -31,6 +31,14 @@ Do not list a candidate if it cannot be tied to exactly one coverage row. If one
 - `Deferred` means useful later, but not needed for this active harness objective.
 - `Rejected` means duplicate, too risky, too broad, not project-local enough, or not bound to a real row.
 
+## Proactive scan from stack signals
+
+Concrete stack signals may produce candidates before the user names a capability. Examples include package managers, framework configs, CI files, training scripts, dataset/checkpoint paths, auth/secret surfaces, generated artifacts, and repeated workflow docs.
+
+Use `capability_starter_catalog.md` as a starter map, then still apply the shortlist contract. Stack-driven candidates must bind to one of the split capability rows: skill fit, hook fit, MCP fit, subagent fit, or external research fit.
+
+Project-level Harness Builder should be more active about recommending low-risk project-local capabilities when stack signals are strong. Single-task lanes should stay conservative and only adopt capabilities needed for that task.
+
 ## Recommendation-only mode
 
 If the user asks only to analyze, recommend, audit, or "see what would help":
@@ -57,6 +65,7 @@ Good signals:
 Default classification:
 
 - `Recommended` for repeatable, low-risk knowledge workflows;
+- `Recommended` for repeated project-level domain workflows when repo signals show recurrence;
 - `Required` only when the approved harness objective depends on that skill to run safely or consistently;
 - `Deferred` for plausible but unproven recurrence;
 - `Rejected` for one-off fixes or generic advice.
@@ -75,6 +84,7 @@ Good signals:
 Default classification:
 
 - `Recommended` for narrow warning or reminder hooks;
+- `Recommended` for protected paths, known fast verification reminders, or commit/branch guardrails when repo signals are clear;
 - `Required` only for concrete high-risk failures that tests or review cannot reliably catch;
 - `Deferred` when false positives are likely or the team workflow is unknown;
 - `Rejected` for long-running, subjective, broad, or fragile automation.
@@ -94,6 +104,7 @@ Good signals:
 Default classification:
 
 - `Recommended` for read-only MCP that closes a real evidence or docs gap;
+- `Recommended` for read-only docs, repository, or observability MCP when stack or workflow signals show current external context is repeatedly needed;
 - `Required` only when the selected verification path cannot run without it;
 - `Deferred` when local docs or CLI commands are sufficient for now;
 - `Rejected` for write-capable or secret-bearing MCP without explicit approval.
@@ -113,6 +124,7 @@ Good signals:
 Default classification:
 
 - `Recommended` for bounded read-only research or review;
+- `Recommended` for `repo_explorer` on large or unfamiliar repos, and for security/API/ML reviewers when those risks are signaled;
 - `Required` only when the user explicitly asks for delegated analysis or the harness objective cannot be reviewed safely by the main agent alone;
 - `Deferred` for nice-to-have expert review;
 - `Rejected` when it would duplicate the main agent's immediate blocking work.

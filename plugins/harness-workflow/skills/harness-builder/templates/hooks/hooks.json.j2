@@ -5,6 +5,24 @@
       "event": "pre_edit",
       "command": "python .codex/hooks/protected_paths.py",
       "reason": "Block accidental edits to protected data, secrets, checkpoints, and generated artifacts."
+    },
+    {
+      "name": "research-iteration-logger",
+      "event": "post_research_iteration",
+      "command": "python .codex/hooks/research_iteration_logger.py",
+      "reason": "Record compact Research Route iteration decisions when this hook is explicitly selected."
+    },
+    {
+      "name": "research-branch-push-guard",
+      "event": "pre_push",
+      "command": "python .codex/hooks/research_branch_push_guard.py",
+      "reason": "Prevent ungraduated research branches from being pushed when this guardrail is explicitly selected."
+    },
+    {
+      "name": "commit-trailer-enforcer",
+      "event": "commit_msg",
+      "command": "python .codex/hooks/commit_trailer_enforcer.py",
+      "reason": "Require Research Route commit trailers when this convention is explicitly selected."
     }
   ]
 }

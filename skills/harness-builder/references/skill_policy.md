@@ -6,6 +6,8 @@ Create a project-local skill when the workflow will repeat, failure is costly, t
 
 Do not create a skill for one-off bug fixes, basic overview, generic caution, tasks better handled by tests/hooks/check scripts, or workflows with unclear triggers.
 
+Project-level Harness Builder should default repeated workflow skills and project-level domain skills to `Recommended` when repo signals show recurrence. Single-task work remains conservative and should not create a skill for a one-off need.
+
 ## Invocation mode
 
 Every skill candidate must declare invocation mode:

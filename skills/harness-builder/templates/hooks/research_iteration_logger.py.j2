@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import datetime as _dt
+import json
+import sys
+from pathlib import Path
+
+LOG_PATH = Path("{{ research_iteration_log | default('.harness/research_iterations.jsonl') }}")
+
+
+def main() -> int:
+    payload = sys.stdin.read()
+    try:
+        event = json.loads(payload) if payload.strip() else {}
+    except Exception:
+        event = {"raw": payload}
+
+    entry = {
+        "ts": _dt.datetime.now(_dt.timezone.utc).isoformat(),
+        "event": event.get("event", "research_iteration"),
+        "branch": event.get("branch"),
+        "iteration": event.get("iteration"),
+        "decision": event.get("decision"),
+        "note": event.get("note"),
+    }
+    LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with LOG_PATH.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(entry, ensure_ascii=False, sort_keys=True) + "\n")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

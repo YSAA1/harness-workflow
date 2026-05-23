@@ -23,7 +23,11 @@ Each row is classified as:
 | Verification entry | Is there a fast safe check and a deeper proof path? | `scripts/agent/check.sh`, test/lint/typecheck/smoke docs, CI |
 | Architecture boundaries | Are dependency rules discoverable and enforceable when needed? | `docs/architecture/LAYERS.md`, boundary test, linter import rule, known-violations baseline |
 | Anti-entropy | Can drift be detected without manual rediscovery? | read-only GC scan, doc drift check, stale state check, cleanup checklist |
-| Capability fit | Are extra skills, hooks, MCP, subagents, or external research justified? | `.agents/skills`, hooks, MCP config, subagent templates, research notes |
+| Skill fit | Are reusable skills justified for repeated project workflows? | `.agents/skills`, project-local skills, skill search notes |
+| Hook fit | Are deterministic hook guardrails justified by concrete risk? | hooks, protected-path guards, verification reminders, audit loggers |
+| MCP fit | Is external context or action needed beyond local files and CLI? | MCP config notes, read-only docs/repo/observability MCP, approval records |
+| Subagent fit | Would read-only delegated analysis or review reduce real risk? | subagent templates, orchestration notes, review assignments |
+| External research fit | Is web or paper research required to resolve current uncertainty? | research notes, source list, official docs links, evidence summaries |
 | Dynamic context | Which fresh signals should be probed at session start? | git status/log, diagnostics/lint, CI status, logs, runtime health if already available |
 
 ## Phase Thinking Without Profiles
@@ -39,7 +43,7 @@ Borrow the useful phase discipline from initialization tools, but map it into co
 | Lint import rules | architecture boundaries and verification entry |
 | CI or local check entry | verification entry |
 | GC / drift scan | anti-entropy |
-| Hooks | capability fit; optional unless blocking a concrete high-risk failure |
+| Hooks | hook fit; optional unless blocking a concrete high-risk failure |
 
 The user may ask for one area only. Still run enough discovery to avoid writing against the wrong stack or stale harness, then keep unrelated rows deferred.
 

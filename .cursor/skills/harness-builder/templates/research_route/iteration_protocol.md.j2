@@ -10,6 +10,17 @@ Each iteration must record:
 6. reason;
 7. next hypothesis or stop reason.
 
+## Commit trailer example
+
+Use these trailers on research commits when the loop produces code:
+
+```text
+Iter: 2
+Result: fail
+Metric: accuracy=0.71, latency=230ms
+Decision: discard
+```
+
 ## Rollback policy
 
 - Record failure evidence before rollback.

@@ -15,6 +15,10 @@ Harnesses can rot. Treat harness maintenance as part of the project.
 - multiple recovery surfaces claim to be current;
 - old active slices are mixed with a new user request;
 - `AGENTS.md` contains session notes, review conclusions, or temporary TODOs;
+- failed-experiment leftover code remains after research closeout;
+- orphan research branches, worktrees, or tags are not recorded;
+- research artifacts are unarchived or outside the approved artifact policy;
+- capability candidates are marked `Deferred` without a revisit date or trigger;
 - agents still repeat the same mistakes.
 
 ## Repair moves

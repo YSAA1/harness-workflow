@@ -11,6 +11,10 @@ research:
   budget: "{{ budget }}"
   stop_rule: "{{ stop_rule }}"
 
+isolation:
+  mode: "{{ isolation_mode }}" # worktree or branch
+  path: "{{ isolation_path }}"
+
 artifacts:
   plan: docs/research/research_plan.md
   evidence_log: docs/research/evidence_log.md
