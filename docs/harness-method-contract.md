@@ -98,12 +98,13 @@ Ready claim 必须由 `verify` 作为唯一 ready gate 证明。旧命令、聊�
 
 ## C7 Observability And Capability Fit
 
-能力配置必须服务当前任务的验证、可观测性、自动化或领域能力。安装或推荐 skills、MCP、hooks、subagents 前必须说明 value、enablement、risk/cost、fallback。
+能力配置必须服务当前任务的验证、可观测性、自动化或领域能力。安装或推荐 skills、MCP、hooks、subagents 或 external research 前必须说明 value、enablement、risk/cost、fallback。
 
 Capability Discovery 要求：
 
 - 对 skills，使用 `$find-skills` 搜索强相关可复用能力。
-- 对 MCP、hooks 或外部 agent 能力，使用 targeted web search 查官方文档或成熟实现。
+- 对 MCP、hooks、外部 agent 能力或 external research，使用 targeted web search 查官方文档或成熟实现。
+- Coverage Matrix 中 skills、hooks、MCP、subagents 和 external research 必须分行判断，不能混成一个笼统 capability row。
 - 在 Coverage Matrix 暴露真实 gap 后，输出 Capability Shortlist：每个候选必须绑定唯一 coverage row，并说明 repo signal、why、install surface、risk/cost、fallback 和 `Required / Recommended / Deferred / Rejected`。
 - 不把当前已安装 skills 当作搜索范围上限。
 - 不因为"可能有用"就安装能力。
@@ -139,6 +140,7 @@ Capability Discovery 要求：
 - 未解决 drift 记录为明确 follow-up。
 - 不用 cleanup 隐藏未完成工作。
 - 对 Research Route，cleanup 前必须确认失败尝试的证据仍可读，即使失败代码已经 revert 或 reset。
+- Research Route closeout 还必须经过 graduation 判断和 entropy gate，确认 winner/no-winner、合并方式、分支或 worktree 清理 checkpoint。
 
 主要 skill：`cleanup`。
 

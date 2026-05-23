@@ -83,7 +83,11 @@ These gates are required unless the user explicitly asks for read-only explanati
      - verification entry and deeper checks;
      - architecture boundaries and mechanical enforcement;
      - anti-entropy and stale-state detection;
-     - capability fit: skills, hooks, MCP, subagents, external research;
+     - skill fit;
+     - hook fit;
+     - MCP fit;
+     - subagent fit;
+     - external research fit;
      - dynamic context: git, diagnostics, CI, logs, or available runtime signals;
      - commit protocol and milestone discipline（当项目需要 tracked milestone commits 时）.
    - commit protocol 默认 `Deferred`，只有项目明确需要 milestone tracking 或多 agent 协作时升为 `Recommended`。
@@ -138,6 +142,12 @@ Reply approve / change / stop.
    - After installation, run the selected validation command and phase checks, or state the concrete blocker.
    - No fresh evidence means no ready claim.
 
+9. **Research Graduation gate**
+   - Required only when Research Route is used.
+   - Before calling research work done, choose a winner or explicit no-winner closeout, declare the merge mode, and record a branch/worktree cleanup checkpoint.
+   - After graduation, route through `review` and `cleanup`; research does not directly become done.
+   - Use `references/research_graduation_policy.md` and `references/research_entropy_gate.md`.
+
 ## Workflow
 
 1. **Collect evidence**
@@ -145,6 +155,7 @@ Reply approve / change / stop.
    - Detect stack and workbench facts when relevant: language, framework, package manager, build tool, test runner, linter, source roots, import patterns, and available verification commands.
    - Probe dynamic context when cheap and safe: `git status`, recent commits, diagnostics/lint, CI status if available, current recovery state, known broken checks, logs or runtime signals if already exposed.
    - For existing harnesses, identify authoritative vs stale sources and note conflicting claims before planning changes.
+   - Optionally invoke `find-skills` early to scan stack-related reusable skills; record results in Capability Discovery instead of installing immediately.
    - Use `scripts/scan_project.py` if useful.
 
 2. **Reconcile existing harness**
@@ -168,9 +179,10 @@ Reply approve / change / stop.
    - Keep hooks, MCP, subagents, and project-local skills inside this matrix; do not evaluate them as a separate shopping list.
    - If user only asked for a narrow coverage area, keep unrelated rows deferred and explain why.
 
-6. **Run Capability Discovery for uncovered gaps**
+6. **Run Capability Discovery for uncovered gaps and stack signals**
    - For reusable skills, use `find-skills` when a real coverage row needs repeatable workflow knowledge.
    - For hooks/MCP/external agent behavior/CI/GC/architecture tooling, use targeted web search against official docs or mature sources when current external behavior matters.
+   - Stack shape may directly produce capability candidates when the signal is concrete; still bind every candidate to one Coverage Matrix row.
    - Run the Capability Shortlist pass after evidence gathering: repo signal -> candidate -> coverage row -> why -> install surface -> risk/cost -> fallback -> classification.
    - Classify each candidate as `Required`, `Recommended`, `Deferred`, or `Rejected` by value, enablement, risk/cost, and fallback.
    - Reject candidates that do not close exactly one named gap or duplicate a simpler file/script/test.
@@ -189,6 +201,7 @@ Reply approve / change / stop.
    - If incomplete, return to gap-driven questions.
    - If approved, install `templates/research_route`: `docs/research/research_plan.md`, `docs/research/evidence_log.md`, `docs/research/iteration_protocol.md`, `.harness/research_manifest.yaml`.
    - Preserve failed evidence before rollback. Use `git reset --hard` only inside an approved isolated research branch/worktree after evidence is recorded.
+   - Before closeout, apply `references/research_graduation_policy.md` and `references/research_entropy_gate.md`.
 
 9. **Choose recovery surface**
    - Options: none, lightweight, three-file, feature-list, existing system.
@@ -258,6 +271,7 @@ For each capability recommendation, include repo signal, coverage-row binding, i
 | Harness files or capabilities were installed or repaired | `verify` |
 | Harness hypothesis exposes unclear goals, non-goals, or success criteria | `brainstorm` |
 | Harness plan is approved and first work slice is clear | `implement` |
+| Research Route completes | `review`, then `cleanup` |
 | Harness verification fails or setup breaks | `diagnose` |
 | Harness is current and no implementation is requested | `cleanup` |
 
