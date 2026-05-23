@@ -1,14 +1,37 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import os
+import subprocess
 import sys
 from pathlib import Path
 
 REQUIRED_TRAILERS = {{ research_commit_trailers | default(['Iter:', 'Result:', 'Metric:', 'Decision:']) }}
+RESEARCH_BRANCH_PREFIX = "{{ research_branch_prefix | default('research/') }}"
+ENFORCE_ENV = "{{ enforce_research_commit_trailers_env | default('ENFORCE_RESEARCH_COMMIT_TRAILERS') }}"
+
+
+def current_branch() -> str:
+    result = subprocess.run(
+        ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        return ""
+    return result.stdout.strip()
+
+
+def should_enforce() -> bool:
+    if os.environ.get(ENFORCE_ENV) == "1":
+        return True
+    branch = current_branch()
+    return bool(branch and branch.startswith(RESEARCH_BRANCH_PREFIX))
 
 
 def main() -> int:
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 2 or not should_enforce():
         return 0
     message_path = Path(sys.argv[1])
     text = message_path.read_text(encoding="utf-8")
