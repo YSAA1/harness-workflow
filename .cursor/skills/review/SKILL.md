@@ -1,11 +1,17 @@
 ---
 name: review
-description: "当一段有意义的代码或文档改动已稳定、准备声明 ready/done/merge 前使用。典型触发语：review 一下、检查我的改动、commit 前看下、phase 完成了、Spec 已实现、sanity check、有没有漏。通常在 verify 之前、diagnose 修复之后使用；WIP 未稳定时不要使用。"
+description: "用于对稳定 diff 做 scope、correctness、docs、entropy 和 risk 的结构性评审。触发条件：implement/diagnose 后准备进入 ready 证明，或用户要求 review/sanity check。不要在 WIP、失败未解释或只需要 fresh evidence 时使用；review 不能声明 ready。"
 ---
 
 # 工作流结构评审
 
 `review` 用 **Spec / scope / diff / docs / entropy / risk** 六把尺检查当前结果。它抓正确性、范围、设计风险、缺失测试和文档漂移；fresh evidence sufficiency 与 ready judgement 归 `verify`。
+
+## 路由快照
+
+- **Use when**: 有意义改动已经稳定，需要在 ready 前判断范围、正确性、文档、熵和风险。
+- **Do not use when**: 工作仍在 WIP、失败正在发生、或唯一问题是缺 fresh evidence。
+- **Route to**: 无 blocking finding 转 `verify`；有结构问题转 `implement`；失败不明转 `diagnose`。
 
 ## 目的
 

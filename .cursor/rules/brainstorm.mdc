@@ -10,34 +10,29 @@ Canonical source: `skills/brainstorm/SKILL.md`.
 
 ## When To Use
 
-- The request is still an idea, goal, architecture question, or unclear behavior.
-- Multiple reasonable approaches exist and need tradeoff analysis.
-- Success criteria, non-goals, validation, users, constraints, or capability gaps are missing.
-- The user asks to discuss first, write a Spec, or avoid coding yet.
+- Idea, architecture question, or unclear behavior still needs convergence.
+- Tradeoffs, success criteria, non-goals, or verification path are missing.
+- User asks to discuss first, write a Spec, or avoid coding yet.
 
 ## Inputs
 
 - User request and attached materials.
 - Existing specs, PRDs, plans, issues, README, relevant code, tests, and recovery surface.
-- Current project rules and verification commands.
+- Phase A references: `skills/brainstorm/references/clarification-loop.md` and `clarification-coverage.md`.
 
 ## Procedure
 
-1. Restate the real problem and current project context.
-2. Ask focused clarification questions until purpose, scope, behavior, constraints, success criteria, and verification strategy are explicit.
-3. Design verification before choosing implementation details.
-4. Compare two or three approaches, or record rejected alternatives when one approach is clearly best.
-5. Write an independent Spec in the project convention.
-6. Self-review the Spec for TBDs, contradictions, hidden capability gaps, and unverifiable success criteria.
-7. Stop for user approval before planning or implementation.
+1. **Phase A** — Maintain coverage, ask one question per turn, wait for replies, pass the Clarification Gate, confirm assumptions.
+2. **Phase B** — Follow `spec-drafting.md`: verification first, compare approaches, write Spec, self-review, stop for approval.
+3. Do not write a Spec before Phase A completes. Do not call `plan` or implement before Spec approval.
 
 ## Outputs
 
-- An approved-ready Spec that states goals, non-goals, users, behavior, constraints, chosen approach, verification strategy, capability gaps, success criteria, residual risks, and plan handoff.
-- Plan Handoff should include milestone suggestions for complex tasks.
-- Optional short summary in the selected recovery surface only if that surface requires it.
+- Phase A: `BRAINSTORM CLARIFICATION IN PROGRESS` with coverage matrix and one question.
+- Phase B: approved-ready Spec plus `BRAINSTORM SPEC READY`.
 
 ## Verification / Done Criteria
 
-- The Spec can answer what will be built, what will not be built, and how it will be proven correct.
-- User approval is requested before any Executable Plan or implementation.
+- Clarification Gate passed; blocking dimensions confirmed.
+- Independent Spec written, self-reviewed, and sent for user approval.
+- No `plan` or implementation before Spec approval.

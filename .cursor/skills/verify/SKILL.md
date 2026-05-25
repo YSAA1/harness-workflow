@@ -1,6 +1,6 @@
 ---
 name: verify
-description: "当 change 准备声明 ready，需要 fresh verification evidence、evidence ladder、smoke/E2E 判断和能力推荐记录时使用。典型触发语：验证一下、能结束吗、跑最终检查、证明它能用、ready to ship、E2E check、smoke test。review 通过但还缺当前命令证据时必须使用。"
+description: "用于给具体 ready/done/merge claim 收集 fresh evidence 并映射到成功标准。触发条件：工作准备声明 ready、用户要求验证/最终检查/smoke/E2E，或 review 后缺当前证据。不要在实现仍变化、失败未解释或成功标准不清时使用；verify 不修复。"
 ---
 
 # 声明 ready 前验证
@@ -8,6 +8,12 @@ description: "当 change 准备声明 ready，需要 fresh verification evidence
 `verify` 为一个具体 claim 收集 fresh evidence。它不修复、不重做计划、不清理无关文件，只用当前命令或可用 evidence source 证明当前状态，记录证据边界，并把失败路由到正确 skill。
 
 核心规则：**`verify` 是唯一 ready gate；没有 fresh evidence，就不能声明 ready**。
+
+## 路由快照
+
+- **Use when**: 需要证明某个 ready claim，且能列出 success criteria 或 verification path。
+- **Do not use when**: 实现仍在变化、命令失败未解释、或 success criteria 写不出来。
+- **Route to**: PASS 后转 `cleanup`；失败转 `diagnose`；能力缺口转 `harness-builder`；范围不清转 `plan` / `brainstorm`。
 
 ## 目的
 

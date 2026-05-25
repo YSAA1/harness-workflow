@@ -1,11 +1,17 @@
 ---
 name: cleanup
-description: "当一个 batch 准备完成、阻塞、放弃或需要知识收尾时使用。典型触发语：收尾、整理一下、finish this phase、make state clean、同步文档、知识清理。聚焦 Knowledge Cleanup：防止文档过期、AGENTS.md 膨胀、生成物不一致和 recovery surface 漂移；除非用户要求，不做行为改动。"
+description: "用于在完成、阻塞、放弃或交接前对齐 docs、generated artifacts、recovery surface 和知识状态。触发条件：用户说收尾/同步文档/整理状态，或 verify 后需要 closure。不要把 cleanup 当代码重构或行为改动入口；行为变化回 implement/plan。"
 ---
 
 # Knowledge Cleanup
 
 `cleanup` 是知识和工件的收尾闸门。它对齐 docs、代码、生成物和 selected recovery surface，防止项目知识腐化。它不是重构许可证，也不是单独的暂停/恢复 lane。
+
+## 路由快照
+
+- **Use when**: 一个 batch 需要知识、文档、生成物、恢复面或交接收尾。
+- **Do not use when**: ready claim 还没验证、失败未解释、或需要改行为。
+- **Route to**: 知识对齐后 done；缺行为或测试转 `implement`；不明失败转 `diagnose`；工作面缺口转 `harness-builder`。
 
 ## 目的
 

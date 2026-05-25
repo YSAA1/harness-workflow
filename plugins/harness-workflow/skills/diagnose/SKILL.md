@@ -1,11 +1,17 @@
 ---
 name: diagnose
-description: "当 build、test、lint、typecheck、CI 或运行时检查失败，且无法指出单一证据支撑的 root cause 时使用。典型触发语：测试挂了、构建坏了、为什么报错、CI 红了、本地能跑 CI 不行、flaky、复现这个 bug、我试了但错误变了。修复前必须先复现、提出单一假设、验证根因，并把 root cause 写入 selected recovery surface。"
+description: "用于把 build/test/lint/typecheck/CI 或运行时失败诊断成可复现 root cause。触发条件：命令红、行为坏、flaky 或本地/CI 不一致且根因未知。不要在 RED->GREEN 的已知失败或根因已清楚时使用；修复前必须先复现和验证单一假设。"
 ---
 
 # 构建与失败诊断
 
 `diagnose` 把失败转化为 **reproduce -> minimize -> hypothesize -> instrument -> fix -> regression-test**，而不是盲改循环。
+
+## 路由快照
+
+- **Use when**: 失败存在且 root cause 不能由单一证据解释。
+- **Do not use when**: 这是实现中的预期 RED、根因已知、或问题其实是需求/范围不清。
+- **Route to**: 根因明确且修复直接转 `implement`；修复稳定转 `review` 或 `verify`；命令链路缺口转 `harness-builder`。
 
 ## 目的
 

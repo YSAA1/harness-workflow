@@ -173,6 +173,8 @@ stop rule.
 
 ## Skill map
 
+短版 lane 选择契约见 [docs/skill-routing.md](docs/skill-routing.md)。
+
 | Skill | 什么时候用 | 应该留下什么 | 推荐下一步 |
 | --- | --- | --- | --- |
 | `brainstorm` | 目标、边界、取舍或成功标准还不够清楚。 | 聚焦的 spec：goals、non-goals、考虑过的方案、成功标准和验证策略。 | `plan`，如果任务本身是 harness 设计则转 `harness-builder` |
