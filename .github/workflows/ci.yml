@@ -46,6 +46,14 @@ jobs:
       - name: Dry-run Cursor project install
         run: node scripts/install-cursor.mjs --target . --dry-run
 
+      - name: Check generated skill flow HTML
+        run: |
+          node scripts/generate-skill-flow-html.mjs
+          git diff --exit-code docs/skill-flow-review
+
+      - name: Check whitespace
+        run: git diff --check
+
       - name: Check README assets
         run: |
           test -f docs/assets/readme/harness-workflow-icon.png
