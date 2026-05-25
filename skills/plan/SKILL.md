@@ -7,7 +7,7 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 
 `plan` 把已批准 Spec 或足够明确的请求转成 **Executable Plan**：范围、阶段、验证路径、验证能力、下一步和 commit unit 清楚到可以直接交给 `implement` 或 `verify`。
 
-它不负责发散需求，也不替代 Spec review。它默认不创建三文件；只有当前项目 recovery surface 已选择 three-file backend，或用户明确要求三文件时，才使用 `templates/` 下的 three-file 模板。
+它不负责发散需求，也不替代 Spec review。它默认不创建三文件；planning surface 的选择规则见 `references/planning-surface-policy.md`。
 
 ## 路由快照
 
@@ -17,12 +17,10 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 
 ## 目的
 
-这个 skill 解决"计划只活在聊天里"的问题，同时避免把所有项目强绑到同一种状态文件。
-
-- agent 被压缩或新会话开启后，仍能从项目 artifact 恢复执行边界和证明方式。
-- 多人/多 agent 协作时，能回答"现在做到哪、下一步是什么"。
-- 范围不会在追加讨论中悄悄扩张。
-- 验证能力在计划阶段暴露，避免做完后才发现无法证明。
+- 让新会话或另一个 agent 能从 artifact 恢复执行边界和证明方式。
+- 防止范围在后续讨论中悄悄扩张。
+- 在实现前暴露验证能力和 fallback evidence。
+- 保持 WIP=1：计划只允许一个 current next/in-progress item。
 
 ## 何时使用
 
@@ -55,115 +53,52 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 ## 先读取这些输入
 
 1. 已批准 Spec：优先读取 `docs/specs/`、`docs/product-specs/`、`docs/design-docs/`、PRD 或用户指定文件。
-2. 当前 planning surface：docs plan、issue、feature list、existing tracker 或 three-file backend。
+2. 当前 planning surface：docs plan、issue、feature list、existing tracker、three-file backend 或 lightweight plan。
 3. `AGENTS.md`：是否声明 recovery surface、验证入口和 protected paths。
 4. 与请求直接相关的代码与 docs，确认 Spec 的可行性。
 5. `git status --short` 与 `git log --oneline -10`：避免计划与已有改动相互踩。
 6. 任何用户附上的需求文档、讨论纪要、issue 链接。
 
-## Planning Surface
-
-选择一个写入目标，优先沿用项目已经声明的 surface：
-
-| Surface | Use when |
-| --- | --- |
-| plan document | 文档型项目或 PRD 已在 docs 下 |
-| issue | 团队用 issue tracker 跟踪 work items |
-| feature-list entry | 多功能产品型项目需要多个独立状态 |
-| existing system | 项目已有可信任务或 roadmap 系统 |
-| three-file backend | 跨会话、高风险、多 agent 或用户明确要求 |
-
-Three-file 模板仍保留在 `templates/`，但只是 backend 选项，不是 `plan` 的身份。
-
 ## 执行流程
 
-### 第 -1 步 — Spec readiness gate
+### 第 1 步 — Spec Readiness Gate
 
 确认输入能回答：做什么、不做什么、如何证明做对、哪些验证能力不足、验证路径现在是 `runnable` 还是 `blocked`。回答不了就回 `brainstorm`。
 
-### 第 0 步 — 选择或确认 planning surface
+### 第 2 步 — Select Planning Surface
 
-如果项目已经声明 recovery surface，写入该 surface。若没有声明且任务不需要 durable state，可以输出轻量 plan 并停下。若缺口影响后续恢复，转 `harness-builder`。
+选择一个写入目标，优先沿用项目已声明的 surface。选择规则见 `references/planning-surface-policy.md`。
 
-### 第 1 步 — 写 Executable Plan
+### 第 3 步 — Write The Executable Plan
 
-计划必须包含：
+写入 objective、active slice、non-goals、success criteria、verification path、verification status、required capabilities、fallback evidence、risks、next skill。完整字段见 `references/executable-plan-contract.md`。
 
-- Objective
-- Active slice
-- Non-goals
-- Success criteria
-- Verification path
-- Verification path status: `runnable | blocked`
-- Required capabilities
-- Fallback evidence if full verification is unavailable
-- `final_integration_claim` for multi-stage or multi-commit work
-- 3-7 个阶段或 work items
-- 当前唯一 in-progress/next item
-- Commit units
-- Known risks / blockers
-- Handoff to next skill
+如果任务是多阶段或需要里程碑提交，按 `references/commit-unit-protocol.md` 写 phase acceptance、commit units 和 `final_integration_claim`。
 
-每个阶段必须包含结构化验收块：
+### 第 4 步 — Check Executability
 
-- `acceptance_criteria`：可证伪的完成条件
-- `verification_commands`：验证命令列表
-- `success_definition`：一句话成功定义
+每个阶段必须有具体动作和验证含义。不允许"继续优化"、"完善逻辑"这类不可恢复动作。若 verification path blocked 且无用户接受的 fallback，转 `harness-builder`。
 
-每个 commit unit 必须包含：
-
-- scope：提交范围
-- 对应阶段：绑定哪些阶段
-- 提交前置条件：review 无 Critical + verify PASS
-
-如果唯一有意义的 verification path 是 `blocked`，计划不能直接路由到 `implement`，除非同时写明用户接受的 fallback evidence。否则转 `harness-builder` 修复验证能力。
-
-### 第 2 步 — 写入选定 artifact
-
-- docs plan：写到 `docs/plans/` 或项目指定路径。
-- issue：写成可发布 issue 或更新 issue body。
-- feature-list：更新对应 feature entry。
-- existing system：按项目惯例更新，不复制第二套状态。
-- three-file backend：使用 `templates/task_plan.md`、`templates/progress.md`、`templates/findings.md`。
-
-### 第 3 步 — 检查可执行性
-
-每个阶段必须有具体动作和验证含义。不允许"继续优化"、"完善逻辑"这类不可恢复动作。
-
-### 第 4 步 — 停在计划边界
+### 第 5 步 — Stop At Planning Boundary
 
 除非用户明确要求继续，否则产出计划后停止。给出下一步建议：`implement`、`verify`、`diagnose` 或 `harness-builder`。
-
-## Commit Unit Protocol
-
-Commit unit 定义何时可以提交一个里程碑。这是计划产物，不是强制流程。
-
-当 plan 定义了 commit unit 时：
-1. 每个 commit unit 绑定一个或多个阶段
-2. 提交前置条件：该 scope 的实现完成 + review 无 Critical + verify PASS
-3. commit message 应引用阶段名称
-4. 提交后更新 recovery surface 的阶段状态
-
-当没有 plan 或任务简单到不需要 commit unit 时：
-- implement / review / verify 正常工作，不依赖 commit unit 定义
-- 提交时机由用户或项目惯例决定
 
 ## 输出格式
 
 ```text
 EXECUTABLE PLAN WRITTEN
 
-Planning surface: <docs plan | issue | feature-list | existing | three-file>
-Artifact: <path | issue | entry id>
+Planning surface: <docs plan | issue | feature-list | existing | three-file | lightweight>
+Artifact: <path | issue | entry id | chat>
 Spec source: <path | explicit small-task exception>
-Active slice: <一句话>
-Success criteria: <可证伪条件>
+Active slice: <one sentence>
+Success criteria: <falsifiable conditions>
 Verification path status: <runnable | blocked>
 Required capabilities: <list>
 Fallback evidence: <none | accepted fallback>
 Final integration claim: <none | claim>
 Next skill: <implement | diagnose | harness-builder | verify>
-Reason: <一句话>
+Reason: <one sentence>
 ```
 
 ## Recommended next skill
@@ -176,32 +111,17 @@ Use this as a routing recommendation, not as permission to keep working after pl
 | Active slice is clear, verification path is runnable, and implementation is needed | `implement` |
 | The plan starts from a failing command without root-cause evidence | `diagnose` |
 | The plan is only a proof or release-readiness check | `verify` |
-| The required verification capability is blocked and no fallback is accepted | `harness-builder` |
-
-## 常见反模式
-
-- **用 plan 补问需求。** 如果 goals、non-goals 或 verification strategy 不清楚，回 `brainstorm`。
-- **把所有计划都变成三文件。** Three-file 是 backend，不是默认身份。
-- **多个阶段同时 in_progress。** 这会让 active slice 失效。
-- **写成愿望清单。** 每个 item 必须可执行、可验证、可恢复。
-- **验证能力最后才发现。** `verification_path_status` 必须在计划阶段写清楚。
-- **多阶段只验局部。** 多 commit unit 必须有 `final_integration_claim`。
-- **忘了 hand off。** 不指明下一步 skill，会让 agent 默认继续在 planning lane 里磨。
-- **阶段验收标准模糊。** acceptance_criteria 必须可证伪，不允许 "完成优化"、"基本实现"。
-- **Commit unit 无验证绑定。** 每个 commit unit 必须关联 review + verify 前置条件。
+| Required verification capability is blocked and no fallback is accepted | `harness-builder` |
 
 ## 验收标准
 
 - [ ] 已读取并引用用户批准的 Spec；若没有独立 Spec，已说明为什么该任务足够小且验证策略已明确。
 - [ ] 已选择 planning surface 并说明原因。
-- [ ] Executable Plan 含目标、active slice、non-goals、成功标准、验证路径、验证路径状态、所需能力、fallback、阶段、风险、下一步。
-- [ ] 多阶段或多 commit unit 计划含 `final_integration_claim`。
+- [ ] Executable Plan 含目标、active slice、non-goals、成功标准、验证路径、验证路径状态、所需能力、fallback、风险和下一步。
+- [ ] 多阶段或多 commit unit 计划含 `final_integration_claim` 和 commit unit preconditions。
 - [ ] 若 verification path blocked，已转 `harness-builder` 或记录用户接受的 fallback evidence。
 - [ ] 恰好一个当前 item 是 in-progress 或 next。
 - [ ] 没有默认创建第二套 recovery surface。
-- [ ] 如使用 three-file backend，模板取自 `templates/`。
-- [ ] 每个阶段含 acceptance_criteria、verification_commands 和 success_definition。
-- [ ] 多阶段计划定义了 commit unit 及其提交前置条件。
 - [ ] 已显式给出下一步 skill，且除非用户要求继续，否则停在计划边界。
 
 ## 工件更新
@@ -212,6 +132,9 @@ Use this as a routing recommendation, not as permission to keep working after pl
 
 ## 按需读取
 
+- `references/planning-surface-policy.md`：planning surface 选择和写入规则。
+- `references/executable-plan-contract.md`：完整计划字段、输出形态和质量检查。
+- `references/commit-unit-protocol.md`：phase acceptance、commit unit 和 final integration claim。
 - `templates/README.md`：three-file 模板来源、许可证、本地改造说明。
 - `templates/task_plan.md`、`templates/progress.md`、`templates/findings.md`：仅在 three-file backend 被选择时使用。
 - 工作面初始化或 recovery surface 选择：`../harness-builder/SKILL.md`

@@ -19,6 +19,7 @@ const packageExists = (relativePath) => fs.existsSync(path.join(packagedRoot, re
 const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "utf8");
 const packageRead = (relativePath) => fs.readFileSync(path.join(packagedRoot, relativePath), "utf8");
 const skillPath = (skill) => `skills/${skill}/SKILL.md`;
+const skillSupportPath = (skill, relativePath) => `skills/${skill}/${relativePath}`;
 const readJson = (relativePath) => JSON.parse(read(relativePath));
 const listFiles = (baseRoot, relativeDir) => {
   const absoluteDir = path.join(baseRoot, relativeDir);
@@ -267,7 +268,14 @@ for (const pattern of forbiddenActiveSkillPatterns) {
 }
 
 if (exists(skillPath("harness-builder"))) {
-  const harnessBuilder = read(skillPath("harness-builder"));
+  const harnessBuilder = [
+    read(skillPath("harness-builder")),
+    read(skillSupportPath("harness-builder", "references/execution-gates.md")),
+    read(skillSupportPath("harness-builder", "references/workflow-protocol.md")),
+    read(skillSupportPath("harness-builder", "references/capability_signal_policy.md")),
+    read(skillSupportPath("harness-builder", "references/recovery_surface_policy.md")),
+    read(skillSupportPath("harness-builder", "references/research_route_policy.md")),
+  ].join("\n");
   for (const token of [
     "Harness Hypothesis",
     "project-level harness",
@@ -276,7 +284,7 @@ if (exists(skillPath("harness-builder"))) {
     "Capability Discovery gate",
     "Capability Shortlist pass",
     "capability_signal_policy.md",
-    "recommendation report",
+    "recommendation-only mode",
     "Verification design gate",
     "User checkpoint gate",
     "USER CHECKPOINT",
@@ -286,7 +294,7 @@ if (exists(skillPath("harness-builder"))) {
     "AGENTS.md",
     "Project iron laws",
     "Capability Discovery",
-    "$find-skills",
+    "find-skills",
     "targeted web search",
     "recovery surface",
     "Research Route",
@@ -339,7 +347,11 @@ for (const token of ["verify` fast-path", "review 不声明 ready", "Evidence ro
 if (/Pass and evidence is already fresh\s*\|\s*`cleanup`/.test(review)) {
   fail("review must not route pass directly to final cleanup");
 }
-const verify = read(skillPath("verify"));
+const verify = [
+  read(skillPath("verify")),
+  read(skillSupportPath("verify", "references/verification-record-template.md")),
+  read(skillSupportPath("verify", "references/unverified-claim-policy.md")),
+].join("\n");
 for (const token of ["`verify` 是唯一 ready gate", "Verification record:", "claim_id", "covered_paths", "latest_change_ref", "skipped_high_value_checks", "unknowns", "ready: yes|no"]) {
   if (!verify.includes(token)) fail(`verify contract missing structured-evidence token: ${token}`);
 }

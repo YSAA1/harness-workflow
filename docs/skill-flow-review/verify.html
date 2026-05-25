@@ -140,19 +140,19 @@ pre {
   <div class="toolbar">
     <a class="button" href="../../skills/verify/SKILL.md">打开 SKILL.md</a>
     <span class="button">最终验证</span>
-    <span class="button">222 行</span>
+    <span class="button">129 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>把&quot;可以结束&quot;转化为可追溯证据：每条成功标准都必须对应 fresh command、smoke/E2E 或明确的未验证限制。 用结构化 verification record 绑定 claim、路径、最后改动、命令、跳过项、unknown 和 ready verdict。</p>
+    <p>- 把&quot;可以结束&quot;转化为可追溯证据。 - 将每条成功标准映射到 fresh command、smoke/E2E、manual signal 或明确 unknown。 - 记录 skipped checks、capability gaps、residual risks 和 ready verdict。</p>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>进入条件</h2>
-      <ul><li>review 没有 blocking structural issue，但仍需要最终 fresh evidence。</li><li>一个 slice 准备从 in-progress 进入 done/ready。</li><li>用户说「验证一下」「能结束吗」「跑最终检查」「证明它能用」。</li><li>改动触及 UI、API、auth、persistence、config、build、packaging 或跨组件行为。</li><li>之前证据在后续文件变化后变 stale。</li><li>能力缺口可能阻碍真实验证，例如 Web UI 没有浏览器自动化。</li></ul>
+      <ul><li>review 没有 blocking structural issue，但仍需要最终 fresh evidence。</li><li>一个 slice 准备从 in-progress 进入 done/ready。</li><li>用户说「验证一下」「能结束吗」「跑最终检查」「证明它能用」。</li><li>改动触及 UI、API、auth、persistence、config、build、packaging 或跨组件行为。</li><li>之前证据在后续文件变化后变 stale。</li></ul>
     </div>
     <div class="panel">
       <h2>禁用条件</h2>
@@ -169,28 +169,22 @@ pre {
     <div class="flow">
       <div class="step">
         <div class="num">1</div>
-        <div><h3>第 1 步 — Restate The Claim</h3><p>写一句话：&quot;We are verifying that &lt;active slice&gt; is ready because &lt;success criteria&gt;.&quot; 写不出来就回 planning 或 review。</p></div>
+        <div><h3>第 1 步 — Restate The Claim</h3><p>写一句话：&quot;We are verifying that &lt;active slice&gt; is ready because &lt;success criteria&gt;.&quot; 写不出来就回 plan 或 review。</p></div>
       </div><div class="step">
         <div class="num">2</div>
-        <div><h3>第 2 步 — Identify Evidence Freshness</h3><p>判断既有证据是否晚于最后相关改动、覆盖目标行为、在当前 cwd/env 运行、结果明确。</p></div>
+        <div><h3>第 2 步 — Check Freshness</h3><p>判断既有证据是否晚于最后相关改动、覆盖目标行为、在当前 cwd/env 运行、结果明确。详细 unknown 规则见 references/unverified-claim-policy.md。</p></div>
       </div><div class="step">
         <div class="num">3</div>
-        <div><h3>第 3 步 — Select Checks</h3><p>选择能覆盖风险的最小检查集。相关但跳过的高价值检查必须说明原因。</p></div>
+        <div><h3>第 3 步 — Select Checks</h3><p>按风险选择最高价值的最小检查集：syntax、build、typecheck、lint、unit、integration、smoke、E2E、manual signal。详细选择见 references/evidence-ladder.md。</p></div>
       </div><div class="step">
         <div class="num">4</div>
-        <div><h3>第 4 步 — Run Checks</h3><p>按文档命令运行，记录 command、cwd、result、输出摘要、freshness 和跳过原因。检查失败就转 diagnose。</p></div>
+        <div><h3>第 4 步 — Run Or Inspect Evidence</h3><p>按文档命令运行或检查可用 evidence source。记录 command、cwd、result、输出摘要、freshness 和跳过原因。检查失败就转 diagnose。</p></div>
       </div><div class="step">
         <div class="num">5</div>
-        <div><h3>第 5 步 — Compare Against Success Criteria</h3><p>把每条成功标准映射到 evidence，状态只能是 pass/fail/unknown。unknown 不是 ready。多阶段或多 commit unit 任务还必须覆盖 final_integration_claim。</p></div>
+        <div><h3>第 5 步 — Map Criteria And Commit Eligibility</h3><p>把每条成功标准映射到 pass/fail/unknown。多阶段任务还要覆盖 final_integration_claim。当 plan 定义 commit unit 时，按 references/unverified-claim-policy.md 评估 commit eligibility。</p></div>
       </div><div class="step">
         <div class="num">6</div>
-        <div><h3>第 5.5 步 — Commit Eligibility 评估</h3><p>当 Executable Plan 定义了 commit unit 且当前 slice 属于某个 commit unit 时： - 检查 review 是否已对该 scope 产出 PASS 或 CONDITIONAL（无 Critical） - 若 verify PASS + review PASS/CONDITIONAL → commit eligibility = eligible，建议执行 milestone commit - 若 verify PASS 但 review 未做或有 Critical → ...</p></div>
-      </div><div class="step">
-        <div class="num">7</div>
-        <div><h3>第 6 步 — Update Artifacts</h3><p>按 selected recovery surface 记录 verification entry、skipped checks、capability gaps 和 residual risk。</p></div>
-      </div><div class="step">
-        <div class="num">8</div>
-        <div><h3>第 7 步 — Route</h3><p>| Result | Next | | --- | --- | | All required evidence fresh and passing | commit milestone（当 eligible 时）-&gt; cleanup | | Command failed or behavior wrong | diagnose | | Evidence insufficient due to missing capability | harness-builder 或用户决策 | | Spec / success...</p></div>
+        <div><h3>第 6 步 — Record And Route</h3><p>用 references/verification-record-template.md 写 verification record。按 selected recovery surface 记录 skipped checks、capability gaps 和 residual risk，然后路由下一步。</p></div>
       </div>
     </div>
   </section>
@@ -198,7 +192,7 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text VERIFICATION: PASS|FAIL|INSUFFICIENT Verification record: claim_id: &lt;stable short id&gt; claim: &lt;ready claim&gt; covered_paths: - &lt;path or behavior surface&gt; latest_change_ref: &lt;git diff summary | commit | file timestamp basis&gt; success_criteria: - criterion: &lt;text&gt; evidence: &lt;command/smoke/manual signal&gt; status: pass|fail|unknown commands: - command: &lt;exact command&gt; cwd: &lt;path&gt; result: pass|fail evidence_after_chang...</pre>
+      <pre>``text VERIFICATION: PASS|FAIL|INSUFFICIENT Claim: &lt;ready claim&gt; Evidence run: - &lt;command/smoke/manual signal -&gt; pass|fail|unknown&gt; Success criteria mapping: - &lt;criterion -&gt; pass|fail|unknown&gt; Skipped high-value checks: - &lt;check + reason + risk + fallback&gt; Commit gate: &lt;eligible|not eligible|no commit unit|deferred&gt; Ready: &lt;yes|no&gt; Next: &lt;cleanup|diagnose|harness-builder|plan&gt; ` Full template: references/verificatio...</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
@@ -214,11 +208,11 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] Active slice and ready claim are stated.</li><li>[ ] Every success criterion is mapped to fresh evidence or marked unknown.</li><li>[ ] Multi-stage work maps final_integration_claim to evidence.</li><li>[ ] Verification record includes claim_id、covered_paths、latest_change_ref、commands、skipped checks、unknowns 和 ready verdict。</li><li>[ ] Relevant evidence ladder rungs are run or skipped with reasons.</li><li>[ ] Capability gap is absent or documented with value/enablement/risk/fallback.</li><li>[ ] selected recovery surface records commands, results, timestamp, and limits when required.</li><li>[ ] 当 commit unit 存在时，已评估 commit eligibility。</li><li>[ ] Output routes to the next skill.</li></ul>
+      <ul><li>[ ] Active slice and ready claim are stated.</li><li>[ ] Every success criterion is mapped to fresh evidence or marked unknown.</li><li>[ ] Unknown is not treated as pass.</li><li>[ ] Relevant evidence ladder rungs are run or skipped with reasons.</li><li>[ ] Capability gaps are absent or recorded with value/enablement/risk/fallback.</li><li>[ ] selected recovery surface records commands, results, timestamp, and limits when required.</li><li>[ ] Output routes to the next skill.</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
-      <ul><li><a href="../../skills/verify/references/evidence-ladder.md">Evidence Ladder</a><span class="tag">存在</span></li><li><a href="../../skills/verify/references/capability-recommendations.md">Capability Recommendation 格式</a><span class="tag">存在</span></li></ul>
+      <ul><li><a href="../../skills/verify/references/unverified-claim-policy.md">Unverified Claim Policy</a><span class="tag">存在</span></li><li><a href="../../skills/verify/references/evidence-ladder.md">Evidence Ladder</a><span class="tag">存在</span></li><li><a href="../../skills/verify/references/verification-record-template.md">Verification Record Template</a><span class="tag">存在</span></li><li><a href="../../skills/verify/references/capability-recommendations.md">Capability Recommendation 格式</a><span class="tag">存在</span></li></ul>
     </div>
   </section>
 
