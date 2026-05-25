@@ -140,13 +140,13 @@ pre {
   <div class="toolbar">
     <a class="button" href="../../skills/plan/SKILL.md">打开 SKILL.md</a>
     <span class="button">Executable Plan</span>
-    <span class="button">218 行</span>
+    <span class="button">141 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>这个 skill 解决&quot;计划只活在聊天里&quot;的问题，同时避免把所有项目强绑到同一种状态文件。 - agent 被压缩或新会话开启后，仍能从项目 artifact 恢复执行边界和证明方式。 - 多人/多 agent 协作时，能回答&quot;现在做到哪、下一步是什么&quot;。 - 范围不会在追加讨论中悄悄扩张。 - 验证能力在计划阶段暴露，避免做完后才发现无法证明。</p>
+    <p>- 让新会话或另一个 agent 能从 artifact 恢复执行边界和证明方式。 - 防止范围在后续讨论中悄悄扩张。 - 在实现前暴露验证能力和 fallback evidence。 - 保持 WIP=1：计划只允许一个 current next/in-progress item。</p>
   </section>
 
   <section class="section grid">
@@ -160,7 +160,7 @@ pre {
     </div>
     <div class="panel">
       <h2>先读输入</h2>
-      <ul><li>已批准 Spec：优先读取 docs/specs/、docs/product-specs/、docs/design-docs/、PRD 或用户指定文件。</li><li>当前 planning surface：docs plan、issue、feature list、existing tracker 或 three-file backend。</li><li>AGENTS.md：是否声明 recovery surface、验证入口和 protected paths。</li><li>与请求直接相关的代码与 docs，确认 Spec 的可行性。</li><li>git status --short 与 git log --oneline -10：避免计划与已有改动相互踩。</li><li>任何用户附上的需求文档、讨论纪要、issue 链接。</li></ul>
+      <ul><li>已批准 Spec：优先读取 docs/specs/、docs/product-specs/、docs/design-docs/、PRD 或用户指定文件。</li><li>当前 planning surface：docs plan、issue、feature list、existing tracker、three-file backend 或 lightweight plan。</li><li>AGENTS.md：是否声明 recovery surface、验证入口和 protected paths。</li><li>与请求直接相关的代码与 docs，确认 Spec 的可行性。</li><li>git status --short 与 git log --oneline -10：避免计划与已有改动相互踩。</li><li>任何用户附上的需求文档、讨论纪要、issue 链接。</li></ul>
     </div>
   </section>
 
@@ -169,19 +169,19 @@ pre {
     <div class="flow">
       <div class="step">
         <div class="num">1</div>
-        <div><h3>第 0 步 — 选择或确认 planning surface</h3><p>如果项目已经声明 recovery surface，写入该 surface。若没有声明且任务不需要 durable state，可以输出轻量 plan 并停下。若缺口影响后续恢复，转 harness-builder。</p></div>
+        <div><h3>第 1 步 — Spec Readiness Gate</h3><p>确认输入能回答：做什么、不做什么、如何证明做对、哪些验证能力不足、验证路径现在是 runnable 还是 blocked。回答不了就回 brainstorm。</p></div>
       </div><div class="step">
         <div class="num">2</div>
-        <div><h3>第 1 步 — 写 Executable Plan</h3><p>计划必须包含： - Objective - Active slice - Non-goals - Success criteria - Verification path - Verification path status: runnable | blocked - Required capabilities</p></div>
+        <div><h3>第 2 步 — Select Planning Surface</h3><p>选择一个写入目标，优先沿用项目已声明的 surface。选择规则见 references/planning-surface-policy.md。</p></div>
       </div><div class="step">
         <div class="num">3</div>
-        <div><h3>第 2 步 — 写入选定 artifact</h3><p>- docs plan：写到 docs/plans/ 或项目指定路径。 - issue：写成可发布 issue 或更新 issue body。 - feature-list：更新对应 feature entry。 - existing system：按项目惯例更新，不复制第二套状态。 - three-file backend：使用 templates/task_plan.md、templates/progress.md、templates/findings.md。</p></div>
+        <div><h3>第 3 步 — Write The Executable Plan</h3><p>写入 objective、active slice、non-goals、success criteria、verification path、verification status、required capabilities、fallback evidence、risks、next skill。完整字段见 references/executable-plan-contract.md。 如果任务是多阶段或需要里程碑提交，按 references/commit-unit-protocol.md 写 phase acc...</p></div>
       </div><div class="step">
         <div class="num">4</div>
-        <div><h3>第 3 步 — 检查可执行性</h3><p>每个阶段必须有具体动作和验证含义。不允许&quot;继续优化&quot;、&quot;完善逻辑&quot;这类不可恢复动作。</p></div>
+        <div><h3>第 4 步 — Check Executability</h3><p>每个阶段必须有具体动作和验证含义。不允许&quot;继续优化&quot;、&quot;完善逻辑&quot;这类不可恢复动作。若 verification path blocked 且无用户接受的 fallback，转 harness-builder。</p></div>
       </div><div class="step">
         <div class="num">5</div>
-        <div><h3>第 4 步 — 停在计划边界</h3><p>除非用户明确要求继续，否则产出计划后停止。给出下一步建议：implement、verify、diagnose 或 harness-builder。</p></div>
+        <div><h3>第 5 步 — Stop At Planning Boundary</h3><p>除非用户明确要求继续，否则产出计划后停止。给出下一步建议：implement、verify、diagnose 或 harness-builder。</p></div>
       </div>
     </div>
   </section>
@@ -189,7 +189,7 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text EXECUTABLE PLAN WRITTEN Planning surface: &lt;docs plan | issue | feature-list | existing | three-file&gt; Artifact: &lt;path | issue | entry id&gt; Spec source: &lt;path | explicit small-task exception&gt; Active slice: &lt;一句话&gt; Success criteria: &lt;可证伪条件&gt; Verification path status: &lt;runnable | blocked&gt; Required capabilities: &lt;list&gt; Fallback evidence: &lt;none | accepted fallback&gt; Final integration claim: &lt;none | claim&gt; Next skill: &lt;i...</pre>
+      <pre>``text EXECUTABLE PLAN WRITTEN Planning surface: &lt;docs plan | issue | feature-list | existing | three-file | lightweight&gt; Artifact: &lt;path | issue | entry id | chat&gt; Spec source: &lt;path | explicit small-task exception&gt; Active slice: &lt;one sentence&gt; Success criteria: &lt;falsifiable conditions&gt; Verification path status: &lt;runnable | blocked&gt; Required capabilities: &lt;list&gt; Fallback evidence: &lt;none | accepted fallback&gt; Final i...</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
@@ -205,11 +205,11 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] 已读取并引用用户批准的 Spec；若没有独立 Spec，已说明为什么该任务足够小且验证策略已明确。</li><li>[ ] 已选择 planning surface 并说明原因。</li><li>[ ] Executable Plan 含目标、active slice、non-goals、成功标准、验证路径、验证路径状态、所需能力、fallback、阶段、风险、下一步。</li><li>[ ] 多阶段或多 commit unit 计划含 final_integration_claim。</li><li>[ ] 若 verification path blocked，已转 harness-builder 或记录用户接受的 fallback evidence。</li><li>[ ] 恰好一个当前 item 是 in-progress 或 next。</li><li>[ ] 没有默认创建第二套 recovery surface。</li><li>[ ] 如使用 three-file backend，模板取自 templates/。</li><li>[ ] 每个阶段含 acceptance_criteria、verification_commands 和 success_definition。</li><li>[ ] 多阶段计划定义了 commit unit 及其提交前置条件。</li><li>[ ] 已显式给出下一步 skill，且除非用户要求继续，否则停在计划边界。</li></ul>
+      <ul><li>[ ] 已读取并引用用户批准的 Spec；若没有独立 Spec，已说明为什么该任务足够小且验证策略已明确。</li><li>[ ] 已选择 planning surface 并说明原因。</li><li>[ ] Executable Plan 含目标、active slice、non-goals、成功标准、验证路径、验证路径状态、所需能力、fallback、风险和下一步。</li><li>[ ] 多阶段或多 commit unit 计划含 final_integration_claim 和 commit unit preconditions。</li><li>[ ] 若 verification path blocked，已转 harness-builder 或记录用户接受的 fallback evidence。</li><li>[ ] 恰好一个当前 item 是 in-progress 或 next。</li><li>[ ] 没有默认创建第二套 recovery surface。</li><li>[ ] 已显式给出下一步 skill，且除非用户要求继续，否则停在计划边界。</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
-      <p class="muted">无额外 reference；审阅 SKILL.md 即可。</p>
+      <ul><li><a href="../../skills/plan/references/planning-surface-policy.md">Planning Surface Policy</a><span class="tag">存在</span></li><li><a href="../../skills/plan/references/executable-plan-contract.md">Executable Plan Contract</a><span class="tag">存在</span></li><li><a href="../../skills/plan/references/commit-unit-protocol.md">Commit Unit Protocol</a><span class="tag">存在</span></li></ul>
     </div>
   </section>
 

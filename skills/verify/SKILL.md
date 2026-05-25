@@ -17,9 +17,9 @@ description: "用于给具体 ready/done/merge claim 收集 fresh evidence 并�
 
 ## 目的
 
-把"可以结束"转化为可追溯证据：每条成功标准都必须对应 fresh command、smoke/E2E 或明确的未验证限制。
-
-用结构化 verification record 绑定 claim、路径、最后改动、命令、跳过项、unknown 和 ready verdict。
+- 把"可以结束"转化为可追溯证据。
+- 将每条成功标准映射到 fresh command、smoke/E2E、manual signal 或明确 unknown。
+- 记录 skipped checks、capability gaps、residual risks 和 ready verdict。
 
 ## 何时使用
 
@@ -30,7 +30,6 @@ description: "用于给具体 ready/done/merge claim 收集 fresh evidence 并�
 - 用户说「验证一下」「能结束吗」「跑最终检查」「证明它能用」。
 - 改动触及 UI、API、auth、persistence、config、build、packaging 或跨组件行为。
 - 之前证据在后续文件变化后变 stale。
-- 能力缺口可能阻碍真实验证，例如 Web UI 没有浏览器自动化。
 
 ### 不要使用
 
@@ -47,137 +46,54 @@ description: "用于给具体 ready/done/merge claim 收集 fresh evidence 并�
 4. 项目验证入口：README、`AGENTS.md`、package/build/test config。
 5. 当前 slice 涉及的 source/test/docs 路径。
 
-## Evidence Ladder
-
-按风险选择最高价值的最小检查集：
-
-1. static parse / syntax
-2. build
-3. typecheck
-4. lint
-5. unit tests
-6. integration tests
-7. smoke test
-8. E2E / browser / external system
-9. manual or operational signal
-
-详细选择规则见 `references/evidence-ladder.md`。
-
-## Capability Recommendation
-
-当验证能力不足时，按四个字段写推荐：
-
-- **Value**: what risk the capability would cover.
-- **Enablement**: how the user or project would enable it.
-- **Risk / cost**: setup overhead, flake risk, security implications.
-- **Fallback**: what can be done now without installing it.
-
-本 skill 不安装任何能力，只记录 required/recommended/deferred 的验证能力缺口。项目级安装或配置交给 `harness-builder`。
-
 ## 执行流程
 
 ### 第 1 步 — Restate The Claim
 
-写一句话："We are verifying that `<active slice>` is ready because `<success criteria>`." 写不出来就回 planning 或 review。
+写一句话："We are verifying that `<active slice>` is ready because `<success criteria>`." 写不出来就回 `plan` 或 `review`。
 
-### 第 2 步 — Identify Evidence Freshness
+### 第 2 步 — Check Freshness
 
-判断既有证据是否晚于最后相关改动、覆盖目标行为、在当前 cwd/env 运行、结果明确。
+判断既有证据是否晚于最后相关改动、覆盖目标行为、在当前 cwd/env 运行、结果明确。详细 unknown 规则见 `references/unverified-claim-policy.md`。
 
 ### 第 3 步 — Select Checks
 
-选择能覆盖风险的最小检查集。相关但跳过的高价值检查必须说明原因。
+按风险选择最高价值的最小检查集：syntax、build、typecheck、lint、unit、integration、smoke、E2E、manual signal。详细选择见 `references/evidence-ladder.md`。
 
-### 第 4 步 — Run Checks
+### 第 4 步 — Run Or Inspect Evidence
 
-按文档命令运行，记录 command、cwd、result、输出摘要、freshness 和跳过原因。检查失败就转 `diagnose`。
+按文档命令运行或检查可用 evidence source。记录 command、cwd、result、输出摘要、freshness 和跳过原因。检查失败就转 `diagnose`。
 
-### 第 5 步 — Compare Against Success Criteria
+### 第 5 步 — Map Criteria And Commit Eligibility
 
-把每条成功标准映射到 evidence，状态只能是 pass/fail/unknown。unknown 不是 ready。多阶段或多 commit unit 任务还必须覆盖 `final_integration_claim`。
+把每条成功标准映射到 pass/fail/unknown。多阶段任务还要覆盖 `final_integration_claim`。当 plan 定义 commit unit 时，按 `references/unverified-claim-policy.md` 评估 commit eligibility。
 
-### 第 5.5 步 — Commit Eligibility 评估
+### 第 6 步 — Record And Route
 
-当 Executable Plan 定义了 commit unit 且当前 slice 属于某个 commit unit 时：
-- 检查 review 是否已对该 scope 产出 PASS 或 CONDITIONAL（无 Critical）
-- 若 verify PASS + review PASS/CONDITIONAL → commit eligibility = eligible，建议执行 milestone commit
-- 若 verify PASS 但 review 未做或有 Critical → commit eligibility = not eligible，建议先完成 review
-
-没有 Executable Plan 或 commit unit 时，跳过此步，verify 正常工作。
-
-### 第 6 步 — Update Artifacts
-
-按 selected recovery surface 记录 verification entry、skipped checks、capability gaps 和 residual risk。
-
-### 第 7 步 — Route
-
-| Result | Next |
-| --- | --- |
-| All required evidence fresh and passing | commit milestone（当 eligible 时）-> `cleanup` |
-| Command failed or behavior wrong | `diagnose` |
-| Evidence insufficient due to missing capability | `harness-builder` 或用户决策 |
-| Spec / success criteria mismatch | `plan` |
+用 `references/verification-record-template.md` 写 verification record。按 selected recovery surface 记录 skipped checks、capability gaps 和 residual risk，然后路由下一步。
 
 ## 输出格式
 
 ```text
 VERIFICATION: PASS|FAIL|INSUFFICIENT
 
-Verification record:
-  claim_id: <stable short id>
-  claim: <ready claim>
-  covered_paths:
-    - <path or behavior surface>
-  latest_change_ref: <git diff summary | commit | file timestamp basis>
-  success_criteria:
-    - criterion: <text>
-      evidence: <command/smoke/manual signal>
-      status: pass|fail|unknown
-  commands:
-    - command: <exact command>
-      cwd: <path>
-      result: pass|fail
-      evidence_after_change: yes|no
-  skipped_high_value_checks:
-    - check: <name>
-      reason: <why skipped>
-      risk: <risk>
-      fallback: <current substitute>
-  unknowns:
-    - <what remains unproven>
-  commit_gate: eligible|not eligible|no commit unit|deferred
-  ready: yes|no
-
-Claim:
-  - Active slice: ...
-  - Success criteria checked: ...
-
-Evidence:
-  - Build: <command -> pass|fail|not applicable>
-  - Typecheck: ...
-  - Lint: ...
-  - Unit: ...
-  - Integration: ...
-  - Smoke/E2E: ...
-
-Freshness:
-  - Latest relevant change: ...
-  - Evidence after change: yes|no
-
-Capabilities:
-  - recommended: <none | capability + value/enablement/risk/fallback>
-
-Risks:
-  - ...
-
-Ready:
-  - YES|NO
-  - Next: <cleanup | diagnose | harness-builder | plan>
+Claim: <ready claim>
+Evidence run:
+  - <command/smoke/manual signal -> pass|fail|unknown>
+Success criteria mapping:
+  - <criterion -> pass|fail|unknown>
+Skipped high-value checks:
+  - <check + reason + risk + fallback>
+Commit gate: <eligible|not eligible|no commit unit|deferred>
+Ready: <yes|no>
+Next: <cleanup|diagnose|harness-builder|plan>
 ```
+
+Full template: `references/verification-record-template.md`.
 
 ## Recommended next skill
 
-Verification should produce the next lane from evidence, not from optimism.
+Verification should produce the next lane from evidence, not optimism.
 
 | Situation | Recommended next skill |
 | --- | --- |
@@ -187,25 +103,14 @@ Verification should produce the next lane from evidence, not from optimism.
 | Success criteria, Spec, or active slice does not match the checked behavior | `plan` |
 | Only docs or recovery notes are stale after passing checks | `cleanup` |
 
-## 常见反模式
-
-- **Counting old commands as proof.** Evidence must be after the relevant change.
-- **Running broad checks without mapping to success criteria.**
-- **Skipping E2E silently.**
-- **Fixing during verification.** If a command fails, switch to `diagnose`.
-- **Claiming ready with unknowns.** Unknown is not pass.
-- **Missing final integration claim.** Local slice proof is not enough for multi-stage work.
-
 ## 验收标准
 
 - [ ] Active slice and ready claim are stated.
 - [ ] Every success criterion is mapped to fresh evidence or marked unknown.
-- [ ] Multi-stage work maps `final_integration_claim` to evidence.
-- [ ] Verification record includes claim_id、covered_paths、latest_change_ref、commands、skipped checks、unknowns 和 ready verdict。
+- [ ] Unknown is not treated as pass.
 - [ ] Relevant evidence ladder rungs are run or skipped with reasons.
-- [ ] Capability gap is absent or documented with value/enablement/risk/fallback.
+- [ ] Capability gaps are absent or recorded with value/enablement/risk/fallback.
 - [ ] selected recovery surface records commands, results, timestamp, and limits when required.
-- [ ] 当 commit unit 存在时，已评估 commit eligibility。
 - [ ] Output routes to the next skill.
 
 ## 工件更新
@@ -217,5 +122,7 @@ Verification should produce the next lane from evidence, not from optimism.
 
 - `references/evidence-ladder.md`：detailed verification selection rules。
 - `references/capability-recommendations.md`：recommendation format and examples。
+- `references/verification-record-template.md`：full verification record template。
+- `references/unverified-claim-policy.md`：freshness、unknown、commit eligibility 和 anti-patterns。
 - `../diagnose/SKILL.md`：route here on failed verification。
 - `../cleanup/SKILL.md`：route here after PASS。
