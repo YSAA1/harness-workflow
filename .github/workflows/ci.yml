@@ -26,6 +26,9 @@ jobs:
       - name: Check Codex plugin
         run: node scripts/check-plugin.mjs
 
+      - name: Check skill routing evals
+        run: node scripts/check-skills-routing.mjs
+
       - name: Check Claude Code plugin
         run: node scripts/check-claude-code-install.mjs
 
