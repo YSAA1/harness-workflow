@@ -304,6 +304,15 @@ if (exists(skillPath("harness-builder"))) {
   }
 }
 
+
+
+for (const skill of workflowSkills.filter((name) => name !== "harness-builder")) {
+  if (!exists(skillPath(skill))) continue;
+  const body = read(skillPath(skill));
+  if (!/###\s*触发信号/.test(body)) fail(`${skill} missing trigger contract section (### 触发信号)`);
+  if (!/###\s*路由规则/.test(body)) fail(`${skill} missing routing contract section (### 路由规则)`);
+  if (!/##\s*输出契约/.test(body)) fail(`${skill} missing output contract section (## 输出契约)`);
+}
 const skillBundle = workflowSkills.map((skill) => (exists(skillPath(skill)) ? read(skillPath(skill)) : "")).join("\n");
 for (const token of ["WIP=1", "fresh evidence", "Spec", "Executable Plan", "Knowledge Cleanup", "recovery surface"]) {
   if (!skillBundle.includes(token)) fail(`skills missing discipline token: ${token}`);

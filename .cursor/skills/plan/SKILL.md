@@ -142,7 +142,7 @@ Commit unit 定义何时可以提交一个里程碑。这是计划产物，不�
 - implement / review / verify 正常工作，不依赖 commit unit 定义
 - 提交时机由用户或项目惯例决定
 
-## 输出格式
+## 输出契约
 
 ```text
 EXECUTABLE PLAN WRITTEN

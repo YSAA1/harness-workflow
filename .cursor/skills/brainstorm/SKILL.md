@@ -108,7 +108,7 @@ Next skill after approval: plan
 
 用户批准前不要调用 `plan`，不要写 Executable Plan，不要实现。
 
-## 输出格式
+## 输出契约
 
 ```text
 BRAINSTORM SPEC READY

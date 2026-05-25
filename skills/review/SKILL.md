@@ -85,7 +85,7 @@ review 必须同时检查"做超了"和"做欠了"。它可以判断"没有结�
 
 blocking findings 和 residual risks 写入 selected recovery surface；不把一次性 review 结论写进 `AGENTS.md`。
 
-## 输出格式
+## 输出契约
 
 ```text
 REVIEW: PASS | CONDITIONAL | BLOCK
