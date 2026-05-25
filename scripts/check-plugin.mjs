@@ -103,7 +103,9 @@ if (!fs.existsSync(packagedRoot)) {
   for (const file of [
     ".codex-plugin/plugin.json",
     ".claude-plugin/plugin.json",
+    ".claude-plugin/marketplace.json",
     ".cursor-plugin/plugin.json",
+    ".cursor-plugin/marketplace.json",
   ]) {
     if (!packageExists(file)) fail(`packaged plugin missing ${file}`);
     else if (packageRead(file) !== read(file)) fail(`packaged plugin drifted from root file: ${file}`);
