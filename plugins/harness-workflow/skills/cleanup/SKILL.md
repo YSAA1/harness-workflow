@@ -118,11 +118,12 @@ Allowed when obviously created by this task:
 
 报告 related changes、unrelated dirty files left alone、removed/deferred residue。报告 milestone commits 完成情况。
 
-## 输出格式
+## 输出契约
 
 ```text
 CLEANUP: complete|blocked|abandoned|reopen
 
+Ready claim source: <verify record | n/a | blocked>
 Evidence:
   - <command -> result>
 
@@ -141,9 +142,13 @@ Git state:
   - related changes:
   - unrelated changes left alone:
 
+Recovery surface updated: <yes|no|n/a>
 Next:
   - <done | implement | diagnose | plan | harness-builder>
 ```
+
+Use the shared workflow glossary terms; cleanup closes knowledge
+freshness only after the ready claim is verified or explicitly not applicable.
 
 ## Recommended next skill
 

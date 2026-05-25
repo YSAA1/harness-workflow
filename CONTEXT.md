@@ -2,6 +2,11 @@
 
 This context defines the language for the Harness Workflow plugin that turns harness engineering practice into reusable workflow skills for Codex, Claude Code, and Cursor.
 
+For concise shared definitions used by every skill output contract, see
+[`docs/workflow-glossary.md`](docs/workflow-glossary.md). `CONTEXT.md` remains
+the domain-language source for concept boundaries and relationships; the
+glossary is the quick reference that keeps individual `SKILL.md` files short.
+
 ## Language
 
 **Harness Builder**:

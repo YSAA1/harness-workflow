@@ -92,10 +92,10 @@ description: "用于把 build/test/lint/typecheck/CI 或运行时失败诊断成
 
 先跑 reproduction 命令，再跑相邻验证。失败则继续诊断；通过后转 `review` 或 `verify`。
 
-## 输出格式
+## 输出契约
 
 ```text
-BUILD FIX REPORT
+DIAGNOSE: ROOT_CAUSE_FOUND|FIXED|BLOCKED
 
 Failure command:
   - <command -> output>
@@ -112,6 +112,9 @@ Risks / residual: <一句话>
 Recovery surface updated: yes|no|n/a
 Next: <implement | review | verify | blocker>
 ```
+
+Use the shared workflow glossary terms; `diagnose` proves root
+cause before routing to implementation or verification.
 
 ## Recommended next skill
 

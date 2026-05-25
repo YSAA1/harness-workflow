@@ -62,18 +62,23 @@ Gate 通过前禁止写 Spec。复述问题，维护 Coverage Matrix，每轮只
 
 Gate 与 assumption batch 完成后，按 `references/spec-drafting.md` 执行：先验证策略 → 比方案 → 写 Spec → 自审 → 请求用户批准。
 
-## 输出格式
+## 输出契约
 
 ```text
-BRAINSTORM CLARIFICATION IN PROGRESS | BRAINSTORM SPEC READY
+BRAINSTORM: CLARIFICATION_IN_PROGRESS|SPEC_READY|BLOCKED
 
-Spec: <docs/specs/YYYY-MM-DD--topic.md or n/a>
+Primary artifact: <Spec path | n/a>
+Scope: <topic or decision area>
 Coverage: <confirmed+waived>/<8>; Gate: <BLOCKED|PASSED>
 Chosen approach: <一句话 or n/a>
 Verification strategy: <一句话 or pending>
-Needs user review: <question|approve Spec before plan>
-Next skill after approval: plan
+User checkpoint: <question | approve Spec before plan>
+Recovery surface updated: <yes|no|n/a>
+Next: <brainstorm|plan|harness-builder>
 ```
+
+Use the shared workflow glossary terms; `brainstorm` never makes
+a ready claim.
 
 ## 硬规则
 

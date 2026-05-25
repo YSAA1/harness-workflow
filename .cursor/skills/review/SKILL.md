@@ -91,7 +91,7 @@ review 必须同时检查"做超了"和"做欠了"。它可以判断"没有结�
 
 blocking findings 和 residual risks 写入 selected recovery surface；不把一次性 review 结论写进 `AGENTS.md`。
 
-## 输出格式
+## 输出契约
 
 ```text
 REVIEW: PASS | CONDITIONAL | BLOCK
@@ -120,9 +120,14 @@ Assessment:
   - Phase acceptance: <all met|partial|unmet|no plan>
   - Commit eligibility: <eligible|not eligible|no commit unit>
 
+Ready claim: not made; route to verify
+Recovery surface updated: <yes|no|n/a>
 Next:
   - Skill: <implement | diagnose | verify | plan>
 ```
+
+Use the shared workflow glossary terms; review can judge risk
+and scope, but only `verify` can accept a ready claim.
 
 ## Recommended next skill
 

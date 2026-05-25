@@ -83,23 +83,30 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 
 除非用户明确要求继续，否则产出计划后停止。给出下一步建议：`implement`、`verify`、`diagnose` 或 `harness-builder`。
 
-## 输出格式
+## 输出契约
 
 ```text
-EXECUTABLE PLAN WRITTEN
+PLAN: WRITTEN|BLOCKED|ROUTE_BACK
 
 Planning surface: <docs plan | issue | feature-list | existing | three-file | lightweight>
 Artifact: <path | issue | entry id | chat>
 Spec source: <path | explicit small-task exception>
 Active slice: <one sentence>
+Non-goals: <list or n/a>
 Success criteria: <falsifiable conditions>
 Verification path status: <runnable | blocked>
 Required capabilities: <list>
+Capability gaps: <none | list + fallback>
 Fallback evidence: <none | accepted fallback>
+Commit units: <none | list>
 Final integration claim: <none | claim>
+Recovery surface updated: <yes|no|n/a>
 Next skill: <implement | diagnose | harness-builder | verify>
 Reason: <one sentence>
 ```
+
+Use the shared workflow glossary terms; `plan` does not make a
+ready claim.
 
 ## Recommended next skill
 

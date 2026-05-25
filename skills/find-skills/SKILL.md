@@ -37,6 +37,27 @@ This helper only discovers candidates. Adoption belongs to the workflow lane tha
 | Search finds no trustworthy candidate | return to `harness-builder` or continue with the existing plan |
 | Installed or adopted skill changes the verification path | `verify` |
 
+## Output contract
+
+```text
+FIND-SKILLS: CANDIDATES|NO_MATCH|INSTALL_READY|BLOCKED
+
+Task gap: <clear capability gap>
+Searches run:
+  - <leaderboard|CLI|repo|web -> result>
+Candidates:
+  - <name + source + install count/reputation + fit>
+Recommendation: <install|defer|reject|manual use>
+Adoption surface: <one-off|project harness|user-global|n/a>
+Risks / fallback: <risk + fallback>
+Install action: <none | command awaiting approval | completed>
+Recovery surface updated: <yes|no|n/a>
+Next: <calling skill|harness-builder|verify>
+```
+
+Use the shared workflow glossary terms; this helper does not
+adopt project capabilities without routing through `harness-builder`.
+
 ## What is the Skills CLI?
 
 The Skills CLI (`npx skills`) is the package manager for the open agent skills ecosystem. Skills are modular packages that extend agent capabilities with specialized knowledge, workflows, and tools.

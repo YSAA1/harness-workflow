@@ -161,7 +161,7 @@ pre {
     <div class="grid">
       <article class="panel skill-card">
         <h3><a href="harness-builder.html">harness-builder</a></h3>
-        <p class="muted">项目级 harness · 144 行 · 0 个流程步</p>
+        <p class="muted">项目级 harness · 152 行 · 0 个流程步</p>
         <p></p>
         <div class="meta">
           <span class="tag">22 个 reference</span>
@@ -169,7 +169,7 @@ pre {
         </div>
       </article><article class="panel skill-card">
         <h3><a href="brainstorm.html">brainstorm</a></h3>
-        <p class="muted">构思 Spec · 113 行 · 2 个流程步</p>
+        <p class="muted">构思 Spec · 118 行 · 2 个流程步</p>
         <p>- 防止模糊想法过早进入计划或实现。 - 在选择方案前先把验证策略说清楚。 - 通过独立 Spec 留下 goals、non-goals、方案取舍、成功标准和 plan handoff。</p>
         <div class="meta">
           <span class="tag">4 个 reference</span>
@@ -177,7 +177,7 @@ pre {
         </div>
       </article><article class="panel skill-card">
         <h3><a href="plan.html">plan</a></h3>
-        <p class="muted">Executable Plan · 141 行 · 5 个流程步</p>
+        <p class="muted">Executable Plan · 148 行 · 5 个流程步</p>
         <p>- 让新会话或另一个 agent 能从 artifact 恢复执行边界和证明方式。 - 防止范围在后续讨论中悄悄扩张。 - 在实现前暴露验证能力和 fallback evidence。 - 保持 WIP=1：计划只允许一个 current next/in-progress item。</p>
         <div class="meta">
           <span class="tag">3 个 reference</span>
@@ -185,7 +185,7 @@ pre {
         </div>
       </article><article class="panel skill-card">
         <h3><a href="implement.html">implement</a></h3>
-        <p class="muted">小步执行 · 191 行 · 8 个流程步</p>
+        <p class="muted">小步执行 · 194 行 · 8 个流程步</p>
         <p>- 当前 active slice 没拿到证据前，不开新 slice。 - 修代码就同步命令、文档或 recovery surface，否则下次会话恢复会失真。 - 验证强度按风险匹配，不机械要求覆盖率。 - 本 lane 可以跑局部检查，但不能声明 ready；ready claim 只能由 verify 证明。 - 失败了不靠猜，转 diagnose。</p>
         <div class="meta">
           <span class="tag">1 个 reference</span>
@@ -193,7 +193,7 @@ pre {
         </div>
       </article><article class="panel skill-card">
         <h3><a href="diagnose.html">diagnose</a></h3>
-        <p class="muted">失败诊断 · 155 行 · 8 个流程步</p>
+        <p class="muted">失败诊断 · 158 行 · 8 个流程步</p>
         <p>- 没有可复现失败，不提修复结论。 - 没有 root cause 证据，不算诊断完成。 - 不在 build/test/lint 已红的状态下推进 implementation。 - 修复必须最小、单一、可验证。 - 三轮 hypothesis 仍找不到根因，升级为 blocker。</p>
         <div class="meta">
           <span class="tag">1 个 reference</span>
@@ -201,7 +201,7 @@ pre {
         </div>
       </article><article class="panel skill-card">
         <h3><a href="review.html">review</a></h3>
-        <p class="muted">证据评审 · 170 行 · 6 个流程步</p>
+        <p class="muted">证据评审 · 175 行 · 6 个流程步</p>
         <p>review 必须同时检查&quot;做超了&quot;和&quot;做欠了&quot;。它可以判断&quot;没有结构性 blocker&quot;，但不能作为最终 ready gate。通过后仍路由到 verify；若已有 fresh evidence，则走 verify fast-path 做短重检和 claim mapping。</p>
         <div class="meta">
           <span class="tag">1 个 reference</span>
@@ -209,7 +209,7 @@ pre {
         </div>
       </article><article class="panel skill-card">
         <h3><a href="verify.html">verify</a></h3>
-        <p class="muted">最终验证 · 129 行 · 6 个流程步</p>
+        <p class="muted">最终验证 · 132 行 · 6 个流程步</p>
         <p>- 把&quot;可以结束&quot;转化为可追溯证据。 - 将每条成功标准映射到 fresh command、smoke/E2E、manual signal 或明确 unknown。 - 记录 skipped checks、capability gaps、residual risks 和 ready verdict。</p>
         <div class="meta">
           <span class="tag">4 个 reference</span>
@@ -217,7 +217,7 @@ pre {
         </div>
       </article><article class="panel skill-card">
         <h3><a href="cleanup.html">cleanup</a></h3>
-        <p class="muted">Knowledge Cleanup · 188 行 · 7 个流程步</p>
+        <p class="muted">Knowledge Cleanup · 193 行 · 7 个流程步</p>
         <p>- 保持 AGENTS.md 是薄规则手册，不写 changelog、临时状态或会话叙事。 - 确保 README、docs、generated artifacts 和验证命令描述当前真实项目。 - 检查 recovery surface 是否漂移、膨胀或与 git diff 矛盾。 - 把未解决的 doc drift 和 residual risk 记录成明确 follow-up。</p>
         <div class="meta">
           <span class="tag">2 个 reference</span>
