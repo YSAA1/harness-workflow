@@ -82,30 +82,38 @@ Read `references/research_route_policy.md` before Research Route work, and apply
 Before approved installation:
 
 ```text
-HARNESS EVIDENCE
-EXISTING HARNESS RECONCILIATION
-HARNESS QUESTIONS
-HARNESS CHARTER
-HARNESS COVERAGE MATRIX
-CAPABILITY DISCOVERY
-PACK SELECTION
-PACK DRY RUN
-VERIFICATION DESIGN
-HARNESS PLAN
-USER CHECKPOINT
+HARNESS: CHECKPOINT|BLOCKED
+
+Objective: <project-level harness goal>
+Evidence summary: <repo facts + dynamic signals>
+Existing harness reconciliation: <keep|patch|archive|reject rows>
+Material questions: <none | question list>
+Harness charter: <objective + non-goals + acceptance criteria>
+Coverage matrix: <Required|Recommended|Deferred|Rejected rows>
+Capability shortlist: <none | signal-bound candidates>
+Recovery surface: <none|lightweight|three-file|feature-list|existing>
+Pack dry run: <files/capabilities that would change>
+Verification design: <fast check + deeper check + evidence location>
+User checkpoint: <approval needed before writes>
+Ready claim: not made
 ```
 
 After approved installation:
 
 ```text
-HARNESS INSTALL REPORT
-PACK INSTALL REPORT
-PHASE VERIFICATION
-RECORDED STATE
-NEXT
+HARNESS: INSTALLED|BLOCKED
+
+Primary artifact: <installed harness files or plan path>
+Pack install report: <changed files/capabilities>
+Phase verification: <command -> pass|fail|unknown>
+Recorded state: <recovery surface updates>
+Capability gaps: <none | remaining gaps>
+Ready claim: not made; route to verify
+Next: <verify|implement|cleanup|diagnose|brainstorm|plan>
 ```
 
-For full output and preservation rules, read `references/workflow-protocol.md`.
+Use the shared workflow glossary terms. For full output and
+preservation rules, read `references/workflow-protocol.md`.
 
 ## Recommended next skill
 

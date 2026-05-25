@@ -176,6 +176,9 @@ for (const skill of activeSkills) {
   }
   if (!/description:\s*/.test(body)) fail(`${skill} missing description`);
   if (!body.includes("## Recommended next skill")) fail(`${skill} missing Recommended next skill section`);
+  if (!/^## (输出契约|输出格式|Output contract)\s*$/m.test(body)) {
+    fail(`${skill} missing output contract section`);
+  }
 }
 if (!process.exitCode) pass("skill frontmatter is valid");
 
@@ -242,7 +245,7 @@ for (const file of templateFiles) {
 }
 if (templateFiles.every(exists)) pass("planning and research-route templates are preserved");
 
-const activeDocs = `${read(".codex-plugin/plugin.json")}\n${read("README.md")}\n${read("README.zh-CN.md")}\n${read("AGENTS.md")}\n${read("CONTEXT.md")}\n${read("docs/harness-method-contract.md")}\n${read("docs/integrations/autoresearch.md")}\n${read("scripts/generate-skill-flow-html.mjs")}`;
+const activeDocs = `${read(".codex-plugin/plugin.json")}\n${read("README.md")}\n${read("README.zh-CN.md")}\n${read("AGENTS.md")}\n${read("CONTEXT.md")}\n${read("docs/workflow-glossary.md")}\n${read("docs/harness-method-contract.md")}\n${read("docs/integrations/autoresearch.md")}\n${read("docs/adr/0001-simplify-workflow-skill-boundaries.md")}\n${read("docs/adr/0002-skill-design-philosophy.md")}\n${read("scripts/generate-skill-flow-html.mjs")}`;
 for (const token of [
   "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
   "Harness Builder", "recovery surface", "three-file", "Spec", "Executable Plan",

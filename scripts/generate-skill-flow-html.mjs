@@ -110,6 +110,14 @@ function getSection(markdown, heading) {
   return (next === -1 ? rest : rest.slice(0, next)).trim();
 }
 
+function getFirstSection(markdown, headings) {
+  for (const heading of headings) {
+    const section = getSection(markdown, heading);
+    if (section) return section;
+  }
+  return "";
+}
+
 function getSubsection(markdown, heading) {
   const pattern = new RegExp(`^### ${escapeRegExp(heading)}\\s*$`, "m");
   const match = markdown.match(pattern);
@@ -203,7 +211,7 @@ function readSkill(slug) {
     inputs: listLines(getSection(markdown, "先读取这些输入")),
     routeTables: tableLines(route),
     steps: parseSteps(flow),
-    output: truncate(getSection(markdown, "输出格式"), 420),
+    output: truncate(getFirstSection(markdown, ["输出契约", "输出格式", "Output contract"]), 420),
     acceptance: listLines(getSection(markdown, "验收标准"), 16),
     artifacts: listLines(getSection(markdown, "工件更新"), 12),
     references: parseReferences(markdown, slug),

@@ -126,24 +126,27 @@ description: "用于在一个 scoped active slice 上做最小代码或文档改
 
 稳定后转 `review`；低风险小改动可直接转 `verify`。如果一个明确假设循环仍无法解释失败，或错误信号不稳定，转 `diagnose`。
 
-## 输出格式
+## 输出契约
 
 ```text
-EXECUTION STEP DONE
+IMPLEMENT: STEP_DONE|BLOCKED|ROUTE_BACK
 
 Active slice: <一句话>
 This step: <一句话>
 Risk tier: <unit|integration|smoke|E2E|security>
-Tests run:
+Evidence:
   - <command -> result>
 Ready claim: not made; route to verify
 Docs synced: yes|no|n/a
 Recovery surface updated: yes|no|n/a
 Files changed:
   - ...
-Commit status: not committed; pending review + verify | no commit unit defined
+Commit unit: <none | id | not eligible yet>
 Next: <repeat|review|verify|diagnose|plan>
 ```
+
+Use the shared workflow glossary terms; local checks here are
+implementation feedback, not a ready verdict.
 
 ## Recommended next skill
 

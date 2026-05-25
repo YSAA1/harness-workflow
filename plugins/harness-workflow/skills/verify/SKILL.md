@@ -72,10 +72,10 @@ description: "用于给具体 ready/done/merge claim 收集 fresh evidence 并�
 
 用 `references/verification-record-template.md` 写 verification record。按 selected recovery surface 记录 skipped checks、capability gaps 和 residual risk，然后路由下一步。
 
-## 输出格式
+## 输出契约
 
 ```text
-VERIFICATION: PASS|FAIL|INSUFFICIENT
+VERIFY: PASS|FAIL|INSUFFICIENT
 
 Claim: <ready claim>
 Evidence run:
@@ -84,12 +84,15 @@ Success criteria mapping:
   - <criterion -> pass|fail|unknown>
 Skipped high-value checks:
   - <check + reason + risk + fallback>
+Capability gaps: <none | gap + value + enablement + risk + fallback>
 Commit gate: <eligible|not eligible|no commit unit|deferred>
+Recovery surface updated: <yes|no|n/a>
 Ready: <yes|no>
 Next: <cleanup|diagnose|harness-builder|plan>
 ```
 
-Full template: `references/verification-record-template.md`.
+Use the shared workflow glossary terms. Full template:
+`references/verification-record-template.md`.
 
 ## Recommended next skill
 
