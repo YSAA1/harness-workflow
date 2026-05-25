@@ -62,7 +62,7 @@ Gate 通过前禁止写 Spec。复述问题，维护 Coverage Matrix，每轮只
 
 Gate 与 assumption batch 完成后，按 `references/spec-drafting.md` 执行：先验证策略 → 比方案 → 写 Spec → 自审 → 请求用户批准。
 
-## 输出格式
+## 输出契约
 
 ```text
 BRAINSTORM CLARIFICATION IN PROGRESS | BRAINSTORM SPEC READY

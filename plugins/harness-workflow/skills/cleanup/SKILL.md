@@ -118,7 +118,7 @@ Allowed when obviously created by this task:
 
 报告 related changes、unrelated dirty files left alone、removed/deferred residue。报告 milestone commits 完成情况。
 
-## 输出格式
+## 输出契约
 
 ```text
 CLEANUP: complete|blocked|abandoned|reopen

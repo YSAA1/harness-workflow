@@ -92,7 +92,7 @@ description: "用于把 build/test/lint/typecheck/CI 或运行时失败诊断成
 
 先跑 reproduction 命令，再跑相邻验证。失败则继续诊断；通过后转 `review` 或 `verify`。
 
-## 输出格式
+## 输出契约
 
 ```text
 BUILD FIX REPORT

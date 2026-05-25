@@ -126,7 +126,7 @@ description: "用于在一个 scoped active slice 上做最小代码或文档改
 
 稳定后转 `review`；低风险小改动可直接转 `verify`。如果一个明确假设循环仍无法解释失败，或错误信号不稳定，转 `diagnose`。
 
-## 输出格式
+## 输出契约
 
 ```text
 EXECUTION STEP DONE

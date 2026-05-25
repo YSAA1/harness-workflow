@@ -109,6 +109,15 @@ description: "用于给具体 ready/done/merge claim 收集 fresh evidence 并�
 
 按 selected recovery surface 记录 verification entry、skipped checks、capability gaps 和 residual risk。
 
+### 路由规则
+
+| Condition | Route |
+| --- | --- |
+| All required evidence fresh and passing | `cleanup`（若 commit eligibility=eligible，先执行 milestone commit） |
+| Command failed or behavior wrong | `diagnose` |
+| Evidence insufficient due to missing capability | `harness-builder` 或用户决策 |
+| Spec / success criteria mismatch | `plan` |
+
 ### 第 7 步 — Route
 
 | Result | Next |
@@ -118,7 +127,7 @@ description: "用于给具体 ready/done/merge claim 收集 fresh evidence 并�
 | Evidence insufficient due to missing capability | `harness-builder` 或用户决策 |
 | Spec / success criteria mismatch | `plan` |
 
-## 输出格式
+## 输出契约
 
 ```text
 VERIFICATION: PASS|FAIL|INSUFFICIENT
