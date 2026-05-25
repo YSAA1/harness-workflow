@@ -180,6 +180,8 @@ stop rule.
 
 ## Skill map
 
+For the short lane-selection contract, see [docs/skill-routing.md](docs/skill-routing.md).
+
 | Skill | Use it when | What it should leave behind | Recommended next |
 | --- | --- | --- | --- |
 | `brainstorm` | The goal, boundary, tradeoff, or success criteria is not clear enough to plan. | A focused spec: goals, non-goals, options considered, success criteria, and verification strategy. | `plan`, or `harness-builder` for direct harness work |

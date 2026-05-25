@@ -1,6 +1,6 @@
 ---
 name: find-skills
-description: Helps users discover and install agent skills when they ask questions like "how do I do X", "find a skill for X", "is there a skill that can...", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.
+description: "Use this helper to discover reusable agent skills for a clear task or capability gap. Trigger it when the user asks how to do X, find a skill, or extend agent capabilities. Do not install or adopt a skill just because it is related; project adoption belongs to harness-builder."
 ---
 
 # Find Skills
@@ -8,6 +8,12 @@ description: Helps users discover and install agent skills when they ask questio
 This skill helps you discover and install skills from the open agent skills ecosystem.
 
 Inside Harness Workflow, this is an auxiliary skill for Capability Discovery. Use it to search for reusable skills only after the task gap is clear. Do not install a skill just because it is related; recommend or install it only when it helps the current repo's verification, observability, domain work, automation, or repeated workflow.
+
+## Routing Snapshot
+
+- **Use when**: a clear task gap might be covered by an existing reusable skill.
+- **Do not use when**: the task gap is unclear, or the question is about hooks, MCP, subagents, CI, or repo governance.
+- **Route to**: project-level adoption goes to `harness-builder`; one-off use returns to the calling skill; verification path changes go to `verify`.
 
 ## When to Use This Skill
 

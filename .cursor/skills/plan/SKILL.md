@@ -1,6 +1,6 @@
 ---
 name: plan
-description: "当已批准 Spec 或足够明确的用户请求需要变成可执行工作合同时使用。产物是 Executable Plan，而不是默认创建三文件。计划应写入已选择的 planning surface：docs plan、issue、feature-list、既有项目系统或 three-file backend。需求、边界或验证策略不清楚时先用 brainstorm；项目工作面不清楚时用 harness-builder。"
+description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Executable Plan。触发条件：需要 active slice、planning surface、验证路径、能力缺口或 commit unit。不要在需求/验证策略不清时使用；先回 brainstorm。项目工作面不清时转 harness-builder。"
 ---
 
 # Executable Plan
@@ -8,6 +8,12 @@ description: "当已批准 Spec 或足够明确的用户请求需要变成可执
 `plan` 把已批准 Spec 或足够明确的请求转成 **Executable Plan**：范围、阶段、验证路径、验证能力、下一步和 commit unit 清楚到可以直接交给 `implement` 或 `verify`。
 
 它不负责发散需求，也不替代 Spec review。它默认不创建三文件；只有当前项目 recovery surface 已选择 three-file backend，或用户明确要求三文件时，才使用 `templates/` 下的 three-file 模板。
+
+## 路由快照
+
+- **Use when**: Spec 或请求已经清楚，但还缺可执行阶段、active slice、验证路径或 commit unit。
+- **Do not use when**: 需求、边界或验证策略还不清；任务只是单点小补丁。
+- **Route to**: 计划可执行后转 `implement`；只需证明当前状态时转 `verify`；工作面缺口转 `harness-builder`。
 
 ## 目的
 

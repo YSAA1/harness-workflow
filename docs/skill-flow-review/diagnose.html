@@ -136,11 +136,11 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>diagnose</h1>
-  <p>当 build、test、lint、typecheck、CI 或运行时检查失败，且无法指出单一证据支撑的 root cause 时使用。典型触发语：测试挂了、构建坏了、为什么报错、CI 红了、本地能跑 CI 不行、flaky、复现这个 bug、我试了但错误变了。修复前必须先复现、提出单一假设、验证根因，并把 root cause 写入 selected recovery surface。</p>
+  <p>用于把 build/test/lint/typecheck/CI 或运行时失败诊断成可复现 root cause。触发条件：命令红、行为坏、flaky 或本地/CI 不一致且根因未知。不要在 RED-&gt;GREEN 的已知失败或根因已清楚时使用；修复前必须先复现和验证单一假设。</p>
   <div class="toolbar">
     <a class="button" href="../../skills/diagnose/SKILL.md">打开 SKILL.md</a>
     <span class="button">失败诊断</span>
-    <span class="button">149 行</span>
+    <span class="button">155 行</span>
   </div>
 </header>
 <main>

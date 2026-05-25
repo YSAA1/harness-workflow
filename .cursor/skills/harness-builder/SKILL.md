@@ -1,6 +1,6 @@
 ---
 name: harness-builder
-description: "Project-level Harness Builder for designing or repairing the project workbench and recovery surface: AGENTS.md/CLAUDE.md, project map, project iron laws, verification entry point, reusable skills, justified hooks, subagents, MCP policy, Capability Discovery, and anti-entropy guardrails. Trigger when the user says harness builder, bootstrap, initialize, onboard, build harness, prepare workbench, create project rules, find reusable skills, or repair recovery surface."
+description: "Use this skill to design or repair a project-level agent workbench: entry rules, project map, verification entry, recovery surface, capability decisions, and anti-entropy guardrails. Trigger it for harness/bootstrap/onboarding/governance or missing workbench gaps; not for vague product requirements before brainstorm/plan."
 ---
 
 # Harness Builder
@@ -12,6 +12,12 @@ A harness is the repo-local operating system around the agent: project map, Proj
 Default to project-local output. Do not modify user-global config unless explicitly requested.
 
 Harness Builder uses one integrated gap model. Do not create a separate "profile" lane that competes with Capability Discovery. First decide which harness coverage areas are missing, then decide whether files, scripts, skills, hooks, MCP, or subagents are the right way to close each gap.
+
+## Routing Snapshot
+
+- **Use when**: the repo needs project-level agent governance, recovery, verification, capability, or Research Route decisions.
+- **Do not use when**: the user request is still a vague product requirement, or a scoped implementation can proceed with the current workbench.
+- **Route to**: unclear requirements go to `brainstorm` / `plan`; approved harness installation goes through `verify` and then `implement` or `cleanup`.
 
 ## When to use
 

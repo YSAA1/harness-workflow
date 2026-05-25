@@ -1,11 +1,17 @@
 ---
 name: implement
-description: "当 scoped feature、bugfix 或 refactor 已经可以实现，且项目工作面和验证路径足够清楚时使用。典型触发语：实现这个、开始写代码、修 bug、让测试通过、加这个函数、接线这个功能。读取用户请求、Spec、Executable Plan 和当前 recovery surface；不要求三文件存在。局部检查只作为实现反馈；ready 只能交给 verify 证明。"
+description: "用于在一个 scoped active slice 上做最小代码或文档改动。触发条件：用户请求/Spec/Executable Plan 已清楚，工作面和验证路径足够明确。不要在需求、active slice、根因或工作面不清时使用；局部检查只是反馈，ready 只能交给 verify。"
 ---
 
 # 带证据执行
 
 `implement` 是 scoped work 的实现入口。它在三件事上严格：**WIP=1 一次只推进一个 slice**、**按风险选择验证强度**、**修改行为时同步相关 docs 和 selected recovery surface**。
+
+## 路由快照
+
+- **Use when**: 恰好一个 active slice 可以开始改文件，且验证入口足够清楚。
+- **Do not use when**: 需求不清、计划不清、失败根因不清、或项目工作面缺失。
+- **Route to**: 稳定后转 `review` 或小改直接转 `verify`；失败根因不清转 `diagnose`；范围漂移转 `plan`。
 
 ## 目的
 
