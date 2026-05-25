@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -49,10 +51,16 @@ jobs:
       - name: Check generated skill flow HTML
         run: |
           node scripts/generate-skill-flow-html.mjs
-          git diff --exit-code docs/skill-flow-review
+          git diff --exit-code -- docs/skill-flow-review
+          test -z "$(git ls-files --others --exclude-standard -- docs/skill-flow-review)"
 
       - name: Check whitespace
-        run: git diff --check
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git diff --check "${{ github.event.pull_request.base.sha }}...${{ github.sha }}"
+          else
+            git diff --check "${{ github.event.before }}...${{ github.sha }}"
+          fi
 
       - name: Check README assets
         run: |
