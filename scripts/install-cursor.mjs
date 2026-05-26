@@ -62,6 +62,11 @@ if (!fs.existsSync(sourceSkills)) fail(`missing source skills directory: ${sourc
 if (!fs.existsSync(targetRoot)) fail(`target project does not exist: ${targetRoot}`);
 if (!fs.statSync(targetRoot).isDirectory()) fail(`target is not a directory: ${targetRoot}`);
 
+const isIgnoredSupportFile = (relativePath) => {
+  const parts = relativePath.split(path.sep);
+  return parts.includes("__pycache__") || /\.(pyc|pyo|pyd)$/.test(relativePath);
+};
+
 const copyFile = (from, to) => {
   const relativeToTarget = path.relative(targetRoot, to);
   if (dryRun) {
@@ -78,6 +83,7 @@ const copyDir = (fromDir, toDir) => {
   for (const entry of fs.readdirSync(fromDir, { withFileTypes: true })) {
     const from = path.join(fromDir, entry.name);
     const to = path.join(toDir, entry.name);
+    if (isIgnoredSupportFile(path.relative(root, from))) continue;
     if (entry.isDirectory()) {
       copyDir(from, to);
     } else {

@@ -20,6 +20,10 @@ const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "u
 const packageRead = (relativePath) => fs.readFileSync(path.join(packagedRoot, relativePath), "utf8");
 const skillPath = (skill) => `skills/${skill}/SKILL.md`;
 const readJson = (relativePath) => JSON.parse(read(relativePath));
+const isIgnoredSupportFile = (relativePath) => {
+  const parts = relativePath.split("/");
+  return parts.includes("__pycache__") || /\.(pyc|pyo|pyd)$/.test(relativePath);
+};
 const listFiles = (baseRoot, relativeDir) => {
   const absoluteDir = path.join(baseRoot, relativeDir);
   if (!fs.existsSync(absoluteDir)) return [];
@@ -28,8 +32,10 @@ const listFiles = (baseRoot, relativeDir) => {
     for (const entry of fs.readdirSync(absoluteCurrent, { withFileTypes: true })) {
       const absoluteEntry = path.join(absoluteCurrent, entry.name);
       const relativeEntry = path.join(relativeCurrent, entry.name);
+      const normalized = relativeEntry.replaceAll(path.sep, "/");
+      if (isIgnoredSupportFile(normalized)) continue;
       if (entry.isDirectory()) walk(absoluteEntry, relativeEntry);
-      else out.push(relativeEntry.replaceAll(path.sep, "/"));
+      else out.push(normalized);
     }
   };
   walk(absoluteDir, "");

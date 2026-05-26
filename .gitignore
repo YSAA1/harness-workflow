@@ -1,1 +1,3 @@
 ppt-output/
+__pycache__/
+*.py[cod]

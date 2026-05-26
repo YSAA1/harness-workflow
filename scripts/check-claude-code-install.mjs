@@ -26,6 +26,10 @@ const fail = (message) => {
 const pass = (message) => console.log(`PASS: ${message}`);
 const exists = (relativePath) => fs.existsSync(path.join(root, relativePath));
 const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "utf8");
+const isIgnoredSupportFile = (relativePath) => {
+  const parts = relativePath.split("/");
+  return parts.includes("__pycache__") || /\.(pyc|pyo|pyd)$/.test(relativePath);
+};
 
 const listFiles = (relativeDir) => {
   const absoluteDir = path.join(root, relativeDir);
@@ -35,8 +39,10 @@ const listFiles = (relativeDir) => {
     for (const entry of fs.readdirSync(absoluteCurrent, { withFileTypes: true })) {
       const absoluteEntry = path.join(absoluteCurrent, entry.name);
       const relativeEntry = path.join(relativeCurrent, entry.name);
+      const normalized = relativeEntry.replaceAll(path.sep, "/");
+      if (isIgnoredSupportFile(normalized)) continue;
       if (entry.isDirectory()) walk(absoluteEntry, relativeEntry);
-      else out.push(relativeEntry.replaceAll(path.sep, "/"));
+      else out.push(normalized);
     }
   };
   walk(absoluteDir, "");
