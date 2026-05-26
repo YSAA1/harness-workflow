@@ -4,6 +4,34 @@
 
 It should not be a full knowledge base. Put long details in `docs/agent/`, local `AGENTS.md`, or project-local skills.
 
+## AGENTS.md maintenance rule
+
+`AGENTS.md` is the stable cross-agent entrypoint. Harness Builder should audit it on every run, but patch it only when durable repo-level facts changed.
+
+Patch `AGENTS.md` for stable facts such as:
+
+- project overview;
+- project map;
+- stable project iron laws;
+- protected paths;
+- required reading by task type;
+- selected recovery surface pointer;
+- verification entrypoint;
+- source-of-truth priority.
+
+Do not put these in `AGENTS.md`:
+
+- current active slice;
+- temporary task plan;
+- session summary;
+- stale debugging notes;
+- one-off review conclusion;
+- long automation catalog;
+- unapproved hooks, MCP, subagents, or project-local skills;
+- full Research Route runtime state.
+
+Dynamic work state belongs in the selected recovery surface. If an existing `AGENTS.md` contains dynamic state, preserve or migrate that content into the selected recovery surface before removing it from the entrypoint.
+
 ## Required sections for generated AGENTS.md
 
 ### 1. Project overview
@@ -53,23 +81,18 @@ Good iron laws are project-specific, stable, testable or reviewable, and high co
 
 Bad iron laws are vague rules like "write good code", volatile details, or rules better handled in a task-specific doc.
 
-### 5. Harness map
+### 5. Recovery surface
 
-Explain the harness itself so agents understand the generated files.
+Name the selected recovery surface and the first files to read when work must continue across sessions. Do not imply optional harness files exist unless they were selected or installed.
 
 Example:
 ```md
-## Harness map
-- `AGENTS.md`: entry rules, project map, and hard constraints
-- `docs/agent/project_context.md`: project background and assumptions
-- `docs/agent/workflow.md`: how agent sessions should proceed
-- `docs/agent/verification.md`: verification strategy
-- `scripts/agent/check.sh`: fast verification command
-- `.harness/state.md`: current project phase, known gaps, and next step
-- `.harness/progress.md`: long-running task progress
-- `.harness/session_handoff.md`: restart notes for future sessions
-- `.harness/manifest.yaml`: installed harness components
-- `.harness/decisions.md`: why harness decisions were made
+## Recovery surface
+Selected recovery surface: `.harness/state.md`
+
+Read next:
+- `.harness/state.md`: current work state, evidence, risks, and next action
+- `.harness/decisions.md`: durable harness decisions
 ```
 
 ### 6. Required reading by task type

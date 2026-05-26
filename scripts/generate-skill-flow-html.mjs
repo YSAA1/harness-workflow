@@ -598,9 +598,14 @@ for (const file of fs.readdirSync(outRoot)) {
 
 const skills = skillOrder.map(([slug, category]) => ({ ...readSkill(slug), category }));
 
-for (const skill of skills) {
-  fs.writeFileSync(path.join(outRoot, `${skill.slug}.html`), renderSkillPage(skill, skill.category));
+function writeHtml(file, html) {
+  const normalized = html.replace(/[ \t]+$/gm, "").trimEnd() + "\n";
+  fs.writeFileSync(path.join(outRoot, file), normalized);
 }
-fs.writeFileSync(path.join(outRoot, "index.html"), renderIndex(skills));
+
+for (const skill of skills) {
+  writeHtml(`${skill.slug}.html`, renderSkillPage(skill, skill.category));
+}
+writeHtml("index.html", renderIndex(skills));
 
 console.log(`Generated ${skills.length + 1} HTML files in ${path.relative(process.cwd(), outRoot)}`);

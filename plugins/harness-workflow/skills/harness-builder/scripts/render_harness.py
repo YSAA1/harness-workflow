@@ -68,6 +68,7 @@ def main() -> int:
     result = {
         "pack": args.pack,
         "mode": "dry-run",
+        "selected_assets": components,
         "would_create": would_create,
         "would_patch": would_patch,
         "would_skip": [],

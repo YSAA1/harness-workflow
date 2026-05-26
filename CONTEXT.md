@@ -17,7 +17,7 @@ The Harness Builder activity that searches for task-relevant skills, MCP servers
 _Avoid_: treating the current user's installed skills as the full capability universe, or installing optional capabilities without clear value.
 
 **Capability Shortlist**:
-The evidence-bound recommendation table inside Capability Discovery: repo signal, candidate, coverage row, why, install surface, risk/cost, fallback, and classification.
+The evidence-bound recommendation table inside Capability Discovery: repo signal, source evidence, freshness, candidate, coverage row, why, install surface, trust boundary, approval needed, risk/cost, fallback, verification probe, and classification.
 _Avoid_: turning recommendations into a separate automation profile or shopping list detached from the Coverage Matrix.
 
 **Research Route**:
@@ -77,7 +77,7 @@ _Avoid_: treating it as the default dependency of every skill.
 - A **Harness Builder** selects or repairs the **Recovery Surface** for a project.
 - A **Harness Builder** defines the **Recovery Policy** for a project.
 - A **Harness Builder** performs **Capability Discovery** with `$find-skills` and targeted web research when the current task may benefit from reusable skills, MCP servers, hooks, or agent tooling.
-- A **Capability Shortlist** only runs after the **Coverage Matrix** exposes a real gap; read-only recommendation requests stop at the report and do not install files.
+- A **Capability Shortlist** only runs after the **Coverage Matrix** exposes a real gap; read-only recommendation requests stop at the report and do not install files, hooks, MCP config, subagents, or project-local skills.
 - A **Harness Builder** may create a **Research Route** harness when the user explicitly asks for autoresearch or research exploration and the research contract is clear.
 - A **Research Route** uses an **Evidence Loop** only after goal, hypothesis, baseline, metric, verification, guardrails, budget, and stop rule are defined.
 - A **Research Reset Policy** preserves negative evidence before failed code is removed from the active branch or worktree.
@@ -102,7 +102,7 @@ _Avoid_: treating it as the default dependency of every skill.
 > **Domain expert:** "No. During **Capability Discovery**, it should use `$find-skills` for strongly relevant reusable skills and targeted web search for useful MCP or hook options, then recommend installation only when the value is clear."
 
 > **Dev:** "Can Capability Discovery recommend every automation that looks helpful?"
-> **Domain expert:** "No. It should produce a **Capability Shortlist** bound to Coverage Matrix gaps. Each candidate needs repo evidence, one coverage row, risk/cost, fallback, and a Required / Recommended / Deferred / Rejected classification."
+> **Domain expert:** "No. It should produce a **Capability Shortlist** bound to Coverage Matrix gaps. Each candidate needs repo evidence, source evidence, freshness when external facts matter, one coverage row, trust and approval boundaries, risk/cost, fallback, verification probe, and a Required / Recommended / Deferred / Rejected classification."
 
 > **Dev:** "If the user asks for autoresearch, should we skip `brainstorm` and start looping?"
 > **Domain expert:** "No. Autoresearch needs an approved **Research Route** contract first: goal, hypothesis, baseline, metric, verification, guardrails, budget, and stop rule. The loop starts only after that contract exists."

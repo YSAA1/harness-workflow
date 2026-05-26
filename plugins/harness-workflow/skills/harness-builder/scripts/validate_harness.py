@@ -2,21 +2,63 @@
 from __future__ import annotations
 
 import json
-import os
 import re
-import subprocess
-import sys
 from pathlib import Path
 
 SUSPICIOUS_COMMAND_TOKENS = ["|", ";", "$(", "`", ">>", "curl", "wget", "eval", "exec"]
 CORE_REFERENCES = [
     "coverage_matrix_policy.md",
+    "project_map_policy.md",
     "recovery_surface_policy.md",
-    "architecture_enforcement_policy.md",
     "install_policy.md",
     "verification_policy.md",
-    "anti_entropy.md",
     "capability_signal_policy.md",
+]
+CONDITIONAL_REFERENCES = [
+    "anti_entropy.md",
+    "architecture_enforcement_policy.md",
+    "brainstorming_policy.md",
+    "capability_starter_catalog.md",
+    "course_alignment.md",
+    "decision_matrix.md",
+    "harness_subsystems.md",
+    "hook_policy.md",
+    "mcp_policy.md",
+    "skill_policy.md",
+    "subagent_orchestration.md",
+    "subagent_policy.md",
+    "web_research_policy.md",
+]
+RESEARCH_REFERENCES = [
+    "research_route_policy.md",
+    "research_graduation_policy.md",
+    "research_entropy_gate.md",
+]
+CORE_TEMPLATES = [
+    "templates/AGENTS.md.j2",
+    "templates/check.sh.j2",
+    "templates/manifest.yaml.j2",
+    "templates/state.md.j2",
+    "templates/decisions.md.j2",
+    "templates/verification.md.j2",
+]
+CONDITIONAL_TEMPLATES = [
+    "templates/AGENTS.template.md",
+    "templates/project_context.md.j2",
+    "templates/workflow.md.j2",
+    "templates/progress.md.j2",
+    "templates/session_handoff.md.j2",
+    "templates/features.json.j2",
+    "templates/risk_register.md.j2",
+    "templates/reports/verification_report.md.j2",
+]
+RECOMMENDATION_ONLY_TEMPLATE_GLOBS = [
+    "templates/agents/*.j2",
+    "templates/hooks/*.j2",
+    "templates/skills/*/SKILL.md",
+]
+EXPLICIT_ROUTE_TEMPLATE_GLOBS = [
+    "templates/research_route/*.j2",
 ]
 
 
@@ -41,17 +83,61 @@ def check_instruction_skill(root: Path, issues: list[str]) -> None:
         if not ok:
             issues.append(f"invalid root SKILL.md: {msg}")
         text = skill.read_text(encoding="utf-8", errors="replace")
-        required_phrases = ["Pack Selection gate", "USER CHECKPOINT", "Coverage Matrix", "Capability Discovery", "Capability Shortlist pass"]
+        required_phrases = [
+            "Pack Selection gate",
+            "USER CHECKPOINT",
+            "Coverage Matrix",
+            "Capability Discovery",
+            "Capability Shortlist pass",
+            "selected recovery surface",
+            "source evidence",
+            "verification probe",
+            "recommendation report",
+        ]
         for phrase in required_phrases:
             if phrase not in text:
                 issues.append(f"SKILL.md missing required phrase: {phrase}")
 
 
-def check_references(root: Path, issues: list[str]) -> None:
+def collect_text_files(root: Path) -> str:
+    paths = [
+        root / "SKILL.md",
+        root / "README.md",
+        *sorted((root / "references").rglob("*.md")),
+        *sorted(path for path in (root / "templates").rglob("*") if path.is_file()),
+    ]
+    chunks = []
+    for path in paths:
+        if path.is_file():
+            chunks.append(path.read_text(encoding="utf-8", errors="replace"))
+    return "\n".join(chunks)
+
+
+def check_core_assets(root: Path, issues: list[str]) -> None:
     refs = root / "references"
     for name in CORE_REFERENCES:
         if not (refs / name).exists():
             issues.append(f"missing core reference: references/{name}")
+    for rel in CORE_TEMPLATES:
+        if not (root / rel).exists():
+            issues.append(f"missing core template: {rel}")
+
+
+def check_conditional_assets_if_referenced(root: Path, issues: list[str]) -> None:
+    bundle = collect_text_files(root)
+    refs = root / "references"
+    for name in [*CONDITIONAL_REFERENCES, *RESEARCH_REFERENCES]:
+        rel = f"references/{name}"
+        if (name in bundle or rel in bundle) and not (refs / name).exists():
+            issues.append(f"referenced conditional reference is missing: {rel}")
+
+    for rel in CONDITIONAL_TEMPLATES:
+        if (rel in bundle or Path(rel).name in bundle) and not (root / rel).exists():
+            issues.append(f"referenced conditional template is missing: {rel}")
+
+
+def check_pack_assets_if_present(root: Path, issues: list[str]) -> None:
+    refs = root / "references"
     forbidden_root = ["stack_routing.md", "boundary_test_templates.md", "ci_templates.md", "gc_patterns.md", "security_template.md"]
     for name in forbidden_root:
         if (refs / name).exists():
@@ -60,6 +146,36 @@ def check_references(root: Path, issues: list[str]) -> None:
         for required in ["adapter.md", "precedence.md", "README.md"]:
             if not (refs / "packs" / "init_scaffold" / required).exists():
                 issues.append(f"init_scaffold missing {required}")
+
+
+def check_optional_asset_integrity(root: Path, issues: list[str]) -> None:
+    for rel in [*CONDITIONAL_TEMPLATES, *CORE_TEMPLATES]:
+        path = root / rel
+        if path.exists() and not path.read_text(encoding="utf-8", errors="replace").strip():
+            issues.append(f"empty template: {rel}")
+
+    for glob in [*RECOMMENDATION_ONLY_TEMPLATE_GLOBS, *EXPLICIT_ROUTE_TEMPLATE_GLOBS]:
+        for path in sorted(root.glob(glob)):
+            rel = path.relative_to(root).as_posix()
+            text = path.read_text(encoding="utf-8", errors="replace")
+            if not text.strip():
+                issues.append(f"empty optional template: {rel}")
+            if rel.endswith("SKILL.md"):
+                ok, msg = parse_skill_frontmatter(path)
+                if not ok:
+                    issues.append(f"invalid optional skill template {rel}: {msg}")
+
+    for path in sorted((root / "evals").glob("*.json")):
+        try:
+            json.loads(path.read_text(encoding="utf-8", errors="replace"))
+        except json.JSONDecodeError as exc:
+            issues.append(f"invalid eval json: {path}: {exc}")
+
+    for path in sorted((root / "schemas").glob("*.json")):
+        try:
+            json.loads(path.read_text(encoding="utf-8", errors="replace"))
+        except json.JSONDecodeError as exc:
+            issues.append(f"invalid schema json: {path}: {exc}")
 
 
 def check_ci_command_safety(root: Path, issues: list[str]) -> None:
@@ -78,9 +194,6 @@ def check_ci_command_safety(root: Path, issues: list[str]) -> None:
 
 def check_templates(root: Path, issues: list[str]) -> None:
     required_templates = [
-        "templates/AGENTS.md.j2",
-        "templates/check.sh.j2",
-        "templates/manifest.yaml.j2",
         "templates/packs/init_scaffold/docs/architecture/LAYERS.md.j2",
         "templates/packs/init_scaffold/boundary/python_test.py.j2",
         "templates/packs/init_scaffold/boundary/typescript_test.ts.j2",
@@ -92,51 +205,25 @@ def check_templates(root: Path, issues: list[str]) -> None:
 
 def check_script_compilation(root: Path, issues: list[str]) -> None:
     for script in sorted((root / "scripts").glob("*.py")):
-        proc = subprocess.run([sys.executable, "-m", "py_compile", str(script)], capture_output=True, text=True)
-        if proc.returncode != 0:
-            issues.append(f"script does not compile: {script}\n{proc.stderr}")
-
-
-
-def validate_preserved_assets(root: Path, issues: list[str]) -> None:
-    preserved = [
-        "references/harness_subsystems.md",
-        "references/project_map_policy.md",
-        "references/subagent_policy.md",
-        "templates/research_route/research_plan.md.j2",
-        "templates/research_route/evidence_log.md.j2",
-        "templates/research_route/iteration_protocol.md.j2",
-        "templates/research_route/research_manifest.yaml.j2",
-        "templates/AGENTS.template.md",
-        "templates/project_context.md.j2",
-        "templates/workflow.md.j2",
-        "templates/verification.md.j2",
-        "templates/reports/verification_report.md.j2",
-        "templates/risk_register.md.j2",
-        "templates/features.json.j2",
-        "templates/agents/repo_explorer.md.j2",
-        "templates/hooks/protected_paths.py.j2",
-        "templates/skills/rl-env-review/SKILL.md",
-        "templates/skills/ml-experiment-review/SKILL.md",
-        "templates/skills/data-leakage-audit/SKILL.md",
-    ]
-    for rel in preserved:
-        if not (root / rel).exists():
-            issues.append(f"missing preserved harness-builder asset: {rel}")
+        try:
+            source = script.read_text(encoding="utf-8", errors="replace")
+            compile(source, str(script), "exec")
+        except SyntaxError as exc:
+            issues.append(f"script does not compile: {script}\n{exc}")
 
     manifest = root / "templates" / "manifest.yaml.j2"
     if manifest.exists():
         text = manifest.read_text(encoding="utf-8", errors="replace")
-        for token in ["harness_goals", "orchestration", "course_alignment", "packs"]:
+        for token in ["harness_goals", "orchestration", "course_alignment", "packs", "asset_loading", "selected_assets"]:
             if token not in text:
-                issues.append(f"manifest template missing preserved/pack field: {token}")
+                issues.append(f"manifest template missing field: {token}")
 
     state = root / "templates" / "state.md.j2"
     if state.exists():
         text = state.read_text(encoding="utf-8", errors="replace")
-        for token in ["Orchestration mode", "Open user decisions", "Last known good verification", "Known broken checks", "Current harness status", "Pack selection"]:
+        for token in ["Active work", "Open user decisions", "Last known good verification", "Known broken checks", "Pack selection"]:
             if token not in text:
-                issues.append(f"state template missing preserved/pack section: {token}")
+                issues.append(f"state template missing section: {token}")
 
     scan = root / "scripts" / "scan_project.py"
     if scan.exists():
@@ -150,11 +237,13 @@ def main() -> int:
     root = Path.cwd()
     issues: list[str] = []
     check_instruction_skill(root, issues)
-    check_references(root, issues)
+    check_core_assets(root, issues)
+    check_conditional_assets_if_referenced(root, issues)
+    check_optional_asset_integrity(root, issues)
+    check_pack_assets_if_present(root, issues)
     check_templates(root, issues)
     check_ci_command_safety(root, issues)
     check_script_compilation(root, issues)
-    validate_preserved_assets(root, issues)
 
     # Preserve original project-install validation when running against a target repo.
     target_required = ["AGENTS.md", "scripts/agent/check.sh", ".harness/manifest.yaml", ".harness/decisions.md"]

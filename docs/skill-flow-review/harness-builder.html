@@ -136,70 +136,49 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>harness-builder</h1>
-  <p>Use this skill to design or repair a project-level agent workbench: entry rules, project map, verification entry, recovery surface, capability decisions, and anti-entropy guardrails. Trigger it for harness/bootstrap/onboarding/governance or missing workbench gaps; not for vague product requirements before brainstorm/plan.</p>
+  <p>Project-level Harness Builder for designing or repairing the project workbench and recovery surface: AGENTS.md/CLAUDE.md, project map, project iron laws, verification entry point, reusable skills, justified hooks, subagents, MCP policy, Capability Discovery, and anti-entropy guardrails. Trigger when the user says harness builder, bootstrap, initialize, onboard, build harness, prepare workbench, create project rules, find reusable skills, or repair recovery surface.</p>
   <div class="toolbar">
     <a class="button" href="../../skills/harness-builder/SKILL.md">打开 SKILL.md</a>
     <span class="button">项目级 harness</span>
-    <span class="button">232 行</span>
+    <span class="button">294 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>Controller for building or repairing a minimal useful project-level harness: project map, AGENTS.md, Project iron laws, verification entry, selected recovery surface, capability decisions, audit records, and cleanup discipline. Default to project-local output. Do not modify user-global config unless the user explicitly asks for it.</p>
+    <p>Build or repair the minimal useful project-level harness for AI coding agents. A harness is the repo-local operating system around the agent: project map, Project iron laws, protected paths, verification entry, recovery surface, reusable skills, hooks, MCP policy, subagent policy, audit records, and cleanup discipline. &quot;bootstrap&quot; is only a historical alias...</p>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>进入条件</h2>
-      <ul><li>Use when: the repo needs project-level harness governance, recovery,</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
     <div class="panel">
       <h2>禁用条件</h2>
-      <ul><li>Do not use when: the user request is vague, or a scoped implementation can</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
     <div class="panel">
       <h2>先读输入</h2>
-      <ul><li>README/docs, scripts/tests/CI, git state, existing .harness/, .agents/, .codex/, .claude/, generated/protected paths, and cheap dynamic signals.</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
   </section>
 
   <section class="section panel">
     <h2>执行流程</h2>
     <div class="flow">
-      <div class="step">
-        <div class="num">1</div>
-        <div><h3>Collect evidence: user intent, Spec/Executable Plan if present, AGENTS.md,</h3><p>README/docs, scripts/tests/CI, git state, existing .harness/, .agents/, .codex/, .claude/, generated/protected paths, and cheap dynamic signals.</p></div>
-      </div><div class="step">
-        <div class="num">2</div>
-        <div><h3>Reconcile existing harness and name current truth for rules, active work,</h3><p>evidence, decisions, risks, and next actions.</p></div>
-      </div><div class="step">
-        <div class="num">3</div>
-        <div><h3>Form Harness Hypothesis: facts, missing info, questions, assumptions, course</h3><p>coverage, and orchestration mode.</p></div>
-      </div><div class="step">
-        <div class="num">4</div>
-        <div><h3>Build Coverage Matrix, run Capability Discovery, select packs only for</h3><p>approved rows, and choose recovery surface: none, lightweight, three-file, feature-list, or existing.</p></div>
-      </div><div class="step">
-        <div class="num">5</div>
-        <div><h3>For three-file, map active_slice to task_plan.md, evidence to</h3><p>progress.md, and decisions/risks to findings.md.</p></div>
-      </div><div class="step">
-        <div class="num">6</div>
-        <div><h3>Write Harness Charter and phased Harness Plan, emit USER CHECKPOINT, wait</h3><p>for approve, then install only approved components by phase. Skip this wait only when the current user explicitly says to skip the checkpoint and lists the exact files or actions to perform.</p></div>
-      </div><div class="step">
-        <div class="num">7</div>
-        <div><h3>Verify, record phase status, and route to the next skill.</h3><p></p></div>
-      </div>
+
     </div>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>Before approved installation: ``text HARNESS EVIDENCE EXISTING HARNESS RECONCILIATION HARNESS QUESTIONS HARNESS CHARTER HARNESS COVERAGE MATRIX CAPABILITY DISCOVERY PACK SELECTION PACK DRY RUN VERIFICATION DESIGN HARNESS PLAN USER CHECKPOINT ` After approved installation: `text HARNESS INSTALL REPORT PACK INSTALL REPORT PHASE VERIFICATION RECORDED STATE NEXT `` Always state evidence, unknowns, questions, charter ass...</pre>
+      <pre>未抽取到输出格式</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
-      <ul><li>SKILL.md is the controller. Support assets must be owned by a gate, coverage row, pack, script, or preservation rule. See references/asset-routing.md before adding, merging, downg...</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
   </section>
 
@@ -211,11 +190,11 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>Question gate</li><li>After evidence collection, ask the smallest material question set.</li><li>Cover missing target outcome, non-goals, acceptance criteria, verification</li><li>If no question is needed, say No user questions needed and list</li><li>Harness Charter gate</li><li>Before the Harness Plan, state objective, non-goals, user-facing acceptance</li><li>Unknown required fields trigger a question or route to brainstorm /</li><li>Coverage Matrix gate</li><li>Produce one Required / Recommended / Deferred / Rejected table across:</li><li>State whether each row is satisfied, patched, newly installed, deferred, or</li><li>read_when: references/coverage_matrix_policy.md,</li><li>Capability Discovery gate</li><li>Run after the Coverage Matrix exposes an uncovered or weak row.</li><li>Evaluate skills, hooks, MCP, subagents, external research, CI, GC, and</li><li>Each Capability Shortlist pass row states repo signal, candidate, coverage</li><li>For skill gaps, invoke $find-skills / find-skills, or state</li></ul>
+      <ul><li>Question gate</li><li>After evidence collection, ask the smallest material question set.</li><li>Questions must cover missing target outcome, non-goals, acceptance criteria, verification depth, and current source of truth when those are not already clear.</li><li>If no question is needed, say No user questions needed and list evidence-backed assumptions.</li><li>If fast/deep validation is unclear, ask at least one verification question before writing the Harness Plan.</li><li>Harness Charter gate</li><li>Before the Harness Plan, state:</li><li>objective and non-goals for this harness;</li><li>user-facing acceptance criteria;</li><li>verification path and evidence location;</li><li>selected recovery surface and source-of-truth priority;</li><li>existing harness components to keep, patch, archive, or reject.</li><li>If any required field is unknown, ask the user or route to brainstorm / plan; do not fill it with template text.</li><li>Coverage Matrix gate</li><li>Always produce a single Required / Recommended / Deferred / Rejected table across these coverage areas:</li><li>agent entry and project map;</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
-      <ul><li><a href="../../skills/harness-builder/references/coverage_matrix_policy.md">Coverage Matrix Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/architecture_enforcement_policy.md">Architecture Enforcement Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/anti_entropy.md">Anti-Entropy Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/capability_signal_policy.md">Capability Signal Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/skill_policy.md">Skill Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/hook_policy.md">Hook Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/mcp_policy.md">MCP Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/subagent_orchestration.md">Subagent Orchestration</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/web_research_policy.md">Web Research Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/packs/init_scaffold/adapter.md">Init Scaffold Pack Adapter</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/packs/init_scaffold/precedence.md">Init Scaffold Pack Precedence</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/verification_policy.md">Verification Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/research_route_policy.md">Research Route policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/research_graduation_policy.md">Research Graduation Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/research_entropy_gate.md">Research Entropy Gate</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/asset-routing.md">Harness Builder Asset Routing</a><span class="tag">存在</span></li></ul>
+      <ul><li><a href="../../skills/harness-builder/references/research_route_policy.md">Research Route policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/coverage_matrix_policy.md">Coverage Matrix Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/architecture_enforcement_policy.md">Architecture Enforcement Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/anti_entropy.md">Anti-Entropy Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/capability_signal_policy.md">Capability Signal Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/packs/init_scaffold/adapter.md">Init Scaffold Pack Adapter</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/packs/init_scaffold/precedence.md">Init Scaffold Pack Precedence</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/research_graduation_policy.md">Research Graduation Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/research_entropy_gate.md">Research Entropy Gate</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/recovery_surface_policy.md">Recovery Surface Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/install_policy.md">Install Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/brainstorming_policy.md">Brainstorming Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/course_alignment.md">Learn Harness Engineering Alignment</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/subagent_orchestration.md">Subagent Orchestration</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/skill_policy.md">Skill Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/web_research_policy.md">Web Research Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/hook_policy.md">Hook Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/mcp_policy.md">MCP Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/decision_matrix.md">Harness Builder Decision Matrix</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/verification_policy.md">Verification Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/harness_subsystems.md">Harness Subsystems</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/project_map_policy.md">AGENTS.md and Project Map Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/subagent_policy.md">Subagent Policy</a><span class="tag">存在</span></li></ul>
     </div>
   </section>
 

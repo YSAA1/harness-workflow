@@ -11,12 +11,17 @@ Every candidate must include these fields:
 | Field | Meaning |
 | --- | --- |
 | `repo_signal` | The concrete repo evidence that triggered the candidate: file, config, script, dependency, CI, runtime signal, or user intent. |
+| `source_evidence` | Local repo evidence, official docs, official repo, vendor docs, or mature community example used to justify the candidate. |
+| `freshness` | Date, version, or "local evidence only" marker when external behavior may drift. |
 | `candidate` | The proposed skill, hook, MCP server, subagent, helper script, CI check, or external research action. |
 | `coverage_row` | Exactly one Coverage Matrix row id or name that this candidate would close or improve. |
 | `why` | The specific harness gap it closes. Avoid generic best-practice language. |
 | `install_surface` | Where it would live if approved: project skill path, hook config, `.mcp.json`, project docs, script, CI, subagent file, or manual practice. |
+| `trust_boundary` | `local-only`, `read-only external`, `write-capable external`, or `credential-bearing`. |
+| `approval_needed` | `none`, `before install`, `before write access`, or `before secret access`. |
 | `risk_cost` | Permission, false-positive, runtime, token, maintenance, security, or team-adoption cost. |
 | `fallback` | The simpler or manual alternative if the capability is not installed. |
+| `verification_probe` | The command, smoke check, dry-run, or manual check that proves the recommendation works or is safely deferred. |
 | `classification` | `Required`, `Recommended`, `Deferred`, or `Rejected`. |
 
 Do not list a candidate if it cannot be tied to exactly one coverage row. If one repo signal suggests multiple options, split them into separate candidate rows and classify each independently.
@@ -45,9 +50,31 @@ If the user asks only to analyze, recommend, audit, or "see what would help":
 
 - stay read-only;
 - output a recommendation report instead of an install plan;
-- do not write files, create local config, or proceed to Pack Selection;
-- still include `repo_signal`, `coverage_row`, `why`, `risk_cost`, `fallback`, and `classification`;
+- do not write `.mcp.json`;
+- do not write hooks config;
+- do not create subagent files;
+- do not create project-local skills;
+- do not write other local config or proceed to Pack Selection;
+- still include `repo_signal`, `source_evidence`, `freshness`, `coverage_row`, `why`, `trust_boundary`, `approval_needed`, `risk_cost`, `fallback`, `verification_probe`, and `classification`;
 - tell the user which recommendations would require explicit approval before installation.
+
+## External capability search
+
+Use targeted web search only when:
+
+- a concrete coverage row needs current external tool knowledge;
+- the user asks for MCP, hooks, skills, plugin, or subagent recommendations;
+- local repo evidence shows repeated need for docs, browser, database, issue tracker, observability, cloud, or framework-specific tooling;
+- external tool behavior may have changed.
+
+Prefer sources in this order:
+
+1. official docs;
+2. official plugin, MCP, framework, or tool repository;
+3. vendor docs;
+4. mature community examples.
+
+Search is for external capability facts only. Do not use web search to guess local repo facts.
 
 ## Category signals
 

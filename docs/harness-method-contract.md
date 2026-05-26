@@ -14,7 +14,7 @@
 | Recovery surface | 让未来 agent 恢复工作的项目工件，可以是 none、lightweight、three-file、feature-list 或 existing system |
 | Knowledge Cleanup | `cleanup` 的目标：防止 docs、生成物、AGENTS.md 和 recovery surface 漂移 |
 | Capability Discovery | 为当前任务搜索并评估 skills、MCP、hooks、subagents 或外部 agent 能力 |
-| Capability Shortlist | Capability Discovery 中的证据绑定推荐表：repo signal -> candidate -> coverage row -> why -> install surface -> risk/cost -> fallback -> classification |
+| Capability Shortlist | Capability Discovery 中的证据绑定推荐表：repo signal -> source evidence -> freshness -> candidate -> coverage row -> why -> install surface -> trust boundary -> approval needed -> risk/cost -> fallback -> verification probe -> classification |
 | Skill discovery helper | `find-skills`，用于搜索可复用 skills；它辅助 Capability Discovery，不是第九条 workflow lane |
 | Research Route | `harness-builder` 在用户明确要求 autoresearch 或开放式研究时生成的项目本地研究 harness，不是第九条 workflow lane |
 | Commit Unit | `plan` 定义的提交单元，绑定一个或多个阶段和提交前置条件。是计划产物而非强制流程。 |
@@ -98,17 +98,17 @@ Ready claim 必须由 `verify` 作为唯一 ready gate 证明。旧命令、聊�
 
 ## C7 Observability And Capability Fit
 
-能力配置必须服务当前任务的验证、可观测性、自动化或领域能力。安装或推荐 skills、MCP、hooks、subagents 或 external research 前必须说明 value、enablement、risk/cost、fallback。
+能力配置必须服务当前任务的验证、可观测性、自动化或领域能力。安装或推荐 skills、MCP、hooks、subagents 或 external research 前必须说明 value、enablement、source evidence、freshness、trust boundary、approval boundary、risk/cost、fallback 和 verification probe。
 
 Capability Discovery 要求：
 
 - 对 skills，使用 `$find-skills` 搜索强相关可复用能力。
 - 对 MCP、hooks、外部 agent 能力或 external research，使用 targeted web search 查官方文档或成熟实现。
 - Coverage Matrix 中 skills、hooks、MCP、subagents 和 external research 必须分行判断，不能混成一个笼统 capability row。
-- 在 Coverage Matrix 暴露真实 gap 后，输出 Capability Shortlist：每个候选必须绑定唯一 coverage row，并说明 repo signal、why、install surface、risk/cost、fallback 和 `Required / Recommended / Deferred / Rejected`。
+- 在 Coverage Matrix 暴露真实 gap 后，输出 Capability Shortlist：每个候选必须绑定唯一 coverage row，并说明 repo signal、source evidence、freshness、why、install surface、trust boundary、approval needed、risk/cost、fallback、verification probe 和 `Required / Recommended / Deferred / Rejected`。
 - 不把当前已安装 skills 当作搜索范围上限。
 - 不因为"可能有用"就安装能力。
-- 用户只要求分析或推荐时，保持 read-only，输出 recommendation report，不写文件、不进入安装计划。
+- 用户只要求分析或推荐时，保持 read-only，输出 recommendation report，不写 `.mcp.json`、hooks config、subagent files、project-local skills 或其他本地配置，不进入安装计划或 Pack Selection。
 - 用户明确要求 autoresearch 时，先判断是否已有完整 Research Route contract；缺少目标、baseline、metric 或 verify 时，回到 brainstorm / plan，而不是直接循环。
 
 主要 skill：`harness-builder`、`verify`。辅助 skill：`find-skills`。

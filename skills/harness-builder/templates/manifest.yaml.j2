@@ -51,31 +51,44 @@ course_alignment:
 
 project_map:
   agent_entry: AGENTS.md
-  context: docs/agent/project_context.md
-  workflow: docs/agent/workflow.md
-  verification_doc: docs/agent/verification.md
-  verification_command: scripts/agent/check.sh
-  state: .harness/state.md
-  progress: .harness/progress.md
-  handoff: .harness/session_handoff.md
-  decisions: .harness/decisions.md
-  skill_inventory: .harness/skill_inventory.json
-  research_notes: .harness/research_notes.md
+  context: "{{ project_context_path | default('docs/agent/project_context.md') }}"
+  workflow: "{{ workflow_doc_path | default('docs/agent/workflow.md') }}"
+  verification_doc: "{{ verification_doc_path | default('docs/agent/verification.md') }}"
+  verification_command: "{{ fast_check_command | default('scripts/agent/check.sh') }}"
+  recovery_surface: "{{ recovery_surface }}"
+  decisions: "{{ decisions_path | default('.harness/decisions.md') }}"
+  skill_inventory: "{{ skill_inventory_path | default('not_selected') }}"
+  research_notes: "{{ research_notes_path | default('not_selected') }}"
+
+asset_loading:
+  default_assets:
+    - AGENTS.md
+    - "{{ recovery_surface }}"
+    - "{{ decisions_path | default('.harness/decisions.md') }}"
+  selected_assets: []
+  conditional_assets: []
+  recommendation_only_assets:
+    - hooks
+    - mcp
+    - subagents
+    - project-local skills
+  explicit_only_assets:
+    - Research Route
+  pack_only_assets:
+    - init_scaffold
 
 installed:
   instructions:
     - AGENTS.md
-    - docs/agent/project_context.md
-    - docs/agent/workflow.md
-    - docs/agent/verification.md
+    - "{{ project_context_path | default('docs/agent/project_context.md') }}"
+    - "{{ workflow_doc_path | default('docs/agent/workflow.md') }}"
+    - "{{ verification_doc_path | default('docs/agent/verification.md') }}"
   verification:
-    - scripts/agent/check.sh
+    - "{{ fast_check_command | default('scripts/agent/check.sh') }}"
   state:
-    - .harness/state.md
-    - .harness/progress.md
-    - .harness/session_handoff.md
+    - "{{ recovery_surface }}"
   audit:
-    - .harness/decisions.md
+    - "{{ decisions_path | default('.harness/decisions.md') }}"
     - .harness/manifest.yaml
 
 skills: []

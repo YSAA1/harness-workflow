@@ -63,6 +63,21 @@
       "expected_output": "Should still run enough discovery, keep unrelated rows deferred, select only architecture_docs if approved, and avoid CI/GC/security/hook output."
     },
     {
+      "id": "automation-recommendation-only",
+      "prompt": "Analyze which MCP servers, hooks, skills, or subagents would help this repo.",
+      "expected_output": "Must stay read-only, bind every candidate to one coverage row, include source_evidence, freshness, trust_boundary, approval_needed, fallback, verification_probe, and classification, and must not write files or proceed to Pack Selection."
+    },
+    {
+      "id": "agents-thin-active-state",
+      "prompt": "Existing AGENTS.md contains current active task notes. Repair the harness.",
+      "expected_output": "Must keep AGENTS.md stable and thin, move dynamic state to the selected recovery surface, record source-of-truth priority, and avoid duplicating state across AGENTS.md and .harness."
+    },
+    {
+      "id": "pack-selected-after-coverage-row",
+      "prompt": "Add architecture boundary checks to this repo.",
+      "expected_output": "Must use Coverage Matrix first, select init_scaffold only for an approved architecture boundary row, produce dry-run before install, and not let the pack decide Required status."
+    },
+    {
       "id": "preserve-research-route",
       "prompt": "Add init scaffold pack to current harness-builder.",
       "expected_output": "templates/research_route/* remains present; Research Route still bypasses init_scaffold unless separately selected."

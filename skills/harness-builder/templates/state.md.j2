@@ -24,6 +24,14 @@
 
 {{ source_of_truth_priority }}
 
+## Active work
+
+- Current active task: {{ current_active_task | default('None recorded.') }}
+- Evidence location: {{ evidence_location }}
+- Risks: {{ current_risks | default('None recorded.') }}
+- Next action: {{ next_actions | default('None recorded.') }}
+
+{% if include_coverage_matrix %}
 ## Coverage matrix
 
 | Area | Status |
@@ -40,11 +48,15 @@
 | Subagent fit | {{ coverage_subagent_fit }} |
 | External research fit | {{ coverage_external_research_fit }} |
 | Dynamic context | {{ coverage_dynamic_context }} |
+{% endif %}
 
+{% if pack_selection_summary %}
 ## Pack selection
 
 {{ pack_selection_summary | default('No install pack selected.') }}
+{% endif %}
 
+{% if orchestration_mode %}
 ## Orchestration mode
 
 {{ orchestration_mode }}
@@ -52,14 +64,11 @@
 Reason:
 
 {{ orchestration_reason }}
+{% endif %}
 
 ## Open user decisions
 
 {{ open_user_decisions }}
-
-## Current active task
-
-None recorded.
 
 ## Last known good verification
 
@@ -72,16 +81,6 @@ None recorded.
 ## Important recent decisions
 
 See `.harness/decisions.md`.
-
-## Current harness status
-
-- Instructions: initialized
-- Verification: initialized
-- State: initialized
-- Scope: minimal
-- Lifecycle: minimal
-- Audit: initialized
-- Sustainability: initialized
 
 ## Known gaps
 

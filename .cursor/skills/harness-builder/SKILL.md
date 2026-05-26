@@ -30,6 +30,9 @@ Prefer running after `brainstorm` or `plan` when goal, non-goals, success criter
 - Do not invent acceptance criteria silently. If objective, non-goals, success criteria, or verification strategy are not evidence-backed, ask or route to `brainstorm` / `plan`.
 - Do not install a harness until the Harness Charter states what this harness must make possible and how the user will know it worked.
 - When a repo already has harness files, reconcile the existing system before adding or replacing anything.
+- Audit `AGENTS.md` and the selected recovery surface on every run.
+- Patch `AGENTS.md` only when durable repo-level facts changed: project overview, project map, stable iron laws, protected paths, required reading, selected recovery surface pointer, verification entry, or source-of-truth priority.
+- Put dynamic state in the selected recovery surface, never in `AGENTS.md`: active slices, temporary plans, session summaries, debugging notes, one-off conclusions, Research Route runtime state, or unapproved automation catalogs.
 - Do not install on user silence.
 - Add files or capabilities only when they close a named coverage gap.
 - Do not add skills, hooks, MCP, subagents, CI, or GC scans as generic "best practice"; bind every one to an uncovered need.
@@ -98,7 +101,7 @@ These gates are required unless the user explicitly asks for read-only explanati
 4. **Capability Discovery gate**
    - Evaluate skills, hooks, MCP, subagents, external research, CI, GC, and helper scripts only after the Coverage Matrix exposes a real gap.
    - Bind every candidate capability to one coverage row. If no row needs it, reject it.
-   - Run a `Capability Shortlist pass` for uncovered or weak rows: each candidate must state repo signal, candidate, coverage row, why, install surface, risk/cost, fallback, and `Required / Recommended / Deferred / Rejected`.
+   - Run a `Capability Shortlist pass` for uncovered or weak rows: each candidate must state repo signal, source evidence, freshness, candidate, coverage row, why, install surface, trust boundary, approval needed, risk/cost, fallback, verification probe, and `Required / Recommended / Deferred / Rejected`.
    - Default to 1-2 candidates per capability category; put extra plausible options in `Deferred`.
    - If the user only asked for read-only analysis or recommendations, output a recommendation report only. Do not write files, create install plans, or proceed to Pack Selection.
    - For skill gaps, invoke `$find-skills` / `find-skills` or state `No reusable skill search needed` with reason.
@@ -161,6 +164,7 @@ Reply approve / change / stop.
 2. **Reconcile existing harness**
    - If harness artifacts already exist, classify each as keep, patch, archive/deprecate, or reject.
    - Name the current source of truth for project rules, active work, evidence, decisions, and next actions.
+   - Audit `AGENTS.md` against current repo evidence. Patch it only for stable facts; migrate volatile state into the selected recovery surface before removing it from the entrypoint.
    - Do not create a second recovery surface unless the existing one cannot represent the required semantic fields.
    - Use `references/recovery_surface_policy.md`, `references/anti_entropy.md`, and `references/install_policy.md`.
 
@@ -183,7 +187,7 @@ Reply approve / change / stop.
    - For reusable skills, use `find-skills` when a real coverage row needs repeatable workflow knowledge.
    - For hooks/MCP/external agent behavior/CI/GC/architecture tooling, use targeted web search against official docs or mature sources when current external behavior matters.
    - Stack shape may directly produce capability candidates when the signal is concrete; still bind every candidate to one Coverage Matrix row.
-   - Run the Capability Shortlist pass after evidence gathering: repo signal -> candidate -> coverage row -> why -> install surface -> risk/cost -> fallback -> classification.
+   - Run the Capability Shortlist pass after evidence gathering: repo signal -> source evidence -> freshness -> candidate -> coverage row -> why -> install surface -> trust boundary -> approval needed -> risk/cost -> fallback -> verification probe -> classification.
    - Classify each candidate as `Required`, `Recommended`, `Deferred`, or `Rejected` by value, enablement, risk/cost, and fallback.
    - Reject candidates that do not close exactly one named gap or duplicate a simpler file/script/test.
    - In recommendation-only mode, stop at the report and do not write files or install capabilities.

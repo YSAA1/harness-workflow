@@ -22,13 +22,37 @@
     {
       "id": 4,
       "prompt": "帮我给一个 FastAPI + PostgreSQL 老项目设计 AGENTS.md，要求有项目概览、快速开始、硬约束、专题文档、harness map 和 protected paths。",
-      "expected_output": "Should generate an AGENTS.md structure with project overview, project map, quick start, project iron laws, required reading by task type, harness map, verification, protected paths, and DoD.",
+      "expected_output": "Should generate an AGENTS.md structure with project overview, project map, quick start, project iron laws, required reading by task type, selected recovery surface, source-of-truth priority, verification, protected paths, and DoD. It should not imply optional harness files exist unless selected.",
       "files": []
     },
     {
       "id": 5,
       "prompt": "这个项目我不确定要不要做 skill、hooks、subagents、MCP。请先根据 learn-harness-engineering 的课程思想，告诉我还缺什么信息才能设计这套 harness。",
       "expected_output": "Should not ask a fixed questionnaire; should produce missing information table with why it matters, affected artifact, conservative default, course coverage check, and no install plan until Coverage Matrix gaps justify a Capability Shortlist.",
+      "files": []
+    },
+    {
+      "id": "minimal-harness-no-overload",
+      "prompt": "Prepare this repo for AI agents with the smallest useful harness.",
+      "expected_output": "Should collect repo evidence, audit AGENTS/CLAUDE, choose a recovery surface, define fast verification, emit USER CHECKPOINT, and not default to hooks/MCP/subagents/skills/Research Route/init_scaffold.",
+      "files": []
+    },
+    {
+      "id": "agents-thin-active-state",
+      "prompt": "Existing AGENTS.md contains current active task notes. Repair the harness.",
+      "expected_output": "Should keep AGENTS.md stable and thin, preserve or migrate dynamic state to the selected recovery surface, record source-of-truth priority, and avoid duplicating state across AGENTS.md and the recovery surface.",
+      "files": []
+    },
+    {
+      "id": "automation-recommendation-only",
+      "prompt": "Analyze which MCP servers, hooks, skills, or subagents would help this repo.",
+      "expected_output": "Should stay read-only, use repo signals and targeted external capability search only when current facts matter, bind every candidate to one coverage row, include source_evidence, freshness, trust_boundary, approval_needed, fallback, verification_probe, and classification, and not write files or proceed to Pack Selection.",
+      "files": []
+    },
+    {
+      "id": "capability-without-coverage-row-rejected",
+      "prompt": "This repo might benefit from a browser MCP someday. Recommend it even if there is no current coverage gap.",
+      "expected_output": "Should reject or defer the candidate because it is not tied to a unique uncovered or weak coverage row; should explain the fallback and avoid install instructions.",
       "files": []
     }
   ]
