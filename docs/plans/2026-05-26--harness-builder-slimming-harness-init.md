@@ -2,15 +2,15 @@
 
 > Status: initialized
 > Date: 2026-05-26
-> Source plan: `docs/prd/2026-05-26--harness-builder-slimming-plan.md`
+> Source plan: `docs/plans/2026-05-26--harness-builder-slimming-plan.md`
 
 ## HARNESS EVIDENCE
 
 - Branch state: `master...origin/master`.
 - HEAD and `origin/master`: `db6ed146049da6b8a93b6d209608a053e1934d24`.
 - Existing uncommitted work before this initialization:
-  - `docs/prd/2026-05-26--harness-builder-slimming.md`
-  - `docs/prd/2026-05-26--harness-builder-slimming-plan.md`
+  - `docs/specs/2026-05-26--harness-builder-slimming.md`
+  - `docs/plans/2026-05-26--harness-builder-slimming-plan.md`
   - `skills/harness-builder/scripts/__pycache__/`
 - Current project signals from `scan_project.py`:
   - `node_script_tooling`
@@ -44,8 +44,8 @@
 | `AGENTS.md` | keep | Thin project entry already contains map, verification commands, protected paths, and Definition of Done. |
 | `CLAUDE.md` | keep | Existing Claude surface marker; no change needed for this slice. |
 | `README.md`, `README.zh-CN.md`, `docs/harness-method-contract.md` | keep | Current public semantics already describe Harness Builder, Coverage Matrix, Capability Discovery, Research Route, and fresh evidence. |
-| `docs/prd/2026-05-26--harness-builder-slimming.md` | keep | Approved Spec and source of current objective. |
-| `docs/prd/2026-05-26--harness-builder-slimming-plan.md` | keep | Selected planning surface for this task. |
+| `docs/specs/2026-05-26--harness-builder-slimming.md` | keep | Approved Spec and source of current objective. |
+| `docs/plans/2026-05-26--harness-builder-slimming-plan.md` | keep | Selected planning surface for this task. |
 | `.harness/` | reject for this slice | The plan explicitly uses a plan document surface; adding `.harness/` now would create a second recovery surface. |
 | `skills/harness-builder/scripts/__pycache__/` | reject/delete as asset | Generated runtime cache, no owner gate or package value. Ignore in git and support-file enumerators. |
 | Root / packaged / Cursor skill surfaces | patch | They must remain recursively aligned after support-file filtering and later asset changes. |
@@ -56,9 +56,9 @@ No user questions needed.
 
 Evidence-backed assumptions:
 
-- The user approved the latest Spec/Plan and explicitly asked to start initialization.
+- The user approved the latest Spec/Plan and asked to start initialization; this permits evidence collection and plan drafting, but future harness installation still requires a `USER CHECKPOINT` approval unless explicitly skipped with exact actions.
 - The active slice is the first slimming pass for `harness-builder`, not a generic blank-project scaffold.
-- The selected recovery surface is `docs/prd/` plan documents, not `.harness/` or three-file backend.
+- The selected recovery surface is `docs/plans/` plan documents, not `.harness/` or three-file backend.
 - Validation depth is the plan's local verification path: plugin checks, Cursor dry-run, Python helper validation, and later generated skill-flow HTML when `SKILL.md` structure changes.
 
 ## HARNESS CHARTER
@@ -84,7 +84,7 @@ Evidence-backed assumptions:
   - This file for Phase 1-2 initialization evidence.
   - `skills/harness-builder/references/asset-routing.md` for asset ownership.
 - Selected recovery surface:
-  - Plan document surface under `docs/prd/`.
+  - Plan document surface under `docs/plans/`.
 - Source-of-truth priority:
   - User request -> approved Spec -> executable Plan -> current repo files -> command evidence.
 
@@ -93,8 +93,8 @@ Evidence-backed assumptions:
 | Coverage area | Classification | Existing status | Action for this initialization |
 | --- | --- | --- | --- |
 | Agent entry and project map | Required | Satisfied by `AGENTS.md`, README, project docs. | Keep; no patch. |
-| Static documentation and durable rules | Required | Satisfied, but new slimming state needs a durable artifact. | Add this initialization artifact under `docs/prd/`. |
-| Selected recovery surface | Required | Plan selects `docs/prd/`; `.harness/` absent. | Keep `docs/prd/`; reject `.harness/` for this slice. |
+| Static documentation and durable rules | Required | Satisfied, but new slimming state needs a durable artifact. | Add this initialization artifact under `docs/plans/`. |
+| Selected recovery surface | Required | Plan selects `docs/plans/`; `.harness/` absent. | Keep `docs/plans/`; reject `.harness/` for this slice. |
 | Verification entry and deeper checks | Required | Commands exist; two failed due generated cache drift. | Patch support-file filtering and rerun checks. |
 | Architecture boundaries and mechanical enforcement | Deferred | Not the active gap for this slice. | Defer until asset slimming reaches pack/boundary files. |
 | Anti-entropy and stale-state detection | Required | Failure exposed generated cache drift. | Ignore generated Python cache and record it as non-asset. |
@@ -116,7 +116,7 @@ No web research needed: this initialization uses local plugin manifests, scripts
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `check-plugin` and `check-cursor-install` failed on generated Python cache drift | Ignore generated Python cache in support-file enumerators and Cursor adapter | Verification entry and anti-entropy | Prevent runtime caches from becoming plugin assets or Cursor payload | `.gitignore`, `scripts/check-*.mjs`, `scripts/install-cursor.mjs` | Low; could hide real files only if extension filter is too broad | Manually delete caches before every check | Required |
 | 124 files under `skills/harness-builder/` with many references/templates/scripts | Add an asset ownership/routing contract | Static docs and anti-entropy | Make future slimming decisions auditable and validator-ready | `skills/harness-builder/references/asset-routing.md` | Medium; can become stale if not validated later | Manual PR review only | Required |
-| Existing plan requires Phase 1 evidence | Add initialization artifact | Selected recovery surface | Durable recovery point without introducing `.harness/` | `docs/prd/2026-05-26--harness-builder-slimming-harness-init.md` | Low | Rely on chat transcript | Required |
+| Existing plan requires Phase 1 evidence | Add initialization artifact | Selected recovery surface | Durable recovery point without introducing `.harness/` | `docs/plans/2026-05-26--harness-builder-slimming-harness-init.md` | Low | Rely on chat transcript | Required |
 
 ## PACK SELECTION
 
@@ -154,11 +154,113 @@ Skipped because no pack is selected.
 
 ## USER CHECKPOINT
 
-Skipped because the user explicitly said to start initializing from the latest Spec and Plan in this turn.
+Correction after workflow defect report: "start initializing from the latest Spec and Plan" is not sufficient approval to install files. Future harness-builder runs must stop at this checkpoint and wait for `approve`, unless the current user explicitly says to skip the checkpoint and lists the exact files or actions.
 
-Approved install scope:
+Earlier applied scope that prompted this correction:
 
 - create this initialization artifact;
 - create `skills/harness-builder/references/asset-routing.md`;
 - patch support-file filtering and Cursor adapter behavior for generated Python caches;
 - update `.gitignore`.
+
+## PHASE 3 EXECUTION RECORD
+
+Status: implemented; pending review / verify before milestone commit.
+
+Active slice:
+
+- Slim `skills/harness-builder/SKILL.md` into a controller while preserving behavior-critical gates.
+
+Changes:
+
+- Rewrote root `skills/harness-builder/SKILL.md` as a controller.
+- Synchronized the same `SKILL.md` to:
+  - `plugins/harness-workflow/skills/harness-builder/SKILL.md`
+  - `.cursor/skills/harness-builder/SKILL.md`
+- Updated `scripts/generate-skill-flow-html.mjs` so generated review pages understand the English controller sections:
+  - `Routing Snapshot`
+  - `Workflow Skeleton`
+  - `Output Contract`
+  - `Mandatory execution gates`
+  - `Asset Routing`
+- Regenerated `docs/skill-flow-review/*.html`.
+
+Evidence:
+
+- `wc -l skills/harness-builder/SKILL.md`: 225 lines, down from 295.
+- `node scripts/generate-skill-flow-html.mjs`: generated 9 HTML files.
+- HTML placeholder check for `docs/skill-flow-review/harness-builder.html`: no missing extraction markers.
+- `node scripts/check-plugin.mjs`: pass.
+- `node scripts/check-claude-code-install.mjs`: pass.
+- `node scripts/check-cursor-install.mjs`: pass.
+- `node scripts/install-cursor.mjs --target . --dry-run`: pass.
+- `PYTHONPYCACHEPREFIX=/tmp/harness-workflow-pycache python scripts/validate_harness.py` from `skills/harness-builder/`: pass.
+
+Not done in this phase:
+
+- No reference/template/script/schema/eval deletion.
+- No ownership validator implementation.
+- No milestone commit yet; plan requires review + verify before Commit Unit 2.
+
+Next:
+
+- Route this Phase 3 diff through `review`, then `verify`.
+- After that, continue to Phase 4 asset consolidation.
+
+## WORKFLOW DEFECT CORRECTION RECORD
+
+Status: implemented; pending review / verify before any milestone commit.
+
+Problem reported by user:
+
+- `brainstorm` and `plan` did not enforce one stable artifact convention.
+- A project can have many Specs and Plans, so the default surfaces must be plural directories.
+- `harness-builder` treated "start initializing from the latest Spec and Plan" as permission to write files, instead of stopping at the checkpoint.
+
+Changes:
+
+- Moved the current active Spec to `docs/specs/2026-05-26--harness-builder-slimming.md`.
+- Moved the current active plan and recovery record to `docs/plans/`.
+- Tightened `brainstorm` default output to `docs/specs/YYYY-MM-DD--<topic>.md`, with explicit override only.
+- Tightened `plan` default output to `docs/plans/YYYY-MM-DD--<topic>-plan.md`, with explicit override only.
+- Tightened `harness-builder` so "start", "initialize", and "build from latest Spec/Plan" authorize evidence collection and plan drafting only, not project file writes.
+- Updated root skills, packaged plugin skills, Cursor preview skills, Cursor rules, README, method contract, context docs, routing docs, generated HTML, and `check-plugin.mjs`.
+
+Evidence:
+
+- `node scripts/generate-skill-flow-html.mjs`: generated 9 HTML files.
+- Placeholder extraction check across `brainstorm.html`, `plan.html`, and `harness-builder.html`: no missing-output or missing-list markers.
+- `node scripts/check-plugin.mjs`: pass.
+- `node scripts/check-claude-code-install.mjs`: pass.
+- `node scripts/check-cursor-install.mjs`: pass.
+- `node scripts/install-cursor.mjs --target . --dry-run`: pass.
+- `PYTHONPYCACHEPREFIX=/tmp/harness-workflow-pycache python scripts/validate_harness.py` from `skills/harness-builder/`: pass.
+- `git diff --check`: pass.
+
+Review:
+
+- Assessment: PASS.
+- Scope: corrective slice only; no new workflow lane, hook, MCP, subagent, user-global config, or alternate recovery backend added.
+- Spec/Plan artifact convention: root, packaged plugin, Cursor skills, Cursor rules, README, method contract, context docs, and routing docs now agree on `docs/specs/` and `docs/plans/`.
+- Checkpoint gating: root, packaged plugin, Cursor skills, Cursor rules, and `check-plugin.mjs` now reject the old loose authorization semantics.
+- Entropy: current 2026-05-26 active artifacts moved out of `docs/prd/`; older `docs/prd/` history remains untouched.
+
+Verification record:
+
+- claim_id: `artifact-surfaces-checkpoint-gate-2026-05-26`
+- claim: Spec defaults to plural `docs/specs/`, Plan defaults to plural `docs/plans/`, and Harness Builder does not write project files after a generic "start/init/build from Spec/Plan" request.
+- covered_paths:
+  - `skills/brainstorm/**`, `skills/plan/SKILL.md`, `skills/harness-builder/SKILL.md`
+  - `plugins/harness-workflow/skills/**`
+  - `.cursor/skills/**`, `rules/**`, `.cursor/rules/**`
+  - `README.md`, `README.zh-CN.md`, `CONTEXT.md`, `docs/harness-method-contract.md`, `docs/skill-routing.md`
+  - `docs/specs/`, `docs/plans/`, `scripts/check-plugin.mjs`, `scripts/generate-skill-flow-html.mjs`
+- success_criteria:
+  - canonical Spec and Plan paths are enforced by skill text and checks: pass.
+  - checkpoint write authorization is explicit and regression-checked: pass.
+  - root, packaged plugin, and Cursor surfaces stay synchronized: pass.
+  - generated review HTML reflects the new contracts: pass.
+- skipped_high_value_checks: none for this docs/plugin contract slice.
+- unknowns: none for local structural verification; real agent behavior still depends on installed plugin refresh in each client.
+- commit_gate: no commit unit for this corrective slice; no commit attempted in this turn.
+- ready: yes for this corrective slice; overall slimming project remains in progress.

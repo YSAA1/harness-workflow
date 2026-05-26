@@ -150,9 +150,15 @@ function parseSteps(section) {
   let current = null;
   for (const line of lines) {
     const heading = line.match(/^### (第\s+[^—-]+[—-]\s*.+)$/);
+    const numbered = line.match(/^(\d+)\.\s+(.+)$/);
     if (heading) {
       if (current) steps.push(current);
       current = { title: stripMarkdown(heading[1]), body: [] };
+      continue;
+    }
+    if (numbered) {
+      if (current) steps.push(current);
+      current = { title: stripMarkdown(numbered[2]), body: [] };
       continue;
     }
     if (current) current.body.push(line);
@@ -168,6 +174,26 @@ function parseSteps(section) {
       260,
     ),
   }));
+}
+
+function introParagraph(markdown) {
+  const withoutFrontmatter = markdown.replace(/^---\n[\s\S]*?\n---\n?/, "");
+  const afterTitle = withoutFrontmatter.replace(/^\s*#\s+.+\r?\n+/, "");
+  const beforeSection = afterTitle.split(/\n## /)[0] ?? "";
+  const paragraphs = beforeSection
+    .split(/\n\s*\n/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+  return paragraphs.join("\n\n");
+}
+
+function boldBullet(section, label) {
+  const line = section
+    .split(/\r?\n/)
+    .map((item) => item.trim())
+    .find((item) => item.startsWith("- **") && item.includes(`**${label}**:`));
+  if (!line) return [];
+  return [stripMarkdown(line.replace(/^-\s+/, "").replace(new RegExp(`^${escapeRegExp(label)}:\\s*`), ""))];
 }
 
 function parseReferences(markdown, skillDir) {
@@ -189,23 +215,38 @@ function readSkill(slug) {
   const filePath = path.join(skillsRoot, slug, "SKILL.md");
   const markdown = fs.readFileSync(filePath, "utf8");
   const frontMatter = parseFrontMatter(markdown);
-  const flow = getSection(markdown, "执行流程");
-  const route = getSubsection(markdown, "路由规则") || getSection(markdown, "Decision Gate");
+  const routingSnapshot = getSection(markdown, "Routing Snapshot");
+  const flow = getSection(markdown, "执行流程") || getSection(markdown, "Workflow Skeleton");
+  const route = getSubsection(markdown, "路由规则") || getSection(markdown, "Decision Gate") || getSection(markdown, "Recommended next skill");
+  const steps = parseSteps(flow);
+  const assetRouting = getSection(markdown, "Asset Routing");
   return {
     slug,
     name: frontMatter.name || slug,
     description: frontMatter.description || "",
     path: `skills/${slug}/SKILL.md`,
     lineCount: markdown.split(/\r?\n/).length,
-    purpose: truncate(getSection(markdown, "目的"), 360),
-    triggers: listLines(getSubsection(markdown, "触发信号")),
-    dontUse: listLines(getSubsection(markdown, "不要使用")),
-    inputs: listLines(getSection(markdown, "先读取这些输入")),
+    purpose: truncate(getSection(markdown, "目的") || introParagraph(markdown), 360),
+    triggers: listLines(getSubsection(markdown, "触发信号")).length
+      ? listLines(getSubsection(markdown, "触发信号"))
+      : boldBullet(routingSnapshot, "Use when"),
+    dontUse: listLines(getSubsection(markdown, "不要使用")).length
+      ? listLines(getSubsection(markdown, "不要使用"))
+      : boldBullet(routingSnapshot, "Do not use when"),
+    inputs: listLines(getSection(markdown, "先读取这些输入")).length
+      ? listLines(getSection(markdown, "先读取这些输入"))
+      : steps.length
+        ? [steps[0].summary]
+        : [],
     routeTables: tableLines(route),
-    steps: parseSteps(flow),
-    output: truncate(getSection(markdown, "输出格式"), 420),
-    acceptance: listLines(getSection(markdown, "验收标准"), 16),
-    artifacts: listLines(getSection(markdown, "工件更新"), 12),
+    steps,
+    output: truncate(getSection(markdown, "输出契约") || getSection(markdown, "输出格式") || getSection(markdown, "Output Contract"), 420),
+    acceptance: listLines(getSection(markdown, "验收标准") || getSection(markdown, "Mandatory execution gates"), 16),
+    artifacts: listLines(getSection(markdown, "工件更新"), 12).length
+      ? listLines(getSection(markdown, "工件更新"), 12)
+      : assetRouting
+        ? [truncate(assetRouting, 180)]
+        : [],
     references: parseReferences(markdown, slug),
   };
 }

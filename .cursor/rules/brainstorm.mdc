@@ -29,7 +29,8 @@ Canonical source: `skills/brainstorm/SKILL.md`.
 ## Outputs
 
 - Phase A: `BRAINSTORM CLARIFICATION IN PROGRESS` with coverage matrix and one question.
-- Phase B: approved-ready Spec plus `BRAINSTORM SPEC READY`.
+- Phase B: approved-ready Spec at `docs/specs/YYYY-MM-DD--<topic>.md` plus `BRAINSTORM SPEC READY`.
+- Do not write Spec to `docs/prd/`, issues, root `plan.md`, or ad-hoc docs unless the current user explicitly names that exact path or `AGENTS.md` declares it as the canonical Spec surface.
 
 ## Verification / Done Criteria
 

@@ -23,7 +23,7 @@ Canonical source: `skills/plan/SKILL.md`.
 ## Procedure
 
 1. Gate on readiness: goals, non-goals, success criteria, and verification path must be clear.
-2. Choose the planning surface: docs plan, issue, feature-list, existing tracker, lightweight note, or three-file backend.
+2. Choose the planning surface: default to `docs/plans/YYYY-MM-DD--<topic>-plan.md`; use another docs plan, issue, feature-list, existing tracker, lightweight note, or three-file backend only when the current user explicitly names it or `AGENTS.md` declares it canonical.
 3. Write an Executable Plan with objective, active slice, non-goals, success criteria, verification path, phases, next item, commit units, risks, blockers, and handoff.
 4. Each phase must include acceptance_criteria, verification_commands, and success_definition.
 5. When multi-phase, define commit units with pre-commit conditions (review no Critical + verify PASS).
@@ -33,6 +33,8 @@ Canonical source: `skills/plan/SKILL.md`.
 ## Outputs
 
 - Executable Plan in the selected planning surface.
+- Default artifact path: `docs/plans/YYYY-MM-DD--<topic>-plan.md`.
+- Do not write plans to `docs/prd/`, issues, root `plan.md`, or ad-hoc docs unless the current user explicitly names that exact path or `AGENTS.md` declares it as the canonical Plan surface.
 - Clear next skill: usually `implement`, `diagnose`, or `harness-builder`.
 
 ## Verification / Done Criteria

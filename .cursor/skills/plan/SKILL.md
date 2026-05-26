@@ -54,8 +54,8 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 
 ## 先读取这些输入
 
-1. 已批准 Spec：优先读取 `docs/specs/`、`docs/product-specs/`、`docs/design-docs/`、PRD 或用户指定文件。
-2. 当前 planning surface：docs plan、issue、feature list、existing tracker 或 three-file backend。
+1. 已批准 Spec：默认从 `docs/specs/` 或用户明确指定的 Spec 路径读取。PRD、issue、design docs 是上下文，不是默认 Spec source，除非当前用户或 `AGENTS.md` 明确指定。
+2. 当前 planning surface：默认使用 `docs/plans/YYYY-MM-DD--<topic>-plan.md`；只有当前用户明确指定路径，或 `AGENTS.md` 明确声明 canonical Plan surface 时，才允许 override。
 3. `AGENTS.md`：是否声明 recovery surface、验证入口和 protected paths。
 4. 与请求直接相关的代码与 docs，确认 Spec 的可行性。
 5. `git status --short` 与 `git log --oneline -10`：避免计划与已有改动相互踩。
@@ -67,7 +67,7 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 
 | Surface | Use when |
 | --- | --- |
-| plan document | 文档型项目或 PRD 已在 docs 下 |
+| plan document | 默认写入 `docs/plans/YYYY-MM-DD--<topic>-plan.md` |
 | issue | 团队用 issue tracker 跟踪 work items |
 | feature-list entry | 多功能产品型项目需要多个独立状态 |
 | existing system | 项目已有可信任务或 roadmap 系统 |
@@ -83,7 +83,7 @@ Three-file 模板仍保留在 `templates/`，但只是 backend 选项，不是 `
 
 ### 第 0 步 — 选择或确认 planning surface
 
-如果项目已经声明 recovery surface，写入该 surface。若没有声明且任务不需要 durable state，可以输出轻量 plan 并停下。若缺口影响后续恢复，转 `harness-builder`。
+默认 planning artifact 是 `docs/plans/YYYY-MM-DD--<topic>-plan.md`。不要因为仓库存在 `docs/prd/`、root `plan.md`、issue、feature-list、existing tracker 或 three-file backend 就改写默认位置。Override 仅在当前用户明确指定路径，或 `AGENTS.md` 明确声明 canonical Plan surface 时允许，并必须在输出中写明 reason。若任务不需要 durable state，可以输出轻量 plan 并停下。若缺口影响后续恢复，转 `harness-builder`。
 
 ### 第 1 步 — 写 Executable Plan
 
@@ -120,7 +120,7 @@ Three-file 模板仍保留在 `templates/`，但只是 backend 选项，不是 `
 
 ### 第 2 步 — 写入选定 artifact
 
-- docs plan：写到 `docs/plans/` 或项目指定路径。
+- docs plan：写到 `docs/plans/YYYY-MM-DD--<topic>-plan.md`，除非存在 explicit override。
 - issue：写成可发布 issue 或更新 issue body。
 - feature-list：更新对应 feature entry。
 - existing system：按项目惯例更新，不复制第二套状态。
@@ -154,7 +154,7 @@ Commit unit 定义何时可以提交一个里程碑。这是计划产物，不�
 EXECUTABLE PLAN WRITTEN
 
 Planning surface: <docs plan | issue | feature-list | existing | three-file>
-Artifact: <path | issue | entry id>
+Artifact: <docs/plans/YYYY-MM-DD--topic-plan.md | explicit override | n/a>
 Spec source: <path | explicit small-task exception>
 Active slice: <一句话>
 Success criteria: <可证伪条件>
@@ -182,6 +182,7 @@ Use this as a routing recommendation, not as permission to keep working after pl
 
 - **用 plan 补问需求。** 如果 goals、non-goals 或 verification strategy 不清楚，回 `brainstorm`。
 - **把所有计划都变成三文件。** Three-file 是 backend，不是默认身份。
+- **把 plan 写进 `docs/prd/`。** Do not write plans to `docs/prd/` unless the current user explicitly names that exact path or `AGENTS.md` declares it as the canonical Plan surface.
 - **多个阶段同时 in_progress。** 这会让 active slice 失效。
 - **写成愿望清单。** 每个 item 必须可执行、可验证、可恢复。
 - **验证能力最后才发现。** `verification_path_status` 必须在计划阶段写清楚。
@@ -206,7 +207,7 @@ Use this as a routing recommendation, not as permission to keep working after pl
 
 ## 工件更新
 
-- selected planning surface：本次重点产物。
+- selected planning surface：本次重点产物；默认是 `docs/plans/YYYY-MM-DD--<topic>-plan.md`。
 - three-file backend：只有选中时更新 `task_plan.md`、`progress.md`、`findings.md`。
 - `AGENTS.md`：不动；如需项目地图、验证入口或恢复指针，交给 `harness-builder` 或 `cleanup` 小幅同步。
 

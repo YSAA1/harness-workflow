@@ -7,9 +7,9 @@
 ## Planning Surface
 
 - Surface: `plan document`
-- Artifact: `docs/prd/2026-05-26--harness-builder-slimming-plan.md`
-- Spec source: `docs/prd/2026-05-26--harness-builder-slimming.md`
-- Reason: 本仓库已有 `docs/prd/` 作为本地 PRD / planning artifact 面；AGENTS.md 声明 lightweight state，当前任务需要 durable plan，但不需要引入 three-file backend。
+- Artifact: `docs/plans/2026-05-26--harness-builder-slimming-plan.md`
+- Spec source: `docs/specs/2026-05-26--harness-builder-slimming.md`
+- Reason: 当前 canonical plan artifact surface 是 `docs/plans/`；AGENTS.md 声明 lightweight state，当前任务需要 durable plan，但不需要引入 three-file backend。
 
 ## Active Slice
 
@@ -357,10 +357,10 @@ success_definition:
 
 ## Current Next Item
 
-`Phase 1 - Reconfirm Baseline And Asset Inventory`
+`Review / verify corrective slice - canonical Spec/Plan artifact surfaces and Harness Builder checkpoint gating`
 
 Reason:
-这是后续所有删改的基线。没有真实资产清单和当前验证证据，就无法判断哪些文件是噪音，哪些是核心能力支撑。
+用户实际操作暴露了 workflow 缺陷：Spec / Plan 默认工件面不够固定，且 Harness Builder 把“开始初始化”误当成写文件授权。纠偏实现已完成并有本地检查证据；下一步应先 review / verify 这组变更，再回到 Phase 4 资产合并、降级、归档或删除。
 
 ## Commit Units
 
@@ -410,4 +410,3 @@ Reason:
   - 用户批准本 Executable Plan；
   - 工作区只包含预期 plan/spec 改动或已明确纳入 baseline；
   - 从 Phase 1 开始执行，不跳过资产清单和现有验证。
-

@@ -83,8 +83,8 @@ _Avoid_: treating it as the default dependency of every skill.
 - A **Research Reset Policy** preserves negative evidence before failed code is removed from the active branch or worktree.
 - A **Recovery Surface** may use a **Three-File Backend**, `.harness/*`, an issue tracker, a feature list, or an existing project status system.
 - A **Workflow Skill** reads and writes through the **Workflow State Backend** only when its own activity requires durable state.
-- A `brainstorm` workflow produces a **Spec** and does not default to writing workflow state.
-- An **Executable Plan** can be stored as a plan document, issue, feature-list entry, or a **Three-File Backend** contract, depending on the selected **Recovery Surface**.
+- A `brainstorm` workflow produces a **Spec**, defaulting to `docs/specs/YYYY-MM-DD--<topic>.md`, and does not default to writing workflow state.
+- An **Executable Plan** defaults to `docs/plans/YYYY-MM-DD--<topic>-plan.md`; it can use an issue, feature-list entry, existing system, or **Three-File Backend** contract only when that surface is explicitly selected.
 - The **Three-File Backend** is an implementation option, not the conceptual contract for all workflow skills.
 - **Skill Independence** means **Harness Builder** is invoked when project-level workbench or recovery design is needed, not because it occupies a mandatory position before or after `brainstorm` or `plan`.
 - `cleanup` performs **Knowledge Cleanup** against the current project, with special attention to stale docs, bloated AGENTS.md, missing reader-facing docs, and contradictions between code and documentation.

@@ -7,7 +7,7 @@ description: "用于把模糊需求收敛成用户批准过的 Spec。触发条�
 
 把开放想法收敛成用户批准过的 **Spec**，再交给 `plan`。不写生产代码，不写 Executable Plan。
 
-默认 Spec：`docs/specs/YYYY-MM-DD--<topic>.md`；若项目已有 `docs/product-specs/`、`docs/design-docs/`、`specs/` 或 issue 规范，沿用项目惯例。不要默认写三文件；recovery surface 只在项目要求时收短摘要。
+Canonical Spec path: `docs/specs/YYYY-MM-DD--<topic>.md`。不要因为仓库存在 `docs/prd/`、root `plan.md`、issue、design docs 或其他任务系统就改写默认位置。只有当前用户明确指定路径，或 `AGENTS.md` 明确声明 canonical Spec surface 时，才允许 override，并在输出中说明 override reason。不要默认写三文件；recovery surface 只在项目要求时收短摘要。
 
 ## 目的
 
@@ -67,7 +67,7 @@ Gate 与 assumption batch 完成后，按 `references/spec-drafting.md` 执行�
 ```text
 BRAINSTORM CLARIFICATION IN PROGRESS | BRAINSTORM SPEC READY
 
-Spec: <docs/specs/YYYY-MM-DD--topic.md or n/a>
+Spec: <docs/specs/YYYY-MM-DD--topic.md or explicit override | n/a>
 Coverage: <confirmed+waived>/<8>; Gate: <BLOCKED|PASSED>
 Chosen approach: <一句话 or n/a>
 Verification strategy: <一句话 or pending>
@@ -90,6 +90,7 @@ Next skill after approval: plan
 ## 工件更新
 
 - `docs/specs/YYYY-MM-DD--<topic>.md`：Phase B 的独立 Spec。
+- Do not write Spec to `docs/prd/` unless the current user explicitly names that exact path or `AGENTS.md` declares it as the canonical Spec surface.
 - selected recovery surface：只在项目要求时写短摘要、拒绝方案、风险和验证策略索引。
 - Executable Plan：不在本 skill 中创建；Spec 批准后交给 `plan`。
 

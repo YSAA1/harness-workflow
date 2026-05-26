@@ -289,6 +289,10 @@ if (exists(skillPath("harness-builder"))) {
     "No reusable skill search needed",
     "No web research needed",
     "Reply approve / change / stop",
+    "Requests like \"start\"",
+    "approval to write project files",
+    "skip the checkpoint",
+    "lists the exact files or actions",
     "AGENTS.md",
     "Project iron laws",
     "Capability Discovery",
@@ -328,9 +332,23 @@ const brainstorm = read(skillPath("brainstorm"));
 if (!/Spec/i.test(brainstorm) || /默认.*findings\.md/.test(brainstorm)) {
   fail("brainstorm must produce an independent Spec without default findings.md writes");
 }
+for (const token of [
+  "Canonical Spec path: `docs/specs/YYYY-MM-DD--<topic>.md`",
+  "Do not write Spec to `docs/prd/`",
+  "explicit override",
+]) {
+  if (!brainstorm.includes(token)) fail(`brainstorm canonical artifact contract missing token: ${token}`);
+}
 const plan = read(skillPath("plan"));
 if (!/Executable Plan/i.test(plan) || /默认使用 three-file backend/.test(plan)) {
   fail("plan must produce an Executable Plan without default three-file identity");
+}
+for (const token of [
+  "`docs/plans/YYYY-MM-DD--<topic>-plan.md`",
+  "Do not write plans to `docs/prd/`",
+  "explicit override",
+]) {
+  if (!plan.includes(token)) fail(`plan canonical artifact contract missing token: ${token}`);
 }
 for (const token of [
   "Verification path status",

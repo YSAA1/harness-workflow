@@ -140,7 +140,7 @@ pre {
   <div class="toolbar">
     <a class="button" href="../../skills/plan/SKILL.md">打开 SKILL.md</a>
     <span class="button">Executable Plan</span>
-    <span class="button">218 行</span>
+    <span class="button">219 行</span>
   </div>
 </header>
 <main>
@@ -160,7 +160,7 @@ pre {
     </div>
     <div class="panel">
       <h2>先读输入</h2>
-      <ul><li>已批准 Spec：优先读取 docs/specs/、docs/product-specs/、docs/design-docs/、PRD 或用户指定文件。</li><li>当前 planning surface：docs plan、issue、feature list、existing tracker 或 three-file backend。</li><li>AGENTS.md：是否声明 recovery surface、验证入口和 protected paths。</li><li>与请求直接相关的代码与 docs，确认 Spec 的可行性。</li><li>git status --short 与 git log --oneline -10：避免计划与已有改动相互踩。</li><li>任何用户附上的需求文档、讨论纪要、issue 链接。</li></ul>
+      <ul><li>已批准 Spec：默认从 docs/specs/ 或用户明确指定的 Spec 路径读取。PRD、issue、design docs 是上下文，不是默认 Spec source，除非当前用户或 AGENTS.md 明确指定。</li><li>当前 planning surface：默认使用 docs/plans/YYYY-MM-DD--&lt;topic&gt;-plan.md；只有当前用户明确指定路径，或 AGENTS.md 明确声明 canonical Plan surface 时，才允许 override。</li><li>AGENTS.md：是否声明 recovery surface、验证入口和 protected paths。</li><li>与请求直接相关的代码与 docs，确认 Spec 的可行性。</li><li>git status --short 与 git log --oneline -10：避免计划与已有改动相互踩。</li><li>任何用户附上的需求文档、讨论纪要、issue 链接。</li></ul>
     </div>
   </section>
 
@@ -169,13 +169,13 @@ pre {
     <div class="flow">
       <div class="step">
         <div class="num">1</div>
-        <div><h3>第 0 步 — 选择或确认 planning surface</h3><p>如果项目已经声明 recovery surface，写入该 surface。若没有声明且任务不需要 durable state，可以输出轻量 plan 并停下。若缺口影响后续恢复，转 harness-builder。</p></div>
+        <div><h3>第 0 步 — 选择或确认 planning surface</h3><p>默认 planning artifact 是 docs/plans/YYYY-MM-DD--&lt;topic&gt;-plan.md。不要因为仓库存在 docs/prd/、root plan.md、issue、feature-list、existing tracker 或 three-file backend 就改写默认位置。Override 仅在当前用户明确指定路径，或 AGENTS.md 明确声明 canonical Plan surface 时允许，并必须在输出中写明 reason。若任务不需要 durable st...</p></div>
       </div><div class="step">
         <div class="num">2</div>
         <div><h3>第 1 步 — 写 Executable Plan</h3><p>计划必须包含： - Objective - Active slice - Non-goals - Success criteria - Verification path - Verification path status: runnable | blocked - Required capabilities</p></div>
       </div><div class="step">
         <div class="num">3</div>
-        <div><h3>第 2 步 — 写入选定 artifact</h3><p>- docs plan：写到 docs/plans/ 或项目指定路径。 - issue：写成可发布 issue 或更新 issue body。 - feature-list：更新对应 feature entry。 - existing system：按项目惯例更新，不复制第二套状态。 - three-file backend：使用 templates/task_plan.md、templates/progress.md、templates/findings.md。</p></div>
+        <div><h3>第 2 步 — 写入选定 artifact</h3><p>- docs plan：写到 docs/plans/YYYY-MM-DD--&lt;topic&gt;-plan.md，除非存在 explicit override。 - issue：写成可发布 issue 或更新 issue body。 - feature-list：更新对应 feature entry。 - existing system：按项目惯例更新，不复制第二套状态。 - three-file backend：使用 templates/task_plan.md、templates/progress.md、templ...</p></div>
       </div><div class="step">
         <div class="num">4</div>
         <div><h3>第 3 步 — 检查可执行性</h3><p>每个阶段必须有具体动作和验证含义。不允许&quot;继续优化&quot;、&quot;完善逻辑&quot;这类不可恢复动作。</p></div>
@@ -189,11 +189,11 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text EXECUTABLE PLAN WRITTEN Planning surface: &lt;docs plan | issue | feature-list | existing | three-file&gt; Artifact: &lt;path | issue | entry id&gt; Spec source: &lt;path | explicit small-task exception&gt; Active slice: &lt;一句话&gt; Success criteria: &lt;可证伪条件&gt; Verification path status: &lt;runnable | blocked&gt; Required capabilities: &lt;list&gt; Fallback evidence: &lt;none | accepted fallback&gt; Final integration claim: &lt;none | claim&gt; Next skill: &lt;i...</pre>
+      <pre>``text EXECUTABLE PLAN WRITTEN Planning surface: &lt;docs plan | issue | feature-list | existing | three-file&gt; Artifact: &lt;docs/plans/YYYY-MM-DD--topic-plan.md | explicit override | n/a&gt; Spec source: &lt;path | explicit small-task exception&gt; Active slice: &lt;一句话&gt; Success criteria: &lt;可证伪条件&gt; Verification path status: &lt;runnable | blocked&gt; Required capabilities: &lt;list&gt; Fallback evidence: &lt;none | accepted fallback&gt; Final integrati...</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
-      <ul><li>selected planning surface：本次重点产物。</li><li>three-file backend：只有选中时更新 task_plan.md、progress.md、findings.md。</li><li>AGENTS.md：不动；如需项目地图、验证入口或恢复指针，交给 harness-builder 或 cleanup 小幅同步。</li></ul>
+      <ul><li>selected planning surface：本次重点产物；默认是 docs/plans/YYYY-MM-DD--&lt;topic&gt;-plan.md。</li><li>three-file backend：只有选中时更新 task_plan.md、progress.md、findings.md。</li><li>AGENTS.md：不动；如需项目地图、验证入口或恢复指针，交给 harness-builder 或 cleanup 小幅同步。</li></ul>
     </div>
   </section>
 

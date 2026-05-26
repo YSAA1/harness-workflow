@@ -53,7 +53,7 @@ Ask when:
 
 While Phase A is active, do **not** in the same turn as a clarification question:
 
-- write or update `docs/specs/...`
+- write or update `docs/specs/...` or any explicit Spec override path
 - compare final chosen approaches as if the Spec were ready
 - call `plan`, `implement`, or `verify`
 - treat silence, "sounds good", or no objection as Spec approval

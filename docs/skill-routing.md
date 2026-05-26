@@ -18,8 +18,8 @@ This document is the short routing contract for Harness Workflow skills. Use it 
 
 ## Boundary Rules
 
-- `brainstorm` writes an approved-ready Spec; it does not write an Executable Plan or implementation.
-- `plan` writes the execution contract; it does not reopen unclear requirements.
+- `brainstorm` writes an approved-ready Spec, defaulting to `docs/specs/YYYY-MM-DD--<topic>.md`; it does not write an Executable Plan or implementation.
+- `plan` writes the execution contract, defaulting to `docs/plans/YYYY-MM-DD--<topic>-plan.md`; it does not reopen unclear requirements.
 - `harness-builder` repairs the project workbench; it does not silently turn vague work into a harness.
 - `implement` can run local checks as implementation feedback; it cannot mark work ready.
 - `diagnose` fixes only after reproduction and root-cause evidence.

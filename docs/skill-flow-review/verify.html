@@ -140,7 +140,7 @@ pre {
   <div class="toolbar">
     <a class="button" href="../../skills/verify/SKILL.md">打开 SKILL.md</a>
     <span class="button">最终验证</span>
-    <span class="button">222 行</span>
+    <span class="button">231 行</span>
   </div>
 </header>
 <main>
@@ -187,7 +187,7 @@ pre {
         <div><h3>第 5.5 步 — Commit Eligibility 评估</h3><p>当 Executable Plan 定义了 commit unit 且当前 slice 属于某个 commit unit 时： - 检查 review 是否已对该 scope 产出 PASS 或 CONDITIONAL（无 Critical） - 若 verify PASS + review PASS/CONDITIONAL → commit eligibility = eligible，建议执行 milestone commit - 若 verify PASS 但 review 未做或有 Critical → ...</p></div>
       </div><div class="step">
         <div class="num">7</div>
-        <div><h3>第 6 步 — Update Artifacts</h3><p>按 selected recovery surface 记录 verification entry、skipped checks、capability gaps 和 residual risk。</p></div>
+        <div><h3>第 6 步 — Update Artifacts</h3><p>按 selected recovery surface 记录 verification entry、skipped checks、capability gaps 和 residual risk。 ### 路由规则 | Condition | Route | | --- | --- | | All required evidence fresh and passing | cleanup（若 commit eligibility=eligible，先执行 milestone commit） | | Command ...</p></div>
       </div><div class="step">
         <div class="num">8</div>
         <div><h3>第 7 步 — Route</h3><p>| Result | Next | | --- | --- | | All required evidence fresh and passing | commit milestone（当 eligible 时）-&gt; cleanup | | Command failed or behavior wrong | diagnose | | Evidence insufficient due to missing capability | harness-builder 或用户决策 | | Spec / success...</p></div>
@@ -208,7 +208,7 @@ pre {
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <p class="muted">该 skill 没有显式路由表；以执行流程的下一步为准。</p>
+    <table><thead><tr><th>Condition</th><th>Route</th></tr></thead><tbody><tr><td>All required evidence fresh and passing</td><td>cleanup（若 commit eligibility=eligible，先执行 milestone commit）</td></tr><tr><td>Command failed or behavior wrong</td><td>diagnose</td></tr><tr><td>Evidence insufficient due to missing capability</td><td>harness-builder 或用户决策</td></tr><tr><td>Spec / success criteria mismatch</td><td>plan</td></tr></tbody></table>
   </section>
 
   <section class="section grid">

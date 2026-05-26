@@ -17,7 +17,9 @@
 - `CONTEXT.md`: 术语和边界澄清。
 - `docs/harness-method-contract.md`: Harness Method Contract，解释 C1-C10 稳定方法论。
 - `docs/install/`: Codex、Claude Code、Cursor 安装和识别说明。
-- `docs/prd/`: 本地 PRD。
+- `docs/specs/`: `brainstorm` 默认 Spec 产物目录，允许多份独立 Spec。
+- `docs/plans/`: `plan` 默认 Executable Plan 产物目录，允许多份独立计划和恢复记录。
+- `docs/prd/`: 历史 PRD / 旧本地需求文档；不要作为新 Spec 或 Plan 的默认写入面。
 - `docs/adr/`: 架构决策记录。
 - `docs/tutorials/`: 使用教程和指南。
 - `docs/integrations/`: 可选外部工作流集成说明（如 autoresearch）。
