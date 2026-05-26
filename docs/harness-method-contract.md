@@ -36,7 +36,6 @@ Agent 质量来自项目周围的系统：入口、规则、上下文、验证�
 要求：
 
 - 当前目标、范围、证据和风险必须能从仓库或项目系统中恢复。
-- 默认 Spec 产物写入 `docs/specs/YYYY-MM-DD--<topic>.md`；默认 Executable Plan 写入 `docs/plans/YYYY-MM-DD--<topic>-plan.md`。只有用户当前消息或 `AGENTS.md` 明确指定时，才覆盖默认路径。
 - 不把临时 active slice 写进 `AGENTS.md`。
 - Three-file backend 可用，但不是唯一恢复面。
 

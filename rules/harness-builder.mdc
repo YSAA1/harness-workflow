@@ -35,7 +35,7 @@ Canonical source: `skills/harness-builder/SKILL.md`.
 9. Coverage Matrix includes an optional commit protocol row (default Deferred).
 10. If the user asked only for analysis or recommendations, stay read-only and output a recommendation report without writing files or creating an install plan.
 11. Propose verification design before installation: fast check, deeper smoke/E2E/manual check, evidence path, and unverified risks.
-12. Show a user checkpoint before installation and wait for explicit `approve`. Requests like "start", "initialize", "build harness", or "build from latest Spec/Plan" authorize evidence collection and plan drafting only, not file writes. Skip only when the current user explicitly says to skip the checkpoint and lists exact files or actions.
+12. Show a user checkpoint before installation and wait for explicit approval unless direct changes were already authorized.
 13. For Research Route, require goal, hypothesis, baseline, metric, verification, guardrails, iteration budget, artifact policy, and stop rule before any evidence loop.
 14. Choose or repair the recovery surface as a semantic contract; do not force three-file state.
 15. Install only approved project-local components.

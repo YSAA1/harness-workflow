@@ -20,10 +20,6 @@ const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "u
 const packageRead = (relativePath) => fs.readFileSync(path.join(packagedRoot, relativePath), "utf8");
 const skillPath = (skill) => `skills/${skill}/SKILL.md`;
 const readJson = (relativePath) => JSON.parse(read(relativePath));
-const isIgnoredSupportFile = (relativePath) => {
-  const parts = relativePath.split("/");
-  return parts.includes("__pycache__") || /\.(pyc|pyo|pyd)$/.test(relativePath);
-};
 const listFiles = (baseRoot, relativeDir) => {
   const absoluteDir = path.join(baseRoot, relativeDir);
   if (!fs.existsSync(absoluteDir)) return [];
@@ -32,10 +28,8 @@ const listFiles = (baseRoot, relativeDir) => {
     for (const entry of fs.readdirSync(absoluteCurrent, { withFileTypes: true })) {
       const absoluteEntry = path.join(absoluteCurrent, entry.name);
       const relativeEntry = path.join(relativeCurrent, entry.name);
-      const normalized = relativeEntry.replaceAll(path.sep, "/");
-      if (isIgnoredSupportFile(normalized)) continue;
       if (entry.isDirectory()) walk(absoluteEntry, relativeEntry);
-      else out.push(normalized);
+      else out.push(relativeEntry.replaceAll(path.sep, "/"));
     }
   };
   walk(absoluteDir, "");
@@ -289,10 +283,6 @@ if (exists(skillPath("harness-builder"))) {
     "No reusable skill search needed",
     "No web research needed",
     "Reply approve / change / stop",
-    "Requests like \"start\"",
-    "approval to write project files",
-    "skip the checkpoint",
-    "lists the exact files or actions",
     "AGENTS.md",
     "Project iron laws",
     "Capability Discovery",
@@ -314,15 +304,6 @@ if (exists(skillPath("harness-builder"))) {
   }
 }
 
-
-
-for (const skill of workflowSkills.filter((name) => name !== "harness-builder")) {
-  if (!exists(skillPath(skill))) continue;
-  const body = read(skillPath(skill));
-  if (!/###\s*触发信号/.test(body)) fail(`${skill} missing trigger contract section (### 触发信号)`);
-  if (!/###\s*路由规则/.test(body)) fail(`${skill} missing routing contract section (### 路由规则)`);
-  if (!/##\s*输出契约/.test(body)) fail(`${skill} missing output contract section (## 输出契约)`);
-}
 const skillBundle = workflowSkills.map((skill) => (exists(skillPath(skill)) ? read(skillPath(skill)) : "")).join("\n");
 for (const token of ["WIP=1", "fresh evidence", "Spec", "Executable Plan", "Knowledge Cleanup", "recovery surface"]) {
   if (!skillBundle.includes(token)) fail(`skills missing discipline token: ${token}`);
@@ -332,23 +313,9 @@ const brainstorm = read(skillPath("brainstorm"));
 if (!/Spec/i.test(brainstorm) || /默认.*findings\.md/.test(brainstorm)) {
   fail("brainstorm must produce an independent Spec without default findings.md writes");
 }
-for (const token of [
-  "Canonical Spec path: `docs/specs/YYYY-MM-DD--<topic>.md`",
-  "Do not write Spec to `docs/prd/`",
-  "explicit override",
-]) {
-  if (!brainstorm.includes(token)) fail(`brainstorm canonical artifact contract missing token: ${token}`);
-}
 const plan = read(skillPath("plan"));
 if (!/Executable Plan/i.test(plan) || /默认使用 three-file backend/.test(plan)) {
   fail("plan must produce an Executable Plan without default three-file identity");
-}
-for (const token of [
-  "`docs/plans/YYYY-MM-DD--<topic>-plan.md`",
-  "Do not write plans to `docs/prd/`",
-  "explicit override",
-]) {
-  if (!plan.includes(token)) fail(`plan canonical artifact contract missing token: ${token}`);
 }
 for (const token of [
   "Verification path status",

@@ -180,12 +180,10 @@ stop rule.
 
 ## Skill map
 
-For the short lane-selection contract, see [docs/skill-routing.md](docs/skill-routing.md).
-
 | Skill | Use it when | What it should leave behind | Recommended next |
 | --- | --- | --- | --- |
-| `brainstorm` | The goal, boundary, tradeoff, or success criteria is not clear enough to plan. | A focused spec, defaulting to `docs/specs/YYYY-MM-DD--<topic>.md`: goals, non-goals, options considered, success criteria, and verification strategy. | `plan`, or `harness-builder` for direct harness work |
-| `plan` | The spec or user request is clear enough to choose a first executable slice. | An executable plan, defaulting to `docs/plans/YYYY-MM-DD--<topic>-plan.md`, with active slice, `verification_path_status`, required capabilities, fallback evidence, final integration claim, and commit-sized work units. | `harness-builder` when the workbench or proof path is blocked; `verify` for proof-only work; otherwise `implement` |
+| `brainstorm` | The goal, boundary, tradeoff, or success criteria is not clear enough to plan. | A focused spec: goals, non-goals, options considered, success criteria, and verification strategy. | `plan`, or `harness-builder` for direct harness work |
+| `plan` | The spec or user request is clear enough to choose a first executable slice. | A plan in the selected planning surface, with active slice, `verification_path_status`, required capabilities, fallback evidence, final integration claim, and commit-sized work units. | `harness-builder` when the workbench or proof path is blocked; `verify` for proof-only work; otherwise `implement` |
 | `harness-builder` | The repo lacks a reliable workbench, recovery surface, verification entry point, or capability decision. | A minimal project-local harness plan and approved installed components, grounded in repo evidence. | `verify`, then `implement` or `cleanup` |
 | `implement` | One slice is scoped and the workbench is clear enough to change files. | A small scoped change, with local checks as implementation feedback or a clear reason checks cannot run. It does not declare ready. | `review` for meaningful changes; `verify` for tiny changes |
 | `diagnose` | A build, test, lint, typecheck, CI run, or runtime behavior fails without a known root cause. | Reproduction, one tested hypothesis, root cause, minimal fix, and regression evidence. | `implement` for the fix, or `verify` when already fixed |
