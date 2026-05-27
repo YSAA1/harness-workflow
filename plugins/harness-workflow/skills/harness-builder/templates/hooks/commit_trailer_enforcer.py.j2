@@ -24,8 +24,15 @@ def current_branch() -> str:
 
 
 def should_enforce() -> bool:
-    if os.environ.get(ENFORCE_ENV) == "1":
+    env_override = os.environ.get(ENFORCE_ENV)
+    if env_override == "1":
         return True
+    if env_override == "0":
+        return False
+
+    if not RESEARCH_BRANCH_PREFIX:
+        return False
+
     branch = current_branch()
     return bool(branch and branch.startswith(RESEARCH_BRANCH_PREFIX))
 
