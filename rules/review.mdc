@@ -16,29 +16,36 @@ Canonical source: `skills/review/SKILL.md`.
 
 ## Inputs
 
-- Diff, file list, accepted Spec or user request, Executable Plan, selected recovery surface, source, tests, docs, README, and current evidence.
+- `skills/review/SKILL.md` and `skills/review/references/adversarial-reviewer-prompt.md`.
+- `git status --short`, diff stat, actual changed files, untracked files, accepted Spec or user request, Executable Plan, selected recovery surface, source, tests, docs, README, and current evidence.
 
 ## Procedure
 
 1. Restate active slice, files reviewed, and completion claim.
-2. Check Spec coverage: goals met and non-goals not crossed.
-3. Check evidence freshness and missing validation.
-4. Check correctness and design risk around boundaries, errors, data, compatibility, and trust.
-5. Check docs, generated artifacts, and recovery surface for drift.
-6. Check entropy: debug leftovers, TODOs, unused code, unapproved dependencies, duplicate state.
-7. When an Executable Plan exists, also check phase acceptance criteria (7th lens).
-8. Assess commit eligibility when commit units are defined.
-9. Classify findings as Critical, Important, or Minor.
-10. Conclude Pass, Conditional, or Block and route next.
+2. For meaningful diffs, attempt an isolated reviewer before fallback: read-only subagent, `codex exec review`, `codex exec` reviewer packet, then packet fallback.
+3. Record ordered reviewer attempts, final reviewer mechanism, fallback summary, and failure summaries.
+4. Build adversarial hypotheses before verdict, then seek defender evidence for each.
+5. Check Spec coverage: goals met and non-goals not crossed.
+6. Check evidence freshness and missing validation without declaring ready.
+7. Check correctness and design risk around boundaries, errors, data, compatibility, and trust.
+8. Check docs, generated artifacts, and recovery surface for drift.
+9. Check entropy: debug leftovers, TODOs, unused code, unapproved dependencies, duplicate state.
+10. When an Executable Plan exists, also check phase acceptance criteria.
+11. Classify findings as Critical, Important, or Minor.
+12. Conclude Pass, Conditional, or Block and route next. Pass still routes to `verify`.
 
 ## Outputs
 
-- Findings-first review with file or command evidence.
+- Findings-first review with file, command, or artifact evidence.
+- Isolated reviewer attempt details, ordered reviewer attempts, adversarial hypotheses, defender evidence, and verify handoff cases.
 - Open questions, residual risks, and next skill.
 
 ## Verification / Done Criteria
 
 - Critical and Important findings have concrete evidence.
+- Meaningful diffs tried isolated review first, or recorded a fallback reason.
+- Review packet covered `git status --short` / untracked files.
+- Adversarial hypotheses and defender evidence are present.
 - Missing fresh evidence is treated as a gap and routed to `verify`.
 - Blocking findings route back to `implement`, `diagnose`, `plan`, or `brainstorm`.
 - When an Executable Plan exists, phase acceptance criteria are checked.

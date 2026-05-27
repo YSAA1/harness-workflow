@@ -216,10 +216,12 @@ function readSkill(slug) {
   const markdown = fs.readFileSync(filePath, "utf8");
   const frontMatter = parseFrontMatter(markdown);
   const routingSnapshot = getSection(markdown, "Routing Snapshot");
-  const flow = getSection(markdown, "执行流程") || getSection(markdown, "Workflow Skeleton");
+  const flow = getSection(markdown, "执行流程") || getSection(markdown, "Workflow") || getSection(markdown, "Workflow Skeleton");
   const route = getSubsection(markdown, "路由规则") || getSection(markdown, "Decision Gate") || getSection(markdown, "Recommended next skill");
   const steps = parseSteps(flow);
   const assetRouting = getSection(markdown, "Asset Routing");
+  const artifactsSection =
+    getSection(markdown, "工件更新") || getSection(markdown, "Preservation rule for existing harness-builder assets");
   return {
     slug,
     name: frontMatter.name || slug,
@@ -229,9 +231,15 @@ function readSkill(slug) {
     purpose: truncate(getSection(markdown, "目的") || introParagraph(markdown), 360),
     triggers: listLines(getSubsection(markdown, "触发信号")).length
       ? listLines(getSubsection(markdown, "触发信号"))
+      : listLines(getSection(markdown, "When to use")).length
+        ? listLines(getSection(markdown, "When to use"))
       : boldBullet(routingSnapshot, "Use when"),
     dontUse: listLines(getSubsection(markdown, "不要使用")).length
       ? listLines(getSubsection(markdown, "不要使用"))
+      : listLines(getSection(markdown, "Do not use")).length
+        ? listLines(getSection(markdown, "Do not use"))
+        : listLines(getSection(markdown, "Hard rules")).length
+          ? listLines(getSection(markdown, "Hard rules"), 6)
       : boldBullet(routingSnapshot, "Do not use when"),
     inputs: listLines(getSection(markdown, "先读取这些输入")).length
       ? listLines(getSection(markdown, "先读取这些输入"))
@@ -240,10 +248,10 @@ function readSkill(slug) {
         : [],
     routeTables: tableLines(route),
     steps,
-    output: truncate(getSection(markdown, "输出契约") || getSection(markdown, "输出格式") || getSection(markdown, "Output Contract"), 420),
+    output: truncate(getSection(markdown, "输出契约") || getSection(markdown, "输出格式") || getSection(markdown, "Output contract") || getSection(markdown, "Output Contract"), 420),
     acceptance: listLines(getSection(markdown, "验收标准") || getSection(markdown, "Mandatory execution gates"), 16),
-    artifacts: listLines(getSection(markdown, "工件更新"), 12).length
-      ? listLines(getSection(markdown, "工件更新"), 12)
+    artifacts: listLines(artifactsSection, 12).length
+      ? listLines(artifactsSection, 12)
       : assetRouting
         ? [truncate(assetRouting, 180)]
         : [],

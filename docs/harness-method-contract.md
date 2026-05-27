@@ -88,7 +88,7 @@ Ready claim 必须由 `verify` 作为唯一 ready gate 证明。旧命令、聊�
 要求：
 
 - `implement` 可以跑局部检查，但这些检查只是 implementation feedback，不是 final ready proof。
-- `review` 做 scope、spec、diff、docs、entropy 和 risk 的结构性评审；它不能替代 `verify`。
+- `review` 做 scope、spec、diff、docs、entropy 和 risk 的结构性评审；meaningful diff 默认尝试隔离 reviewer，并用对抗式 hypotheses / defender evidence 找隐藏失败路径；它不能替代 `verify`。
 - `verify` 必须把每条 success criterion 映射到 fresh evidence，状态只能是 pass、fail 或 unknown。
 - unknown 不能算 ready。
 - 结构化 verification record 至少包含 claim、covered paths、latest change、commands、skipped high-value checks、unknowns 和 ready verdict。

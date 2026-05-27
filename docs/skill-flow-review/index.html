@@ -161,7 +161,7 @@ pre {
     <div class="grid">
       <article class="panel skill-card">
         <h3><a href="harness-builder.html">harness-builder</a></h3>
-        <p class="muted">项目级 harness · 294 行 · 0 个流程步</p>
+        <p class="muted">项目级 harness · 294 行 · 13 个流程步</p>
         <p>Build or repair the minimal useful project-level harness for AI coding agents. A harness is the repo-local operating system around the agent: project map, Project iron laws, protected paths, verification entry, recovery surface, reusable skills, hooks, MCP policy, subagent policy, audit records, and cleanup discipline. &quot;bootstrap&quot; is only a historical alias...</p>
         <div class="meta">
           <span class="tag">23 个 reference</span>
@@ -201,11 +201,11 @@ pre {
         </div>
       </article><article class="panel skill-card">
         <h3><a href="review.html">review</a></h3>
-        <p class="muted">证据评审 · 170 行 · 6 个流程步</p>
-        <p>review 必须同时检查&quot;做超了&quot;和&quot;做欠了&quot;。它可以判断&quot;没有结构性 blocker&quot;，但不能作为最终 ready gate。通过后仍路由到 verify；若已有 fresh evidence，则走 verify fast-path 做短重检和 claim mapping。</p>
+        <p class="muted">证据评审 · 243 行 · 7 个流程步</p>
+        <p>review 必须同时检查&quot;做超了&quot;和&quot;做欠了&quot;。它可以判断&quot;没有结构性 blocker&quot;，但不能作为最终 ready gate。通过后仍路由到 verify；若已有 fresh evidence，则走 verify fast-path 做短重检和 claim mapping。 默认原则：meaningful diff 必须先尝试 隔离 reviewer，失败、不可用或成本明显不成比例时才 fallback。隔离优先级： 1. read-only subagent / independent reviewer。 2. Codex 环境中的 codex exec review。 3. Codex 环境中的 codex exec + review packet + reviewer prompt。 4. pack...</p>
         <div class="meta">
-          <span class="tag">1 个 reference</span>
-          <span class="tag">8 条验收项</span>
+          <span class="tag">2 个 reference</span>
+          <span class="tag">10 条验收项</span>
         </div>
       </article><article class="panel skill-card">
         <h3><a href="verify.html">verify</a></h3>

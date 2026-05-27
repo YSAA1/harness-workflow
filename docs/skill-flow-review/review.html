@@ -140,13 +140,13 @@ pre {
   <div class="toolbar">
     <a class="button" href="../../skills/review/SKILL.md">打开 SKILL.md</a>
     <span class="button">证据评审</span>
-    <span class="button">170 行</span>
+    <span class="button">243 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>review 必须同时检查&quot;做超了&quot;和&quot;做欠了&quot;。它可以判断&quot;没有结构性 blocker&quot;，但不能作为最终 ready gate。通过后仍路由到 verify；若已有 fresh evidence，则走 verify fast-path 做短重检和 claim mapping。</p>
+    <p>review 必须同时检查&quot;做超了&quot;和&quot;做欠了&quot;。它可以判断&quot;没有结构性 blocker&quot;，但不能作为最终 ready gate。通过后仍路由到 verify；若已有 fresh evidence，则走 verify fast-path 做短重检和 claim mapping。 默认原则：meaningful diff 必须先尝试 隔离 reviewer，失败、不可用或成本明显不成比例时才 fallback。隔离优先级： 1. read-only subagent / independent reviewer。 2. Codex 环境中的 codex exec review。 3. Codex 环境中的 codex exec + review packet + reviewer prompt。 4. pack...</p>
   </section>
 
   <section class="section grid">
@@ -160,7 +160,7 @@ pre {
     </div>
     <div class="panel">
       <h2>先读输入</h2>
-      <ul><li>scope / diff / 文件列表：git diff --stat 和实际改动文件。</li><li>accepted Spec、Executable Plan 或用户请求。</li><li>selected recovery surface：active slice、success criteria、evidence、risks。</li><li>与本次 slice 相关的源文件、测试、配置。</li><li>README / AGENTS.md 的相关段，确认文档与代码同步。</li></ul>
+      <ul><li>references/adversarial-reviewer-prompt.md。</li><li>scope / diff / 文件列表：git status --short、git diff --stat、实际改动文件，以及 untracked files。</li><li>accepted Spec、Executable Plan 或用户请求。</li><li>selected recovery surface：active slice、success criteria、evidence、risks。</li><li>与本次 slice 相关的源文件、测试、配置。</li><li>README / AGENTS.md 的相关段，确认文档与代码同步。</li></ul>
     </div>
   </section>
 
@@ -172,19 +172,22 @@ pre {
         <div><h3>第 1 步 — 重述 scope</h3><p>一句话回答本次 review 的 active slice、改动文件和完成声明。</p></div>
       </div><div class="step">
         <div class="num">2</div>
-        <div><h3>第 2 步 — 用六把尺逐项过</h3><p>对每条问题给状态、证据和严重级。当 Executable Plan 存在时，读取当前阶段的 acceptance_criteria 和 verification_commands 作为额外对照维度。</p></div>
+        <div><h3>第 2 步 — 尝试隔离 adversarial reviewer</h3><p>为 meaningful diff 生成 review packet，并按优先级尝试隔离 reviewer。记录完整尝试链，而不是只记录最终机制： - isolated_reviewer_attempt: yes|no - reviewer_attempts[]: ordered attempts；每项包含 mechanism、command/tool/agent、status、fallback_reason、failure_summary - final_reviewer_mechanism: subagent...</p></div>
       </div><div class="step">
         <div class="num">3</div>
-        <div><h3>第 3 步 — 分级 findings</h3><p>| 级别 | 含义 | 处置 | | --- | --- | --- | | Critical | 正确性错误、安全漏洞、数据丢失、核心行为破坏、违反 accepted Spec | 必须修复 | | Important | 设计缺陷、关键测试缺失、文档严重失真、scope creep；等同于 broader audit 里的 Major | 应修或明确 deferred | | Minor | 风格、可读性、非阻塞清理 | 可选 |</p></div>
+        <div><h3>第 3 步 — 用六把尺和 adversarial pass 逐项过</h3><p>对每条问题给状态、证据和严重级。当 Executable Plan 存在时，读取当前阶段的 acceptance_criteria 和 verification_commands 作为额外对照维度。</p></div>
       </div><div class="step">
         <div class="num">4</div>
-        <div><h3>第 4 步 — 列 Open Questions / Residual Risks</h3><p>把无法判断的项明确列出，不把不确定伪装成通过。</p></div>
+        <div><h3>第 4 步 — 分级 findings</h3><p>| 级别 | 含义 | 处置 | | --- | --- | --- | | Critical | 正确性错误、安全漏洞、数据丢失、核心行为破坏、违反 accepted Spec | 必须修复 | | Important | 设计缺陷、关键测试缺失、文档严重失真、scope creep；等同于 broader audit 里的 Major | 应修或明确 deferred | | Minor | 风格、可读性、非阻塞清理 | 可选 |</p></div>
       </div><div class="step">
         <div class="num">5</div>
-        <div><h3>第 5 步 — 给出 Assessment</h3><p>结论只能是 Pass / Conditional / Block。</p></div>
+        <div><h3>第 5 步 — 列 Open Questions / Residual Risks</h3><p>把无法判断的项明确列出，不把不确定伪装成通过。</p></div>
       </div><div class="step">
         <div class="num">6</div>
-        <div><h3>第 6 步 — 按需同步 artifacts</h3><p>blocking findings 和 residual risks 写入 selected recovery surface；不把一次性 review 结论写进 AGENTS.md。</p></div>
+        <div><h3>第 6 步 — 给出 Assessment</h3><p>结论只能是 Pass / Conditional / Block。</p></div>
+      </div><div class="step">
+        <div class="num">7</div>
+        <div><h3>第 7 步 — 按需同步 artifacts</h3><p>blocking findings 和 residual risks 写入 selected recovery surface；不把一次性 review 结论写进 AGENTS.md。</p></div>
       </div>
     </div>
   </section>
@@ -192,7 +195,7 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text REVIEW: PASS | CONDITIONAL | BLOCK Scope: - Active slice: &lt;一句话&gt; - Files reviewed: &lt;list 或 git stat&gt; - Evidence base for review: &lt;command/diff/manual read or missing&gt; Findings: Critical: - &lt;一句话&gt; (file:line) - &lt;evidence&gt; Important: - &lt;一句话&gt; (file:line) - &lt;evidence&gt; Minor: - &lt;一句话&gt; Open Questions / Residual Risks: - ... Assessment: - Spec coverage: &lt;ok|partial|miss&gt; - Evidence routing: &lt;verify required|verify fast...</pre>
+      <pre>``text REVIEW: PASS | CONDITIONAL | BLOCK Scope: - Active slice: &lt;一句话&gt; - Files reviewed: &lt;list 或 git stat&gt; - Evidence base for review: &lt;command/diff/manual read or missing&gt; - Isolated reviewer attempt: &lt;yes|no&gt; - Reviewer attempts: - mechanism: &lt;subagent|codex_exec_review|codex_exec_packet|packet_fallback&gt; command: &lt;command/tool/agent type or n/a&gt; status: &lt;completed|failed|skipped&gt; fallback_reason: &lt;none|tiny diff|t...</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
@@ -208,11 +211,11 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] 至少检查了 Spec / scope / diff / docs / entropy / risk。</li><li>[ ] 未把 review 通过当作 ready；pass 状态仍路由到 verify。</li><li>[ ] 每条 Critical / Important finding 有文件路径或命令级证据。</li><li>[ ] Open Questions 与 Residual Risks 明确。</li><li>[ ] Assessment 是 Pass / Conditional / Block 之一。</li><li>[ ] blocking findings 按需写入 selected recovery surface。</li><li>[ ] 当 Executable Plan 存在时，已对照阶段 acceptance criteria 检查。</li><li>[ ] 下一步 skill 与原因显式。</li></ul>
+      <ul><li>[ ] 至少检查了 Spec / scope / diff / docs / entropy / risk。</li><li>[ ] meaningful diff 已尝试隔离 reviewer；若 fallback，已记录 ordered reviewer attempts、最终机制和原因。</li><li>[ ] 已输出 adversarial hypotheses、defender evidence 和 verify handoff cases。</li><li>[ ] 未把 review 通过当作 ready；pass 状态仍路由到 verify。</li><li>[ ] 每条 Critical / Important finding 有文件路径、命令或工件级证据。</li><li>[ ] Open Questions 与 Residual Risks 明确。</li><li>[ ] Assessment 是 Pass / Conditional / Block 之一。</li><li>[ ] blocking findings 按需写入 selected recovery surface。</li><li>[ ] 当 Executable Plan 存在时，已对照阶段 acceptance criteria 检查。</li><li>[ ] 下一步 skill 与原因显式。</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
-      <ul><li><a href="../../skills/review/references/premature-completion-patterns.md">伪完成模式</a><span class="tag">存在</span></li></ul>
+      <ul><li><a href="../../skills/review/references/adversarial-reviewer-prompt.md">Adversarial Reviewer Prompt</a><span class="tag">存在</span></li><li><a href="../../skills/review/references/premature-completion-patterns.md">伪完成模式</a><span class="tag">存在</span></li></ul>
     </div>
   </section>
 
