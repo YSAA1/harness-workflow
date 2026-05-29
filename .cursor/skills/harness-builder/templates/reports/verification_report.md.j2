@@ -1,25 +1,27 @@
-# Verification Report
+{% set lang_norm = (target_language | default(user_language | default('en')) | string | lower) %}
+{% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
+# {{ '验证报告（Verification Report）' if zh else 'Verification Report' }}
 
-## Task
+## {{ '任务（Task）' if zh else 'Task' }}
 
 {{ task }}
 
-## Commands run
+## {{ '已运行命令（Commands run）' if zh else 'Commands run' }}
 
 {{ commands_run }}
 
-## Result
+## {{ '结果（Result）' if zh else 'Result' }}
 
 {{ result }}
 
-## Important output
+## {{ '关键输出（Important output）' if zh else 'Important output' }}
 
 {{ important_output }}
 
-## Known limitations
+## {{ '已知限制（Known limitations）' if zh else 'Known limitations' }}
 
 {{ limitations }}
 
-## Next step
+## {{ '下一步（Next step）' if zh else 'Next step' }}
 
 {{ next_step }}

@@ -1,128 +1,128 @@
-# 任务计划：[任务名称]
+# Task Plan: [task name]
 
-> 来源：基于 `OthmanAdi/planning-with-files` 的中文 `planning-with-files-zh/templates/task_plan.md` 改造。
-> 许可证：MIT。改造目标：适配 Harness Workflow 的三文件模型、active slice、验证命令和成功标准。
+> Source: adapted from `OthmanAdi/planning-with-files` Chinese `planning-with-files-zh/templates/task_plan.md`.
+> License: MIT. Local adaptation: Harness Workflow three-file backend, active slice, verification commands, and success criteria.
 
-## 目标
+## Objective
 
-[用一句话描述最终可验证状态]
+[Describe the final verifiable state in one sentence.]
 
-## 范围合同
+## Scope Contract
 
-- Active slice：[当前唯一推进的最小可验证切片]
-- Non-goals：[本轮明确不做的事情]
-- Success criteria：[如何判断 active slice 完成]
-- Verification path：[需要运行的命令、smoke / E2E 或人工信号]
-- Verification path status：`runnable | blocked`
-- Required capabilities：[验证所需脚本、服务、浏览器、MCP、人工检查等]
-- Fallback evidence：[完整验证不可用时，用户接受的替代证据；没有则写 `none`]
-- Final integration claim：[多阶段或多 commit unit 的最终整体验收声明；不适用写 `none`]
-- Project map：[项目地图位置，例如 `docs/project-map.md` 或 `AGENTS.md#项目地图`]
+- Active slice: [the only smallest verifiable slice being advanced now]
+- Non-goals: [things explicitly out of scope for this round]
+- Success criteria: [how to know the active slice is complete]
+- Verification path: [commands, smoke / E2E, or human signals required]
+- Verification path status: `runnable | blocked`
+- Required capabilities: [scripts, services, browser, MCP, human check, etc.]
+- Fallback evidence: [user-accepted substitute evidence when full verification is unavailable; otherwise `none`]
+- Final integration claim: [overall claim for multi-phase or multi-commit work; otherwise `none`]
+- Project map: [project map location, for example `docs/project-map.md` or `AGENTS.md#Project map`]
 
-## 当前阶段
+## Current Phase
 
-阶段 1 - [阶段名称]：`in_progress`
+Phase 1 - [phase name]: `in_progress`
 
-## 总成功标准
+## Overall Success Criteria
 
-- [可观察的完成标准 1]
-- [可观察的完成标准 2]
-- [需要 fresh evidence 的验证标准，必须对应 Verification path]
-- [多阶段任务的 final integration claim 已被最终 verify 覆盖]
+- [observable completion criterion 1]
+- [observable completion criterion 2]
+- [fresh-evidence criterion that maps to Verification path]
+- [final integration claim is covered by final verify for multi-phase work]
 
-## 阶段
+## Phases
 
-### 阶段 1 - 需求与边界
+### Phase 1 - Requirements And Boundaries
 
-状态：`in_progress`
-Acceptance criteria：[可证伪的完成条件]
-Verification commands：[`命令1`, `命令2`]
-Success definition：[一句话：什么状态算成功]
+Status: `in_progress`
+Acceptance criteria: [falsifiable completion condition]
+Verification commands: [`command 1`, `command 2`]
+Success definition: [one sentence describing the successful state]
 
-- [ ] 明确用户意图、约束和 non-goals。
-- [ ] 将已接受规格、拒绝选项和风险记录到 `findings.md`。
-- [ ] 定义 active slice、验证路径、验证路径状态、能力缺口和完成标准。
+- [ ] Clarify user intent, constraints, and non-goals.
+- [ ] Record accepted spec, rejected options, and risks in `findings.md`.
+- [ ] Define active slice, verification path, verification path status, capability gaps, and completion criteria.
 
-### 阶段 2 - 项目工作面准备
+### Phase 2 - Project Surface Preparation
 
-状态：`pending`
-Acceptance criteria：[可证伪的完成条件]
-Verification commands：[`命令1`, `命令2`]
-Success definition：[一句话：什么状态算成功]
+Status: `pending`
+Acceptance criteria: [falsifiable completion condition]
+Verification commands: [`command 1`, `command 2`]
+Success definition: [one sentence describing the successful state]
 
-- [ ] 确认项目地图、入口和相关文件。
-- [ ] 确认 `AGENTS.md`、三文件或等价状态入口可用。
-- [ ] 确认验证命令、smoke / E2E 候选、fallback evidence 和能力缺口。
-- [ ] 如果 verification path blocked 且没有用户接受的 fallback，先转 `harness-builder`。
+- [ ] Confirm project map, entry point, and relevant files.
+- [ ] Confirm `AGENTS.md`, three-file backend, or equivalent state entry is usable.
+- [ ] Confirm verification commands, smoke / E2E candidates, fallback evidence, and capability gaps.
+- [ ] If verification path is blocked and no user-accepted fallback exists, route to `harness-builder`.
 
-### 阶段 3 - 实现
+### Phase 3 - Implementation
 
-状态：`pending`
-Acceptance criteria：[可证伪的完成条件]
-Verification commands：[`命令1`, `命令2`]
-Success definition：[一句话：什么状态算成功]
+Status: `pending`
+Acceptance criteria: [falsifiable completion condition]
+Verification commands: [`command 1`, `command 2`]
+Success definition: [one sentence describing the successful state]
 
-- [ ] 按 active slice 小步实现，不扩大范围。
-- [ ] 修改代码、命令或用户可见行为时同步相关文档和三文件。
-- [ ] 记录 RED / GREEN / REFACTOR 或等价验证证据到 `progress.md`。
+- [ ] Implement in small steps within the active slice.
+- [ ] Sync relevant docs and three-file artifacts when code, commands, or user-visible behavior change.
+- [ ] Record RED / GREEN / REFACTOR or equivalent verification evidence in `progress.md`.
 
-### 阶段 4 - 评审与验证
+### Phase 4 - Review And Verification
 
-状态：`pending`
-Acceptance criteria：[可证伪的完成条件]
-Verification commands：[`命令1`, `命令2`]
-Success definition：[一句话：什么状态算成功]
+Status: `pending`
+Acceptance criteria: [falsifiable completion condition]
+Verification commands: [`command 1`, `command 2`]
+Success definition: [one sentence describing the successful state]
 
-- [ ] 对照 accepted spec、风险和 non-goals 做 structural review。
-- [ ] 用 `verify` 运行相关验证命令，记录 fresh evidence。
-- [ ] 如果验证能力不足，记录 recommended capability 和替代路径。
+- [ ] Run structural review against accepted spec, risks, and non-goals.
+- [ ] Use `verify` to run relevant verification commands and record fresh evidence.
+- [ ] If verification capability is insufficient, record recommended capability and fallback path.
 
-### 阶段 5 - 收尾与交接
+### Phase 5 - Cleanup And Handoff
 
-状态：`pending`
-Acceptance criteria：[可证伪的完成条件]
-Verification commands：[`命令1`, `命令2`]
-Success definition：[一句话：什么状态算成功]
+Status: `pending`
+Acceptance criteria: [falsifiable completion condition]
+Verification commands: [`command 1`, `command 2`]
+Success definition: [one sentence describing the successful state]
 
-- [ ] 清理低风险临时工件、陈旧 TODO、重复规则和过期状态。
-- [ ] 更新 `progress.md` 和 `findings.md` 的最终证据与残余风险。
-- [ ] 确认下一次会话能从仓库工件恢复。
+- [ ] Clean low-risk temporary artifacts, stale TODOs, duplicate rules, and outdated state.
+- [ ] Update `progress.md` and `findings.md` with final evidence and residual risks.
+- [ ] Confirm the next session can recover from repository artifacts.
 
-## 提交协议
+## Commit Protocol
 
-| Commit unit | 对应阶段 | Scope | 前置条件 | Message 模板 |
+| Commit unit | Phases | Scope | Preconditions | Message template |
 | --- | --- | --- | --- | --- |
-| M1 | 阶段 1-2 | [范围] | review 无 Critical + verify PASS | [模板] |
-| M2 | 阶段 3 | [范围] | review 无 Critical + verify PASS | [模板] |
+| M1 | Phase 1-2 | [scope] | review has no Critical + verify PASS | [template] |
+| M2 | Phase 3 | [scope] | review has no Critical + verify PASS | [template] |
 
-## 关键问题
+## Key Questions
 
-1. [待回答问题]
-2. [待回答问题]
+1. [open question]
+2. [open question]
 
-## 已做决策
+## Decisions Made
 
-| 决策 | 理由 | 证据 / 来源 |
+| Decision | Rationale | Evidence / source |
 | --- | --- | --- |
 |  |  |  |
 
-## 遇到的错误
+## Errors Encountered
 
-| 错误 | 尝试次数 | 解决方案 | 状态 |
+| Error | Attempts | Resolution | Status |
 | --- | --- | --- | --- |
 |  | 1 |  |  |
 
-## 阻塞项
+## Blockers
 
-- [当前阻塞项或 `none`]
+- [current blocker or `none`]
 
-## 下一步
+## Next Steps
 
-- [最高优先级的 1-3 个动作]
+- [top 1-3 actions]
 
-## 备注
+## Notes
 
-- 只允许一个阶段处于 `in_progress`。
-- `范围合同` 是 WIP=1 的事实来源；不要只把 active slice 和 non-goals 写在聊天里。
-- 重大决策和 rejected options 放入 `findings.md`，不要堆进本文件。
-- 执行历史和命令结果放入 `progress.md`。
+- Only one phase may be `in_progress`.
+- `Scope Contract` is the source of truth for WIP=1; do not keep active slice and non-goals only in chat.
+- Put major decisions and rejected options in `findings.md`, not in this file.
+- Put execution history and command results in `progress.md`.

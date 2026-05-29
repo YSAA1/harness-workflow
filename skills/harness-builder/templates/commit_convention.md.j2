@@ -1,24 +1,34 @@
-# Commit Convention
+{% set lang_norm = (target_language | default(user_language | default('en')) | string | lower) %}
+{% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
+# {{ 'Commit 约定（Commit Convention）' if zh else 'Commit Convention' }}
 
-Use concise Chinese commit messages for project milestones unless the repo already requires another convention.
+{{ '除非仓库已有其他约定，项目里程碑使用简洁中文 commit message。' if zh else 'Unless the repository already has another convention, use concise commit messages for project milestones.' }}
 
-## Milestone commits
+## {{ '里程碑提交（Milestone commits）' if zh else 'Milestone commits' }}
 
-- Commit after a coherent, verified phase.
-- Mention the user-visible or workflow reason, not only the files changed.
-- Keep unrelated cleanup in a separate commit or defer it.
+- {{ '在一个连贯且已验证的阶段后提交。' if zh else 'Commit after a coherent, verified phase.' }}
+- {{ '说明用户可见原因或 workflow 原因，不只描述改了哪些文件。' if zh else 'State the user-facing or workflow reason, not only which files changed.' }}
+- {{ '无关 cleanup 单独提交或暂缓。' if zh else 'Commit unrelated cleanup separately or defer it.' }}
 
-Examples:
+{{ '示例' if zh else 'Examples' }}:
 
+{% if zh %}
 ```text
 强化 harness-builder 研究收尾闸门
 补齐 capability 推荐策略
 同步 Cursor skill 预览面
 ```
+{% else %}
+```text
+harden harness-builder research closeout gate
+fill capability recommendation policy
+sync Cursor skill preview surface
+```
+{% endif %}
 
 ## Research Route trailers
 
-Research commits may add trailers so iterations remain auditable:
+{{ 'Research commits 可添加 trailers，让迭代保持可审计。' if zh else 'Research commits may add trailers so iterations remain auditable.' }}
 
 ```text
 Iter: 2
@@ -27,4 +37,4 @@ Metric: accuracy=0.84
 Decision: keep
 ```
 
-When research graduates, the final commit message should identify the winning hypothesis, metric delta, verification command, and rollback note.
+{{ 'Research Route 收尾时，最终 commit message 应说明获胜假设、指标变化、验证命令和回滚备注。' if zh else 'When closing Research Route work, the final commit message should state the winning hypothesis, metric change, verification command, and rollback note.' }}

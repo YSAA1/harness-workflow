@@ -1,5 +1,7 @@
-# Risk Register
+{% set lang_norm = (target_language | default(user_language | default('en')) | string | lower) %}
+{% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
+# {{ '风险登记表（Risk Register）' if zh else 'Risk Register' }}
 
-| Risk | Severity | Evidence | Control | Status |
+| {{ '风险（Risk）' if zh else 'Risk' }} | {{ '严重级别（Severity）' if zh else 'Severity' }} | {{ '证据（Evidence）' if zh else 'Evidence' }} | {{ '控制措施（Control）' if zh else 'Control' }} | {{ '状态（Status）' if zh else 'Status' }} |
 |---|---:|---|---|---|
-| Unknown protected paths | Medium | Initial harness setup | Review with user | Open |
+| {{ '未知 protected paths' if zh else 'Unknown protected paths' }} | Medium | {{ '初始 harness 设置' if zh else 'Initial harness setup' }} | {{ '与用户确认' if zh else 'Review with user' }} | {{ 'Open（开放）' if zh else 'Open' }} |

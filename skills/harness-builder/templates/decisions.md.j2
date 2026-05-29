@@ -1,14 +1,16 @@
-# Harness Decisions
+{% set lang_norm = (target_language | default(user_language | default('en')) | string | lower) %}
+{% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
+# {{ 'Harness 决策（Harness Decisions）' if zh else 'Harness Decisions' }}
 
-## Decision 001: Project-local harness
+## Decision 001: {{ '项目本地 Harness（Project-local harness）' if zh else 'Project-local harness' }}
 
-Reason:
-The harness is strongly tied to this repository's structure, risks, verification commands, and agent workflow.
+{{ '原因' if zh else 'Reason' }}:
+{{ 'Harness 强依赖当前仓库结构、风险、验证命令和 agent 工作流。' if zh else 'The harness depends on the current repository structure, risks, verification commands, and agent workflow.' }}
 
-Implication:
-Do not modify user-global Codex/Claude configuration unless explicitly requested.
+{{ '影响' if zh else 'Impact' }}:
+{{ '除非明确要求，不修改用户级 Codex/Claude 配置。' if zh else 'Do not modify user-level Codex or Claude configuration unless explicitly requested.' }}
 
-## Decision 002: Keep root AGENTS.md short
+## Decision 002: {{ '保持根目录 AGENTS.md 简短' if zh else 'Keep the root AGENTS.md short' }}
 
-Reason:
-Root instructions should route agents to the right context and checks, not become a stale knowledge base.
+{{ '原因' if zh else 'Reason' }}:
+{{ '根入口应把 agent 路由到正确上下文和检查，不应变成陈旧知识库。' if zh else 'The root entry should route agents to the right context and checks; it should not become a stale knowledge base.' }}

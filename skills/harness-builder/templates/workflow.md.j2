@@ -1,24 +1,26 @@
-# Agent Workflow
+{% set lang_norm = (target_language | default(user_language | default('en')) | string | lower) %}
+{% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
+# {{ 'Agent 工作流（Agent Workflow）' if zh else 'Agent Workflow' }}
 
-## Startup
+## {{ '启动（Startup）' if zh else 'Startup' }}
 
-1. Confirm repository root.
-2. Read `AGENTS.md`.
-3. Read `.harness/state.md`.
-4. Check `.harness/progress.md` and `.harness/session_handoff.md` if present.
-5. Understand the current task scope before editing.
+1. {{ '确认 repository root。' if zh else 'Confirm the repository root.' }}
+2. {{ '读取 `AGENTS.md`。' if zh else 'Read `AGENTS.md`.' }}
+3. {{ '读取 `.harness/state.md`。' if zh else 'Read `.harness/state.md`.' }}
+4. {{ '如存在，检查 `.harness/progress.md` 和 `.harness/session_handoff.md`。' if zh else 'If present, inspect `.harness/progress.md` and `.harness/session_handoff.md`.' }}
+5. {{ '编辑前先理解当前任务范围。' if zh else 'Understand the current task scope before editing.' }}
 
-## During work
+## {{ '工作中（During work）' if zh else 'During work' }}
 
-- Make small, task-scoped changes.
-- Do not modify protected paths.
-- Prefer tests and deterministic checks over self-judgment.
-- Update project state for multi-session work.
+- {{ '做小而限定范围的改动。' if zh else 'Make small, scoped changes.' }}
+- {{ '不修改 protected paths。' if zh else 'Do not modify protected paths.' }}
+- {{ '优先依赖测试和确定性检查，而不是自我判断。' if zh else 'Prefer tests and deterministic checks over self-judgment.' }}
+- {{ '多会话工作要更新项目状态。' if zh else 'Update project state for multi-session work.' }}
 
-## Before claiming done
+## {{ '声称完成前（Before claiming done）' if zh else 'Before claiming done' }}
 
-1. Run `bash scripts/agent/check.sh` if safe.
-2. Summarize changed files.
-3. Report verification result.
-4. List remaining risks.
-5. Update `.harness/progress.md` or `.harness/session_handoff.md` if needed.
+1. {{ '安全时运行 `bash scripts/agent/check.sh`。' if zh else 'Run `bash scripts/agent/check.sh` when safe.' }}
+2. {{ '汇总改动文件。' if zh else 'Summarize changed files.' }}
+3. {{ '报告验证结果。' if zh else 'Report verification results.' }}
+4. {{ '列出剩余风险。' if zh else 'List residual risks.' }}
+5. {{ '必要时更新 `.harness/progress.md` 或 `.harness/session_handoff.md`。' if zh else 'Update `.harness/progress.md` or `.harness/session_handoff.md` when needed.' }}

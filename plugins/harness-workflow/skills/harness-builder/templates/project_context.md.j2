@@ -1,41 +1,43 @@
-# Project Context
+{% set lang_norm = (target_language | default(user_language | default('en')) | string | lower) %}
+{% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
+# {{ '项目上下文（Project Context）' if zh else 'Project Context' }}
 
-## What this project is
+## {{ '项目是什么（What this project is）' if zh else 'What this project is' }}
 
 {{ project_overview }}
 
-## What success means
+## {{ '成功意味着什么（What success means）' if zh else 'What success means' }}
 
 {{ success_criteria }}
 
-## Current phase
+## {{ '当前阶段（Current phase）' if zh else 'Current phase' }}
 
 {{ project_phase }}
 
-## Project type
+## {{ '项目类型（Project type）' if zh else 'Project type' }}
 
 {{ project_type }}
 
-## Main workflows
+## {{ '主要工作流（Main workflows）' if zh else 'Main workflows' }}
 
 {{ main_workflows }}
 
-## Key directories
+## {{ '关键目录（Key directories）' if zh else 'Key directories' }}
 
 {{ key_directories }}
 
-## Data / model / service boundaries
+## {{ '数据 / 模型 / 服务边界（Data / model / service boundaries）' if zh else 'Data / model / service boundaries' }}
 
 {{ boundaries }}
 
-## Current assumptions
+## {{ '当前假设（Current assumptions）' if zh else 'Current assumptions' }}
 
 {{ assumptions }}
 
-## Known risks
+## {{ '已知风险（Known risks）' if zh else 'Known risks' }}
 
 {{ known_risks }}
 
-## Open questions
+## {{ '开放问题（Open questions）' if zh else 'Open questions' }}
 
 {{ open_questions }}

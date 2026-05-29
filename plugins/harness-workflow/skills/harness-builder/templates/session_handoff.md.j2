@@ -1,23 +1,25 @@
-# Session Handoff
+{% set lang_norm = (target_language | default(user_language | default('en')) | string | lower) %}
+{% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
+# {{ '会话交接（Session Handoff）' if zh else 'Session Handoff' }}
 
-Use this file when a session ends with unfinished work.
+{{ '当会话结束但工作未完成时使用这个文件。' if zh else 'Use this file when a session ends before the work is complete.' }}
 
-## Last working context
+## {{ '最近工作上下文（Last working context）' if zh else 'Last working context' }}
 
-None recorded.
+{{ '未记录。' if zh else 'None recorded.' }}
 
-## Files touched
+## {{ '已触及文件（Files touched）' if zh else 'Files touched' }}
 
-None recorded.
+{{ '未记录。' if zh else 'None recorded.' }}
 
-## Commands run
+## {{ '已运行命令（Commands run）' if zh else 'Commands run' }}
 
-None recorded.
+{{ '未记录。' if zh else 'None recorded.' }}
 
-## Current blockers
+## {{ '当前阻塞项（Current blockers）' if zh else 'Current blockers' }}
 
-None recorded.
+{{ '未记录。' if zh else 'None recorded.' }}
 
-## Suggested next step
+## {{ '建议下一步（Suggested next step）' if zh else 'Suggested next step' }}
 
-None recorded.
+{{ '未记录。' if zh else 'None recorded.' }}

@@ -8,14 +8,14 @@ Track these eight dimensions. Map each to the eventual Spec sections.
 
 | Dimension | Spec section | What must be explicit |
 | --- | --- | --- |
-| Purpose | Goals / Background | Problem being solved and why now |
-| Scope | Goals / Non-goals | In-scope outcomes and explicit exclusions |
-| Users / callers | Users / Callers | Who uses this, through what entry point |
-| Behavior | Behavior Spec | Happy path, edge cases, interfaces or state |
-| Constraints | Constraints | Compatibility, security, performance, migration, time, preference |
-| Success criteria | Success criteria | Observable, falsifiable acceptance signals |
-| Verification strategy | Verification strategy | Baseline, automated checks, smoke/E2E, negative cases, fresh evidence |
-| Capability gaps | Capability gaps | Missing skills, MCP, hooks, credentials, hardware, or human judgment |
+| 目的（Purpose） | 目标 / 背景 | Problem being solved and why now |
+| 范围（Scope） | 目标 / 非目标（Non-goals） | In-scope outcomes and explicit exclusions |
+| 用户 / 调用者（Users / callers） | 用户 / 调用者（Users / Callers） | Who uses this, through what entry point |
+| 行为（Behavior） | 行为规格（Behavior Spec） | Happy path, edge cases, interfaces or state |
+| 约束（Constraints） | 约束（Constraints） | Compatibility, security, performance, migration, time, preference |
+| 成功标准（Success criteria） | 成功标准（Success Criteria） | Observable, falsifiable acceptance signals |
+| 验证策略（Verification strategy） | 验证策略（Verification Strategy） | Baseline, automated checks, smoke/E2E, negative cases, fresh evidence |
+| 能力缺口（Capability gaps） | 能力缺口（Capability Gaps） | Missing skills, MCP, hooks, credentials, hardware, or human judgment |
 
 ## Status Values
 
@@ -51,7 +51,7 @@ Phase A is complete only when all of the following are true:
 
 ## Coverage Matrix Template
 
-Copy this into chat and update every clarification turn:
+Copy the default template for English/non-Chinese users and update it every clarification turn. For Chinese users, use the localized example below instead. Preserve stable status values and gate tokens.
 
 ```text
 Clarification Coverage
@@ -68,6 +68,25 @@ Clarification Coverage
 
 Gate: BLOCKED
 Next question: <one question on the highest-priority unresolved dimension>
+```
+
+Chinese-user example:
+
+```text
+澄清覆盖矩阵（Clarification Coverage）
+| 维度（Dimension） | 状态（Status） | 来源 / 备注（Source / note） |
+| --- | --- | --- |
+| 目的（Purpose） | unknown | |
+| 范围（Scope） | unknown | |
+| 用户 / 调用者（Users / callers） | unknown | |
+| 行为（Behavior） | unknown | |
+| 约束（Constraints） | unknown | |
+| 成功标准（Success criteria） | unknown | |
+| 验证策略（Verification strategy） | unknown | |
+| 能力缺口（Capability gaps） | unknown | |
+
+闸门 / Gate: BLOCKED
+下一个问题 / Next question: <one question on the highest-priority unresolved dimension>
 ```
 
 When the gate passes, set `Gate: PASSED` and move to the assumption batch if needed, then Phase B.
@@ -88,6 +107,8 @@ Before I draft the Spec, please confirm or correct:
 Wait for user confirmation or corrections. Update the matrix to `confirmed` or revise and re-ask only the affected items.
 
 ## Phase A Output
+
+Default English/non-Chinese output:
 
 ```text
 BRAINSTORM CLARIFICATION IN PROGRESS
@@ -111,6 +132,32 @@ Question: <exactly one question>
 Recommended answer (optional): <short recommendation or options>
 
 Waiting for: user reply before Phase B
+```
+
+Chinese-user output:
+
+```text
+BRAINSTORM CLARIFICATION IN PROGRESS
+
+覆盖度 / Coverage: <confirmed+waived>/<8> 已确认或豁免（confirmed or waived）；<N> 条推断项待假设批次确认（inferred pending assumption batch）
+闸门 / Gate: BLOCKED | PASSED (assumption batch pending) | PASSED
+
+澄清覆盖矩阵（Clarification Coverage）
+| 维度（Dimension） | 状态（Status） | 来源 / 备注（Source / note） |
+| --- | --- | --- |
+| 目的（Purpose） | ... | ... |
+| 范围（Scope） | ... | ... |
+| 用户 / 调用者（Users / callers） | ... | ... |
+| 行为（Behavior） | ... | ... |
+| 约束（Constraints） | ... | ... |
+| 成功标准（Success criteria） | ... | ... |
+| 验证策略（Verification strategy） | ... | ... |
+| 能力缺口（Capability gaps） | ... | ... |
+
+问题 / Question: <exactly one question>
+推荐回答 / Recommended answer (optional): <short recommendation or options>
+
+等待 / Waiting for: user reply before Phase B
 ```
 
 When the gate passed but assumptions remain, replace the `Question` block with the assumption batch.

@@ -9,6 +9,13 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 
 它不负责发散需求，也不替代 Spec review。它默认不创建三文件；只有当前项目 recovery surface 已选择 three-file backend，或用户明确要求三文件时，才使用 `templates/` 下的 three-file 模板。
 
+## 语言策略
+
+- 用户可见文本跟随用户语言；中文用户场景下，计划说明、阶段标题、验收说明、风险和下一步默认使用中文。
+- 协议稳定优先：协议 token 如 `EXECUTABLE PLAN WRITTEN`、`Executable Plan`、`Verification path status`、`runnable | blocked`、`final_integration_claim`、skill 名、路径和命令可保留英文，必要时使用中文标签 + 英文 token。
+- 不把 Plan 模板硬编码为中文-only；中文用户使用 `templates/task_plan.zh-CN.md`，英文或其他非中文用户使用 `templates/task_plan.md` 作为 default，并按用户语言翻译人类可见说明。
+- 输出契约中的 `<... label in user's language>` 是占位说明，实际回复时必须替换成用户语言标签，不要原样输出。
+
 ## 路由快照
 
 - **Use when**: Spec 或请求已经清楚，但还缺可执行阶段、active slice、验证路径或 commit unit。
@@ -124,7 +131,7 @@ Three-file 模板仍保留在 `templates/`，但只是 backend 选项，不是 `
 - issue：写成可发布 issue 或更新 issue body。
 - feature-list：更新对应 feature entry。
 - existing system：按项目惯例更新，不复制第二套状态。
-- three-file backend：使用 `templates/task_plan.md`、`templates/progress.md`、`templates/findings.md`。
+- three-file backend：中文用户使用 `templates/task_plan.zh-CN.md`、`templates/progress.zh-CN.md`、`templates/findings.zh-CN.md`；英文或其他非中文用户使用 `templates/task_plan.md`、`templates/progress.md`、`templates/findings.md` 作为 default。
 
 ### 第 3 步 — 检查可执行性
 
@@ -153,17 +160,17 @@ Commit unit 定义何时可以提交一个里程碑。这是计划产物，不�
 ```text
 EXECUTABLE PLAN WRITTEN
 
-Planning surface: <docs plan | issue | feature-list | existing | three-file>
-Artifact: <docs/plans/YYYY-MM-DD--topic-plan.md | explicit override | n/a>
-Spec source: <path | explicit small-task exception>
-Active slice: <一句话>
-Success criteria: <可证伪条件>
-Verification path status: <runnable | blocked>
-Required capabilities: <list>
-Fallback evidence: <none | accepted fallback>
-Final integration claim: <none | claim>
-Next skill: <implement | diagnose | harness-builder | verify>
-Reason: <一句话>
+<Planning surface label in user's language> / Planning surface: <docs plan | issue | feature-list | existing | three-file>
+<Artifact label in user's language> / Artifact: <docs/plans/YYYY-MM-DD--topic-plan.md | explicit override | n/a>
+<Spec source label in user's language> / Spec source: <path | explicit small-task exception>
+<Active slice label in user's language> / Active slice: <一句话>
+<Success criteria label in user's language> / Success criteria: <可证伪条件>
+<Verification path status label in user's language> / Verification path status: <runnable | blocked>
+<Required capabilities label in user's language> / Required capabilities: <list>
+<Fallback evidence label in user's language> / Fallback evidence: <none | accepted fallback>
+<Final integration claim label in user's language> / Final integration claim: <none | claim>
+<Next skill label in user's language> / Next skill: <implement | diagnose | harness-builder | verify>
+<Reason label in user's language> / Reason: <一句话>
 ```
 
 ## Recommended next skill
@@ -214,5 +221,8 @@ Use this as a routing recommendation, not as permission to keep working after pl
 ## 按需读取
 
 - `templates/README.md`：three-file 模板来源、许可证、本地改造说明。
-- `templates/task_plan.md`、`templates/progress.md`、`templates/findings.md`：仅在 three-file backend 被选择时使用。
+- `templates/task_plan.md`：英文/default three-file Plan 模板，仅在 three-file backend 被选择时使用。
+- `templates/task_plan.zh-CN.md`：中文 three-file Plan 模板，仅在 three-file backend 被选择且用户为中文时使用。
+- `templates/progress.md`、`templates/findings.md`：英文/default three-file 状态模板，仅在 three-file backend 被选择时使用。
+- `templates/progress.zh-CN.md`、`templates/findings.zh-CN.md`：中文 three-file 状态模板，仅在 three-file backend 被选择且用户为中文时使用。
 - 工作面初始化或 recovery surface 选择：`../harness-builder/SKILL.md`

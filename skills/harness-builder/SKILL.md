@@ -13,6 +13,13 @@ Default to project-local output. Do not modify user-global config unless explici
 
 Harness Builder uses one integrated gap model. Do not create a separate "profile" lane that competes with Capability Discovery. First decide which harness coverage areas are missing, then decide whether files, scripts, skills, hooks, MCP, or subagents are the right way to close each gap.
 
+## 语言策略
+
+- 用户可见文本跟随用户语言；中文用户场景下，Harness 证据、Charter、Coverage Matrix、Capability Discovery、Plan 和 User Checkpoint 使用中文为主的标题和说明。
+- 协议稳定优先：协议 token 如 `HARNESS EVIDENCE`、`HARNESS CHARTER`、`USER CHECKPOINT`、`Required / Recommended / Deferred / Rejected`、文件路径、命令、skill 名和安装面标识可保留英文，必要时使用中文标签 + 英文 token。
+- 不把 harness 输出硬编码为中文-only；英文用户或其他语言用户按其主要输入语言输出，机器可读 token 保持稳定。
+- 渲染或安装 `templates/*.j2` 时，先确定 `target_language` / `user_language`。模板默认英语，中文场景通过语言条件输出中文标签；不要把项目本地 harness 文件无条件写成中文-only。
+
 ## When to use
 
 - User asks to bootstrap, initialize, onboard, build harness, create project rules, or repair agent governance.
@@ -125,20 +132,20 @@ These gates are required unless the user explicitly asks for read-only explanati
 
 7. **User checkpoint gate**
    - Before writing or installing harness files, show the Harness Plan and ask for approval.
-   - Exact checkpoint text:
+   - Keep the protocol token `USER CHECKPOINT` exact. Render human labels in the user's language. Chinese-user example:
 
 ```text
 USER CHECKPOINT
-Approve this Harness Plan before I install project-local files:
-- Charter:
-- Coverage:
-- Install:
-- Patch existing:
-- Archive/deprecate:
-- Defer:
-- Reject:
-- Verification:
-Reply approve / change / stop.
+安装项目前，请先确认这个 Harness Plan：
+- 章程 / Charter:
+- 覆盖矩阵 / Coverage:
+- 新增安装 / Install:
+- 修补现有文件 / Patch existing:
+- 归档或降级 / Archive/deprecate:
+- 暂缓 / Defer:
+- 拒绝 / Reject:
+- 验证 / Verification:
+请回复：approve / change / stop。
 ```
 
 8. **Verification gate**
@@ -237,7 +244,7 @@ Reply approve / change / stop.
    - Update `.harness/manifest.yaml`, `.harness/decisions.md`, `.harness/state.md`, skill inventory, and research notes.
    - Use `references/anti_entropy.md` for cleanup drift.
 
-## Output contract
+## 输出契约
 
 Before approved installation:
 
@@ -254,6 +261,8 @@ VERIFICATION DESIGN
 HARNESS PLAN
 USER CHECKPOINT
 ```
+
+Render localized human labels adjacent to these exact protocol token lines, not by changing the token line itself.
 
 After approved installation:
 
