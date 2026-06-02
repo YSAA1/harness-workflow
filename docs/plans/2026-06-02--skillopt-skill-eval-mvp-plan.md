@@ -1,6 +1,6 @@
 # Executable Plan - SkillOpt skill eval MVP
 
-> 状态：in_progress
+> 状态：verified
 > Owner: user / agent
 > Date: 2026-06-02
 > Branch: `feature/skillopt-skill-eval-mvp`
@@ -62,7 +62,7 @@ Final integration claim: the repository contains a working, deterministic SkillO
 
 ### 1. Define SkillOpt-compatible case surface
 
-Status: in_progress
+Status: completed
 
 Acceptance criteria:
 
@@ -80,7 +80,7 @@ Success definition: runner can load all cases and produce a score for each item.
 
 ### 2. Implement deterministic runner and checker
 
-Status: pending
+Status: completed
 
 Acceptance criteria:
 
@@ -99,7 +99,7 @@ Success definition: baseline `skills/plan/SKILL.md` passes the canary suite with
 
 ### 3. Add candidate comparison protocol
 
-Status: pending
+Status: completed
 
 Acceptance criteria:
 
@@ -117,7 +117,7 @@ Success definition: a future `best_skill.md` has a clear, safe evaluation path w
 
 ### 4. Document controlled SkillOpt usage
 
-Status: pending
+Status: completed
 
 Acceptance criteria:
 
@@ -135,7 +135,7 @@ Success definition: a future agent can understand how to run an optimization exp
 
 ### 5. Run project checks and commit
 
-Status: pending
+Status: completed
 
 Acceptance criteria:
 
@@ -165,6 +165,21 @@ Success definition: one committed milestone exists on `feature/skillopt-skill-ev
 | U1 | plan artifact | planning | plan file written and reviewed for executable scope |
 | U2 | eval MVP scripts/data/docs | work items 1-4 | local eval smoke passes |
 | U3 | final verification cleanup | work item 5 | project checks pass and no unrelated files included |
+
+Current commits:
+
+- `9ec7a28 规划 SkillOpt skill eval MVP`
+- `6ba9630 实现 SkillOpt skill eval MVP`
+
+Final verification evidence:
+
+- `node scripts/run-skillopt-eval.mjs --skill plan --skill-file skills/plan/SKILL.md --suite canary` -> `23/23`
+- `node scripts/check-skillopt-eval.mjs docs/skillopt/runs/latest/summary.json` -> PASS
+- `node scripts/check-skillopt-eval.mjs docs/skillopt/runs/candidate/summary.json --baseline docs/skillopt/runs/baseline/summary.json --min-improvement 0` -> PASS
+- `node scripts/check-plugin.mjs` -> PASS; info only: Codex CLI not detected in this shell
+- `node scripts/check-claude-code-install.mjs` -> PASS
+- `node scripts/check-cursor-install.mjs` -> PASS
+- `node scripts/install-cursor.mjs --target . --dry-run` -> PASS
 
 ## Known risks / blockers
 
