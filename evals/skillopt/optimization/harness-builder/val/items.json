@@ -1,0 +1,16 @@
+[
+  {
+    "id": "hb-skillopt-candidate-handling-val",
+    "expected_behavior": "Validation requires the SkillOpt candidate boundary wording.",
+    "checks": [
+      {
+        "id": "skillopt-candidate-boundary",
+        "type": "contains_all",
+        "tokens": ["SkillOpt candidate handling", "candidate evidence only", "manual transplant"],
+        "weight": 3,
+        "hard": true
+      }
+    ],
+    "edits": []
+  }
+]

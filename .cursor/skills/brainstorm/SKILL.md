@@ -118,3 +118,8 @@ Handoff details: `references/spec-drafting.md`. Do not invoke the next skill bef
 - 模板：`templates/spec.md`
 - 下一步：`../plan/SKILL.md`；工作面缺口：`../harness-builder/SKILL.md`
 - 共享语言：`../../CONTEXT.md`（必读；使用其词汇写 Spec；引入新概念词时在 Phase B 当场补入 CONTEXT.md）
+
+## Spec freeze discipline
+
+- If an approved Spec or Executable Plan already exists and the user asks to continue execution, do not reopen brainstorming unless the target, scope, success criteria, or verification strategy has materially changed.
+- In that case, route to the next planned lane and preserve the existing Spec as the source of truth.

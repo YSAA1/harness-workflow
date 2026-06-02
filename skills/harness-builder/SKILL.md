@@ -300,3 +300,8 @@ When adding install packs, preserve current harness-builder assets unless a user
 - current `scripts/scan_project.py` signals for packaged plugins, Cursor preview, Node script tooling, plugin rules, and evidence-only automation signals.
 
 The `init_scaffold` pack is additive. It must never be treated as a replacement for Research Route, subagent policy, hook policy, project-local skill templates, or the current recovery surface.
+
+## SkillOpt candidate handling
+
+- Treat SkillOpt output as candidate evidence only. It may inform a harness patch, but it cannot replace repo evidence, the Harness Charter, Coverage Matrix, USER CHECKPOINT, or phase verification.
+- If a SkillOpt run proposes changes to project workflow skills, first evaluate the candidate, then perform a manual transplant into the canonical `SKILL.md` with review and verification evidence.

@@ -188,3 +188,8 @@ Pick the next lane from current evidence instead of defaulting to more implement
 - 失败诊断：`../diagnose/SKILL.md`
 - 准备声明 ready：`../verify/SKILL.md`
 - 阶段评审：`../review/SKILL.md`
+
+## Continue-to-tail discipline
+
+- If the user asks to continue without stopping, preserve commit-unit boundaries, local evidence, and review/verify routing instead of merging multiple planned slices into one opaque change.
+- After a committed and reviewed slice is stable, continue to the next planned slice using the same active plan until the plan is complete or a real blocker is recorded.
