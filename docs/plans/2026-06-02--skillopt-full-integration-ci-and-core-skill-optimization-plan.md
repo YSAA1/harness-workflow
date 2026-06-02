@@ -241,7 +241,7 @@ Evidence:
 
 ### 6. Final verification, push, PR, and Actions evidence
 
-Status: pending
+Status: completed
 
 Acceptance criteria:
 
@@ -265,6 +265,15 @@ gh run list ...
 
 Success definition: local and remote evidence support the final integration claim.
 
+Evidence:
+
+- Final local deterministic evals passed: `harness-builder 15/15`, `brainstorm 14/14`, `plan 23/23`, `implement 14/14`.
+- Final local structure checks passed: `node scripts/check-plugin.mjs`, `node scripts/check-claude-code-install.mjs`, `node scripts/check-cursor-install.mjs`, `node scripts/install-cursor.mjs --target . --dry-run`, and `bash scripts/agent/check.sh`.
+- SkillOpt smoke passed against pinned checkout `25da7cb2ddc26eb67eb6cb386915f269d7ee42cf`.
+- Branch pushed: `origin/feature/skillopt-skill-eval-mvp`.
+- PR opened: https://github.com/YSAA1/harness-workflow/pull/10
+- GitHub Actions passed on 2026-06-02T06:02Z: `Plugin checks` and `Deterministic SkillOpt evals`.
+
 ## Commit units
 
 | Unit | Scope | Phases | Precondition |
@@ -273,7 +282,7 @@ Success definition: local and remote evidence support the final integration clai
 | U2 | SkillOpt pin, scripts, smoke | 1-2 | completed; ready for review and commit |
 | U3 | CI workflow and eval expansion | 3-4 | completed; ready for review and commit |
 | U4 | Formal skill optimization | 5 | completed; ready for review and commit |
-| U5 | Final verification and PR evidence | 6 | Local checks pass and GitHub Actions evidence collected |
+| U5 | Final verification and PR evidence | 6 | completed; PR opened and GitHub Actions passed |
 
 ## Known risks / blockers
 
@@ -284,6 +293,6 @@ Success definition: local and remote evidence support the final integration clai
 
 ## Handoff to next skill
 
-Next skill: `implement`
+Next skill: `review`
 
-Reason: Spec is approved by user direction, active slice is scoped, and first implementation step is to confirm upstream SkillOpt capabilities before code changes.
+Reason: implementation, local verification, push, PR creation, and GitHub Actions evidence are complete; the remaining step is user review of the optimized skill changes.
