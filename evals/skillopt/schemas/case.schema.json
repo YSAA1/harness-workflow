@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Harness Workflow SkillOpt Eval Suite",
+  "type": "object",
+  "required": ["skill", "suite", "cases"],
+  "additionalProperties": false,
+  "properties": {
+    "skill": { "type": "string" },
+    "suite": { "type": "string" },
+    "description": { "type": "string" },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "split", "prompt", "checks"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "split": { "enum": ["train", "val", "test", "canary"] },
+          "prompt": { "type": "string" },
+          "expected_behavior": { "type": "string" },
+          "notes": { "type": "string" },
+          "checks": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["id", "type"],
+              "additionalProperties": false,
+              "properties": {
+                "id": { "type": "string" },
+                "type": {
+                  "enum": [
+                    "contains_all",
+                    "contains_any",
+                    "not_contains_any",
+                    "frontmatter_name"
+                  ]
+                },
+                "tokens": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "value": { "type": "string" },
+                "weight": { "type": "number", "minimum": 0 },
+                "hard": { "type": "boolean" },
+                "notes": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,3 +1,4 @@
 ppt-output/
 __pycache__/
 *.py[cod]
+docs/skillopt/runs/
