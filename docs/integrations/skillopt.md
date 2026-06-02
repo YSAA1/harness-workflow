@@ -19,6 +19,33 @@ node scripts/check-skillopt-eval.mjs docs/skillopt/runs/latest/summary.json
 
 This scores a candidate skill document against `evals/skillopt/cases/plan/canary.json`. It does not call `codex exec`, Claude Code, or SkillOpt's Python trainer yet. The goal is to make the score surface stable before adding online trajectories.
 
+## Pinned SkillOpt checkout
+
+This repo integrates the upstream `microsoft/SkillOpt` project through a pinned external checkout, not by vendoring the upstream source. The pin is recorded in `evals/skillopt/source.json`.
+
+Prepare or verify the local checkout:
+
+```bash
+node scripts/prepare-skillopt.mjs
+node scripts/prepare-skillopt.mjs --check
+```
+
+Install SkillOpt into the ignored local virtualenv when the Python dependencies are not already available:
+
+```bash
+node scripts/prepare-skillopt.mjs --install
+```
+
+Run the local SkillOpt smoke:
+
+```bash
+node scripts/run-skillopt-smoke.mjs
+```
+
+The checkout, virtualenv, and smoke summaries live under `.skillopt/`, which is ignored by git. The smoke invokes SkillOpt's own Python training entrypoint in help mode and verifies the upstream backend boundary.
+
+At the pinned commit, `codex_exec` is supported as a target execution backend, not as an optimizer backend. That means Codex CLI alone can prove the target harness path, but a real optimization run still needs a supported optimizer backend: `openai_chat`, `claude_chat`, `qwen_chat`, or `minimax_chat`. A no-API-key real optimization path therefore requires a local compatible backend such as `qwen_chat`; otherwise use a configured API backend on the local machine.
+
 ## How to evaluate a future `best_skill.md`
 
 If a SkillOpt run produces `outputs/.../best_skill.md`, evaluate it before transplanting anything into the canonical skill:

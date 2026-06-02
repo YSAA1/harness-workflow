@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "name": "microsoft/SkillOpt",
+  "repo": "https://github.com/microsoft/SkillOpt.git",
+  "commit": "25da7cb2ddc26eb67eb6cb386915f269d7ee42cf",
+  "checked_at": "2026-06-02",
+  "python": ">=3.10",
+  "checkout_dir": ".skillopt/SkillOpt",
+  "venv_dir": ".skillopt/venv",
+  "capability_notes": {
+    "target_backend": "SkillOpt supports codex_exec as a target execution backend.",
+    "optimizer_backend": "SkillOpt optimizer backends are openai_chat, claude_chat, qwen_chat, and minimax_chat; codex_exec is not accepted as an optimizer backend at this commit.",
+    "no_api_key_path": "Codex CLI alone can serve as a target harness smoke, but real optimization still needs a supported optimizer backend such as local qwen_chat or a configured API backend."
+  }
+}
