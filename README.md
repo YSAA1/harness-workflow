@@ -267,11 +267,19 @@ More details: [docs/install/cursor.md](docs/install/cursor.md).
 ## Check this repo
 
 ```bash
+bash scripts/agent/check.sh
+```
+
+The agent check wraps the default local structure checks:
+
+```bash
 node scripts/check-plugin.mjs
 node scripts/check-claude-code-install.mjs
 node scripts/check-cursor-install.mjs
-claude plugin validate .
+node scripts/install-cursor.mjs --target . --dry-run
 ```
+
+When the Claude Code CLI is installed, CI also runs `claude plugin validate .`.
 
 ## Repository layout
 
@@ -286,6 +294,7 @@ claude plugin validate .
 | `docs/assets/readme/` | README icon and imagegen infographic PNG assets. |
 | `docs/install/` | Install notes for each supported agent surface. |
 | `docs/integrations/` | Notes for optional external workflow integrations such as autoresearch. |
+| `scripts/agent/check.sh` | Agent-facing fast verification entry. |
 | `scripts/check-*.mjs` | Consistency and recognition checks. |
 
 ## License

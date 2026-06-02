@@ -30,6 +30,7 @@
 - `scripts/check-cursor-install.mjs`: Cursor rules、skills 和 adapter 验证脚本。
 - `scripts/install-cursor.mjs`: 将 rules 和 skills 复制到目标项目 `.cursor/` 的 project adapter。
 - `scripts/generate-skill-flow-html.mjs`: 从各个 `SKILL.md` 生成流程审阅 HTML。
+- `scripts/agent/check.sh`: agent-facing 快速验证入口，串联默认结构检查。
 - `skills/*/SKILL.md`: 每个 active workflow skill 的主入口和执行协议。
 - `skills/*/references/`: 按需读取的细节政策、检查表和参考资料。
 - `skills/*/templates/`: skill 使用或 backend 生成时复用的模板。
@@ -37,6 +38,7 @@
 ## 快速开始
 
 - 快速验证：`node scripts/check-plugin.mjs`
+- Agent 快速验证：`bash scripts/agent/check.sh`
 - 重新生成 skill flow HTML：`node scripts/generate-skill-flow-html.mjs`
 - 三端结构验证：`node scripts/check-plugin.mjs && node scripts/check-claude-code-install.mjs && node scripts/check-cursor-install.mjs`
 - Cursor adapter dry-run：`node scripts/install-cursor.mjs --target . --dry-run`
