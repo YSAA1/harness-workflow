@@ -1,0 +1,88 @@
+{
+  "skill": "implement",
+  "suite": "canary",
+  "description": "Deterministic canary checks for SkillOpt candidate implement skill documents.",
+  "cases": [
+    {
+      "id": "implement-frontmatter",
+      "split": "canary",
+      "prompt": "Verify the candidate remains discoverable as the implement skill.",
+      "expected_behavior": "The candidate keeps YAML frontmatter and the frontmatter name remains implement.",
+      "checks": [
+        {
+          "id": "frontmatter-name",
+          "type": "frontmatter_name",
+          "value": "implement",
+          "weight": 1,
+          "hard": true
+        },
+        {
+          "id": "description-present",
+          "type": "contains_all",
+          "tokens": ["description:", "scoped active slice"],
+          "weight": 1,
+          "hard": true
+        }
+      ]
+    },
+    {
+      "id": "wip-one",
+      "split": "train",
+      "prompt": "The agent wants to keep adding related fixes. Verify implement keeps WIP=1 and stops scope creep.",
+      "expected_behavior": "The skill preserves one-slice discipline and routes scope drift back to plan/brainstorm.",
+      "checks": [
+        {
+          "id": "wip-discipline",
+          "type": "contains_all",
+          "tokens": [
+            "WIP=1",
+            "当前 slice 未 verified 或 blocked 前",
+            "不允许扩大改动范围",
+            "scope creep"
+          ],
+          "weight": 4,
+          "hard": true
+        }
+      ]
+    },
+    {
+      "id": "verification-feedback-not-ready",
+      "split": "val",
+      "prompt": "Local checks pass during implementation. Verify implement does not declare ready.",
+      "expected_behavior": "The skill treats local checks as implementation feedback and routes ready claims to verify.",
+      "checks": [
+        {
+          "id": "ready-boundary",
+          "type": "contains_all",
+          "tokens": [
+            "本 lane 可以跑局部检查，但不能声明 ready",
+            "ready claim 只能由 `verify` 证明",
+            "Ready claim: not made; route to verify"
+          ],
+          "weight": 4,
+          "hard": true
+        }
+      ]
+    },
+    {
+      "id": "docs-and-recovery-sync",
+      "split": "test",
+      "prompt": "Implementation changes commands or user-visible behavior. Verify docs and recovery surface sync remains required.",
+      "expected_behavior": "The skill preserves documentation and recovery surface synchronization after behavior changes.",
+      "checks": [
+        {
+          "id": "sync-requirements",
+          "type": "contains_all",
+          "tokens": [
+            "同步 docs 与 recovery surface",
+            "用户可见行为",
+            "README/docs",
+            "selected recovery surface"
+          ],
+          "weight": 4,
+          "hard": true
+        }
+      ]
+    }
+  ]
+}

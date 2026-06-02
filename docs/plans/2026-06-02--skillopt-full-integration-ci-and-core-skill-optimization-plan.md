@@ -148,7 +148,7 @@ Evidence:
 
 ### 3. Add GitHub CI no-secret gate
 
-Status: pending
+Status: completed
 
 Acceptance criteria:
 
@@ -168,9 +168,15 @@ node scripts/install-cursor.mjs --target . --dry-run
 
 Success definition: local commands mirror the CI gate and are safe for PRs.
 
+Evidence:
+
+- `.github/workflows/skillopt-evals.yml` added with `pull_request` and `workflow_dispatch` triggers.
+- Workflow runs deterministic evals for `harness-builder`, `brainstorm`, `plan`, and `implement`.
+- Workflow runs existing plugin/install checks and does not reference secrets or online optimization commands.
+
 ### 4. Expand deterministic eval coverage
 
-Status: pending
+Status: completed
 
 Acceptance criteria:
 
@@ -188,6 +194,14 @@ node scripts/run-skillopt-eval.mjs --skill implement --skill-file skills/impleme
 ```
 
 Success definition: four core skills have runnable canary gates.
+
+Evidence:
+
+- `evals/skillopt/cases/harness-builder/canary.json` -> `15/15`
+- `evals/skillopt/cases/brainstorm/canary.json` -> `14/14`
+- `evals/skillopt/cases/plan/canary.json` -> `23/23`
+- `evals/skillopt/cases/implement/canary.json` -> `14/14`
+- Each suite passed `node scripts/check-skillopt-eval.mjs docs/skillopt/runs/latest/summary.json` when run sequentially.
 
 ### 5. Run SkillOpt and transplant reviewed improvements
 
@@ -242,7 +256,7 @@ Success definition: local and remote evidence support the final integration clai
 | --- | --- | --- | --- |
 | U1 | Spec and plan | 1 | Spec and executable plan written |
 | U2 | SkillOpt pin, scripts, smoke | 1-2 | completed; ready for review and commit |
-| U3 | CI workflow and eval expansion | 3-4 | Local CI-equivalent checks pass |
+| U3 | CI workflow and eval expansion | 3-4 | completed; ready for review and commit |
 | U4 | Formal skill optimization | 5 | SkillOpt run evidence or blocker recorded; evals pass |
 | U5 | Final verification and PR evidence | 6 | Local checks pass and GitHub Actions evidence collected |
 

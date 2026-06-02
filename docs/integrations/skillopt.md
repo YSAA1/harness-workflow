@@ -84,6 +84,9 @@ Allowed experiment files:
 - `evals/skillopt/**`
 - `scripts/run-skillopt-eval.mjs`
 - `scripts/check-skillopt-eval.mjs`
+- `scripts/prepare-skillopt.mjs`
+- `scripts/run-skillopt-smoke.mjs`
+- `.github/workflows/skillopt-evals.yml`
 - `docs/integrations/skillopt.md`
 - compact reports under `docs/skillopt/` when explicitly needed
 
@@ -107,7 +110,13 @@ Candidate patches must not directly edit:
 Before any candidate text is manually transplanted into a canonical skill, run:
 
 ```bash
+node scripts/run-skillopt-eval.mjs --skill harness-builder --skill-file skills/harness-builder/SKILL.md --suite canary
+node scripts/check-skillopt-eval.mjs docs/skillopt/runs/latest/summary.json
+node scripts/run-skillopt-eval.mjs --skill brainstorm --skill-file skills/brainstorm/SKILL.md --suite canary
+node scripts/check-skillopt-eval.mjs docs/skillopt/runs/latest/summary.json
 node scripts/run-skillopt-eval.mjs --skill plan --skill-file <candidate-skill.md> --suite canary
+node scripts/check-skillopt-eval.mjs docs/skillopt/runs/latest/summary.json
+node scripts/run-skillopt-eval.mjs --skill implement --skill-file skills/implement/SKILL.md --suite canary
 node scripts/check-skillopt-eval.mjs docs/skillopt/runs/latest/summary.json
 node scripts/check-plugin.mjs
 node scripts/check-claude-code-install.mjs

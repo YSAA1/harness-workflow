@@ -1,0 +1,89 @@
+{
+  "skill": "brainstorm",
+  "suite": "canary",
+  "description": "Deterministic canary checks for SkillOpt candidate brainstorm skill documents.",
+  "cases": [
+    {
+      "id": "brainstorm-frontmatter",
+      "split": "canary",
+      "prompt": "Verify the candidate remains discoverable as the brainstorm skill.",
+      "expected_behavior": "The candidate keeps YAML frontmatter and the frontmatter name remains brainstorm.",
+      "checks": [
+        {
+          "id": "frontmatter-name",
+          "type": "frontmatter_name",
+          "value": "brainstorm",
+          "weight": 1,
+          "hard": true
+        },
+        {
+          "id": "description-present",
+          "type": "contains_all",
+          "tokens": ["description:", "Spec"],
+          "weight": 1,
+          "hard": true
+        }
+      ]
+    },
+    {
+      "id": "clarification-before-spec",
+      "split": "train",
+      "prompt": "A vague request needs clarification. Verify the skill does not draft a Spec before the gate passes.",
+      "expected_behavior": "The skill preserves Phase A clarification and forbids Spec drafting before the gate.",
+      "checks": [
+        {
+          "id": "clarification-gate",
+          "type": "contains_all",
+          "tokens": [
+            "Phase A Clarification",
+            "Gate 通过前禁止写 Spec",
+            "每轮只问一个最高优先级问题",
+            "assumption batch"
+          ],
+          "weight": 4,
+          "hard": true
+        }
+      ]
+    },
+    {
+      "id": "canonical-spec-surface",
+      "split": "val",
+      "prompt": "The repo has old PRD files. Verify brainstorm still writes Specs to the canonical surface unless explicitly overridden.",
+      "expected_behavior": "The skill keeps docs/specs as default and avoids docs/prd unless explicitly authorized.",
+      "checks": [
+        {
+          "id": "spec-path-rules",
+          "type": "contains_all",
+          "tokens": [
+            "Canonical Spec path",
+            "docs/specs/YYYY-MM-DD--<topic>.md",
+            "docs/prd/",
+            "override reason"
+          ],
+          "weight": 4,
+          "hard": true
+        }
+      ]
+    },
+    {
+      "id": "language-policy",
+      "split": "test",
+      "prompt": "Chinese user asks for brainstorming. Verify visible output follows user language while protocol tokens remain stable.",
+      "expected_behavior": "Chinese visible labels are used while stable protocol tokens remain unchanged.",
+      "checks": [
+        {
+          "id": "language-boundary",
+          "type": "contains_all",
+          "tokens": [
+            "语言策略",
+            "用户可见文本跟随用户语言",
+            "BRAINSTORM CLARIFICATION IN PROGRESS",
+            "BRAINSTORM SPEC READY"
+          ],
+          "weight": 4,
+          "hard": true
+        }
+      ]
+    }
+  ]
+}
