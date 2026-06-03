@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "required_top_level": [
+    "schema_version",
+    "skill",
+    "bench_version",
+    "review_status",
+    "purpose",
+    "cases"
+  ],
+  "required_case_fields": [
+    "id",
+    "split",
+    "source",
+    "prompt",
+    "context",
+    "expected_behavior",
+    "prohibited_behavior",
+    "scoring",
+    "failure_modes"
+  ],
+  "allowed_review_status": [
+    "draft_for_user_review",
+    "approved",
+    "rejected"
+  ],
+  "allowed_split": [
+    "review_pool",
+    "train",
+    "val",
+    "test"
+  ]
+}

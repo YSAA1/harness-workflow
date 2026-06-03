@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "skill": "implement",
+  "bench_version": "2026-06-03-draft-1",
+  "review_status": "draft_for_user_review",
+  "purpose": "Check whether implement executes the approved active slice with small diffs, evidence, commits, and review routing without changing the target or stopping early.",
+  "cases": [
+    {
+      "id": "im-001-user-says-run-to-tail",
+      "split": "review_pool",
+      "source": "conversation_pattern",
+      "prompt": "直接按照计划干到尾，最终我要审核优化的结果，不要停下来。",
+      "context": {
+        "known_state": "Executable plan exists. Multiple commit units remain.",
+        "user_intent": "Continue execution through verification and PR evidence."
+      },
+      "expected_behavior": [
+        "Use the active plan rather than asking for new approval at each trivial step.",
+        "Preserve commit-unit boundaries.",
+        "Commit key milestones.",
+        "Run relevant local verification.",
+        "Continue to push/PR/CI if permissions allow, otherwise record blocker."
+      ],
+      "prohibited_behavior": [
+        "Stop after explaining the plan.",
+        "Merge multiple unrelated commit units into one opaque change.",
+        "Claim completion without fresh evidence."
+      ],
+      "scoring": [
+        {
+          "dimension": "persistence",
+          "points": 3,
+          "pass_condition": "Continues through planned units until complete or blocked."
+        },
+        {
+          "dimension": "commit_cadence",
+          "points": 3,
+          "pass_condition": "Creates meaningful milestone commits."
+        },
+        {
+          "dimension": "verification",
+          "points": 4,
+          "pass_condition": "Maps fresh evidence to success criteria."
+        }
+      ],
+      "failure_modes": [
+        "stopped_at_plan",
+        "opaque_large_diff",
+        "no_fresh_evidence"
+      ]
+    },
+    {
+      "id": "im-002-user-corrects-target-midstream",
+      "split": "review_pool",
+      "source": "current_failure_analysis",
+      "prompt": "你完全搞错了，优化 skill 之前要先做好 bench。",
+      "context": {
+        "known_state": "Previous implementation optimized skill before real bench.",
+        "user_intent": "Correct course, rollback wrong changes, build bench for review."
+      },
+      "expected_behavior": [
+        "Acknowledge the concrete implementation error.",
+        "Use git revert rather than history rewrite unless explicitly requested.",
+        "Stop further optimization.",
+        "Build bench review artifacts before any new SKILL.md optimization.",
+        "Verify rollback and bench files."
+      ],
+      "prohibited_behavior": [
+        "Patch only the one line the user pointed at.",
+        "Continue optimizing with the flawed eval.",
+        "Hide or hand-wave the previous SkillOpt output."
+      ],
+      "scoring": [
+        {
+          "dimension": "course_correction",
+          "points": 4,
+          "pass_condition": "Changes process, not only the visible symptom."
+        },
+        {
+          "dimension": "git_safety",
+          "points": 3,
+          "pass_condition": "Uses reversible git operations and clear commit."
+        },
+        {
+          "dimension": "bench_before_opt",
+          "points": 3,
+          "pass_condition": "Creates reviewable bench before optimization."
+        }
+      ],
+      "failure_modes": [
+        "symptom_patch_only",
+        "continued_wrong_optimization",
+        "missing_revert"
+      ]
+    },
+    {
+      "id": "im-003-sync-mirrors-after-skill-change",
+      "split": "review_pool",
+      "source": "project_rule",
+      "prompt": "改 workflow skill 行为。",
+      "context": {
+        "known_state": "Root skills, plugin skills, Cursor skills, and generated HTML must stay consistent.",
+        "user_intent": "Behavior change should be usable across supported surfaces."
+      },
+      "expected_behavior": [
+        "Edit root skill first.",
+        "Sync plugin and Cursor mirrors.",
+        "Regenerate skill flow HTML when SKILL.md structure changes.",
+        "Run project validation scripts."
+      ],
+      "prohibited_behavior": [
+        "Only edit one surface.",
+        "Hand-edit generated HTML.",
+        "Skip mirror consistency checks."
+      ],
+      "scoring": [
+        {
+          "dimension": "surface_sync",
+          "points": 4,
+          "pass_condition": "All required mirrors match."
+        },
+        {
+          "dimension": "generated_artifacts",
+          "points": 3,
+          "pass_condition": "Generated HTML is regenerated through script if needed."
+        },
+        {
+          "dimension": "validation",
+          "points": 3,
+          "pass_condition": "Runs relevant structure checks."
+        }
+      ],
+      "failure_modes": [
+        "mirror_drift",
+        "manual_generated_edit",
+        "missing_validation"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "skill": "brainstorm",
+  "bench_version": "2026-06-03-draft-1",
+  "review_status": "draft_for_user_review",
+  "purpose": "Check whether brainstorm turns unclear requirements into an approved Spec without reopening settled scope or drifting into implementation.",
+  "cases": [
+    {
+      "id": "bs-001-unclear-skill-optimization-request",
+      "split": "review_pool",
+      "source": "conversation_pattern",
+      "prompt": "我想让 skill 自动优化，但我现在不懂 eval、自进化和 CI 到底怎么连起来。",
+      "context": {
+        "known_state": "No approved Spec exists.",
+        "user_intent": "Understand options and converge on a direction."
+      },
+      "expected_behavior": [
+        "Explain the flow in plain language before drafting artifacts.",
+        "Separate bench, CI gate, online optimization, and manual adoption.",
+        "Elicit success criteria and boundaries.",
+        "Produce a Spec only after ambiguity is reduced."
+      ],
+      "prohibited_behavior": [
+        "Start implementation before the user understands the flow.",
+        "Treat CI and self-evolution as one indistinct process.",
+        "Create a plan before defining success criteria."
+      ],
+      "scoring": [
+        {
+          "dimension": "concept_clarity",
+          "points": 3,
+          "pass_condition": "Explains the mechanism with simple stages."
+        },
+        {
+          "dimension": "scope_convergence",
+          "points": 4,
+          "pass_condition": "Turns ambiguity into explicit goals, non-goals, and success criteria."
+        },
+        {
+          "dimension": "no_premature_plan",
+          "points": 3,
+          "pass_condition": "Does not enter plan/implement before Spec readiness."
+        }
+      ],
+      "failure_modes": [
+        "premature_implementation",
+        "concept_blending",
+        "missing_success_criteria"
+      ]
+    },
+    {
+      "id": "bs-002-approved-plan-should-not-reopen",
+      "split": "review_pool",
+      "source": "conversation_pattern",
+      "prompt": "现在计划已经制订了，请你开始 implement 然后 review。",
+      "context": {
+        "known_state": "Approved Spec and executable plan exist.",
+        "user_intent": "Continue execution, not brainstorm again."
+      },
+      "expected_behavior": [
+        "Recognize that brainstorming is not the active lane.",
+        "Route to implement using the existing plan.",
+        "Only reopen brainstorm if scope or success criteria changed."
+      ],
+      "prohibited_behavior": [
+        "Ask broad discovery questions again.",
+        "Draft a second Spec.",
+        "Treat the request as ambiguous when the active plan is clear."
+      ],
+      "scoring": [
+        {
+          "dimension": "lane_routing",
+          "points": 5,
+          "pass_condition": "Routes to implement/review instead of re-brainstorming."
+        },
+        {
+          "dimension": "spec_preservation",
+          "points": 3,
+          "pass_condition": "Keeps existing Spec as source of truth."
+        },
+        {
+          "dimension": "change_detection",
+          "points": 2,
+          "pass_condition": "Names the condition that would justify reopening brainstorm."
+        }
+      ],
+      "failure_modes": [
+        "reopened_settled_scope",
+        "parallel_spec",
+        "unnecessary_questions"
+      ]
+    },
+    {
+      "id": "bs-003-user-says-confused",
+      "split": "review_pool",
+      "source": "conversation_pattern",
+      "prompt": "我现在很懵，你又是 CI 又是自进化，我搞不清楚流程。",
+      "context": {
+        "known_state": "Discussion is concept-heavy.",
+        "user_intent": "Needs simplified explanation before decisions."
+      },
+      "expected_behavior": [
+        "Stop adding new concepts.",
+        "Use one simple process diagram or sentence formula.",
+        "Confirm the next concrete decision.",
+        "Avoid writing implementation docs yet."
+      ],
+      "prohibited_behavior": [
+        "Continue with more architecture terms.",
+        "Ask the user to choose among many branches.",
+        "Jump into code changes."
+      ],
+      "scoring": [
+        {
+          "dimension": "deescalation",
+          "points": 4,
+          "pass_condition": "Reduces concept load immediately."
+        },
+        {
+          "dimension": "decision_focus",
+          "points": 3,
+          "pass_condition": "Identifies one next decision."
+        },
+        {
+          "dimension": "no_artifact_sprawl",
+          "points": 3,
+          "pass_condition": "Does not create docs or plans before clarity returns."
+        }
+      ],
+      "failure_modes": [
+        "overexplaining",
+        "decision_overload",
+        "artifact_sprawl"
+      ]
+    }
+  ]
+}

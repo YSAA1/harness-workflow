@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "skill": "plan",
+  "bench_version": "2026-06-03-draft-1",
+  "review_status": "draft_for_user_review",
+  "purpose": "Check whether plan turns approved scope into executable commit units and preserves the active plan instead of creating parallel planning surfaces.",
+  "cases": [
+    {
+      "id": "pl-001-skillopt-before-optimization",
+      "split": "review_pool",
+      "source": "current_failure_analysis",
+      "prompt": "我要用 SkillOpt 优化这些 workflow skills。",
+      "context": {
+        "known_state": "No bench exists yet.",
+        "user_intent": "Eventually optimize skills, but wants controlled process."
+      },
+      "expected_behavior": [
+        "Make bench creation the first commit unit.",
+        "Block formal optimization until bench is reviewed and baseline is measured.",
+        "Separate infrastructure, bench, optimization, adoption, and CI gates.",
+        "Define evidence required before touching canonical SKILL.md."
+      ],
+      "prohibited_behavior": [
+        "Plan SkillOpt optimization before bench approval.",
+        "Treat canary token checks as sufficient bench.",
+        "Claim skill improvement without baseline-vs-candidate comparison."
+      ],
+      "scoring": [
+        {
+          "dimension": "bench_first",
+          "points": 5,
+          "pass_condition": "Bench design precedes optimization."
+        },
+        {
+          "dimension": "commit_units",
+          "points": 3,
+          "pass_condition": "Commit units isolate bench, optimizer, adoption, and CI."
+        },
+        {
+          "dimension": "evidence_gate",
+          "points": 2,
+          "pass_condition": "Requires baseline and candidate evidence before SKILL.md changes."
+        }
+      ],
+      "failure_modes": [
+        "optimizer_before_bench",
+        "canary_confused_with_bench",
+        "missing_baseline"
+      ]
+    },
+    {
+      "id": "pl-002-continue-existing-plan",
+      "split": "review_pool",
+      "source": "conversation_pattern",
+      "prompt": "下一步是干啥呢？",
+      "context": {
+        "known_state": "An executable plan has several completed and incomplete units.",
+        "user_intent": "Needs status and next action, not a fresh plan."
+      },
+      "expected_behavior": [
+        "Read the active plan and git status.",
+        "Report completed units and next incomplete commit unit.",
+        "Continue the existing plan unless scope changed.",
+        "Avoid creating a second plan file."
+      ],
+      "prohibited_behavior": [
+        "Start a new plan from scratch.",
+        "Ignore commit cadence.",
+        "Give vague next-step advice without local evidence."
+      ],
+      "scoring": [
+        {
+          "dimension": "plan_resume",
+          "points": 4,
+          "pass_condition": "Finds and resumes existing plan."
+        },
+        {
+          "dimension": "status_grounding",
+          "points": 3,
+          "pass_condition": "Uses plan and git status as evidence."
+        },
+        {
+          "dimension": "no_parallel_surface",
+          "points": 3,
+          "pass_condition": "Does not create a parallel plan."
+        }
+      ],
+      "failure_modes": [
+        "parallel_plan",
+        "unverified_status",
+        "lost_commit_unit"
+      ]
+    },
+    {
+      "id": "pl-003-ci-plus-local-work",
+      "split": "review_pool",
+      "source": "conversation_pattern",
+      "prompt": "这一版不是只讨论 CI，CI 也要做正式工作也要做。",
+      "context": {
+        "known_state": "User distinguishes CI gates from actual implementation.",
+        "user_intent": "Plan must include both remote gate and local functionality."
+      },
+      "expected_behavior": [
+        "Split CI gate and functional implementation into separate commit units.",
+        "Define what CI proves and what it deliberately does not prove.",
+        "Include local verification for real functionality.",
+        "Avoid overclaiming that CI equals optimization."
+      ],
+      "prohibited_behavior": [
+        "Only create CI workflow.",
+        "Run online optimization in CI.",
+        "Skip local implementation evidence."
+      ],
+      "scoring": [
+        {
+          "dimension": "work_split",
+          "points": 4,
+          "pass_condition": "Plan separates CI and real implementation."
+        },
+        {
+          "dimension": "ci_boundary",
+          "points": 3,
+          "pass_condition": "States CI limitations clearly."
+        },
+        {
+          "dimension": "local_evidence",
+          "points": 3,
+          "pass_condition": "Includes local commands for functional proof."
+        }
+      ],
+      "failure_modes": [
+        "ci_only_plan",
+        "ci_overclaim",
+        "missing_local_evidence"
+      ]
+    }
+  ]
+}
