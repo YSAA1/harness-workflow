@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "skill": "<skill-name>",
+  "session_version": "YYYY-MM-DD-draft-1",
+  "session_status": "discussion_pending",
+  "discussion": {
+    "user_pain": [
+      "<describe the user's concrete pain>"
+    ],
+    "skill_job": "",
+    "non_goals": [
+      "<describe what this skill should not do>"
+    ],
+    "known_failure_modes": [
+      "<describe a known bad behavior>"
+    ],
+    "success_claim": ""
+  },
+  "target_requirements": [
+    {
+      "id": "req-001",
+      "requirement": "",
+      "why_it_matters": "",
+      "observable_signal": ""
+    }
+  ],
+  "candidate_cases": [
+    {
+      "id": "case-001",
+      "review_status": "draft",
+      "source": "",
+      "input_prompt": "",
+      "context": {},
+      "expected_behavior": [
+        "<describe the desired behavior>"
+      ],
+      "prohibited_behavior": [
+        "<describe behavior that should fail this case>"
+      ],
+      "scoring_rubric": [
+        {
+          "dimension": "",
+          "points": 0,
+          "pass_condition": ""
+        }
+      ],
+      "failure_modes": [
+        "<failure-mode-id>"
+      ]
+    }
+  ],
+  "split_plan": {
+    "status": "not_ready",
+    "train": [],
+    "val": [],
+    "test": [],
+    "notes": "Do not split until candidate cases are reviewed and approved."
+  }
+}

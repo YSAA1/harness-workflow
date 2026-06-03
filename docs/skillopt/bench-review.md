@@ -1,37 +1,55 @@
-# Skill Bench Review
+# Skill Bench Protocol Review
 
-Status: draft for user review.
+Status: protocol draft for user review.
 
-This is the new gate before any future SkillOpt optimization. The previous mistake was optimizing workflow skills against thin canary checks instead of a real bench. These bench cases must be reviewed before they are converted into train/val/test data or used to justify changes to canonical `SKILL.md` files.
+This is the new gate before any future SkillOpt optimization. The previous mistake was optimizing workflow skills against thin canary checks and directly generated case JSON. That is not sufficient.
 
-## What to review
+The corrected process is one skill at a time:
 
-Review whether each case represents a real workflow failure or an important expected behavior:
+```text
+choose one skill
+-> discuss its job, pain, non-goals, and failure modes
+-> agree target requirements
+-> draft bench cases
+-> user reviews cases
+-> split approved cases into train / val / test
+-> measure baseline
+-> run SkillOpt
+-> compare candidate vs baseline
+-> manually adopt reviewed edits
+```
 
-- Is the prompt realistic?
-- Is the expected behavior what you want the skill to do?
-- Is the prohibited behavior actually wrong?
-- Are the scoring dimensions useful, or are they easy to game?
-- Should the case be approved, revised, or rejected?
+## What changed
 
-## Draft bench files
+The directly generated per-skill draft JSON files were removed. They were too shallow and could repeat the same mistake by turning weak examples into an optimization target.
 
-| Skill | File | Cases | Main target |
-| --- | --- | ---: | --- |
-| `harness-builder` | `evals/skillopt/bench/harness-builder.json` | 4 | Build or repair project harness without generic capability sprawl or SkillOpt meta-process pollution |
-| `brainstorm` | `evals/skillopt/bench/brainstorm.json` | 3 | Clarify unclear requirements, but avoid reopening approved scope |
-| `plan` | `evals/skillopt/bench/plan.json` | 3 | Make bench-first executable plans and resume existing plans |
-| `implement` | `evals/skillopt/bench/implement.json` | 3 | Execute active slices to evidence/commit/PR while correcting course when target changes |
+Current bench files:
+
+| File | Purpose |
+| --- | --- |
+| `evals/skillopt/bench/README.md` | Defines the one-skill bench process |
+| `evals/skillopt/bench/schema.json` | Defines the structure for a single skill bench session |
+| `evals/skillopt/bench/templates/skill-bench-session.json` | Template used after the skill discussion starts |
+| `scripts/check-skill-bench.mjs` | Validates the protocol files and future session JSON |
 
 ## Current rule
 
 No SkillOpt run should modify canonical workflow skills until:
 
-1. Bench cases are reviewed.
-2. Approved cases are split into train/val/test.
-3. Baseline skill behavior is measured against the approved bench.
-4. Candidate behavior is compared against baseline.
-5. A human review decides which candidate edits, if any, are manually adopted.
+1. One target skill is selected.
+2. That skill's goals, non-goals, and failure modes are discussed with the user.
+3. Bench cases are drafted from that discussion.
+4. The user approves or revises the cases.
+5. Approved cases are split into train/val/test.
+6. Baseline skill behavior is measured.
+7. Candidate behavior is compared against baseline.
+8. A human review decides which candidate edits, if any, are manually adopted.
+
+## Suggested first skill
+
+Start with `harness-builder`.
+
+Reason: the earlier bad optimization polluted `harness-builder` with SkillOpt meta-process text, which proves its target requirements were not defined clearly enough. The first discussion should define what `harness-builder` is supposed to do in real use and what it must never do.
 
 ## Validation
 
@@ -39,4 +57,4 @@ No SkillOpt run should modify canonical workflow skills until:
 node scripts/check-skill-bench.mjs
 ```
 
-This only validates bench structure. It does not claim the bench is approved or sufficient.
+This validates protocol structure and any future per-skill bench session JSON. It does not claim a bench is approved or sufficient.

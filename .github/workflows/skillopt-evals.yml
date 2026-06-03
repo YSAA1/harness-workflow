@@ -40,6 +40,9 @@ jobs:
           node scripts/run-skillopt-eval.mjs --skill implement --skill-file skills/implement/SKILL.md --suite canary
           node scripts/check-skillopt-eval.mjs docs/skillopt/runs/latest/summary.json
 
+      - name: Check SkillOpt bench protocol
+        run: node scripts/check-skill-bench.mjs
+
       - name: Check Codex plugin
         run: node scripts/check-plugin.mjs
 

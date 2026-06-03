@@ -1,24 +1,28 @@
-# Skill Bench Review Pool
+# Skill Bench Protocol
 
-This directory contains human-reviewable bench cases for workflow skill optimization.
+This directory defines the bench workflow used before any SkillOpt workflow-skill optimization.
 
-These files are not SkillOpt training data yet. They are the review pool used to decide whether a skill optimization target is real, useful, and correctly scoped before any optimizer is allowed to change a canonical `SKILL.md`.
+Do not generate bench cases for multiple skills in one pass. Each skill gets its own discussion, goal agreement, case drafting, review, split, baseline, optimization, and adoption cycle.
 
-## Review contract
+## One-skill bench sequence
 
-- A bench case must describe a realistic user prompt or project state.
-- A bench case must state expected behavior and prohibited behavior.
-- A bench case must score workflow behavior, not keyword presence.
-- A bench case must stay in `review_pool` until the user approves it.
-- Only approved bench cases may be converted into train/val/test data or CI gates.
+1. Pick exactly one target skill.
+2. Discuss the skill's job, user pain, non-goals, and known failure modes.
+3. Agree on target requirements before writing cases.
+4. Draft bench cases for that skill only.
+5. User reviews cases as approved, revise, or rejected.
+6. Split only approved cases into train, validation, and test.
+7. Measure baseline behavior against the approved bench.
+8. Run SkillOpt only after baseline evidence exists.
+9. Compare candidate behavior against baseline and held-out test cases.
+10. Manually adopt only reviewed edits into canonical `SKILL.md`.
 
-## Current scope
+## Files
 
-The first review pool covers the four skills that were previously optimized too early:
+- `schema.json`: structure expected for a single skill bench session.
+- `templates/skill-bench-session.json`: starting template for one skill discussion.
+- `sessions/`: future approved or in-review per-skill bench sessions.
 
-- `harness-builder`
-- `brainstorm`
-- `plan`
-- `implement`
+## Rule
 
-The earlier canary suites under `evals/skillopt/cases/` remain lightweight regression checks. They are not sufficient as optimization benches.
+The canary suites under `evals/skillopt/cases/` are lightweight regression checks. They are not sufficient as optimization benches and must not justify a `SKILL.md` optimization by themselves.

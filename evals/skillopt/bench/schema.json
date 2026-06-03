@@ -3,29 +3,51 @@
   "required_top_level": [
     "schema_version",
     "skill",
-    "bench_version",
-    "review_status",
-    "purpose",
-    "cases"
+    "session_version",
+    "session_status",
+    "discussion",
+    "target_requirements",
+    "candidate_cases",
+    "split_plan"
+  ],
+  "required_discussion_fields": [
+    "user_pain",
+    "skill_job",
+    "non_goals",
+    "known_failure_modes",
+    "success_claim"
+  ],
+  "required_requirement_fields": [
+    "id",
+    "requirement",
+    "why_it_matters",
+    "observable_signal"
   ],
   "required_case_fields": [
     "id",
-    "split",
+    "review_status",
     "source",
-    "prompt",
+    "input_prompt",
     "context",
     "expected_behavior",
     "prohibited_behavior",
-    "scoring",
+    "scoring_rubric",
     "failure_modes"
   ],
-  "allowed_review_status": [
+  "allowed_session_status": [
+    "discussion_pending",
     "draft_for_user_review",
+    "approved_for_split",
+    "split_ready",
+    "rejected"
+  ],
+  "allowed_case_review_status": [
+    "draft",
     "approved",
+    "revise",
     "rejected"
   ],
   "allowed_split": [
-    "review_pool",
     "train",
     "val",
     "test"
