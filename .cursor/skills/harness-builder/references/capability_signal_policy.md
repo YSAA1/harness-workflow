@@ -1,16 +1,29 @@
 # Capability Signal Policy
 
-Use after the Coverage Matrix exposes a real gap. Turn repo evidence into a short, auditable capability shortlist—not an automation catalog.
+Use after the Coverage Matrix exposes a real gap. Turn repo evidence into a short, auditable capability shortlist, except when the user explicitly asks for a broader recommendation report.
 
 ## Shortlist contract
 
 Every candidate must include: `repo_signal`, `source_evidence`, `freshness`, `candidate`, `coverage_row` (exactly one), `why`, `install_surface`, `trust_boundary`, `approval_needed`, `risk_cost`, `fallback`, `verification_probe`, `classification` (`Required` / `Recommended` / `Deferred` / `Rejected`).
 
-- Default 1–2 candidates per category; defer extras.
+- Default 1-2 candidates per category; defer extras.
 - Prefer doc/script/test/lint over heavier capabilities.
 - **Project-level Harness Builder:** on strong stack signals, default low-risk project-local candidates to `Recommended` and present them proactively.
 - **Single-task lanes:** stay conservative; adopt only what the task needs.
 - **Do not install on user silence.** User-level MCP/hooks need explicit checkpoint approval.
+
+## Full Recommendation Mode
+
+Enter this mode when the user explicitly asks for capability recommendations, automation recommendations, setup recommendations, install recommendations, MCP/hooks/skills/subagent/plugin recommendations, or asks what agent capabilities the project should use.
+
+This mode is still read-only by default. It differs from the normal shortlist in scope:
+
+- Recommend a broader candidate set across MCP servers, skills, hooks, subagents, plugins, slash/CLI commands, CI/headless automation, and project-local harness files.
+- Include 1-2 top candidates per category by default; include 3-5 when the user asks about one specific category.
+- Use `automation_recommendation_guide.md` for report shape.
+- Use `automation_mcp_servers.md`, `automation_hooks_patterns.md`, `automation_subagent_templates.md`, `automation_skills_reference.md`, and `automation_plugins_reference.md` as the first reference library before web search.
+- Keep every candidate bound to one coverage row and include the full shortlist fields.
+- End with the exact approval boundary: what can be implemented project-locally now, what needs user approval, and what remains recommendation-only.
 
 ## Docs-first, then web search
 
