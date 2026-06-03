@@ -4,7 +4,7 @@
   "type": "object",
   "required": [
     "version",
-    "coverage_matrix"
+    "recommendation_matrix"
   ],
   "properties": {
     "version": {
@@ -13,7 +13,7 @@
         "string"
       ]
     },
-    "coverage_matrix": {
+    "recommendation_matrix": {
       "type": "object"
     },
     "packs": {

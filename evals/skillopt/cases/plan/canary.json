@@ -1,0 +1,171 @@
+{
+  "skill": "plan",
+  "suite": "canary",
+  "description": "Deterministic canary checks for SkillOpt candidate plan skill documents. These cases score the skill document itself before any online trajectory runner is used.",
+  "cases": [
+    {
+      "id": "plan-frontmatter",
+      "split": "canary",
+      "prompt": "Load a candidate plan skill document and verify it is still discoverable as the plan skill.",
+      "expected_behavior": "The candidate keeps YAML frontmatter and the frontmatter name remains plan.",
+      "checks": [
+        {
+          "id": "frontmatter-name",
+          "type": "frontmatter_name",
+          "value": "plan",
+          "weight": 1,
+          "hard": true
+        },
+        {
+          "id": "description-present",
+          "type": "contains_all",
+          "tokens": ["description:", "Executable Plan"],
+          "weight": 1,
+          "hard": true
+        }
+      ]
+    },
+    {
+      "id": "plan-output-contract",
+      "split": "train",
+      "prompt": "用户要求先写计划，不要实现。检查 plan skill 是否保留稳定输出契约。",
+      "expected_behavior": "The skill requires a structured executable plan with stable labels and next-skill routing.",
+      "checks": [
+        {
+          "id": "contract-fields",
+          "type": "contains_all",
+          "tokens": [
+            "EXECUTABLE PLAN WRITTEN",
+            "Planning surface",
+            "Artifact",
+            "Spec source",
+            "Active slice",
+            "Success criteria",
+            "Verification path status",
+            "Required capabilities",
+            "Fallback evidence",
+            "Final integration claim",
+            "Next skill"
+          ],
+          "weight": 4,
+          "hard": true
+        }
+      ]
+    },
+    {
+      "id": "verification-gate",
+      "split": "val",
+      "prompt": "用户给出一个验证路径不明确的任务。检查 plan skill 是否保留 runnable/blocked gate。",
+      "expected_behavior": "The skill exposes verification status, fallback evidence, and routes verification capability gaps to harness-builder.",
+      "checks": [
+        {
+          "id": "verification-status",
+          "type": "contains_all",
+          "tokens": [
+            "Verification path status",
+            "runnable | blocked",
+            "Fallback evidence",
+            "harness-builder"
+          ],
+          "weight": 3,
+          "hard": true
+        }
+      ]
+    },
+    {
+      "id": "language-policy",
+      "split": "test",
+      "prompt": "中文用户要求写计划。检查 plan skill 是否保留用户语言跟随和协议稳定边界。",
+      "expected_behavior": "Chinese visible output should be Chinese-first while protocol tokens remain stable.",
+      "checks": [
+        {
+          "id": "language-boundary",
+          "type": "contains_all",
+          "tokens": [
+            "语言策略",
+            "用户可见文本",
+            "协议稳定优先",
+            "中文用户",
+            "templates/task_plan.zh-CN.md"
+          ],
+          "weight": 3,
+          "hard": true
+        }
+      ]
+    },
+    {
+      "id": "planning-surface",
+      "split": "train",
+      "prompt": "用户没有指定计划路径。检查 plan skill 是否默认写 docs/plans 且不误用 docs/prd。",
+      "expected_behavior": "The default planning surface is docs/plans and overrides require explicit user/project authority.",
+      "checks": [
+        {
+          "id": "surface-rules",
+          "type": "contains_all",
+          "tokens": [
+            "docs/plans/YYYY-MM-DD--<topic>-plan.md",
+            "docs/prd/",
+            "Override",
+            "AGENTS.md"
+          ],
+          "weight": 3,
+          "hard": true
+        }
+      ]
+    },
+    {
+      "id": "workflow-boundaries",
+      "split": "val",
+      "prompt": "用户请求 plan，但 agent 可能会越界到实现或诊断。检查 lane 边界。",
+      "expected_behavior": "The skill keeps plan boundaries and explicit handoff to implement, verify, diagnose, or brainstorm.",
+      "checks": [
+        {
+          "id": "lane-boundaries",
+          "type": "contains_all",
+          "tokens": [
+            "Do not use when",
+            "brainstorm",
+            "implement",
+            "verify",
+            "diagnose"
+          ],
+          "weight": 3,
+          "hard": true
+        },
+        {
+          "id": "removed-skills-not-reintroduced",
+          "type": "not_contains_any",
+          "tokens": [
+            "state-contract",
+            "save-session"
+          ],
+          "weight": 1,
+          "hard": true
+        }
+      ]
+    },
+    {
+      "id": "commit-unit-acceptance",
+      "split": "test",
+      "prompt": "多阶段任务需要 commit unit。检查 plan skill 是否保留提交与验收绑定。",
+      "expected_behavior": "Commit units must bind to review and verify gates and each phase has falsifiable acceptance criteria.",
+      "checks": [
+        {
+          "id": "commit-and-acceptance",
+          "type": "contains_all",
+          "tokens": [
+            "Commit unit",
+            "review",
+            "verify",
+            "final_integration_claim",
+            "acceptance_criteria",
+            "verification_commands",
+            "success_definition"
+          ],
+          "weight": 4,
+          "hard": true
+        }
+      ]
+    }
+  ]
+}

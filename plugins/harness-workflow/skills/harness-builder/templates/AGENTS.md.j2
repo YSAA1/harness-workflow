@@ -1,68 +1,70 @@
 # AGENTS.md
+{% set lang_norm = (target_language | default(user_language | default('en')) | string | lower) %}
+{% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
 
-## Project overview
+## {{ '项目概览（Project overview）' if zh else 'Project overview' }}
 
 {{ project_overview }}
 
-## Project map
+## {{ '项目地图（Project map）' if zh else 'Project map' }}
 
 {{ project_map }}
 
-## Quick start
+## {{ '快速开始（Quick start）' if zh else 'Quick start' }}
 
 {{ quick_start }}
 
-## Project iron laws
+## {{ '项目铁律（Project iron laws）' if zh else 'Project iron laws' }}
 
-These are non-negotiable project rules. Do not violate them to make a task appear complete.
+{{ '这些是不可违反的项目规则。不要为了让任务看起来完成而绕过它们。' if zh else 'These are non-negotiable project rules. Do not bypass them to make work appear complete.' }}
 
 {{ project_iron_laws }}
 
-## Recovery surface
+## {{ '恢复面（Recovery surface）' if zh else 'Recovery surface' }}
 
-Selected recovery surface: {{ recovery_surface }}
+{{ '当前选定 recovery surface' if zh else 'Selected recovery surface' }}: {{ recovery_surface }}
 
-Read next:
+{{ '下一步读取' if zh else 'Read next' }}:
 
 {{ recovery_read_order }}
 
-Dynamic task state does not live in `AGENTS.md`.
+{{ '动态任务状态不要写进 `AGENTS.md`。' if zh else 'Do not write dynamic task state into `AGENTS.md`.' }}
 
-## Required reading by task type
+## {{ '按任务类型必读（Required reading by task type）' if zh else 'Required reading by task type' }}
 
 {{ required_reading }}
 
-## Source-of-truth priority
+## {{ '真相源优先级（Source-of-truth priority）' if zh else 'Source-of-truth priority' }}
 
 {{ source_of_truth_priority }}
 
-Do not treat old state as current just because it exists. If sources conflict, follow the priority above and current git evidence.
+{{ '不要因为旧状态文件存在就把它当成当前事实。若来源冲突，按上面的优先级和当前 git 证据判断。' if zh else 'Do not treat old state files as current truth just because they exist. If sources conflict, use the priority above and current git evidence.' }}
 
-## Verification
+## {{ '验证（Verification）' if zh else 'Verification' }}
 
-Fast check:
+{{ '快速检查' if zh else 'Fast check' }}:
 
 ```bash
 {{ fast_check_command }}
 ```
 
-Do not claim success if this was not run. If it fails, report the failure honestly and do not hide or bypass it.
+{{ '没有运行时不要声称成功。如果失败，如实报告失败，不要隐藏或绕过。' if zh else 'Do not claim success without running it. If it fails, report the failure honestly; do not hide or bypass it.' }}
 
-## Scope control
+## {{ '范围控制（Scope control）' if zh else 'Scope control' }}
 
-Work on one task or one feature at a time. Do not perform unrelated refactors unless explicitly requested.
+{{ '一次只推进一个任务或一个功能。除非明确要求，不做无关重构。' if zh else 'Work on one task or feature at a time. Do not do unrelated refactors unless explicitly requested.' }}
 
-## Protected areas
+## {{ '受保护区域（Protected areas）' if zh else 'Protected areas' }}
 
-Do not modify unless explicitly requested:
+{{ '除非明确要求，不要修改' if zh else 'Do not modify unless explicitly requested' }}:
 
 {{ protected_paths }}
 
-## Definition of Done
+## {{ '完成标准（Definition of Done）' if zh else 'Definition of Done' }}
 
-A task is done only when:
+{{ '只有满足以下条件，任务才算完成：' if zh else 'A task is done only when:' }}
 
-- the change is minimal and task-scoped;
-- relevant verification was run or the failure is reported;
-- selected recovery surface is updated for multi-session work;
-- remaining risks are listed.
+- {{ '改动最小且限定在任务范围内；' if zh else 'the diff is minimal and scoped to the task;' }}
+- {{ '已运行相关验证，或已报告失败原因；' if zh else 'relevant verification has run, or the failure reason is reported;' }}
+- {{ '多会话工作已更新 selected recovery surface；' if zh else 'multi-session work has updated the selected recovery surface;' }}
+- {{ '已列出剩余风险。' if zh else 'residual risks are listed.' }}

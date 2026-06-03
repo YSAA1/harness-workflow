@@ -1,91 +1,93 @@
-# Harness State
+{% set lang_norm = (target_language | default(user_language | default('en')) | string | lower) %}
+{% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
+# {{ 'Harness 状态（Harness State）' if zh else 'Harness State' }}
 
-## Project phase
+## {{ '项目阶段（Project phase）' if zh else 'Project phase' }}
 
 {{ project_phase }}
 
-## Risk level
+## {{ '风险级别（Risk level）' if zh else 'Risk level' }}
 
 {{ risk_level }}
 
-## Harness brainstorming summary
+## {{ 'Harness 构思摘要（Harness brainstorming summary）' if zh else 'Harness brainstorming summary' }}
 
 {{ brainstorming_summary }}
 
-## Harness charter
+## {{ 'Harness 推荐契约（Harness Recommendation Contract）' if zh else 'Harness Recommendation Contract' }}
 
-- Objective: {{ harness_objective }}
-- Acceptance criteria: {{ acceptance_criteria }}
-- Verification path: {{ verification_path }}
-- Evidence location: {{ evidence_location }}
-- Selected recovery surface: {{ recovery_surface }}
+- {{ '目标（Objective）' if zh else 'Objective' }}: {{ harness_objective }}
+- {{ '验收标准（Acceptance criteria）' if zh else 'Acceptance criteria' }}: {{ acceptance_criteria }}
+- {{ '验证路径（Verification path）' if zh else 'Verification path' }}: {{ verification_path }}
+- {{ '证据位置（Evidence location）' if zh else 'Evidence location' }}: {{ evidence_location }}
+- {{ '选定 recovery surface' if zh else 'Selected recovery surface' }}: {{ recovery_surface }}
 
-## Source-of-truth priority
+## {{ '真相源优先级（Source-of-truth priority）' if zh else 'Source-of-truth priority' }}
 
 {{ source_of_truth_priority }}
 
-## Active work
+## {{ '当前工作（Active work）' if zh else 'Active work' }}
 
-- Current active task: {{ current_active_task | default('None recorded.') }}
-- Evidence location: {{ evidence_location }}
-- Risks: {{ current_risks | default('None recorded.') }}
-- Next action: {{ next_actions | default('None recorded.') }}
+- {{ '当前 active task' if zh else 'Current active task' }}: {{ current_active_task if current_active_task is defined else ('未记录。' if zh else 'None recorded.') }}
+- {{ '证据位置' if zh else 'Evidence location' }}: {{ evidence_location }}
+- {{ '风险' if zh else 'Risks' }}: {{ current_risks if current_risks is defined else ('未记录。' if zh else 'None recorded.') }}
+- {{ '下一步' if zh else 'Next actions' }}: {{ next_actions if next_actions is defined else ('未记录。' if zh else 'None recorded.') }}
 
-{% if include_coverage_matrix %}
-## Coverage matrix
+{% if include_recommendation_matrix %}
+## {{ '推荐矩阵（Harness Recommendation Matrix）' if zh else 'Harness Recommendation Matrix' }}
 
-| Area | Status |
+| {{ '推荐区域（Area）' if zh else 'Area' }} | {{ '状态（Status）' if zh else 'Status' }} |
 | --- | --- |
-| Agent entry and project map | {{ coverage_agent_entry }} |
-| Static docs and durable rules | {{ coverage_static_docs }} |
-| Recovery surface | {{ coverage_recovery_surface }} |
-| Verification entry | {{ coverage_verification_entry }} |
-| Architecture boundaries | {{ coverage_architecture_boundaries }} |
-| Anti-entropy | {{ coverage_anti_entropy }} |
-| Skill fit | {{ coverage_skill_fit }} |
-| Hook fit | {{ coverage_hook_fit }} |
-| MCP fit | {{ coverage_mcp_fit }} |
-| Subagent fit | {{ coverage_subagent_fit }} |
-| External research fit | {{ coverage_external_research_fit }} |
-| Dynamic context | {{ coverage_dynamic_context }} |
+| {{ 'Agent 入口和项目地图' if zh else 'Agent entry and project map' }} | {{ recommendation_agent_entry }} |
+| {{ '静态文档和稳定规则' if zh else 'Static docs and durable rules' }} | {{ recommendation_static_docs }} |
+| Recovery surface | {{ recommendation_recovery_surface }} |
+| {{ '验证入口' if zh else 'Verification entry' }} | {{ recommendation_verification_entry }} |
+| {{ '架构边界' if zh else 'Architecture boundaries' }} | {{ recommendation_architecture_boundaries }} |
+| Anti-entropy | {{ recommendation_anti_entropy }} |
+| Skill fit | {{ recommendation_skill_fit }} |
+| Hook fit | {{ recommendation_hook_fit }} |
+| MCP fit | {{ recommendation_mcp_fit }} |
+| Subagent fit | {{ recommendation_subagent_fit }} |
+| {{ '外部研究适配' if zh else 'External research fit' }} | {{ recommendation_external_research_fit }} |
+| {{ '动态上下文' if zh else 'Dynamic context' }} | {{ recommendation_dynamic_context }} |
 {% endif %}
 
-{% if pack_selection_summary %}
-## Pack selection
+{% if recommendation_summary %}
+## {{ '推荐摘要（Recommendation summary）' if zh else 'Recommendation summary' }}
 
-{{ pack_selection_summary | default('No install pack selected.') }}
+{{ recommendation_summary | default('未记录推荐摘要。' if zh else 'No recommendation summary recorded.') }}
 {% endif %}
 
 {% if orchestration_mode %}
-## Orchestration mode
+## {{ '编排模式（Orchestration mode）' if zh else 'Orchestration mode' }}
 
 {{ orchestration_mode }}
 
-Reason:
+{{ '原因' if zh else 'Reason' }}:
 
 {{ orchestration_reason }}
 {% endif %}
 
-## Open user decisions
+## {{ '待用户决策（Open user decisions）' if zh else 'Open user decisions' }}
 
 {{ open_user_decisions }}
 
-## Last known good verification
+## {{ '最近一次已知可用验证（Last known good verification）' if zh else 'Last known good verification' }}
 
-None recorded.
+{{ '未记录。' if zh else 'None recorded.' }}
 
-## Known broken checks
+## {{ '已知失败检查（Known broken checks）' if zh else 'Known broken checks' }}
 
-None recorded.
+{{ '未记录。' if zh else 'None recorded.' }}
 
-## Important recent decisions
+## {{ '近期重要决策（Important recent decisions）' if zh else 'Important recent decisions' }}
 
-See `.harness/decisions.md`.
+{{ '见 `.harness/decisions.md`。' if zh else 'See `.harness/decisions.md`.' }}
 
-## Known gaps
+## {{ '已知缺口（Known gaps）' if zh else 'Known gaps' }}
 
 {{ known_gaps }}
 
-## Next recommended step
+## {{ '建议下一步（Next recommended step）' if zh else 'Next recommended step' }}
 
 {{ next_steps }}

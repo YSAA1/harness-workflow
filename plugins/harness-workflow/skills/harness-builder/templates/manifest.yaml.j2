@@ -3,7 +3,7 @@ project_type: "{{ project_type }}"
 project_phase: "{{ project_phase }}"
 risk_level: "{{ risk_level }}"
 
-harness_charter:
+harness_recommendation_contract:
   objective: "{{ harness_objective }}"
   non_goals: []
   acceptance_criteria: []
@@ -12,15 +12,15 @@ harness_charter:
   recovery_surface: "{{ recovery_surface }}"
   source_of_truth_priority: []
 
-coverage_matrix:
-  agent_entry: "{{ coverage_agent_entry }}"
-  static_docs: "{{ coverage_static_docs }}"
-  recovery_surface: "{{ coverage_recovery_surface }}"
-  verification_entry: "{{ coverage_verification_entry }}"
-  architecture_boundaries: "{{ coverage_architecture_boundaries }}"
-  anti_entropy: "{{ coverage_anti_entropy }}"
-  capability_fit: "{{ coverage_capability_fit }}"
-  dynamic_context: "{{ coverage_dynamic_context }}"
+recommendation_matrix:
+  agent_entry: "{{ recommendation_agent_entry }}"
+  static_docs: "{{ recommendation_static_docs }}"
+  recovery_surface: "{{ recommendation_recovery_surface }}"
+  verification_entry: "{{ recommendation_verification_entry }}"
+  architecture_boundaries: "{{ recommendation_architecture_boundaries }}"
+  anti_entropy: "{{ recommendation_anti_entropy }}"
+  capability_fit: "{{ recommendation_capability_fit }}"
+  dynamic_context: "{{ recommendation_dynamic_context }}"
 
 harness_goals:
   controllable: true
@@ -74,8 +74,6 @@ asset_loading:
     - project-local skills
   explicit_only_assets:
     - Research Route
-  pack_only_assets:
-    - init_scaffold
 
 installed:
   instructions:
@@ -95,14 +93,6 @@ skills: []
 hooks: []
 subagents: []
 mcp: []
-
-packs:
-  init_scaffold:
-    status: "{{ init_scaffold_status | default('not_selected') }}"
-    selected_components: []
-    deferred_components: []
-    rejected_components: []
-    adapter: references/packs/init_scaffold/adapter.md
 
 deferred: []
 rejected: []

@@ -7,7 +7,7 @@ description: "Use this helper to discover reusable agent skills for a clear task
 
 This skill helps you discover and install skills from the open agent skills ecosystem.
 
-Inside Harness Workflow, this is an auxiliary skill for Capability Discovery. Use it to search for reusable skills only after the task gap is clear. Do not install a skill just because it is related; recommend or install it only when it helps the current repo's verification, observability, domain work, automation, or repeated workflow.
+Inside Harness Workflow, this is an auxiliary skill for Capability Recommendation. Use it to search for reusable skills only after the task gap is clear. Do not install a skill just because it is related; recommend or install it only when it helps the current repo's verification, observability, domain work, automation, or repeated workflow.
 
 ## Routing Snapshot
 

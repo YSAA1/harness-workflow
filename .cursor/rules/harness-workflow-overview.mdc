@@ -8,9 +8,9 @@ alwaysApply: true
 
 Cursor support is a rules adapter, not a plugin runtime. Codex and Claude Code can expose skills or plugins; Cursor reads persistent project context from `.cursor/rules` and can also read `AGENTS.md` as a simpler fallback.
 
-Use these rules to route work into the eight canonical Harness Workflow lanes. The bundled `find-skills` helper supports Capability Discovery, but it is not a workflow lane:
+Use these rules to route work into the eight canonical Harness Workflow lanes. The bundled `find-skills` helper supports Capability Recommendation, but it is not a workflow lane:
 
-- `harness-builder`: build or repair the project workbench, verification entry, recovery surface, and Capability Discovery policy.
+- `harness-builder`: recommend, build, or repair the project workbench, verification entry, recovery surface, and Capability Recommendation policy.
 - `brainstorm`: turn unclear requirements into an approved Spec.
 - `plan`: turn an approved Spec or clear request into an Executable Plan.
 - `implement`: make one scoped change with WIP=1 discipline.
@@ -27,7 +27,7 @@ Use these rules to route work into the eight canonical Harness Workflow lanes. T
 - Ready claims require fresh evidence gathered after the relevant changes.
 - Implementation runs WIP=1: one active slice at a time, with non-goals and success criteria visible.
 - Knowledge Cleanup prevents README, AGENTS.md, docs, generated artifacts, and the selected recovery surface from drifting.
-- Capability Discovery evaluates skills, MCP, hooks, subagents, or external tools by task value. Use `find-skills` for skill discovery, and do not blindly install capabilities.
+- Capability Recommendation evaluates skills, MCP, hooks, subagents, plugins, commands, CI/headless automation, or external tools by task value. Use `find-skills` for skill discovery, and do not blindly install capabilities.
 - Do not add Cursor MCP, extensions, hooks, user settings, or global config unless the user explicitly asks.
 - Do not claim Cursor installs or reads `.codex-plugin/plugin.json`.
 

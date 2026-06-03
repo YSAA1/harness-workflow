@@ -1,6 +1,6 @@
 {
   "name": "harness-workflow",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Practical Codex workflow skills for Harness Builder, Spec, Executable Plan, Research Route, scoped implementation, fresh verification, review, Knowledge Cleanup, and skill discovery.",
   "license": "MIT",
   "keywords": [
@@ -23,7 +23,7 @@
     ],
     "defaultPrompt": [
       "Use harness-builder after brainstorm or plan when the project needs a tailored recovery surface.",
-      "Use find-skills during Capability Discovery before adding project-local skills, MCPs, or hooks.",
+      "Use find-skills during Capability Recommendation before adding project-local skills, MCPs, or hooks.",
       "Use cleanup before handoff to catch doc drift, stale artifacts, and recovery gaps."
     ],
     "brandColor": "#2563EB"

@@ -134,7 +134,7 @@ const methodContract = exists("docs/harness-method-contract.md") ? read("docs/ha
 const skillBundle = workflowSkills.map((skill) => read(`skills/${skill}/SKILL.md`)).join("\n");
 for (const token of [
   "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
-  "recovery surface", "fresh evidence", "WIP=1", "Knowledge Cleanup", "Capability Discovery", "Capability Shortlist",
+  "recovery surface", "fresh evidence", "WIP=1", "Knowledge Cleanup", "Capability Recommendation", "Harness Recommendation Matrix",
 ]) {
   if (!`${methodContract}\n${skillBundle}`.includes(token)) fail(`Claude Code line missing required discipline token: ${token}`);
 }

@@ -9,6 +9,13 @@ description: "用于把模糊需求收敛成用户批准过的 Spec。触发条�
 
 Canonical Spec path: `docs/specs/YYYY-MM-DD--<topic>.md`。不要因为仓库存在 `docs/prd/`、root `plan.md`、issue、design docs 或其他任务系统就改写默认位置。只有当前用户明确指定路径，或 `AGENTS.md` 明确声明 canonical Spec surface 时，才允许 override，并在输出中说明 override reason。不要默认写三文件；recovery surface 只在项目要求时收短摘要。
 
+## 语言策略
+
+- 用户可见文本跟随用户语言；中文用户场景下，澄清问题、Coverage 说明、Spec 标题和模板提示默认使用中文。
+- 协议稳定优先：协议 token 如 `BRAINSTORM CLARIFICATION IN PROGRESS`、`BRAINSTORM SPEC READY`、`Spec`、`Gate`、路径、skill 名和状态枚举可保留英文，必要时用中文标签补充解释。
+- 不把“使用中文”硬编码为全局规则；英文用户或其他语言用户按其主要输入语言输出。
+- 输出契约中的 `<... label in user's language>` 是占位说明，实际回复时必须替换成用户语言标签，不要原样输出。
+
 ## 目的
 
 - 防止模糊想法过早进入计划或实现。
@@ -67,12 +74,12 @@ Gate 与 assumption batch 完成后，按 `references/spec-drafting.md` 执行�
 ```text
 BRAINSTORM CLARIFICATION IN PROGRESS | BRAINSTORM SPEC READY
 
-Spec: <docs/specs/YYYY-MM-DD--topic.md or explicit override | n/a>
-Coverage: <confirmed+waived>/<8>; Gate: <BLOCKED|PASSED>
-Chosen approach: <一句话 or n/a>
-Verification strategy: <一句话 or pending>
-Needs user review: <question|approve Spec before plan>
-Next skill after approval: plan
+<Spec path label in user's language> / Spec: <docs/specs/YYYY-MM-DD--topic.md or explicit override | n/a>
+<Coverage label in user's language> / Coverage: <confirmed+waived>/<8>; Gate: <BLOCKED|PASSED>
+<Chosen approach label in user's language> / Chosen approach: <一句话 or n/a>
+<Verification strategy label in user's language> / Verification strategy: <一句话 or pending>
+<Needs user review label in user's language> / Needs user review: <question|approve Spec before plan>
+<Next skill after approval label in user's language> / Next skill after approval: plan
 ```
 
 ## 硬规则

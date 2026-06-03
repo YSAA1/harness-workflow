@@ -227,9 +227,14 @@ for (const token of [
 if (!process.exitCode) pass("README exposes the Codex install entry");
 
 const templateFiles = [
+  "skills/brainstorm/templates/spec.md",
+  "skills/brainstorm/templates/spec.zh-CN.md",
   "skills/plan/templates/task_plan.md",
+  "skills/plan/templates/task_plan.zh-CN.md",
   "skills/plan/templates/progress.md",
+  "skills/plan/templates/progress.zh-CN.md",
   "skills/plan/templates/findings.md",
+  "skills/plan/templates/findings.zh-CN.md",
   "skills/plan/templates/README.md",
   "skills/harness-builder/templates/research_route/research_plan.md.j2",
   "skills/harness-builder/templates/research_route/evidence_log.md.j2",
@@ -241,12 +246,181 @@ for (const file of templateFiles) {
 }
 if (templateFiles.every(exists)) pass("planning and research-route templates are preserved");
 
+const languageAdaptiveSkills = ["brainstorm", "plan", "harness-builder"];
+for (const skill of languageAdaptiveSkills) {
+  const source = read(skillPath(skill));
+  for (const token of ["用户可见文本跟随用户语言", "协议 token", "协议稳定优先"]) {
+    if (!source.includes(token)) fail(`${skill} missing language-adaptive contract token: ${token}`);
+  }
+}
+
+const brainstormSpecTemplate = read("skills/brainstorm/templates/spec.md");
+const brainstormZhSpecTemplate = read("skills/brainstorm/templates/spec.zh-CN.md");
+for (const heading of [
+  "Background",
+  "Goals",
+  "Non-goals",
+  "Users / Callers",
+  "Behavior Spec",
+  "Constraints",
+  "Chosen Approach",
+  "Rejected Options",
+  "Verification Strategy",
+  "Capability Gaps",
+  "Success Criteria",
+  "Residual Risks",
+  "Plan Handoff",
+]) {
+  const englishOnlyHeading = new RegExp(`^## ${heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`, "m");
+  if (englishOnlyHeading.test(brainstormZhSpecTemplate)) {
+    fail(`brainstorm zh-CN spec template has English-only heading: ${heading}`);
+  }
+}
+for (const token of ["## Background", "## Goals", "## Non-goals", "## Verification Strategy", "## Success Criteria"]) {
+  if (!brainstormSpecTemplate.includes(token)) fail(`brainstorm default spec template missing English heading token: ${token}`);
+}
+for (const token of ["## 背景", "## 目标", "## 非目标（Non-goals）", "## 验证策略（Verification Strategy）", "## 成功标准（Success Criteria）"]) {
+  if (!brainstormZhSpecTemplate.includes(token)) fail(`brainstorm zh-CN spec template missing Chinese heading token: ${token}`);
+}
+for (const forbidden of ["## 背景", "## 目标", "## 验证策略（Verification Strategy）"]) {
+  if (brainstormSpecTemplate.includes(forbidden)) fail(`brainstorm default spec template should not force Chinese heading: ${forbidden}`);
+}
+
+const clarificationCoverage = read("skills/brainstorm/references/clarification-coverage.md");
+for (const token of [
+  "澄清覆盖矩阵（Clarification Coverage）",
+  "Chinese-user example",
+  "Default English/non-Chinese output",
+  "维度（Dimension）",
+  "目的（Purpose）",
+  "Clarification Coverage",
+  "| Dimension | Status | Source / note |",
+  "Coverage: <confirmed+waived>/<8> confirmed or waived; <N> inferred pending assumption batch",
+  "已确认或豁免（confirmed or waived）",
+  "待假设批次确认（inferred pending assumption batch）",
+  "成功标准（Success criteria）",
+  "验证策略（Verification strategy）",
+  "能力缺口（Capability gaps）",
+]) {
+  if (!clarificationCoverage.includes(token)) fail(`brainstorm clarification coverage missing bilingual token: ${token}`);
+}
+for (const forbidden of [
+  "Copy this into chat and update every clarification turn",
+]) {
+  if (clarificationCoverage.includes(forbidden)) {
+    fail(`brainstorm clarification coverage still has English-first output token: ${forbidden}`);
+  }
+}
+
+const planTaskTemplate = read("skills/plan/templates/task_plan.md");
+const planZhTaskTemplate = read("skills/plan/templates/task_plan.zh-CN.md");
+for (const token of [
+  "## Objective",
+  "## Scope Contract",
+  "- Active slice:",
+  "- Non-goals:",
+  "- Success criteria:",
+  "- Verification path status: `runnable | blocked`",
+  "Acceptance criteria:",
+  "Verification commands:",
+  "Success definition:",
+]) {
+  if (!planTaskTemplate.includes(token)) fail(`plan default task template missing English/default token: ${token}`);
+}
+for (const token of [
+  "当前切片（Active slice）",
+  "非目标（Non-goals）",
+  "成功标准（Success criteria）",
+  "验证路径状态（Verification path status）",
+  "验收标准（acceptance_criteria）",
+  "验证命令（verification_commands）",
+  "成功定义（success_definition）",
+]) {
+  if (!planZhTaskTemplate.includes(token)) fail(`plan zh-CN task template missing bilingual field token: ${token}`);
+}
+for (const forbidden of ["当前切片（Active slice）", "非目标（Non-goals）", "验收标准（acceptance_criteria）"]) {
+  if (planTaskTemplate.includes(forbidden)) fail(`plan default task template should not force Chinese field: ${forbidden}`);
+}
+for (const forbidden of ["- Non-goals：", "Acceptance criteria：", "Verification commands：", "Success definition："]) {
+  if (planZhTaskTemplate.includes(forbidden)) fail(`plan zh-CN task template still has English-first field: ${forbidden}`);
+}
+const planProgressTemplate = read("skills/plan/templates/progress.md");
+const planZhProgressTemplate = read("skills/plan/templates/progress.zh-CN.md");
+const planFindingsTemplate = read("skills/plan/templates/findings.md");
+const planZhFindingsTemplate = read("skills/plan/templates/findings.zh-CN.md");
+for (const token of ["# Progress Log", "## Milestone Commits", "## Test Results", "## Five-Question Recovery Check"]) {
+  if (!planProgressTemplate.includes(token)) fail(`plan default progress template missing English/default token: ${token}`);
+}
+for (const token of ["# 进度日志", "## 里程碑提交记录", "## 测试结果", "## 五问恢复检查"]) {
+  if (!planZhProgressTemplate.includes(token)) fail(`plan zh-CN progress template missing Chinese token: ${token}`);
+}
+for (const token of ["# Findings And Decisions", "## Requirements", "## Accepted Spec", "## Rejected Options / Dead Ends"]) {
+  if (!planFindingsTemplate.includes(token)) fail(`plan default findings template missing English/default token: ${token}`);
+}
+for (const token of ["# 发现与决策", "## 需求", "## 已接受规格", "## 拒绝选项 / 死路"]) {
+  if (!planZhFindingsTemplate.includes(token)) fail(`plan zh-CN findings template missing Chinese token: ${token}`);
+}
+for (const [label, source] of [
+  ["progress", planProgressTemplate],
+  ["findings", planFindingsTemplate],
+]) {
+  for (const forbidden of ["# 进度日志", "# 发现与决策", "## 需求", "## 测试结果"]) {
+    if (source.includes(forbidden)) fail(`plan default ${label} template should not force Chinese token: ${forbidden}`);
+  }
+}
+
+const harnessUserTemplates = [
+  ["skills/harness-builder/templates/AGENTS.md.j2", "项目概览（Project overview）", "Project overview"],
+  ["skills/harness-builder/templates/state.md.j2", "当前工作（Active work）", "Active work"],
+  ["skills/harness-builder/templates/verification.md.j2", "快速检查（Fast check）", "Fast check"],
+  ["skills/harness-builder/templates/project_context.md.j2", "项目上下文（Project Context）", "Project Context"],
+  ["skills/harness-builder/templates/workflow.md.j2", "Agent 工作流（Agent Workflow）", "Agent Workflow"],
+  ["skills/harness-builder/templates/progress.md.j2", "进度（Progress）", "Progress"],
+  ["skills/harness-builder/templates/decisions.md.j2", "Harness 决策（Harness Decisions）", "Harness Decisions"],
+  ["skills/harness-builder/templates/reports/verification_report.md.j2", "验证报告（Verification Report）", "Verification Report"],
+  ["skills/harness-builder/templates/risk_register.md.j2", "风险登记表（Risk Register）", "Risk Register"],
+  ["skills/harness-builder/templates/session_handoff.md.j2", "会话交接（Session Handoff）", "Session Handoff"],
+  ["skills/harness-builder/templates/commit_convention.md.j2", "Commit 约定（Commit Convention）", "Commit Convention"],
+];
+for (const [file, zhTitle, enTitle] of harnessUserTemplates) {
+  if (!exists(file)) fail(`missing harness user-facing template ${file}`);
+  const source = read(file);
+  if (!source.includes("lang_norm[:2] == 'zh'") || !source.includes("'中文' in lang_norm") || !source.includes("'chinese' in lang_norm")) {
+    fail(`harness user-facing template lacks target language selector: ${file}`);
+  }
+  if (!source.includes(`'${zhTitle}' if zh else '${enTitle}'`)) {
+    fail(`harness user-facing template lacks checked bilingual title ${zhTitle}: ${file}`);
+  }
+  for (const line of source.split(/\r?\n/)) {
+    if (/^#{1,6}\s*[\u4e00-\u9fff]/.test(line)) {
+      fail(`harness user-facing template has unconditional Chinese heading: ${file}: ${line}`);
+    }
+    if (line.trim() === "None recorded.") {
+      fail(`harness user-facing template has unconditional English empty placeholder: ${file}`);
+    }
+  }
+}
+const commitConventionTemplate = read("skills/harness-builder/templates/commit_convention.md.j2");
+for (const token of ["{% if zh %}", "harden harness-builder research closeout gate", "Research commits 可添加 trailers"]) {
+  if (!commitConventionTemplate.includes(token)) {
+    fail(`commit convention template missing localized example token: ${token}`);
+  }
+}
+const harnessBuilderContract = read("skills/harness-builder/SKILL.md");
+for (const forbidden of ["USER CHECKPOINT（", "HARNESS EVIDENCE（", "NEXT（"]) {
+  if (harnessBuilderContract.includes(forbidden)) fail(`harness-builder protocol token line is not exact: ${forbidden}`);
+}
+for (const token of ["安装项目前，请先确认这个 Harness Recommendation Plan", "请回复：approve / change / stop。"]) {
+  if (!harnessBuilderContract.includes(token)) fail(`harness-builder Chinese checkpoint example missing localized text: ${token}`);
+}
+if (harnessUserTemplates.every(([file]) => exists(file))) pass("core language-adaptive template checks passed");
+
 const activeDocs = `${read(".codex-plugin/plugin.json")}\n${read("README.md")}\n${read("README.zh-CN.md")}\n${read("AGENTS.md")}\n${read("CONTEXT.md")}\n${read("docs/harness-method-contract.md")}\n${read("docs/integrations/autoresearch.md")}\n${read("scripts/generate-skill-flow-html.mjs")}`;
 for (const token of [
   "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
   "Harness Builder", "recovery surface", "three-file", "Spec", "Executable Plan",
-  "Knowledge Cleanup", "Capability Discovery", "AGENTS.md", "项目铁律", "fresh evidence",
-  "Capability Shortlist",
+  "Knowledge Cleanup", "Capability Recommendation", "AGENTS.md", "项目铁律", "fresh evidence",
+  "Harness Recommendation Matrix",
   "Research Route", "autoresearch", "Evidence Loop", "Research Reset Policy",
 ]) {
   if (!activeDocs.includes(token)) fail(`docs missing boundary token: ${token}`);
@@ -271,21 +445,22 @@ if (exists(skillPath("harness-builder"))) {
   for (const token of [
     "Harness Hypothesis",
     "project-level harness",
-    "Mandatory execution gates",
+    "Harness Recommendation Mode",
+    "Recommended flow",
     "Question gate",
-    "Capability Discovery gate",
-    "Capability Shortlist pass",
-    "capability_signal_policy.md",
-    "recommendation report",
+    "Capability Recommendation pass",
+    "automation_recommendation_guide.md",
+    "Harness Recommendation Plan",
     "Verification design gate",
-    "User checkpoint gate",
+    "User checkpoint",
     "USER CHECKPOINT",
     "No reusable skill search needed",
     "No web research needed",
-    "Reply approve / change / stop",
+    "No install recommended",
+    "approve / change / stop",
     "AGENTS.md",
     "Project iron laws",
-    "Capability Discovery",
+    "Capability Recommendation",
     "$find-skills",
     "targeted web search",
     "recovery surface",

@@ -1,37 +1,51 @@
 # Research Route policy
 
-Use this reference when the user explicitly asks for autoresearch, autonomous research, repeated research attempts, method exploration, or "research this idea" after the problem has gone through enough brainstorm or planning context.
+Use when the user explicitly asks for autoresearch, autonomous research, repeated research attempts, method exploration, or "research this idea" after enough brainstorm/plan context.
 
-Research Route is a project-local harness mode. It is not a ninth public workflow lane and it is not a replacement for `brainstorm`, `plan`, `review`, `verify`, or `cleanup`.
+Research Route is project-local harness mode—not a ninth workflow lane and not a replacement for `brainstorm`, `plan`, `review`, `verify`, or `cleanup`.
 
-Recommend Research Route only for open research questions with a hypothesis, baseline, metric/rubric, bounded verification loop, budget, guardrails, artifact policy, and stop rule.
+Recommend only for open questions with hypothesis, baseline, metric/rubric, bounded verification loop, budget, guardrails, artifact policy, and stop rule.
 
-Before an evidence loop starts, create or confirm Goal, Hypothesis, Counter-hypothesis, Baseline, Scope, Non-goals, Metric, Verify, Guard, Budget, Artifact policy, and Stop rule.
+Before the evidence loop, confirm: Goal, Hypothesis, Counter-hypothesis, Baseline, Scope, Non-goals, Metric, Verify, Guard, Budget, Artifact policy, Stop rule.
 
-Project-local artifacts are installed only when the user approves Research Route: `docs/research/research_plan.md`, `docs/research/evidence_log.md`, `docs/research/iteration_protocol.md`, and `.harness/research_manifest.yaml`.
+Approved artifacts: `docs/research/research_plan.md`, `docs/research/evidence_log.md`, `docs/research/iteration_protocol.md`, `.harness/research_manifest.yaml` (from `templates/research_route/*`).
 
 Failed code may be discarded; failed knowledge must be preserved.
 
 ## Isolation default
 
-Default Research Route execution to an isolated worktree or branch before experiments touch code. Use `worktree` when concurrent normal development may continue or when rollback risk is high. Use `branch` only when the repo is small, the tree is clean, and the user accepts that experiments share the checkout.
+Default to isolated worktree or branch. Use `worktree` when normal development continues or rollback risk is high. Record isolation mode in `.harness/research_manifest.yaml`.
 
-Record isolation mode and path in `.harness/research_manifest.yaml`.
+## Git convention
 
-## Git Convention
+- branch: `research/<topic>`
+- tags: `research/baseline`, `research/iter-N`, `research/winner` (optional for tiny loops)
+- commit trailers: `Iter`, `Result`, `Metric`, `Decision`
 
-Use explicit research history so failed paths stay auditable without polluting the final line:
+## Graduation
 
-- branch: `research/<topic>`;
-- tags: `research/baseline`, `research/iter-N`, `research/winner`;
-- commit trailers:
-  - `Iter: <N|baseline|winner>`;
-  - `Result: <pass|fail|inconclusive>`;
-  - `Metric: <metric name and value>`;
-  - `Decision: <keep|revert|discard|graduate>`.
+Required before research is treated as complete.
 
-Tags are optional for very small loops, but the baseline and winner must still be identifiable from the manifest or evidence log.
+**Inputs:** baseline commit/metric/verification; candidate iterations and evidence; winner or explicit no-winner; touched files/artifacts; target branch; cleanup checkpoint.
 
-## Closeout rule
+**Winner:** beats baseline on approved metric, passes verification, no unexplained entropy. Ambiguous → `no-winner` and preserve learning.
 
-Research Route does not directly declare done. After the loop stops, apply `research_graduation_policy.md`, run the `research_entropy_gate.md` checklist, then route through `review` and `cleanup`.
+**Merge modes:** squash single commit; cherry-pick winner; rebase and drop failed (private branch only, evidence preserved). No force-push shared branches without explicit approval.
+
+**No-winner:** keep or revert code; log failed hypothesis; preserve artifacts per policy; archive branch/worktree only after evidence is recoverable.
+
+## Entropy gate (before merge/archive)
+
+- Explain meaningful LOC growth vs baseline.
+- Remove or justify unused imports, helpers, configs, generated files.
+- Revert or quarantine failed-experiment code.
+- Artifacts inside approved policy only.
+- Drop deps introduced only for failed experiments.
+- Record orphan branches, worktrees, tags, raw dirs for `cleanup`.
+- Failed-hypothesis note per iteration that affected decisions.
+
+Graduate only when entropy is removed, intentionally kept with reason, or recorded as `cleanup` work.
+
+## Closeout
+
+Research Route does not declare done. After graduation and entropy gate, route through `review` then `cleanup`.

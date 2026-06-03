@@ -1,70 +1,70 @@
-# 发现与决策
+# Findings And Decisions
 
-> 来源：基于 `OthmanAdi/planning-with-files` 的中文 `planning-with-files-zh/templates/findings.md` 改造。
-> 许可证：MIT。改造目标：适配 Harness Workflow 的 accepted spec、rejected options、risks 和 references。
+> Source: adapted from `OthmanAdi/planning-with-files` Chinese `planning-with-files-zh/templates/findings.md`.
+> License: MIT. Local adaptation: Harness Workflow accepted spec, rejected options, risks, and references.
 
-## 需求
+## Requirements
 
-- [用户明确要求]
+- [explicit user request]
 
-## 已接受规格
+## Accepted Spec
 
-- [已经确认的行为、边界、成功标准]
+- [confirmed behavior, boundaries, and success criteria]
 
-## 规格来源
+## Spec Source
 
-- [独立 spec 文件路径，例如 `docs/specs/YYYY-MM-DD--topic.md`；若任务足够小没有独立 spec，说明原因]
+- [independent spec file path, for example `docs/specs/YYYY-MM-DD--topic.md`; if the task is small enough to skip an independent spec, explain why]
 
-## 约束
+## Constraints
 
-- [技术、时间、环境、兼容性、安全或用户约束]
+- [technical, time, environment, compatibility, security, or user constraints]
 
-## 技术决策
+## Technical Decisions
 
-| 决策 | 理由 | 证据 / 来源 |
+| Decision | Rationale | Evidence / source |
 | --- | --- | --- |
 |  |  |  |
 
-## 拒绝选项 / 死路
+## Rejected Options / Dead Ends
 
-- [拒绝的方案以及原因]
+- [rejected option and reason]
 
-## 验证策略
+## Verification Strategy
 
-- Baseline evidence: [开始前要确认的现有行为、命令、日志或测试]
-- Automated checks: [单元、集成、lint、typecheck、build 等命令]
-- Smoke / E2E checks: [用户可见路径或端到端检查]
-- Negative / boundary checks: [失败输入、权限、空状态、异常路径]
-- Fresh evidence before completion: [完成前必须重跑的检查]
+- Baseline evidence: [existing behavior, commands, logs, or tests to check before starting]
+- Automated checks: [unit, integration, lint, typecheck, build commands]
+- Smoke / E2E checks: [user-visible path or end-to-end check]
+- Negative / boundary checks: [bad input, permission, empty state, exceptional path]
+- Fresh evidence before completion: [checks that must be rerun before completion]
 
-## 能力缺口
+## Capability Gaps
 
-- [当前 agent 或环境无法验证的内容、推荐能力和 fallback]
+- [what the current agent or environment cannot verify, recommended capability, and fallback]
 
-## 研究发现
+## Research Findings
 
-- [从代码、文档、日志、官方资料或实验得到的事实]
+- [facts learned from code, docs, logs, official sources, or experiments]
 
-## 失败 / 根因
+## Failures / Root Causes
 
-| 失败 | 根因 | 修复 | 验证 |
+| Failure | Root cause | Fix | Verification |
 | --- | --- | --- | --- |
 |  |  |  |  |
 
-## 风险 / 后续
+## Risks / Follow-Up
 
-- [残余风险、未验证内容、后续建议]
+- [residual risk, unverified item, or follow-up]
 
-## 资源
+## Resources
 
-- [文件路径、官方文档、issue、PR、外部引用]
+- [file paths, official docs, issues, PRs, external references]
 
-## 视觉 / 浏览器发现
+## Visual / Browser Findings
 
-- [截图、E2E、浏览器行为或 UI 观察]
+- [screenshots, E2E, browser behavior, or UI observations]
 
-## 备注
+## Notes
 
-- 需求、决策、风险和引用放这里；当前执行动作放 `task_plan.md`。
-- 过时但仍有价值的方案可以保留在 rejected options；不要让它污染当前计划。
-- 每次重要搜索、浏览器观察或验证发现后更新本文件，防止事实只留在聊天里。
+- Put requirements, decisions, risks, and references here; put current execution actions in `task_plan.md`.
+- Keep outdated but useful options in rejected options; do not let them pollute the current plan.
+- Update this file after important searches, browser observations, or verification findings so facts do not live only in chat.

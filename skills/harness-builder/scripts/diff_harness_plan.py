@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Diff two Harness Plan files.")
+    parser = argparse.ArgumentParser(description="Diff two Harness Recommendation Plan files.")
     parser.add_argument("before")
     parser.add_argument("after")
     args = parser.parse_args()

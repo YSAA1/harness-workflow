@@ -1,0 +1,94 @@
+{
+  "skill": "harness-builder",
+  "suite": "canary",
+  "description": "Deterministic canary checks for SkillOpt candidate harness-builder skill documents.",
+  "cases": [
+    {
+      "id": "harness-builder-frontmatter",
+      "split": "canary",
+      "prompt": "Verify the candidate remains discoverable as the harness-builder skill.",
+      "expected_behavior": "The candidate keeps YAML frontmatter and the frontmatter name remains harness-builder.",
+      "checks": [
+        {
+          "id": "frontmatter-name",
+          "type": "frontmatter_name",
+          "value": "harness-builder",
+          "weight": 1,
+          "hard": true
+        },
+        {
+          "id": "description-present",
+          "type": "contains_all",
+          "tokens": [
+            "description:",
+            "Project-level Harness Builder"
+          ],
+          "weight": 1,
+          "hard": true
+        }
+      ]
+    },
+    {
+      "id": "recommendation-contract-and-checkpoint",
+      "split": "train",
+      "prompt": "A project harness install is requested. Verify the skill preserves the recommendation protocol and user checkpoint before writing files.",
+      "expected_behavior": "The skill requires evidence, Recommendation contract, Recommendation table, Capability Recommendation pass, and USER CHECKPOINT before approved installation.",
+      "checks": [
+        {
+          "id": "recommendation-gates",
+          "type": "contains_all",
+          "tokens": [
+            "Evidence gate",
+            "Recommendation contract",
+            "Recommendation table",
+            "Capability Recommendation pass",
+            "USER CHECKPOINT",
+            "do not install on user silence"
+          ],
+          "weight": 5,
+          "hard": true
+        }
+      ]
+    },
+    {
+      "id": "thin-entry-and-recovery",
+      "split": "val",
+      "prompt": "Existing AGENTS.md and recovery surface must be reconciled. Verify thin entry and dynamic-state boundaries.",
+      "expected_behavior": "The skill keeps AGENTS.md thin and sends active state to the selected recovery surface.",
+      "checks": [
+        {
+          "id": "entry-boundaries",
+          "type": "contains_all",
+          "tokens": [
+            "Keep `AGENTS.md` thin",
+            "selected recovery surface",
+            "dynamic state",
+            "Do not create a second recovery surface"
+          ],
+          "weight": 4,
+          "hard": true
+        }
+      ]
+    },
+    {
+      "id": "capability-fit",
+      "split": "test",
+      "prompt": "The agent may add hooks, MCP, subagents, CI, or skills as generic best practices. Verify capability recommendation fit rules.",
+      "expected_behavior": "The skill binds every capability candidate to a named recommendation row and rejects unbound tools.",
+      "checks": [
+        {
+          "id": "gap-bound-capabilities",
+          "type": "contains_all",
+          "tokens": [
+            "Add files or capabilities only when they close a named coverage gap",
+            "Bind each candidate to one recommendation row",
+            "Capability decisions cover skills, hooks, MCP, subagents, external research, CI, GC",
+            "Required / Recommended / Deferred / Rejected"
+          ],
+          "weight": 4,
+          "hard": true
+        }
+      ]
+    }
+  ]
+}

@@ -188,8 +188,8 @@ for (const token of [
   "Knowledge Cleanup",
   "recovery surface",
   "WIP=1",
-  "Capability Discovery",
-  "Capability Shortlist",
+  "Capability Recommendation",
+  "Harness Recommendation Matrix",
   "rules adapter",
   "three-file",
 ]) {

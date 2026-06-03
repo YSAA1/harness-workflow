@@ -1,14 +1,16 @@
-# Verification
+{% set lang_norm = (target_language | default(user_language | default('en')) | string | lower) %}
+{% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
+# {{ '验证（Verification）' if zh else 'Verification' }}
 
-## Fast check
+## {{ '快速检查（Fast check）' if zh else 'Fast check' }}
 
 ```bash
 bash scripts/agent/check.sh
 ```
 
-## Principles
+## {{ '原则（Principles）' if zh else 'Principles' }}
 
-- Keep the default check fast.
-- Do not run full training, production deploys, destructive migrations, or cloud writes.
-- For ML/RL projects, prefer dry-run, tiny train, tiny eval, or tiny rollout checks.
-- If a check fails before the change, record the baseline failure.
+- {{ '默认检查必须足够快。' if zh else 'Default checks must be fast enough to run routinely.' }}
+- {{ '不运行完整训练、生产部署、破坏性迁移或云端写入。' if zh else 'Do not run full training, production deploys, destructive migrations, or cloud writes.' }}
+- {{ '对 ML/RL 项目，优先使用 dry-run、tiny train、tiny eval 或 tiny rollout。' if zh else 'For ML/RL projects, prefer dry-run, tiny train, tiny eval, or tiny rollout checks.' }}
+- {{ '如果修改前检查已经失败，记录 baseline failure。' if zh else 'If the check already failed before changes, record the baseline failure.' }}
