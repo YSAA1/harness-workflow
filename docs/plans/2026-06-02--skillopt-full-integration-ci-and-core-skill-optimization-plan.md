@@ -205,7 +205,7 @@ Evidence:
 
 ### 5. Run SkillOpt and transplant reviewed improvements
 
-Status: completed
+Status: pending
 
 Acceptance criteria:
 
@@ -224,24 +224,9 @@ node scripts/run-skillopt-eval.mjs --skill plan --skill-file skills/plan/SKILL.m
 
 Success definition: optimized skill docs remain compatible with the plugin and eval gates.
 
-Evidence:
-
-- Added repo-owned SkillOpt harness adapter under `evals/skillopt/harnessworkflow/`.
-- Added optimization splits under `evals/skillopt/optimization/{harness-builder,brainstorm,plan,implement}/`.
-- `node scripts/install-skillopt-harness.mjs` -> installed adapter into `.skillopt/SkillOpt`.
-- `node scripts/run-skillopt-train.mjs --skill harness-builder` -> SkillOpt run accepted step 1; baseline test hard `0.0000`, best test hard `1.0000`; best skill at `.skillopt/outputs/harness-builder/best_skill.md`.
-- `node scripts/run-skillopt-train.mjs --skill brainstorm` -> SkillOpt run accepted step 1; baseline test hard `0.0000`, best test hard `1.0000`; best skill at `.skillopt/outputs/brainstorm/best_skill.md`.
-- `node scripts/run-skillopt-train.mjs --skill plan` -> SkillOpt run accepted step 1; baseline test hard `0.0000`, best test hard `1.0000`; best skill at `.skillopt/outputs/plan/best_skill.md`.
-- `node scripts/run-skillopt-train.mjs --skill implement` -> SkillOpt run accepted step 1; baseline test hard `0.0000`, best test hard `1.0000`; best skill at `.skillopt/outputs/implement/best_skill.md`.
-- Formal `skills/{harness-builder,brainstorm,plan,implement}/SKILL.md` were manually transplanted from the accepted `best_skill.md` outputs.
-- `diff -q skills/<skill>/SKILL.md .skillopt/outputs/<skill>/best_skill.md` -> no differences for all four optimized skills.
-- Root skills were synchronized to `plugins/harness-workflow/skills/` and `.cursor/skills/`.
-- `node scripts/generate-skill-flow-html.mjs` -> generated 9 HTML files.
-- Four deterministic canary evals passed after transplant: `harness-builder 15/15`, `brainstorm 14/14`, `plan 23/23`, `implement 14/14`.
-
 ### 6. Final verification, push, PR, and Actions evidence
 
-Status: completed
+Status: pending
 
 Acceptance criteria:
 
@@ -265,15 +250,6 @@ gh run list ...
 
 Success definition: local and remote evidence support the final integration claim.
 
-Evidence:
-
-- Final local deterministic evals passed: `harness-builder 15/15`, `brainstorm 14/14`, `plan 23/23`, `implement 14/14`.
-- Final local structure checks passed: `node scripts/check-plugin.mjs`, `node scripts/check-claude-code-install.mjs`, `node scripts/check-cursor-install.mjs`, `node scripts/install-cursor.mjs --target . --dry-run`, and `bash scripts/agent/check.sh`.
-- SkillOpt smoke passed against pinned checkout `25da7cb2ddc26eb67eb6cb386915f269d7ee42cf`.
-- Branch pushed: `origin/feature/skillopt-skill-eval-mvp`.
-- PR opened: https://github.com/YSAA1/harness-workflow/pull/10
-- GitHub Actions passed on 2026-06-02T06:02Z: `Plugin checks` and `Deterministic SkillOpt evals`.
-
 ## Commit units
 
 | Unit | Scope | Phases | Precondition |
@@ -281,8 +257,8 @@ Evidence:
 | U1 | Spec and plan | 1 | Spec and executable plan written |
 | U2 | SkillOpt pin, scripts, smoke | 1-2 | completed; ready for review and commit |
 | U3 | CI workflow and eval expansion | 3-4 | completed; ready for review and commit |
-| U4 | Formal skill optimization | 5 | completed; ready for review and commit |
-| U5 | Final verification and PR evidence | 6 | completed; PR opened and GitHub Actions passed |
+| U4 | Formal skill optimization | 5 | SkillOpt run evidence or blocker recorded; evals pass |
+| U5 | Final verification and PR evidence | 6 | Local checks pass and GitHub Actions evidence collected |
 
 ## Known risks / blockers
 
@@ -293,6 +269,6 @@ Evidence:
 
 ## Handoff to next skill
 
-Next skill: `review`
+Next skill: `implement`
 
-Reason: implementation, local verification, push, PR creation, and GitHub Actions evidence are complete; the remaining step is user review of the optimized skill changes.
+Reason: Spec is approved by user direction, active slice is scoped, and first implementation step is to confirm upstream SkillOpt capabilities before code changes.

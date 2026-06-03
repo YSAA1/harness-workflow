@@ -46,28 +46,6 @@ The checkout, virtualenv, and smoke summaries live under `.skillopt/`, which is 
 
 At the pinned commit, `codex_exec` is supported as a target execution backend, not as an optimizer backend. That means Codex CLI alone can prove the target harness path, but a real optimization run still needs a supported optimizer backend: `openai_chat`, `claude_chat`, `qwen_chat`, or `minimax_chat`. A no-API-key real optimization path therefore requires a local compatible backend such as `qwen_chat`; otherwise use a configured API backend on the local machine.
 
-## Local Harness Workflow optimization
-
-This repo includes a small `harnessworkflow` benchmark adapter for upstream SkillOpt:
-
-- `evals/skillopt/harnessworkflow/adapter.py`
-- `evals/skillopt/harnessworkflow/config.yaml`
-- `evals/skillopt/optimization/<skill>/train|val|test/items.json`
-
-Install the adapter into the ignored SkillOpt checkout:
-
-```bash
-node scripts/install-skillopt-harness.mjs
-```
-
-Run one local optimization:
-
-```bash
-node scripts/run-skillopt-train.mjs --skill plan
-```
-
-Outputs are written under `.skillopt/outputs/<skill>/`, including SkillOpt's `best_skill.md`, `history.json`, `runtime_state.json`, step artifacts, and test summary. Treat those outputs as candidates. The canonical workflow skill changes still require manual transplant, review, verification, and a normal repo commit.
-
 ## How to evaluate a future `best_skill.md`
 
 If a SkillOpt run produces `outputs/.../best_skill.md`, evaluate it before transplanting anything into the canonical skill:
@@ -108,10 +86,6 @@ Allowed experiment files:
 - `scripts/check-skillopt-eval.mjs`
 - `scripts/prepare-skillopt.mjs`
 - `scripts/run-skillopt-smoke.mjs`
-- `scripts/install-skillopt-harness.mjs`
-- `scripts/run-skillopt-train.mjs`
-- `evals/skillopt/harnessworkflow/**`
-- `evals/skillopt/optimization/**`
 - `.github/workflows/skillopt-evals.yml`
 - `docs/integrations/skillopt.md`
 - compact reports under `docs/skillopt/` when explicitly needed

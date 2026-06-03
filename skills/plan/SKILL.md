@@ -226,8 +226,3 @@ Use this as a routing recommendation, not as permission to keep working after pl
 - `templates/progress.md`、`templates/findings.md`：英文/default three-file 状态模板，仅在 three-file backend 被选择时使用。
 - `templates/progress.zh-CN.md`、`templates/findings.zh-CN.md`：中文 three-file 状态模板，仅在 three-file backend 被选择且用户为中文时使用。
 - 工作面初始化或 recovery surface 选择：`../harness-builder/SKILL.md`
-
-## Resume existing plan
-
-- When the user asks to continue an approved plan, reuse the active plan and identify the next incomplete commit unit instead of drafting a parallel plan.
-- Update the existing planning surface with evidence and status changes; only create a new plan when scope or success criteria materially changed.
