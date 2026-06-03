@@ -1,6 +1,6 @@
 {
   "name": "harness-workflow",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Practical Codex workflow skills for Harness Builder, Spec, Executable Plan, Research Route, scoped implementation, fresh verification, review, Knowledge Cleanup, and skill discovery.",
   "license": "MIT",
   "keywords": [
