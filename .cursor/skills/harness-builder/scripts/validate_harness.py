@@ -8,31 +8,18 @@ from pathlib import Path
 SUSPICIOUS_COMMAND_TOKENS = ["|", ";", "$(", "`", ">>", "curl", "wget", "eval", "exec"]
 CORE_REFERENCES = [
     "coverage_matrix_policy.md",
-    "project_map_policy.md",
     "recovery_surface_policy.md",
     "install_policy.md",
     "verification_policy.md",
     "capability_signal_policy.md",
+    "capability_starter_catalog.md",
+    "subagent_orchestration.md",
+    "research_route_policy.md",
 ]
 CONDITIONAL_REFERENCES = [
     "anti_entropy.md",
     "architecture_enforcement_policy.md",
-    "brainstorming_policy.md",
-    "capability_starter_catalog.md",
-    "course_alignment.md",
     "decision_matrix.md",
-    "harness_subsystems.md",
-    "hook_policy.md",
-    "mcp_policy.md",
-    "skill_policy.md",
-    "subagent_orchestration.md",
-    "subagent_policy.md",
-    "web_research_policy.md",
-]
-RESEARCH_REFERENCES = [
-    "research_route_policy.md",
-    "research_graduation_policy.md",
-    "research_entropy_gate.md",
 ]
 CORE_TEMPLATES = [
     "templates/AGENTS.md.j2",
@@ -43,7 +30,6 @@ CORE_TEMPLATES = [
     "templates/verification.md.j2",
 ]
 CONDITIONAL_TEMPLATES = [
-    "templates/AGENTS.template.md",
     "templates/project_context.md.j2",
     "templates/workflow.md.j2",
     "templates/progress.md.j2",
@@ -51,13 +37,10 @@ CONDITIONAL_TEMPLATES = [
     "templates/features.json.j2",
     "templates/risk_register.md.j2",
     "templates/reports/verification_report.md.j2",
+    "templates/commit_convention.md.j2",
 ]
-RECOMMENDATION_ONLY_TEMPLATE_GLOBS = [
-    "templates/agents/*.j2",
+OPTIONAL_TEMPLATE_GLOBS = [
     "templates/hooks/*.j2",
-    "templates/skills/*/SKILL.md",
-]
-EXPLICIT_ROUTE_TEMPLATE_GLOBS = [
     "templates/research_route/*.j2",
 ]
 
@@ -84,7 +67,6 @@ def check_instruction_skill(root: Path, issues: list[str]) -> None:
             issues.append(f"invalid root SKILL.md: {msg}")
         text = skill.read_text(encoding="utf-8", errors="replace")
         required_phrases = [
-            "Pack Selection gate",
             "USER CHECKPOINT",
             "Coverage Matrix",
             "Capability Discovery",
@@ -93,6 +75,7 @@ def check_instruction_skill(root: Path, issues: list[str]) -> None:
             "source evidence",
             "verification probe",
             "recommendation report",
+            "capability_starter_catalog.md",
         ]
         for phrase in required_phrases:
             if phrase not in text:
@@ -126,7 +109,7 @@ def check_core_assets(root: Path, issues: list[str]) -> None:
 def check_conditional_assets_if_referenced(root: Path, issues: list[str]) -> None:
     bundle = collect_text_files(root)
     refs = root / "references"
-    for name in [*CONDITIONAL_REFERENCES, *RESEARCH_REFERENCES]:
+    for name in CONDITIONAL_REFERENCES:
         rel = f"references/{name}"
         if (name in bundle or rel in bundle) and not (refs / name).exists():
             issues.append(f"referenced conditional reference is missing: {rel}")
@@ -136,16 +119,30 @@ def check_conditional_assets_if_referenced(root: Path, issues: list[str]) -> Non
             issues.append(f"referenced conditional template is missing: {rel}")
 
 
-def check_pack_assets_if_present(root: Path, issues: list[str]) -> None:
+def check_no_removed_pack(root: Path, issues: list[str]) -> None:
+    if (root / "references" / "packs").exists():
+        issues.append("references/packs/ should not exist after init_scaffold removal")
+    if (root / "templates" / "packs").exists():
+        issues.append("templates/packs/ should not exist after init_scaffold removal")
+    if (root / "scripts" / "install_pack.py").exists():
+        issues.append("scripts/install_pack.py should be removed")
+    forbidden_refs = [
+        "project_map_policy.md",
+        "harness_subsystems.md",
+        "skill_policy.md",
+        "hook_policy.md",
+        "mcp_policy.md",
+        "web_research_policy.md",
+        "subagent_policy.md",
+        "brainstorming_policy.md",
+        "course_alignment.md",
+        "research_graduation_policy.md",
+        "research_entropy_gate.md",
+    ]
     refs = root / "references"
-    forbidden_root = ["stack_routing.md", "boundary_test_templates.md", "ci_templates.md", "gc_patterns.md", "security_template.md"]
-    for name in forbidden_root:
+    for name in forbidden_refs:
         if (refs / name).exists():
-            issues.append(f"pack reference leaked into root references: references/{name}")
-    if (refs / "packs" / "init_scaffold").exists():
-        for required in ["adapter.md", "precedence.md", "README.md"]:
-            if not (refs / "packs" / "init_scaffold" / required).exists():
-                issues.append(f"init_scaffold missing {required}")
+            issues.append(f"removed reference still present: references/{name}")
 
 
 def check_optional_asset_integrity(root: Path, issues: list[str]) -> None:
@@ -154,18 +151,14 @@ def check_optional_asset_integrity(root: Path, issues: list[str]) -> None:
         if path.exists() and not path.read_text(encoding="utf-8", errors="replace").strip():
             issues.append(f"empty template: {rel}")
 
-    for glob in [*RECOMMENDATION_ONLY_TEMPLATE_GLOBS, *EXPLICIT_ROUTE_TEMPLATE_GLOBS]:
+    for glob in OPTIONAL_TEMPLATE_GLOBS:
         for path in sorted(root.glob(glob)):
             rel = path.relative_to(root).as_posix()
             text = path.read_text(encoding="utf-8", errors="replace")
             if not text.strip():
                 issues.append(f"empty optional template: {rel}")
-            if rel.endswith("SKILL.md"):
-                ok, msg = parse_skill_frontmatter(path)
-                if not ok:
-                    issues.append(f"invalid optional skill template {rel}: {msg}")
 
-    for path in sorted((root / "evals").glob("*.json")):
+    for path in sorted((root / "evals").glob("*.json")) if (root / "evals").exists() else []:
         try:
             json.loads(path.read_text(encoding="utf-8", errors="replace"))
         except json.JSONDecodeError as exc:
@@ -192,17 +185,6 @@ def check_ci_command_safety(root: Path, issues: list[str]) -> None:
                     issues.append(f"suspicious literal CI command token {token!r} in {path}: {command}")
 
 
-def check_templates(root: Path, issues: list[str]) -> None:
-    required_templates = [
-        "templates/packs/init_scaffold/docs/architecture/LAYERS.md.j2",
-        "templates/packs/init_scaffold/boundary/python_test.py.j2",
-        "templates/packs/init_scaffold/boundary/typescript_test.ts.j2",
-    ]
-    for rel in required_templates:
-        if not (root / rel).exists():
-            issues.append(f"missing template: {rel}")
-
-
 def check_script_compilation(root: Path, issues: list[str]) -> None:
     for script in sorted((root / "scripts").glob("*.py")):
         try:
@@ -214,14 +196,14 @@ def check_script_compilation(root: Path, issues: list[str]) -> None:
     manifest = root / "templates" / "manifest.yaml.j2"
     if manifest.exists():
         text = manifest.read_text(encoding="utf-8", errors="replace")
-        for token in ["harness_goals", "orchestration", "course_alignment", "packs", "asset_loading", "selected_assets"]:
+        for token in ["harness_goals", "orchestration", "asset_loading", "selected_assets"]:
             if token not in text:
                 issues.append(f"manifest template missing field: {token}")
 
     state = root / "templates" / "state.md.j2"
     if state.exists():
         text = state.read_text(encoding="utf-8", errors="replace")
-        for token in ["Active work", "Open user decisions", "Last known good verification", "Known broken checks", "Pack selection"]:
+        for token in ["Active work", "Open user decisions", "Last known good verification", "Known broken checks"]:
             if token not in text:
                 issues.append(f"state template missing section: {token}")
 
@@ -240,12 +222,10 @@ def main() -> int:
     check_core_assets(root, issues)
     check_conditional_assets_if_referenced(root, issues)
     check_optional_asset_integrity(root, issues)
-    check_pack_assets_if_present(root, issues)
-    check_templates(root, issues)
+    check_no_removed_pack(root, issues)
     check_ci_command_safety(root, issues)
     check_script_compilation(root, issues)
 
-    # Preserve original project-install validation when running against a target repo.
     target_required = ["AGENTS.md", "scripts/agent/check.sh", ".harness/manifest.yaml", ".harness/decisions.md"]
     if any((root / rel).exists() for rel in target_required):
         for rel in target_required:

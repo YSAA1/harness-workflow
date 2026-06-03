@@ -1,183 +1,70 @@
 # Capability Signal Policy
 
-Use this policy during Harness Builder Capability Discovery after the Coverage Matrix exposes a real gap.
-
-The goal is not to build an automation catalog. The goal is to turn repo evidence into a short, auditable capability shortlist that can close named harness gaps.
+Use after the Coverage Matrix exposes a real gap. Turn repo evidence into a short, auditable capability shortlist—not an automation catalog.
 
 ## Shortlist contract
 
-Every candidate must include these fields:
+Every candidate must include: `repo_signal`, `source_evidence`, `freshness`, `candidate`, `coverage_row` (exactly one), `why`, `install_surface`, `trust_boundary`, `approval_needed`, `risk_cost`, `fallback`, `verification_probe`, `classification` (`Required` / `Recommended` / `Deferred` / `Rejected`).
 
-| Field | Meaning |
-| --- | --- |
-| `repo_signal` | The concrete repo evidence that triggered the candidate: file, config, script, dependency, CI, runtime signal, or user intent. |
-| `source_evidence` | Local repo evidence, official docs, official repo, vendor docs, or mature community example used to justify the candidate. |
-| `freshness` | Date, version, or "local evidence only" marker when external behavior may drift. |
-| `candidate` | The proposed skill, hook, MCP server, subagent, helper script, CI check, or external research action. |
-| `coverage_row` | Exactly one Coverage Matrix row id or name that this candidate would close or improve. |
-| `why` | The specific harness gap it closes. Avoid generic best-practice language. |
-| `install_surface` | Where it would live if approved: project skill path, hook config, `.mcp.json`, project docs, script, CI, subagent file, or manual practice. |
-| `trust_boundary` | `local-only`, `read-only external`, `write-capable external`, or `credential-bearing`. |
-| `approval_needed` | `none`, `before install`, `before write access`, or `before secret access`. |
-| `risk_cost` | Permission, false-positive, runtime, token, maintenance, security, or team-adoption cost. |
-| `fallback` | The simpler or manual alternative if the capability is not installed. |
-| `verification_probe` | The command, smoke check, dry-run, or manual check that proves the recommendation works or is safely deferred. |
-| `classification` | `Required`, `Recommended`, `Deferred`, or `Rejected`. |
+- Default 1–2 candidates per category; defer extras.
+- Prefer doc/script/test/lint over heavier capabilities.
+- **Project-level Harness Builder:** on strong stack signals, default low-risk project-local candidates to `Recommended` and present them proactively.
+- **Single-task lanes:** stay conservative; adopt only what the task needs.
+- **Do not install on user silence.** User-level MCP/hooks need explicit checkpoint approval.
 
-Do not list a candidate if it cannot be tied to exactly one coverage row. If one repo signal suggests multiple options, split them into separate candidate rows and classify each independently.
+## Docs-first, then web search
 
-## Shortlist limits
-
-- Run the shortlist pass only after the Coverage Matrix shows a real uncovered or weak row.
-- Default to 1-2 candidates per capability category. Put extra plausible ideas in `Deferred`.
-- If a simpler doc, script, test, lint rule, or manual practice closes the row, reject heavier capabilities.
-- `Required` means the harness cannot meet the accepted objective or verification path without it.
-- `Recommended` means it materially improves verification, observability, automation, or domain work but the harness can still function without it.
-- `Deferred` means useful later, but not needed for this active harness objective.
-- `Rejected` means duplicate, too risky, too broad, not project-local enough, or not bound to a real row.
-
-## Proactive scan from stack signals
-
-Concrete stack signals may produce candidates before the user names a capability. Examples include package managers, framework configs, CI files, training scripts, dataset/checkpoint paths, auth/secret surfaces, generated artifacts, and repeated workflow docs.
-
-Use `capability_starter_catalog.md` as a starter map, then still apply the shortlist contract. Stack-driven candidates must bind to one of the split capability rows: skill fit, hook fit, MCP fit, subagent fit, or external research fit.
-
-Project-level Harness Builder should be more active about recommending low-risk project-local capabilities when stack signals are strong. Single-task lanes should stay conservative and only adopt capabilities needed for that task.
+1. Read `capability_starter_catalog.md` and local repo docs, manifests, and official tool READMEs already in-tree.
+2. Use **targeted web search** only when a coverage row needs current external behavior, the user asks for MCP/hooks/skills/subagent recommendations, or local evidence is insufficient.
+3. Source order: official docs → official repo → vendor docs → mature community examples.
+4. Never use web search to guess local repo facts (file layout, test commands, protected paths).
+5. If research changes the plan, note it in `.harness/research_notes.md`.
 
 ## Recommendation-only mode
 
-If the user asks only to analyze, recommend, audit, or "see what would help":
+Read-only: output a **recommendation report**; no `.mcp.json`, hooks config, subagent files, project-local skills, or other install. Include full shortlist fields; state what needs explicit approval before install.
 
-- stay read-only;
-- output a recommendation report instead of an install plan;
-- do not write `.mcp.json`;
-- do not write hooks config;
-- do not create subagent files;
-- do not create project-local skills;
-- do not write other local config or proceed to Pack Selection;
-- still include `repo_signal`, `source_evidence`, `freshness`, `coverage_row`, `why`, `trust_boundary`, `approval_needed`, `risk_cost`, `fallback`, `verification_probe`, and `classification`;
-- tell the user which recommendations would require explicit approval before installation.
+## Skills
 
-## External capability search
+Repeated specialized workflows with clear triggers; too detailed for `AGENTS.md`.
 
-Use targeted web search only when:
+- `Recommended` for repeatable low-risk or strong-recurrence domain workflows.
+- `Required` only when the approved objective depends on the skill.
+- Invoke `$find-skills` / `find-skills` or document `No reusable skill search needed`.
+- Invocation mode: `user-only` (side effects), `agent-only` (background policy), or `both`. Default side-effecting skills to `user-only`.
 
-- a concrete coverage row needs current external tool knowledge;
-- the user asks for MCP, hooks, skills, plugin, or subagent recommendations;
-- local repo evidence shows repeated need for docs, browser, database, issue tracker, observability, cloud, or framework-specific tooling;
-- external tool behavior may have changed.
+## Hooks
 
-Prefer sources in this order:
+Narrow deterministic guardrails only. See `templates/hooks/*` for install-ready patterns.
 
-1. official docs;
-2. official plugin, MCP, framework, or tool repository;
-3. vendor docs;
-4. mature community examples.
+- `Recommended` for protected paths, fast verification reminders, format/lint after edit, commit/branch guards when signals are clear.
+- `Required` only for high-risk failures tests/review cannot catch.
+- Every candidate: event, false-positive risk, disable/repair path.
+- Bad: long-running jobs, subjective review, broad formatting that hides diffs.
 
-Search is for external capability facts only. Do not use web search to guess local repo facts.
+Cadences (Claude Code / Cursor): `PreToolUse` (block/mutate before tool), `PostToolUse` (lint/log/format after success), `SessionStart` (inject context).
 
-## Category signals
+## MCP
 
-### Skills
+External context when local files/CLI are insufficient.
 
-Use skills for repeated specialized workflows with clear triggers and enough procedure to be worth packaging.
+- `Recommended` for read-only docs/repo/observability MCP when signals are strong.
+- `Required` only when the verification path cannot run without it.
+- Write-capable or credential-bearing MCP → `Deferred`/`Rejected` until explicit approval.
+- Prefer project-local setup notes before `.mcp.json` or global MCP.
+- User-level MCP: checkpoint required; document fallback if unavailable.
 
-Good signals:
+## Subagents
 
-- repeated PR, release, migration, experiment, data, security, or docs workflow;
-- domain-specific review that is too detailed for `AGENTS.md`;
-- project-specific templates, checklists, scripts, or examples that the skill can bundle;
-- a task family where mistakes are costly and recurrence is likely.
+Read/research/review only; main agent writes. See `references/subagent_orchestration.md`.
 
-Default classification:
+- `Recommended` for bounded parallel read-only work on large/unfamiliar repos or signaled security/API/ML/review gaps.
+- `Required` only when user requests delegation or main agent cannot review safely alone.
 
-- `Recommended` for repeatable, low-risk knowledge workflows;
-- `Recommended` for repeated project-level domain workflows when repo signals show recurrence;
-- `Required` only when the approved harness objective depends on that skill to run safely or consistently;
-- `Deferred` for plausible but unproven recurrence;
-- `Rejected` for one-off fixes or generic advice.
+## Helper scripts
 
-### Hooks
+`Required` when verification depends on them; `Recommended` when they lower recovery/validation cost.
 
-Use hooks only as narrow deterministic guardrails.
+## Platform notes
 
-Good signals:
-
-- destructive commands or protected paths that must be blocked;
-- `.env`, secret, dataset, checkpoint, or generated-artifact paths that are easy to edit accidentally;
-- a known repeated validation reminder that is cheap and reliable;
-- a stable formatting/lint command that does not hide unrelated diffs.
-
-Default classification:
-
-- `Recommended` for narrow warning or reminder hooks;
-- `Recommended` for protected paths, known fast verification reminders, or commit/branch guardrails when repo signals are clear;
-- `Required` only for concrete high-risk failures that tests or review cannot reliably catch;
-- `Deferred` when false positives are likely or the team workflow is unknown;
-- `Rejected` for long-running, subjective, broad, or fragile automation.
-
-Every hook candidate must state false-positive risk and a disable or repair path.
-
-### MCP
-
-Use MCP when external context or actions are needed and cannot be handled better by local files or existing CLI tools.
-
-Good signals:
-
-- current documentation lookup for fast-moving libraries;
-- browser automation, database inspection, repository/issue tracker integration, cloud APIs, or observability tools needed for verification;
-- user-approved team tooling that is part of the project workflow.
-
-Default classification:
-
-- `Recommended` for read-only MCP that closes a real evidence or docs gap;
-- `Recommended` for read-only docs, repository, or observability MCP when stack or workflow signals show current external context is repeatedly needed;
-- `Required` only when the selected verification path cannot run without it;
-- `Deferred` when local docs or CLI commands are sufficient for now;
-- `Rejected` for write-capable or secret-bearing MCP without explicit approval.
-
-Do not treat `.mcp.json` or global MCP setup as the default install surface. Prefer project-local documentation or read-only setup notes until the user approves installation.
-
-### Subagents
-
-Use subagents to reduce analysis or review gaps, not to own writes.
-
-Good signals:
-
-- large or legacy codebase where parallel read-only mapping reduces risk;
-- security, API, ML/RL/data, performance, or UI review where specialized critique is useful;
-- verification discovery or plan review that can run in parallel without blocking the main agent.
-
-Default classification:
-
-- `Recommended` for bounded read-only research or review;
-- `Recommended` for `repo_explorer` on large or unfamiliar repos, and for security/API/ML reviewers when those risks are signaled;
-- `Required` only when the user explicitly asks for delegated analysis or the harness objective cannot be reviewed safely by the main agent alone;
-- `Deferred` for nice-to-have expert review;
-- `Rejected` when it would duplicate the main agent's immediate blocking work.
-
-The main agent remains responsible for writing files and integrating results.
-
-### Helper scripts
-
-Use helper scripts for deterministic local evidence, validation, rendering, inventory, or drift detection.
-
-Good signals:
-
-- repeated command sequences that are easy to run incorrectly;
-- validation logic that should be machine-checkable;
-- generated artifacts that need a reproducible generator;
-- repo inventory or drift checks that should not depend on prose.
-
-Default classification:
-
-- `Required` when the selected verification path depends on the script;
-- `Recommended` when it lowers recovery or validation cost;
-- `Deferred` when it is useful but the manual command is adequate;
-- `Rejected` when it hides project behavior or duplicates existing tooling.
-
-## Optional platform-specific notes
-
-Plugins and slash commands can be mentioned only as platform-specific delivery options. They are not first-class capability categories in Harness Builder v1 of this policy.
-
-If mentioned, they must still bind to an existing candidate row and must not create a new workflow lane.
+Plugins and slash commands are delivery options only; bind to an existing coverage row.

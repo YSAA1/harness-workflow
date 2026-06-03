@@ -74,8 +74,6 @@ asset_loading:
     - project-local skills
   explicit_only_assets:
     - Research Route
-  pack_only_assets:
-    - init_scaffold
 
 installed:
   instructions:
@@ -95,14 +93,6 @@ skills: []
 hooks: []
 subagents: []
 mcp: []
-
-packs:
-  init_scaffold:
-    status: "{{ init_scaffold_status | default('not_selected') }}"
-    selected_components: []
-    deferred_components: []
-    rejected_components: []
-    adapter: references/packs/init_scaffold/adapter.md
 
 deferred: []
 rejected: []

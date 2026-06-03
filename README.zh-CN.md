@@ -95,7 +95,7 @@ harness 不是一个更长的 prompt。它是围绕模型的一套项目运行�
 - **Tools**：脚本、项目级 skills、定向 MCP、经过理由筛选的 hooks，以及真的能降低缺口的 subagents。
 - **Cleanup**：防腐化规则，确保每个 session 结束时 docs、状态和残留物不会误导下一位 agent。
 
-[`course_alignment.md`](skills/harness-builder/references/course_alignment.md) 里的 12 节课思想已经融入 `harness-builder`，作为实际 coverage checklist。它会追问：强模型在这里还会怎样失败；模型周围需要哪些系统；哪些规则必须进入仓库真相；根 `AGENTS.md` 如何保持薄；长任务是否需要连续性；新 agent 开工前要做什么；如何限制范围；是否需要 feature list；怎样防止过早宣布完成；哪些地方需要 smoke/e2e/tiny-run；执行过程要捕获什么证据；每次会话结束应留下怎样的 clean state。
+12 节课 harness 思想已融入 [`harness-builder`](skills/harness-builder/SKILL.md)（Harness Hypothesis 步骤）和 [`coverage_matrix_policy.md`](skills/harness-builder/references/coverage_matrix_policy.md)，作为实际 coverage checklist。它会追问：强模型在这里还会怎样失败；模型周围需要哪些系统；哪些规则必须进入仓库真相；根 `AGENTS.md` 如何保持薄；长任务是否需要连续性；新 agent 开工前要做什么；如何限制范围；是否需要 feature list；怎样防止过早宣布完成；哪些地方需要 smoke/e2e/tiny-run；执行过程要捕获什么证据；每次会话结束应留下怎样的 clean state。
 
 这不是强制产物清单，而是决策框架。一个小 CLI 库可能只需要项目地图和一条 check command。一个 ML 实验仓库可能需要 tiny-run 验证、data leakage review、run metadata 和更严格的恢复状态。一个前端项目可能需要浏览器 smoke check 和设计 review。不同项目就应该有不同 harness。
 

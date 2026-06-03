@@ -46,7 +46,7 @@
     {
       "id": "automation-recommendation-only",
       "prompt": "Analyze which MCP servers, hooks, skills, or subagents would help this repo.",
-      "expected_output": "Should stay read-only, use repo signals and targeted external capability search only when current facts matter, bind every candidate to one coverage row, include source_evidence, freshness, trust_boundary, approval_needed, fallback, verification_probe, and classification, and not write files or proceed to Pack Selection.",
+      "expected_output": "Should stay read-only, use repo signals and targeted external capability search only when current facts matter, bind every candidate to one coverage row, include source_evidence, freshness, trust_boundary, approval_needed, fallback, verification_probe, and classification, and not write files or proceed to installation without USER CHECKPOINT.",
       "files": []
     },
     {

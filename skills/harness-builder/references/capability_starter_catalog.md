@@ -1,51 +1,68 @@
 # Capability Starter Catalog
 
-Use this catalog only as a starting point for Capability Discovery. Every candidate still needs a repo signal, one Coverage Matrix row, cost/risk, fallback, and classification.
+Starter map for Capability Discovery. Every row still needs repo signal, one coverage row, cost/risk, fallback, and classification. Consult this file and local docs before web search.
 
-## Python ML or RL
+## MCP (read-only-first)
 
-| Signal | Starter capability | Coverage row |
+| Signal | Starter capability | Coverage row | Trust |
+| --- | --- | --- | --- |
+| Any greenfield or doc-heavy project | Official reference: Filesystem, Fetch, Git, Memory, Time, Sequential Thinking | MCP fit | read-only |
+| GitHub-centric workflow | GitHub MCP (issues, PRs, code search) | MCP fit | credential-bearing |
+| Fast-moving libraries, version drift | Context7 (live library docs) | MCP fit | read-only |
+| Browser-only or E2E behavior | Playwright MCP | MCP fit | read-only/write per config |
+| SQL schema or query verification | Postgres or SQLite MCP | MCP fit | credential-bearing |
+| Production errors, regressions | Sentry MCP | MCP fit | read-only |
+| Current facts, no local docs | Brave Search, Tavily MCP | MCP fit | read-only |
+| Design-to-code handoff | Figma Dev Mode MCP | MCP fit | read-only |
+| Issue/sprint tracking | Linear or Jira MCP | MCP fit | credential-bearing |
+
+**Discovery registries:** [modelcontextprotocol registry](https://registry.modelcontextprotocol.io/), awesome-mcp-servers, mcp.so, glama.ai, Docker MCP Catalog.
+
+**Safety:** pin versions; secrets via env vars; prefer stdio and read-only scopes; audit community servers before install.
+
+## Hooks
+
+| Signal | Pattern | Event | Template hint |
+| --- | --- | --- | --- |
+| Destructive shell risk | Block `rm -rf`, force-push main, prod deploy | PreToolUse / Bash | `block_destructive_shell.py.j2` |
+| `.env`, secrets, checkpoints, generated artifacts | Protected-path guard | PreToolUse / Edit\|Write | `protected_paths.py.j2` |
+| Known formatter/linter | Post-edit format or lint | PostToolUse / Edit\|Write | project script |
+| Repeated “forgot to verify” | Verification reminder | PostToolUse or Stop | `verification_reminder.py.j2` |
+| Research branch discipline | Branch/push guard | PreToolUse | `research_branch_push_guard.py.j2` |
+| Milestone commits | Commit trailer enforcer | PostToolUse | `commit_trailer_enforcer.py.j2` |
+| Audit trail | Command/event logger | PostToolUse | `research_iteration_logger.py.j2` |
+
+## Skills (via find-skills)
+
+| Signal | Search / install direction | Coverage row |
 | --- | --- | --- |
-| training scripts, configs, metrics, checkpoints | `ml-experiment-review`, `metric-design-review`, `data-leakage-audit` | Skill fit |
-| large experiment outputs or checkpoints | protected-path hook for artifacts/checkpoints | Hook fit |
-| unclear experiment validity | `ml_reviewer` or `rl_reviewer` | Subagent fit |
+| PR / code review standards | `npx skills find` + review category | Skill fit |
+| Migrations, releases | migration/release skills | Skill fit |
+| Security, auth changes | security review skills | Skill fit |
+| ML/RL/data experiments | experiment, metric, leakage, reward review skills | Skill fit |
+| Docs / spec quality | brainstorm-adjacent or docs skills | Skill fit |
 
-## TypeScript frontend
+Do not install from catalog alone—run `$find-skills` and bind to a gap.
 
-| Signal | Starter capability | Coverage row |
+## Subagents (patterns, not templates)
+
+| Signal | Pattern | Coverage row |
 | --- | --- | --- |
-| React/Vite/Next app with design-sensitive UI | UI smoke checklist or frontend review skill | Skill fit |
-| existing lint/typecheck command | verification reminder hook | Hook fit |
-| visual regressions or browser-only behavior | browser automation notes or MCP recommendation | MCP fit |
+| Large or unfamiliar repo | `repo_explorer` — map, protected paths, verification entry | Subagent fit |
+| Unclear or broken checks | `verification_scout` | Subagent fit |
+| Auth, secrets, payments | `security_reviewer` | Subagent fit |
+| API contracts, schemas | `api_contract_reviewer` | Subagent fit |
+| ML/RL/data claims | domain reviewer (leakage, metrics, baselines) | Subagent fit |
+| Harness plan before install | `harness_plan_reviewer` | Subagent fit |
+| Research loops | `research_critic`, `failure_analyst` | Subagent fit |
 
-## Go backend
+Name by failure mode, not job title. Avoid `senior-engineer`, `architect`.
 
-| Signal | Starter capability | Coverage row |
-| --- | --- | --- |
-| service boundaries, API contracts, generated clients | `api_contract_reviewer` | Subagent fit |
-| dependency or package boundary risk | architecture boundary check | Hook fit |
-| external API docs change frequently | read-only docs MCP or official docs research | MCP fit |
+## Stack quick rows
 
-## Secrets or auth
-
-| Signal | Starter capability | Coverage row |
-| --- | --- | --- |
-| `.env`, credentials, OAuth, cloud config | protected-path or secret-pattern hook | Hook fit |
-| auth flow or permission changes | `security_reviewer` | Subagent fit |
-| live provider docs needed | read-only official-docs research | External research fit |
-
-## Dataset, checkpoint, or generated artifacts
-
-| Signal | Starter capability | Coverage row |
-| --- | --- | --- |
-| raw data, model checkpoints, generated decks/images | protected-path hook with allowlist | Hook fit |
-| repeated data split or eval changes | `data-leakage-audit`, `metric-design-review` | Skill fit |
-| artifact cleanup drift | read-only GC scan | Hook fit |
-
-## Autoresearch or method exploration
-
-| Signal | Starter capability | Coverage row |
-| --- | --- | --- |
-| repeated hypothesis loops | Research Route templates | External research fit |
-| failed branches and experiment residue | research entropy gate | Hook fit |
-| need independent critique | `research_critic`, `failure_analyst` | Subagent fit |
+| Stack signal | Starters |
+| --- | --- |
+| Python ML/RL | experiment/metric/leakage skills; protected-path hook for checkpoints |
+| TypeScript frontend | lint/typecheck reminder hook; Playwright or UI smoke notes |
+| Go backend | API contract reviewer; boundary tests per `architecture_enforcement_policy.md` |
+| Autoresearch | Research Route templates; entropy checklist in `research_route_policy.md` |
