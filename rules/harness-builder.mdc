@@ -1,5 +1,5 @@
 ---
-description: Use Harness Builder when the project workbench, verification entry, Capability Discovery, or recovery surface needs to be created or repaired.
+description: Use Harness Builder when the project workbench, verification entry, Capability Recommendation, or recovery surface needs to be created or repaired.
 globs:
 alwaysApply: false
 ---
@@ -11,7 +11,7 @@ Canonical source: `skills/harness-builder/SKILL.md`.
 ## When To Use
 
 - The user asks to initialize, bootstrap, create project rules, onboard agents, build a harness, or repair the workbench.
-- Project entry, protected paths, verification commands, recovery surface, or Capability Discovery are unclear.
+- Project entry, protected paths, verification commands, recovery surface, or Capability Recommendation are unclear.
 - The task needs project-local skills, hooks, MCP policy, subagents, or anti-entropy rules evaluated.
 - The user explicitly asks for autoresearch, autonomous research, or repeated research exploration and needs a project-local Research Route harness.
 
@@ -28,12 +28,12 @@ Canonical source: `skills/harness-builder/SKILL.md`.
 2. Identify known facts, unknowns, protected paths, verification signals, and recovery options.
 3. Ask gap-driven user questions when answers affect the harness. If fast/deep verification is unclear, ask at least one verification question.
 4. Produce a Harness Hypothesis when important gaps remain.
-5. Run Capability Discovery only after the Coverage Matrix exposes a real gap. Include a Capability Shortlist pass for candidates that materially help verification, observability, automation, or domain work.
+5. Run Capability Recommendation only after the Harness Recommendation Matrix exposes a real gap. Include a Capability Recommendation pass for candidates that materially help verification, observability, automation, or domain work.
 6. For skill gaps, invoke `find-skills` or state why no reusable skill search is needed.
 7. For hooks, MCP, subagents, agent config, or recently changed external tool behavior, use targeted web search or state why no web research is needed.
-8. For every candidate, state repo signal, source evidence, freshness, coverage row, why, install surface, trust boundary, approval needed, risk/cost, fallback, verification probe, and Required / Recommended / Deferred / Rejected classification.
-9. Coverage Matrix includes an optional commit protocol row (default Deferred).
-10. If the user asked only for analysis or recommendations, stay read-only and output a recommendation report without writing files, MCP config, hooks config, subagents, project-local skills, or creating an install plan.
+8. For every candidate, state repo signal, source evidence, freshness, recommendation row, why, install surface, trust boundary, approval needed, risk/cost, fallback, verification probe, and Required / Recommended / Deferred / Rejected classification.
+9. Harness Recommendation Matrix includes an optional commit protocol row (default Deferred).
+10. If the user asked only for analysis or recommendations, stay read-only and output a Harness Recommendation Plan without writing files, MCP config, hooks config, subagents, or project-local skills.
 11. Propose verification design before installation: fast check, deeper smoke/E2E/manual check, evidence path, and unverified risks.
 12. Show a user checkpoint before installation and wait for explicit approval unless direct changes were already authorized.
 13. For Research Route, require goal, hypothesis, baseline, metric, verification, guardrails, iteration budget, artifact policy, and stop rule before any evidence loop.
@@ -44,11 +44,11 @@ Canonical source: `skills/harness-builder/SKILL.md`.
 
 ## Outputs
 
-- Harness Hypothesis or Harness Plan.
-- User questions, Capability Discovery decisions, Capability Shortlist rows, and verification design before installation.
+- Harness Hypothesis or Harness Recommendation Plan.
+- User questions, Capability Recommendation decisions, recommendation rows, and verification design before installation.
 - Project-local rules, docs, validation entry points, and recovery-surface declaration when approved.
 - For approved Research Route: research plan, evidence log, iteration protocol, and research manifest.
-- Capability Discovery decisions with rejected and deferred options.
+- Capability Recommendation decisions with rejected and deferred options.
 
 ## Verification / Done Criteria
 

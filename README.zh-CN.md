@@ -95,7 +95,7 @@ harness 不是一个更长的 prompt。它是围绕模型的一套项目运行�
 - **Tools**：脚本、项目级 skills、定向 MCP、经过理由筛选的 hooks，以及真的能降低缺口的 subagents。
 - **Cleanup**：防腐化规则，确保每个 session 结束时 docs、状态和残留物不会误导下一位 agent。
 
-12 节课 harness 思想已融入 [`harness-builder`](skills/harness-builder/SKILL.md)（Harness Hypothesis 步骤）和 [`coverage_matrix_policy.md`](skills/harness-builder/references/coverage_matrix_policy.md)，作为实际 coverage checklist。它会追问：强模型在这里还会怎样失败；模型周围需要哪些系统；哪些规则必须进入仓库真相；根 `AGENTS.md` 如何保持薄；长任务是否需要连续性；新 agent 开工前要做什么；如何限制范围；是否需要 feature list；怎样防止过早宣布完成；哪些地方需要 smoke/e2e/tiny-run；执行过程要捕获什么证据；每次会话结束应留下怎样的 clean state。
+12 节课 harness 思想已融入 [`harness-builder`](skills/harness-builder/SKILL.md)（Harness Hypothesis 步骤）和 [`recommendation_matrix_policy.md`](skills/harness-builder/references/recommendation_matrix_policy.md)，作为实际 recommendation checklist。它会追问：强模型在这里还会怎样失败；模型周围需要哪些系统；哪些规则必须进入仓库真相；根 `AGENTS.md` 如何保持薄；长任务是否需要连续性；新 agent 开工前要做什么；如何限制范围；是否需要 feature list；怎样防止过早宣布完成；哪些地方需要 smoke/e2e/tiny-run；执行过程要捕获什么证据；每次会话结束应留下怎样的 clean state。
 
 这不是强制产物清单，而是决策框架。一个小 CLI 库可能只需要项目地图和一条 check command。一个 ML 实验仓库可能需要 tiny-run 验证、data leakage review、run metadata 和更严格的恢复状态。一个前端项目可能需要浏览器 smoke check 和设计 review。不同项目就应该有不同 harness。
 
@@ -106,7 +106,7 @@ harness 不是一个更长的 prompt。它是围绕模型的一套项目运行�
 | 上下文感知地构建 harness | `harness-builder` 在有条件时应该读取 brainstorm 后的 spec 或可执行 plan，再结合真实仓库证据。它不是空泛模板生成器。 |
 | 先看 repo truth，再谈流程 | agent 会检查 docs、源码布局、测试、git 状态、已有规则和 setup 命令，再判断项目是否真的 ready。 |
 | 恢复面是设计决策 | 有些任务不需要持久状态；有些只要短 checkpoint；有些需要 `task_plan.md`、`progress.md`、`findings.md`；有些应该复用 issue tracker 或已有 docs。 |
-| 能力必须匹配真实缺口 | Skills、MCP、hooks、subagents 和 external research 会作为独立 coverage row 判断，只有在补上当前任务或仓库缺口时才推荐。Capability Discovery 会输出很短的证据绑定推荐表：repo signal、source evidence、freshness、coverage row、why、install surface、trust boundary、approval needed、risk/cost、fallback、verification probe 和 classification。插件内置的 `find-skills` 辅助 skill 用于 skill 发现；targeted web research 只用于 hooks、MCP 和工具行为等当前外部能力事实。只要求推荐时保持 read-only。 |
+| 能力必须匹配真实缺口 | Skills、MCP、hooks、subagents、plugins、commands、CI/headless automation 和 external research 会作为独立 recommendation row 判断，只有在补上当前任务或仓库缺口时才推荐。Capability Recommendation 会输出证据绑定推荐表：repo signal、source evidence、freshness、recommendation row、why、install surface、trust boundary、approval needed、risk/cost、fallback、verification probe 和 classification。插件内置的 `find-skills` 辅助 skill 用于 skill 发现；targeted web research 用于本地 reference 只有 common patterns 或当前外部能力事实很重要的场景。推荐请求保持 read-only，直到 `USER CHECKPOINT`。 |
 | 面向开放研究的 Research Route | 当用户明确要求 autoresearch 或研究性探索时，`harness-builder` 可以生成项目本地 research harness：假设、baseline、metric、evidence log、bounded iterations、git isolation、graduation gate 和 rollback policy。 |
 | ready claim 必须有新证据 | `verify` 是唯一 ready gate。它会把每个“完成了”的声明绑定到当前证据：测试、构建输出、smoke check、截图、人工检查，或明确说明为什么无法验证。 |
 | cleanup 是交付的一部分 | README 过期、生成物残留、状态不清、恢复笔记缺失，都不是小问题。下一个 agent 读不懂现场，工作就没有真正结束。 |

@@ -4,6 +4,8 @@ Skills package repeatable expertise, workflows, templates, scripts, examples, an
 
 Derived from Anthropic `claude-code-setup` 1.0.0 and adapted for Codex / Claude Code / Cursor surfaces. See `automation_recommendation_attribution.md`.
 
+**Note**: These are common patterns. Use targeted web search, `$find-skills` / `find-skills`, or local official docs to find skill ideas specific to the codebase's tools and frameworks.
+
 ## Placement Surfaces
 
 | Surface | Project-local | User/global | Notes |

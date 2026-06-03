@@ -4,9 +4,9 @@ Project-level meta skill for designing and installing minimal useful AI agent ha
 
 ## Focus
 
-- Evidence-first harness design; Harness Hypothesis and Harness Charter before install.
-- Integrated Coverage Matrix; skills, hooks, MCP, and subagents close named gaps only.
-- Proactive Capability Shortlist on strong stack signals (`capability_starter_catalog.md`); install still requires `USER CHECKPOINT`.
+- Evidence-first harness recommendation; Harness Hypothesis and Harness Recommendation Contract before install.
+- Integrated Harness Recommendation Matrix; skills, hooks, MCP, subagents, plugins, commands, and CI/headless automation close named gaps only.
+- Proactive Capability Recommendation from `automation_recommendation_guide.md` and `automation_*` references; install still requires `USER CHECKPOINT`.
 - Phased installation with per-phase acceptance evidence.
 - Existing harness reconciliation before patching.
 - Optional read-only subagent orchestration; Research Route for explicit autoresearch.
@@ -15,7 +15,7 @@ Project-level meta skill for designing and installing minimal useful AI agent ha
 ## What it does
 
 - Audits a project before agent coding starts.
-- Designs a harness plan with verifiable acceptance criteria.
+- Designs a Harness Recommendation Plan with verifiable acceptance criteria.
 - Installs project-local `AGENTS.md`, docs, check scripts, state files, hooks, and skills when justified.
 - Records manifest and decisions for auditability.
 

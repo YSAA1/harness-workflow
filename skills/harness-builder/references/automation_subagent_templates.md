@@ -4,6 +4,8 @@ Subagents are specialized workers or reviewers with bounded context. Recommend t
 
 Derived from Anthropic `claude-code-setup` 1.0.0 and adapted for Codex / Claude Code / Cursor surfaces. See `automation_recommendation_attribution.md`.
 
+**Note**: These are common subagent patterns. Design or research custom subagents based on the codebase's specific review, analysis, and generation needs.
+
 ## Placement Surfaces
 
 | Surface | Typical placement | Notes |
@@ -95,7 +97,7 @@ Writing tests requires an approved disjoint write scope.
 | migration-helper | framework/version migrations | high-risk; plan first |
 | verification-scout | finding exact test/build entry | read-only; good for unfamiliar repos |
 | repo-explorer | mapping project structure and protected paths | read-only; useful before harness install |
-| harness-plan-reviewer | checking Harness Plan before install | read-only; catches scope drift |
+| harness-plan-reviewer | checking Harness Recommendation Plan before install | read-only; catches scope drift |
 | research-critic | challenging Research Route hypotheses | read-only; use in explicit research mode |
 
 ## Model and Tool Guidance

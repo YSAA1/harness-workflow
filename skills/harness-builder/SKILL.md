@@ -1,6 +1,6 @@
 ---
 name: harness-builder
-description: "Project-level Harness Builder for designing or repairing the project workbench and recovery surface: AGENTS.md/CLAUDE.md, project map, project iron laws, verification entry point, reusable skills, justified hooks, subagents, MCP policy, Capability Discovery, and anti-entropy guardrails. Trigger when the user says harness builder, bootstrap, initialize, onboard, build harness, prepare workbench, create project rules, find reusable skills, or repair recovery surface."
+description: "Project-level Harness Builder for recommending, designing, or repairing the project workbench and recovery surface: AGENTS.md/CLAUDE.md, project map, project iron laws, verification entry point, reusable skills, justified hooks, subagents, MCP policy, Capability Recommendation, and anti-entropy guardrails. Trigger when the user says harness builder, bootstrap, initialize, onboard, build harness, prepare workbench, create project rules, find reusable skills, recommend capabilities, or repair recovery surface."
 ---
 
 # Harness Builder
@@ -9,12 +9,12 @@ Build or repair the minimal useful **project-level harness** for AI coding agent
 
 Default to project-local output. Do not modify user-global config unless explicitly requested.
 
-One integrated gap model: decide which harness coverage areas are missing, then whether files, scripts, skills, hooks, MCP, or subagents close each gap. No separate profile lane competing with Capability Discovery.
+One integrated recommendation model: decide which harness coverage areas are missing, then recommend the files, scripts, skills, hooks, MCP, subagents, plugins, commands, or CI/headless automation that close those gaps. The first pass is read-only; installation happens only after checkpoint approval.
 
 ## 语言策略
 
-- 用户可见文本跟随用户语言；中文用户场景下，Harness 证据、Charter、Coverage Matrix、Capability Discovery、Plan 和 User Checkpoint 使用中文为主的标题和说明。
-- 协议稳定优先：协议 token 如 `HARNESS EVIDENCE`、`HARNESS CHARTER`、`USER CHECKPOINT`、`Required / Recommended / Deferred / Rejected`、文件路径、命令、skill 名和安装面标识可保留英文，必要时使用中文标签 + 英文 token。
+- 用户可见文本跟随用户语言；中文用户场景下，Harness 证据、Recommendation Contract、Recommendation Matrix、Capability Recommendations、Plan 和 User Checkpoint 使用中文为主的标题和说明。
+- 协议稳定优先：协议 token 如 `HARNESS EVIDENCE`、`HARNESS RECOMMENDATION CONTRACT`、`HARNESS RECOMMENDATION MATRIX`、`USER CHECKPOINT`、`Required / Recommended / Deferred / Rejected`、文件路径、命令、skill 名和安装面标识可保留英文，必要时使用中文标签 + English token。
 - 不把 harness 输出硬编码为中文-only；英文用户或其他语言用户按其主要输入语言输出，机器可读 token 保持稳定。
 - 渲染 `templates/*.j2` 时，先确定 `target_language` / `user_language`。模板默认英语，中文场景通过语言条件输出中文标签；不要把项目本地 harness 文件无条件写成中文-only。
 
@@ -25,7 +25,16 @@ One integrated gap model: decide which harness coverage areas are missing, then 
 - The repo needs project-local skills, hooks, MCP, subagents, or anti-entropy rules evaluated.
 - User explicitly asks for autoresearch, autonomous research, repeated investigation, or method exploration.
 
-Prefer running after `brainstorm` or `plan` when goal, non-goals, success criteria, implementation shape, and verification strategy are known. Direct harness audit is allowed, but still starts from evidence and must produce a user-visible harness contract before installation.
+Prefer running after `brainstorm` or `plan` when goal, non-goals, success criteria, implementation shape, and verification strategy are known. Direct harness recommendation is allowed, but still starts from evidence and must produce a user-visible recommendation and install contract before writing files.
+
+## Harness Recommendation Mode
+
+Use one mode for recommendation and install planning. The mode has two phases:
+
+- **Read-only recommendation phase**: scan the repo, reconcile existing harness surfaces, and recommend installable harness contents. Do not write files, create hooks, add MCP config, install plugins, or create subagents in this phase.
+- **Approved install phase**: after `USER CHECKPOINT`, install or patch only the approved project-local items, then verify.
+
+This is not a separate automation shopping lane. Capability recommendations are part of the harness recommendation: each candidate explains the harness gap it closes, the install surface, approval boundary, fallback, and verification probe.
 
 ## Mandatory execution gates
 
@@ -35,21 +44,22 @@ Unless the user asks for read-only explanation or a narrower single-file task, r
 
 2. **Question gate** — Ask only questions that change harness design (target outcome, non-goals, acceptance criteria, verification depth, source of truth). If none needed: `No user questions needed` plus evidence-backed assumptions.
 
-3. **Harness Charter gate** — Before the Harness Plan: objective, non-goals, user-facing acceptance criteria, verification path, evidence location, selected recovery surface, source-of-truth priority, and existing components to keep/patch/archive/reject. Unknown fields → ask or route; no template filler.
+3. **Harness Recommendation Contract gate** — Before recommending installation: objective, non-goals, user-facing acceptance criteria, verification path, evidence location, selected recovery surface, source-of-truth priority, and existing components to keep/patch/archive/reject. Unknown fields → ask or route; no template filler.
 
-4. **Coverage Matrix gate** — One `Required / Recommended / Deferred / Rejected` table across: agent entry and project map; static docs and durable rules; recovery surface; verification entry; architecture boundaries; anti-entropy; skill/hook/MCP/subagent/external-research fit; dynamic context; commit protocol (default `Deferred`). See `references/coverage_matrix_policy.md`, `references/architecture_enforcement_policy.md`, `references/anti_entropy.md`.
+4. **Harness Recommendation Matrix gate** — One `Required / Recommended / Deferred / Rejected` table across: agent entry and project map; static docs and durable rules; recovery surface; verification entry; architecture boundaries; anti-entropy; skills; hooks; MCP; subagents; plugins; commands/CI/headless automation; external research; dynamic context; commit protocol (default `Deferred`). See `references/recommendation_matrix_policy.md`, `references/architecture_enforcement_policy.md`, `references/anti_entropy.md`, and `references/automation_recommendation_guide.md`.
 
-5. **Capability Discovery gate** — Only after real gaps. Bind every candidate capability to one coverage row. Run **Capability Shortlist pass** (repo signal → source evidence → freshness → candidate → coverage row → why → install surface → trust boundary → approval → risk/cost → fallback → verification probe → classification). Default 1–2 candidates per category; defer extras. On strong stack signals, **actively recommend** low-risk project-local candidates as `Recommended`; **Do not install on user silence**. For skills: `$find-skills` / `find-skills` or `No reusable skill search needed` with reason. For hooks/MCP/subagents/CI when external behavior matters: **targeted web search** or `No web research needed` with reason. Read `references/capability_signal_policy.md` and `references/capability_starter_catalog.md`. If the user explicitly asks for capability, automation, setup, or install recommendations, switch to **Full Recommendation Mode**: read `references/automation_recommendation_guide.md` plus the relevant `automation_*` references, output a broader read-only recommendation report, and include install surface, approval boundary, fallback, and verification probe for each candidate.
+5. **Capability Recommendation gate** — Only after real gaps. Bind every candidate capability to one recommendation row. Run **Capability Recommendation pass** (repo signal → source evidence → freshness → candidate → recommendation row → why → install surface → trust boundary → approval → risk/cost → fallback → verification probe → classification). Default 1–2 candidates per category; include 3–5 when the user asks about one category. On strong stack signals, **actively recommend** low-risk project-local candidates as `Recommended`; **Do not install on user silence**. For skills: `$find-skills` / `find-skills` or `No reusable skill search needed` with reason. For hooks/MCP/subagents/plugins/commands when external behavior matters: **targeted web search** or `No web research needed` with reason. Read `references/automation_recommendation_guide.md` and the relevant `references/automation_*` files. The automation references are common patterns, not the full universe; use web search to find tool/framework-specific ideas when local evidence requires it.
 
 6. **Verification design gate** — Fast check, deeper smoke/E2E/manual check, evidence location, unverified risks, and per-phase acceptance before installation.
 
-7. **User checkpoint gate** — Show Harness Plan; wait for approval unless this turn already authorized direct changes.
+7. **User checkpoint gate** — Show Harness Recommendation Plan; wait for approval unless this turn already authorized direct changes.
 
 ```text
 USER CHECKPOINT
-安装项目前，请先确认这个 Harness Plan：
-- 章程 / Charter:
-- 覆盖矩阵 / Coverage:
+安装项目前，请先确认这个 Harness Recommendation Plan：
+- 推荐契约 / Recommendation contract:
+- 推荐矩阵 / Recommendation matrix:
+- 能力推荐 / Capabilities:
 - 新增安装 / Install:
 - 修补现有文件 / Patch existing:
 - 归档或降级 / Archive/deprecate:
@@ -69,8 +79,9 @@ Working model:
 
 ```text
 repo evidence + user intent + existing harness reconciliation
--> Harness Hypothesis -> Harness Charter -> Coverage Matrix
--> Capability Discovery -> Harness Plan -> USER CHECKPOINT
+-> Harness Hypothesis -> Harness Recommendation Contract
+-> Harness Recommendation Matrix -> Capability Recommendation
+-> Harness Recommendation Plan -> USER CHECKPOINT
 -> project-local install by phase -> phase verification and audit records
 ```
 
@@ -78,13 +89,13 @@ repo evidence + user intent + existing harness reconciliation
 
 1. **Collect evidence** — Read user intent and repo surfaces; detect stack and verification commands; probe cheap dynamic context (`git status`, diagnostics, CI if available). For existing harnesses, classify authoritative vs stale sources.
 2. **Reconcile** — Keep/patch/archive/reject existing artifacts; name source of truth; migrate volatile state out of `AGENTS.md`. See `references/recovery_surface_policy.md`, `references/anti_entropy.md`, `references/install_policy.md`.
-3. **Harness Hypothesis** — Known facts, dynamic state, intent, missing info, questions, assumptions; map gaps to coverage areas (12-lesson harness checklist: where capable agents still fail, what belongs in repo truth, thin entry, continuity, scope, gates, smoke, observability, clean session end).
+3. **Harness Hypothesis** — Known facts, dynamic state, intent, missing info, questions, assumptions; map gaps to recommendation areas (12-lesson harness checklist: where capable agents still fail, what belongs in repo truth, thin entry, continuity, scope, gates, smoke, observability, clean session end).
 4. **Orchestration** — Solo for small repos; read-only **subagent** only for mapped gaps. Main agent installs. See `references/subagent_orchestration.md`.
-5. **Coverage Matrix** — Classify each area; record how each selected row will be satisfied.
-6. **Capability Discovery** — Shortlist pass; stack signals from `capability_starter_catalog.md`; for explicit recommendation/setup requests, use Full Recommendation Mode and the `automation_*` reference library; record external research in `.harness/research_notes.md` when used.
+5. **Harness Recommendation Matrix** — Classify each area; record how each selected row will be satisfied.
+6. **Capability Recommendation** — Use stack signals from `automation_recommendation_guide.md` and the `automation_*` reference library; record external research in `.harness/research_notes.md` when used.
 7. **Research Route** (explicit only) — Goal, Hypothesis, Counter-hypothesis, Baseline, Scope, Metric, Verify, Guard, Budget, Artifact policy, Stop rule. If approved, install `templates/research_route/*`. Preserve failed evidence before `git reset --hard` on isolated research branches only.
 8. **Recovery surface** — none, lightweight, three-file, feature-list, or existing; map `active_slice` → `task_plan.md`, evidence → `progress.md`, decisions → `findings.md` when using three-file.
-9. **Charter + phased Plan** — Merge coverage, capabilities, recovery, verification into Harness Plan with per-phase acceptance.
+9. **Recommendation + phased Plan** — Merge harness files, capabilities, recovery, verification, approval boundaries, and fallbacks into Harness Recommendation Plan with per-phase acceptance.
 10. **Checkpoint** — Emit `USER CHECKPOINT`; wait for `approve / change / stop`.
 11. **Install by phase** — `Required` only unless user approves more; prefer `AGENTS.md`, `scripts/agent/check.sh`, `docs/agent/*`, `.harness/*`, `.agents/skills/*`. Use `templates/` for boilerplate; hooks optional unless they block concrete high-risk failures tests cannot catch.
 12. **Verify and record** — `scripts/validate_harness.py` when useful; update `.harness/manifest.yaml`, `.harness/decisions.md`, `.harness/state.md`; anti-entropy per `references/anti_entropy.md`.
@@ -97,11 +108,11 @@ Before approved installation:
 HARNESS EVIDENCE
 EXISTING HARNESS RECONCILIATION
 HARNESS QUESTIONS
-HARNESS CHARTER
-HARNESS COVERAGE MATRIX
-CAPABILITY DISCOVERY
+HARNESS RECOMMENDATION CONTRACT
+HARNESS RECOMMENDATION MATRIX
+CAPABILITY RECOMMENDATIONS
 VERIFICATION DESIGN
-HARNESS PLAN
+HARNESS RECOMMENDATION PLAN
 USER CHECKPOINT
 ```
 
@@ -116,7 +127,7 @@ NEXT
 
 Render localized labels adjacent to protocol token lines, not by changing the token lines.
 
-Always state evidence, unknowns, questions, charter assumptions, coverage decisions, install/patch/archive/defer/reject, capability value/cost, verification plan, phase status, and skipped-gate reasons.
+Always state evidence, unknowns, questions, recommendation assumptions, recommendation decisions, install/patch/archive/defer/reject, capability value/cost, verification plan, phase status, and skipped-gate reasons.
 
 ## Recommended next skill
 

@@ -7,12 +7,18 @@ from pathlib import Path
 
 SUSPICIOUS_COMMAND_TOKENS = ["|", ";", "$(", "`", ">>", "curl", "wget", "eval", "exec"]
 CORE_REFERENCES = [
-    "coverage_matrix_policy.md",
+    "recommendation_matrix_policy.md",
     "recovery_surface_policy.md",
     "install_policy.md",
     "verification_policy.md",
-    "capability_signal_policy.md",
-    "capability_starter_catalog.md",
+    "automation_recommendation_guide.md",
+    "automation_mcp_servers.md",
+    "automation_hooks_patterns.md",
+    "automation_subagent_templates.md",
+    "automation_skills_reference.md",
+    "automation_plugins_reference.md",
+    "automation_commands_reference.md",
+    "automation_recommendation_attribution.md",
     "subagent_orchestration.md",
     "research_route_policy.md",
 ]
@@ -68,14 +74,14 @@ def check_instruction_skill(root: Path, issues: list[str]) -> None:
         text = skill.read_text(encoding="utf-8", errors="replace")
         required_phrases = [
             "USER CHECKPOINT",
-            "Coverage Matrix",
-            "Capability Discovery",
-            "Capability Shortlist pass",
+            "Harness Recommendation Matrix",
+            "Capability Recommendation",
+            "Capability Recommendation pass",
             "selected recovery surface",
             "source evidence",
             "verification probe",
-            "recommendation report",
-            "capability_starter_catalog.md",
+            "Harness Recommendation Plan",
+            "automation_recommendation_guide.md",
         ]
         for phrase in required_phrases:
             if phrase not in text:
@@ -126,7 +132,16 @@ def check_no_removed_pack(root: Path, issues: list[str]) -> None:
         issues.append("templates/packs/ should not exist after init_scaffold removal")
     if (root / "scripts" / "install_pack.py").exists():
         issues.append("scripts/install_pack.py should be removed")
+    if (root / "scripts" / "render_harness.py").exists():
+        issues.append("scripts/render_harness.py should be removed with the init_scaffold pack renderer")
+    if (root / "evals" / "pack_integration_evals.json").exists():
+        issues.append("evals/pack_integration_evals.json should be removed with the init_scaffold pack")
+    if (root / "schemas" / "coverage_matrix.schema.json").exists():
+        issues.append("schemas/coverage_matrix.schema.json should be replaced by recommendation_matrix.schema.json")
     forbidden_refs = [
+        "capability_signal_policy.md",
+        "capability_starter_catalog.md",
+        "coverage_matrix_policy.md",
         "project_map_policy.md",
         "harness_subsystems.md",
         "skill_policy.md",

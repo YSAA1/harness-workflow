@@ -4,6 +4,8 @@ Hooks run deterministic commands in response to agent or editor events. Recommen
 
 Derived from Anthropic `claude-code-setup` 1.0.0 and adapted for Codex / Claude Code / Cursor surfaces. See `automation_recommendation_attribution.md`.
 
+**Note**: These are common hook patterns. Use targeted web search or local official docs to find hooks for tools/frameworks not listed here.
+
 ## Placement Surfaces
 
 | Surface | Typical placement | Notes |

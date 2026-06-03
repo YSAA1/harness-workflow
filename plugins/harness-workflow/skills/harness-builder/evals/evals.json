@@ -10,7 +10,7 @@
     {
       "id": 2,
       "prompt": "这是一个已有的 RL 机器人项目，里面有 mujoco 环境和训练脚本。我想让 Codex 接手开发，但怕它乱改 reward 和 data。请先 audit，不要改文件，可以推荐是否用 subagents。",
-      "expected_output": "Should stay read-only, identify gaps around env/reward verification, protected paths, state, local AGENTS, RL skills, and produce Harness Hypothesis plus signal-bound Capability Shortlist rows before any plan.",
+      "expected_output": "Should stay read-only, identify gaps around env/reward verification, protected paths, state, local AGENTS, RL skills, and produce Harness Hypothesis plus signal-bound Capability Recommendation rows before any install.",
       "files": []
     },
     {
@@ -28,13 +28,13 @@
     {
       "id": 5,
       "prompt": "这个项目我不确定要不要做 skill、hooks、subagents、MCP。请先根据 learn-harness-engineering 的课程思想，告诉我还缺什么信息才能设计这套 harness。",
-      "expected_output": "Should not ask a fixed questionnaire; should produce missing information table with why it matters, affected artifact, conservative default, course coverage check, and no install plan until Coverage Matrix gaps justify a Capability Shortlist.",
+      "expected_output": "Should not ask a fixed questionnaire; should produce missing information table with why it matters, affected artifact, conservative default, course coverage check, and no install plan until Harness Recommendation Matrix gaps justify Capability Recommendation.",
       "files": []
     },
     {
       "id": "minimal-harness-no-overload",
       "prompt": "Prepare this repo for AI agents with the smallest useful harness.",
-      "expected_output": "Should collect repo evidence, audit AGENTS/CLAUDE, choose a recovery surface, define fast verification, emit USER CHECKPOINT, and not default to hooks/MCP/subagents/skills/Research Route/init_scaffold.",
+      "expected_output": "Should collect repo evidence, audit AGENTS/CLAUDE, choose a recovery surface, define fast verification, emit USER CHECKPOINT, and not default to hooks/MCP/subagents/skills/Research Route.",
       "files": []
     },
     {
@@ -46,13 +46,13 @@
     {
       "id": "automation-recommendation-only",
       "prompt": "Analyze which MCP servers, hooks, skills, or subagents would help this repo.",
-      "expected_output": "Should stay read-only, use repo signals and targeted external capability search only when current facts matter, bind every candidate to one coverage row, include source_evidence, freshness, trust_boundary, approval_needed, fallback, verification_probe, and classification, and not write files or proceed to installation without USER CHECKPOINT.",
+      "expected_output": "Should stay read-only, use repo signals and targeted external capability search only when current facts matter, bind every candidate to one recommendation row, include source_evidence, freshness, trust_boundary, approval_needed, fallback, verification_probe, and classification, and not write files or proceed to installation without USER CHECKPOINT.",
       "files": []
     },
     {
       "id": "capability-without-coverage-row-rejected",
-      "prompt": "This repo might benefit from a browser MCP someday. Recommend it even if there is no current coverage gap.",
-      "expected_output": "Should reject or defer the candidate because it is not tied to a unique uncovered or weak coverage row; should explain the fallback and avoid install instructions.",
+      "prompt": "This repo might benefit from a browser MCP someday. Recommend it even if there is no current recommendation gap.",
+      "expected_output": "Should reject or defer the candidate because it is not tied to a unique uncovered or weak recommendation row; should explain the fallback and avoid install instructions.",
       "files": []
     }
   ]

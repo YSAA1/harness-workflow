@@ -37,21 +37,21 @@ Recommendations must name the surface separately from the candidate. Default is 
 
 | Capability | Codex surface | Claude Code surface | Cursor surface | Approval boundary |
 | --- | --- | --- | --- | --- |
-| Project instructions | `AGENTS.md`, `.codex/` project files if present | `CLAUDE.md`, `.claude/` project files | `.cursor/rules/`, `.cursor/skills/` | project-local patch can be approved in Harness Plan |
+| Project instructions | `AGENTS.md`, `.codex/` project files if present | `CLAUDE.md`, `.claude/` project files | `.cursor/rules/`, `.cursor/skills/` | project-local patch can be approved at `USER CHECKPOINT` |
 | Project-local skills | repo-local skill folder documented in `AGENTS.md` or plugin skill surface | `.claude/skills/<name>/SKILL.md` or plugin skill | `.cursor/skills/<name>/SKILL.md` | require approval before writing |
 | User/global skills | `$CODEX_HOME/skills` or installed plugin cache | user/global `.claude/skills` or `/plugin install` | user/global Cursor skill surface if configured | explicit user approval only |
 | Hooks | project docs or approved local hook templates; Codex hook support varies by environment | `.claude/settings.json` hooks | Cursor rules/extensions or project scripts, depending on available surface | explicit approval, especially if blocking or mutating |
 | MCP | project `.codex/config.toml` notes or approved MCP config where supported | `.mcp.json`, `.claude/settings.json`, or `claude mcp add` | Cursor MCP settings if available | explicit approval; credential-bearing MCP needs stronger approval |
 | Subagents | subagent policy and delegated roles in project docs; use only when supported by runtime | `.claude/agents/<name>.md` | Cursor agent/rule equivalent if available | explicit approval before creating agent files |
 | Plugins | `.codex-plugin/`, local plugin cache, marketplace entry | `.claude-plugin/`, `/plugin install` | `.cursor-plugin/` | explicit approval before install or marketplace/cache changes |
-| Slash/CLI commands | documented scripts, `codex exec`, project commands | `.claude/commands/`, `claude -p` | Cursor commands/rules or project scripts | project-local scripts need Harness Plan approval; global commands need explicit approval |
+| Slash/CLI commands | documented scripts, `codex exec`, project commands | `.claude/commands/`, `claude -p` | Cursor commands/rules or project scripts | project-local scripts need `USER CHECKPOINT`; global commands need explicit approval |
 
 When a surface is unavailable or unknown, recommend a project-local note, script, or fallback workflow instead of inventing config.
 
 ## Approval levels
 
-- `No approval`: read-only recommendation report, local evidence gathering, and existing file reads.
-- `Harness Plan approval`: project-local files under the target repo, such as `AGENTS.md`, `scripts/agent/check.sh`, docs, `.harness/`, or repo-local skills.
+- `No approval`: read-only Harness Recommendation Plan, local evidence gathering, and existing file reads.
+- `USER CHECKPOINT`: project-local files under the target repo, such as `AGENTS.md`, `scripts/agent/check.sh`, docs, `.harness/`, or repo-local skills.
 - `Explicit user approval`: user/global config, MCP install, hooks, subagents, plugin install/cache/marketplace changes, credential-bearing integrations, destructive or blocking automation.
 - `Reject/defer`: unclear owner, unclear fallback, secret exposure, broad write permissions, long-running hooks, or verification cannot be probed.
 

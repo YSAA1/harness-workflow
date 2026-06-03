@@ -1,6 +1,6 @@
-# Coverage Matrix Policy
+# Harness Recommendation Matrix Policy
 
-Use one integrated coverage matrix for harness design. Do not create a separate profile lane.
+Use one integrated recommendation matrix for harness design. Do not create a separate profile lane.
 
 ## Purpose
 
@@ -32,7 +32,7 @@ Each row is classified as:
 
 ## Phase Thinking Without Profiles
 
-Borrow the useful phase discipline from initialization tools, but map it into coverage rows:
+Borrow the useful phase discipline from initialization tools, but map it into recommendation rows:
 
 | Initialization phase | Coverage row |
 | --- | --- |
@@ -49,7 +49,7 @@ The user may ask for one area only. Still run enough discovery to avoid writing 
 
 ## Binding Rule
 
-Every proposed file, script, skill, hook, MCP, subagent, CI job, or GC scan must bind to exactly one primary coverage row.
+Every proposed file, script, skill, hook, MCP, subagent, plugin, command, CI job, or GC scan must bind to exactly one primary recommendation row.
 
 If a candidate cannot name the failure it prevents, reject or defer it.
 

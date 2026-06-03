@@ -410,7 +410,7 @@ const harnessBuilderContract = read("skills/harness-builder/SKILL.md");
 for (const forbidden of ["USER CHECKPOINT（", "HARNESS EVIDENCE（", "NEXT（"]) {
   if (harnessBuilderContract.includes(forbidden)) fail(`harness-builder protocol token line is not exact: ${forbidden}`);
 }
-for (const token of ["安装项目前，请先确认这个 Harness Plan", "请回复：approve / change / stop。"]) {
+for (const token of ["安装项目前，请先确认这个 Harness Recommendation Plan", "请回复：approve / change / stop。"]) {
   if (!harnessBuilderContract.includes(token)) fail(`harness-builder Chinese checkpoint example missing localized text: ${token}`);
 }
 if (harnessUserTemplates.every(([file]) => exists(file))) pass("core language-adaptive template checks passed");
@@ -419,8 +419,8 @@ const activeDocs = `${read(".codex-plugin/plugin.json")}\n${read("README.md")}\n
 for (const token of [
   "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
   "Harness Builder", "recovery surface", "three-file", "Spec", "Executable Plan",
-  "Knowledge Cleanup", "Capability Discovery", "AGENTS.md", "项目铁律", "fresh evidence",
-  "Capability Shortlist",
+  "Knowledge Cleanup", "Capability Recommendation", "AGENTS.md", "项目铁律", "fresh evidence",
+  "Harness Recommendation Matrix",
   "Research Route", "autoresearch", "Evidence Loop", "Research Reset Policy",
 ]) {
   if (!activeDocs.includes(token)) fail(`docs missing boundary token: ${token}`);
@@ -445,12 +445,13 @@ if (exists(skillPath("harness-builder"))) {
   for (const token of [
     "Harness Hypothesis",
     "project-level harness",
+    "Harness Recommendation Mode",
     "Mandatory execution gates",
     "Question gate",
-    "Capability Discovery gate",
-    "Capability Shortlist pass",
-    "capability_signal_policy.md",
-    "recommendation report",
+    "Capability Recommendation gate",
+    "Capability Recommendation pass",
+    "automation_recommendation_guide.md",
+    "Harness Recommendation Plan",
     "Verification design gate",
     "User checkpoint gate",
     "USER CHECKPOINT",
@@ -459,7 +460,7 @@ if (exists(skillPath("harness-builder"))) {
     "approve / change / stop",
     "AGENTS.md",
     "Project iron laws",
-    "Capability Discovery",
+    "Capability Recommendation",
     "$find-skills",
     "targeted web search",
     "recovery surface",

@@ -1,8 +1,10 @@
 # Automation Plugins Reference
 
-Plugins are installable bundles of skills, commands, agents, hooks, MCP declarations, and documentation. Recommend plugins when a bundle closes a real coverage row better than a single project-local skill or script.
+Plugins are installable bundles of skills, commands, agents, hooks, MCP declarations, and documentation. Recommend plugins when a bundle closes a real recommendation row better than a single project-local skill or script.
 
 Derived from Anthropic `claude-code-setup` 1.0.0 and adapted for Codex / Claude Code / Cursor surfaces. See `automation_recommendation_attribution.md`.
+
+**Note**: These are common plugin directions. Use targeted web search or local official docs to discover additional official/community plugins specific to the user's runtime and project stack.
 
 ## Placement Surfaces
 

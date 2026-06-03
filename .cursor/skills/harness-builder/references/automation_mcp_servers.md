@@ -4,6 +4,8 @@ MCP servers connect the agent runtime to external tools and services. Recommend 
 
 Derived from Anthropic `claude-code-setup` 1.0.0 and adapted for Codex / Claude Code / Cursor surfaces. See `automation_recommendation_attribution.md`.
 
+**Note**: These are common MCP servers. Use targeted web search or local official docs to find MCP servers specific to the codebase's services, frameworks, and integrations.
+
 ## Setup Surfaces
 
 | Surface | Project-local option | User/global option | Notes |

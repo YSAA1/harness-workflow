@@ -12,13 +12,17 @@ _Avoid_: bootstrap as the canonical name; keep "bootstrap" only as a historical 
 The design rule that each workflow skill can run for its own activity without requiring a fixed global sequence or a particular state backend.
 _Avoid_: making Harness Builder, planning, or three-file state a universal prerequisite.
 
-**Capability Discovery**:
-The Harness Builder activity that searches for task-relevant skills, MCP servers, hooks, or external agent capabilities before recommending project-level installation.
+**Capability Recommendation**:
+The Harness Builder activity that searches for task-relevant skills, MCP servers, hooks, subagents, plugins, commands, CI/headless automation, or external agent capabilities before recommending project-level installation.
 _Avoid_: treating the current user's installed skills as the full capability universe, or installing optional capabilities without clear value.
 
-**Capability Shortlist**:
-The evidence-bound recommendation table inside Capability Discovery: repo signal, source evidence, freshness, candidate, coverage row, why, install surface, trust boundary, approval needed, risk/cost, fallback, verification probe, and classification.
-_Avoid_: turning recommendations into a separate automation profile or shopping list detached from the Coverage Matrix.
+**Harness Recommendation Matrix**:
+The unified Required / Recommended / Deferred / Rejected table that keeps entry docs, recovery, verification, architecture, anti-entropy, skills, hooks, MCP, subagents, plugins, commands, CI/headless automation, external research, dynamic context, and commit protocol in one recommendation surface.
+_Avoid_: turning recommendations into a separate automation profile or shopping list detached from actual harness gaps.
+
+**Capability Recommendation Table**:
+The evidence-bound table inside Harness Recommendation Mode: repo signal, source evidence, freshness, candidate, recommendation row, why, install surface, trust boundary, approval needed, risk/cost, fallback, verification probe, and classification.
+_Avoid_: recommending capabilities that do not close a named recommendation row.
 
 **Research Route**:
 A Harness Builder mode for explicit autoresearch or open-ended method exploration after enough brainstorm or plan context exists. It creates a project-local research plan, evidence log, iteration protocol, and research manifest.
@@ -76,8 +80,8 @@ _Avoid_: treating it as the default dependency of every skill.
 
 - A **Harness Builder** selects or repairs the **Recovery Surface** for a project.
 - A **Harness Builder** defines the **Recovery Policy** for a project.
-- A **Harness Builder** performs **Capability Discovery** with `$find-skills` and targeted web research when the current task may benefit from reusable skills, MCP servers, hooks, or agent tooling.
-- A **Capability Shortlist** only runs after the **Coverage Matrix** exposes a real gap; read-only recommendation requests stop at the report and do not install files, hooks, MCP config, subagents, or project-local skills.
+- A **Harness Builder** performs **Capability Recommendation** with `$find-skills` and targeted web research when the current task may benefit from reusable skills, MCP servers, hooks, subagents, plugins, commands, CI/headless automation, or agent tooling.
+- A **Capability Recommendation Table** only includes candidates bound to **Harness Recommendation Matrix** gaps; recommendation requests stay read-only until `USER CHECKPOINT`.
 - A **Harness Builder** may create a **Research Route** harness when the user explicitly asks for autoresearch or research exploration and the research contract is clear.
 - A **Research Route** uses an **Evidence Loop** only after goal, hypothesis, baseline, metric, verification, guardrails, budget, and stop rule are defined.
 - A **Research Reset Policy** preserves negative evidence before failed code is removed from the active branch or worktree.
@@ -99,10 +103,10 @@ _Avoid_: treating it as the default dependency of every skill.
 > **Domain expert:** "No. Use **Harness Builder** when the project workbench or **Recovery Surface** is unclear. If the task already has enough context, `brainstorm`, `plan`, or another **Workflow Skill** can run independently."
 
 > **Dev:** "Should Harness Builder only inspect already installed skills?"
-> **Domain expert:** "No. During **Capability Discovery**, it should use `$find-skills` for strongly relevant reusable skills and targeted web search for useful MCP or hook options, then recommend installation only when the value is clear."
+> **Domain expert:** "No. During **Capability Recommendation**, it should use `$find-skills` for strongly relevant reusable skills and targeted web search for useful MCP, hook, plugin, command, or subagent options, then recommend installation only when the value is clear."
 
-> **Dev:** "Can Capability Discovery recommend every automation that looks helpful?"
-> **Domain expert:** "No. It should produce a **Capability Shortlist** bound to Coverage Matrix gaps. Each candidate needs repo evidence, source evidence, freshness when external facts matter, one coverage row, trust and approval boundaries, risk/cost, fallback, verification probe, and a Required / Recommended / Deferred / Rejected classification."
+> **Dev:** "Can Capability Recommendation recommend every automation that looks helpful?"
+> **Domain expert:** "No. It should produce a **Capability Recommendation Table** bound to Harness Recommendation Matrix gaps. Each candidate needs repo evidence, source evidence, freshness when external facts matter, one recommendation row, trust and approval boundaries, risk/cost, fallback, verification probe, and a Required / Recommended / Deferred / Rejected classification."
 
 > **Dev:** "If the user asks for autoresearch, should we skip `brainstorm` and start looping?"
 > **Domain expert:** "No. Autoresearch needs an approved **Research Route** contract first: goal, hypothesis, baseline, metric, verification, guardrails, budget, and stop rule. The loop starts only after that contract exists."

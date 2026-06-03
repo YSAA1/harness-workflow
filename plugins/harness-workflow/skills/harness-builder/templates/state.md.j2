@@ -14,7 +14,7 @@
 
 {{ brainstorming_summary }}
 
-## {{ 'Harness 章程（Harness charter）' if zh else 'Harness charter' }}
+## {{ 'Harness 推荐契约（Harness Recommendation Contract）' if zh else 'Harness Recommendation Contract' }}
 
 - {{ '目标（Objective）' if zh else 'Objective' }}: {{ harness_objective }}
 - {{ '验收标准（Acceptance criteria）' if zh else 'Acceptance criteria' }}: {{ acceptance_criteria }}
@@ -33,29 +33,29 @@
 - {{ '风险' if zh else 'Risks' }}: {{ current_risks if current_risks is defined else ('未记录。' if zh else 'None recorded.') }}
 - {{ '下一步' if zh else 'Next actions' }}: {{ next_actions if next_actions is defined else ('未记录。' if zh else 'None recorded.') }}
 
-{% if include_coverage_matrix %}
-## {{ '覆盖矩阵（Coverage matrix）' if zh else 'Coverage matrix' }}
+{% if include_recommendation_matrix %}
+## {{ '推荐矩阵（Harness Recommendation Matrix）' if zh else 'Harness Recommendation Matrix' }}
 
-| {{ '覆盖区域（Area）' if zh else 'Area' }} | {{ '状态（Status）' if zh else 'Status' }} |
+| {{ '推荐区域（Area）' if zh else 'Area' }} | {{ '状态（Status）' if zh else 'Status' }} |
 | --- | --- |
-| {{ 'Agent 入口和项目地图' if zh else 'Agent entry and project map' }} | {{ coverage_agent_entry }} |
-| {{ '静态文档和稳定规则' if zh else 'Static docs and durable rules' }} | {{ coverage_static_docs }} |
-| Recovery surface | {{ coverage_recovery_surface }} |
-| {{ '验证入口' if zh else 'Verification entry' }} | {{ coverage_verification_entry }} |
-| {{ '架构边界' if zh else 'Architecture boundaries' }} | {{ coverage_architecture_boundaries }} |
-| Anti-entropy | {{ coverage_anti_entropy }} |
-| Skill fit | {{ coverage_skill_fit }} |
-| Hook fit | {{ coverage_hook_fit }} |
-| MCP fit | {{ coverage_mcp_fit }} |
-| Subagent fit | {{ coverage_subagent_fit }} |
-| {{ '外部研究适配' if zh else 'External research fit' }} | {{ coverage_external_research_fit }} |
-| {{ '动态上下文' if zh else 'Dynamic context' }} | {{ coverage_dynamic_context }} |
+| {{ 'Agent 入口和项目地图' if zh else 'Agent entry and project map' }} | {{ recommendation_agent_entry }} |
+| {{ '静态文档和稳定规则' if zh else 'Static docs and durable rules' }} | {{ recommendation_static_docs }} |
+| Recovery surface | {{ recommendation_recovery_surface }} |
+| {{ '验证入口' if zh else 'Verification entry' }} | {{ recommendation_verification_entry }} |
+| {{ '架构边界' if zh else 'Architecture boundaries' }} | {{ recommendation_architecture_boundaries }} |
+| Anti-entropy | {{ recommendation_anti_entropy }} |
+| Skill fit | {{ recommendation_skill_fit }} |
+| Hook fit | {{ recommendation_hook_fit }} |
+| MCP fit | {{ recommendation_mcp_fit }} |
+| Subagent fit | {{ recommendation_subagent_fit }} |
+| {{ '外部研究适配' if zh else 'External research fit' }} | {{ recommendation_external_research_fit }} |
+| {{ '动态上下文' if zh else 'Dynamic context' }} | {{ recommendation_dynamic_context }} |
 {% endif %}
 
-{% if pack_selection_summary %}
-## {{ '安装包选择（Pack selection）' if zh else 'Pack selection' }}
+{% if recommendation_summary %}
+## {{ '推荐摘要（Recommendation summary）' if zh else 'Recommendation summary' }}
 
-{{ pack_selection_summary | default('未选择安装包。' if zh else 'No install pack selected.') }}
+{{ recommendation_summary | default('未记录推荐摘要。' if zh else 'No recommendation summary recorded.') }}
 {% endif %}
 
 {% if orchestration_mode %}
