@@ -78,9 +78,11 @@ def check_instruction_skill(root: Path, issues: list[str]) -> None:
             "Capability Recommendation",
             "Capability Recommendation pass",
             "selected recovery surface",
-            "source evidence",
+            "repo signal",
+            "approval needed",
             "verification probe",
             "Harness Recommendation Plan",
+            "No install recommended",
             "automation_recommendation_guide.md",
         ]
         for phrase in required_phrases:

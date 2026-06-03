@@ -23,7 +23,7 @@
     ],
     "defaultPrompt": [
       "Use harness-builder after brainstorm or plan when the project needs a tailored recovery surface.",
-      "Use find-skills during Capability Discovery before adding project-local skills, MCPs, or hooks.",
+      "Use find-skills during Capability Recommendation before adding project-local skills, MCPs, or hooks.",
       "Use cleanup before handoff to catch doc drift, stale artifacts, and recovery gaps."
     ],
     "brandColor": "#2563EB"

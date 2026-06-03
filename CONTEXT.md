@@ -21,7 +21,7 @@ The unified Required / Recommended / Deferred / Rejected table that keeps entry 
 _Avoid_: turning recommendations into a separate automation profile or shopping list detached from actual harness gaps.
 
 **Capability Recommendation Table**:
-The evidence-bound table inside Harness Recommendation Mode: repo signal, source evidence, freshness, candidate, recommendation row, why, install surface, trust boundary, approval needed, risk/cost, fallback, verification probe, and classification.
+The concise evidence-bound table inside Harness Recommendation Mode: recommendation type, candidate, repo signal, why, install surface, approval needed, fallback, verification probe, and priority/classification. Add source evidence, freshness, trust boundary, and risk/cost only when they materially change the decision.
 _Avoid_: recommending capabilities that do not close a named recommendation row.
 
 **Research Route**:
@@ -106,7 +106,7 @@ _Avoid_: treating it as the default dependency of every skill.
 > **Domain expert:** "No. During **Capability Recommendation**, it should use `$find-skills` for strongly relevant reusable skills and targeted web search for useful MCP, hook, plugin, command, or subagent options, then recommend installation only when the value is clear."
 
 > **Dev:** "Can Capability Recommendation recommend every automation that looks helpful?"
-> **Domain expert:** "No. It should produce a **Capability Recommendation Table** bound to Harness Recommendation Matrix gaps. Each candidate needs repo evidence, source evidence, freshness when external facts matter, one recommendation row, trust and approval boundaries, risk/cost, fallback, verification probe, and a Required / Recommended / Deferred / Rejected classification."
+> **Domain expert:** "No. It should produce a **Capability Recommendation Table** bound to Harness Recommendation Matrix gaps. Keep it readable: candidate, repo signal, value, install surface, approval boundary, fallback, verification probe, and Required / Recommended / Deferred / Rejected classification. Add trust/risk/source details only when they affect the decision."
 
 > **Dev:** "If the user asks for autoresearch, should we skip `brainstorm` and start looping?"
 > **Domain expert:** "No. Autoresearch needs an approved **Research Route** contract first: goal, hypothesis, baseline, metric, verification, guardrails, budget, and stop rule. The loop starts only after that contract exists."

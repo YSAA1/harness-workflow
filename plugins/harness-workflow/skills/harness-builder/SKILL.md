@@ -9,7 +9,7 @@ Build or repair the minimal useful **project-level harness** for AI coding agent
 
 Default to project-local output. Do not modify user-global config unless explicitly requested.
 
-One integrated recommendation model: decide which harness coverage areas are missing, then recommend the files, scripts, skills, hooks, MCP, subagents, plugins, commands, or CI/headless automation that close those gaps. The first pass is read-only; installation happens only after checkpoint approval.
+One integrated recommendation model: read the repo, explain what would help, then recommend concrete files, scripts, skills, hooks, MCP, subagents, plugins, commands, or CI/headless automation. The first pass is read-only; installation happens only after approval.
 
 ## 语言策略
 
@@ -25,7 +25,7 @@ One integrated recommendation model: decide which harness coverage areas are mis
 - The repo needs project-local skills, hooks, MCP, subagents, or anti-entropy rules evaluated.
 - User explicitly asks for autoresearch, autonomous research, repeated investigation, or method exploration.
 
-Prefer running after `brainstorm` or `plan` when goal, non-goals, success criteria, implementation shape, and verification strategy are known. Direct harness recommendation is allowed, but still starts from evidence and must produce a user-visible recommendation and install contract before writing files.
+Prefer running after `brainstorm` or `plan` when goal, non-goals, success criteria, implementation shape, and verification strategy are known. Direct harness recommendation is allowed. Start from evidence, keep the report easy to read, and do not write files until the user approves concrete changes.
 
 ## Harness Recommendation Mode
 
@@ -34,25 +34,25 @@ Use one mode for recommendation and install planning. The mode has two phases:
 - **Read-only recommendation phase**: scan the repo, reconcile existing harness surfaces, and recommend installable harness contents. Do not write files, create hooks, add MCP config, install plugins, or create subagents in this phase.
 - **Approved install phase**: after `USER CHECKPOINT`, install or patch only the approved project-local items, then verify.
 
-This is not a separate automation shopping lane. Capability recommendations are part of the harness recommendation: each candidate explains the harness gap it closes, the install surface, approval boundary, fallback, and verification probe.
+This is not a separate automation shopping lane. Capability recommendations are part of the harness recommendation. When the user asks for setup or automation recommendations, recommend useful candidates even if the current harness already works; do not confuse "do not install on silence" with "do not recommend".
 
-## Mandatory execution gates
+## Recommended flow
 
-Unless the user asks for read-only explanation or a narrower single-file task, run these gates in order. If skipped, state why.
+Use this flow unless the user asks for a narrower read-only answer or single-file task. Keep the output concise; prefer one summary table plus short notes over a rigid multi-section protocol.
 
 1. **Evidence gate** — Collect repo evidence before questions or installation (`AGENTS.md`/`CLAUDE.md`, README, docs, scripts, tests, CI, git, `.harness/`, skills dirs). Do not start by generating files. Do not invent acceptance criteria; route unclear goals to `brainstorm` / `plan`. Optionally use `scripts/scan_project.py`.
 
 2. **Question gate** — Ask only questions that change harness design (target outcome, non-goals, acceptance criteria, verification depth, source of truth). If none needed: `No user questions needed` plus evidence-backed assumptions.
 
-3. **Harness Recommendation Contract gate** — Before recommending installation: objective, non-goals, user-facing acceptance criteria, verification path, evidence location, selected recovery surface, source-of-truth priority, and existing components to keep/patch/archive/reject. Unknown fields → ask or route; no template filler.
+3. **Recommendation contract** — Before recommending installation: objective, non-goals, verification path, evidence basis, selected recovery surface, and existing components to keep/patch/archive/reject. Unknown fields → ask or route; no template filler.
 
-4. **Harness Recommendation Matrix gate** — One `Required / Recommended / Deferred / Rejected` table across: agent entry and project map; static docs and durable rules; recovery surface; verification entry; architecture boundaries; anti-entropy; skills; hooks; MCP; subagents; plugins; commands/CI/headless automation; external research; dynamic context; commit protocol (default `Deferred`). See `references/recommendation_matrix_policy.md`, `references/architecture_enforcement_policy.md`, `references/anti_entropy.md`, and `references/automation_recommendation_guide.md`.
+4. **Recommendation table** — One `Required / Recommended / Deferred / Rejected` table across: agent entry and project map; static docs and durable rules; recovery surface; verification entry; architecture boundaries; anti-entropy; skills; hooks; MCP; subagents; plugins; commands/CI/headless automation; external research; dynamic context; commit protocol (default `Deferred`). See `references/recommendation_matrix_policy.md`, `references/architecture_enforcement_policy.md`, `references/anti_entropy.md`, and `references/automation_recommendation_guide.md`.
 
-5. **Capability Recommendation gate** — Only after real gaps. Bind every candidate capability to one recommendation row. Run **Capability Recommendation pass** (repo signal → source evidence → freshness → candidate → recommendation row → why → install surface → trust boundary → approval → risk/cost → fallback → verification probe → classification). Default 1–2 candidates per category; include 3–5 when the user asks about one category. On strong stack signals, **actively recommend** low-risk project-local candidates as `Recommended`; **Do not install on user silence**. For skills: `$find-skills` / `find-skills` or `No reusable skill search needed` with reason. For hooks/MCP/subagents/plugins/commands when external behavior matters: **targeted web search** or `No web research needed` with reason. Read `references/automation_recommendation_guide.md` and the relevant `references/automation_*` files. The automation references are common patterns, not the full universe; use web search to find tool/framework-specific ideas when local evidence requires it.
+5. **Capability Recommendation pass** — Bind each candidate to one recommendation row and show enough detail to act: type, recommendation, repo signal, why, install surface, approval needed, fallback, verification probe, and priority/classification. Default 1-2 candidates per relevant category; if the user explicitly asks for setup or installation recommendations, cover MCP, skills, hooks, subagents, plugins, and commands/CI/headless automation with candidates or clear defer/reject reasons. On strong stack signals, actively recommend low-risk project-local candidates as `Recommended`; do not install on user silence. For skills: `$find-skills` / `find-skills` or `No reusable skill search needed` with reason. For hooks/MCP/subagents/plugins/commands when external behavior matters: targeted web search or `No web research needed` with reason. Read `references/automation_recommendation_guide.md` and the relevant `references/automation_*` files. The automation references are common patterns, not the full universe; use web search to find tool/framework-specific ideas when local evidence requires it.
 
 6. **Verification design gate** — Fast check, deeper smoke/E2E/manual check, evidence location, unverified risks, and per-phase acceptance before installation.
 
-7. **User checkpoint gate** — Show Harness Recommendation Plan; wait for approval unless this turn already authorized direct changes.
+7. **User checkpoint** — Only ask for approval when there is at least one concrete install, patch, archive, or config action. If there is no action to approve, say `No install recommended` and stop with the recommendation summary.
 
 ```text
 USER CHECKPOINT
@@ -69,7 +69,7 @@ USER CHECKPOINT
 请回复：approve / change / stop。
 ```
 
-8. **Verification gate** — After installation, run validation and phase checks, or record blockers. No fresh evidence → no ready claim.
+8. **Verification** — After installation, run validation and phase checks, or record blockers. No fresh evidence → no ready claim.
 
 9. **Research Graduation gate** — Only when Research Route is used. See `references/research_route_policy.md`; then `review` and `cleanup`.
 
@@ -79,9 +79,9 @@ Working model:
 
 ```text
 repo evidence + user intent + existing harness reconciliation
--> Harness Hypothesis -> Harness Recommendation Contract
--> Harness Recommendation Matrix -> Capability Recommendation
--> Harness Recommendation Plan -> USER CHECKPOINT
+-> Harness Hypothesis -> recommendation table
+-> Capability Recommendation -> concise Harness Recommendation Plan
+-> USER CHECKPOINT only when concrete changes are proposed
 -> project-local install by phase -> phase verification and audit records
 ```
 
@@ -95,39 +95,22 @@ repo evidence + user intent + existing harness reconciliation
 6. **Capability Recommendation** — Use stack signals from `automation_recommendation_guide.md` and the `automation_*` reference library; record external research in `.harness/research_notes.md` when used.
 7. **Research Route** (explicit only) — Goal, Hypothesis, Counter-hypothesis, Baseline, Scope, Metric, Verify, Guard, Budget, Artifact policy, Stop rule. If approved, install `templates/research_route/*`. Preserve failed evidence before `git reset --hard` on isolated research branches only.
 8. **Recovery surface** — none, lightweight, three-file, feature-list, or existing; map `active_slice` → `task_plan.md`, evidence → `progress.md`, decisions → `findings.md` when using three-file.
-9. **Recommendation + phased Plan** — Merge harness files, capabilities, recovery, verification, approval boundaries, and fallbacks into Harness Recommendation Plan with per-phase acceptance.
-10. **Checkpoint** — Emit `USER CHECKPOINT`; wait for `approve / change / stop`.
+9. **Recommendation + phased Plan** — Merge harness files, capabilities, recovery, verification, approval boundaries, and fallbacks into a concise Harness Recommendation Plan. Make every `Recommended` item actionable: either `Install`, `Patch`, `Archive`, `Defer`, or `Reject`; never ask the user to approve an empty plan.
+10. **Checkpoint** — Emit `USER CHECKPOINT` only for concrete changes; wait for `approve / change / stop`.
 11. **Install by phase** — `Required` only unless user approves more; prefer `AGENTS.md`, `scripts/agent/check.sh`, `docs/agent/*`, `.harness/*`, `.agents/skills/*`. Use `templates/` for boilerplate; hooks optional unless they block concrete high-risk failures tests cannot catch.
 12. **Verify and record** — `scripts/validate_harness.py` when useful; update `.harness/manifest.yaml`, `.harness/decisions.md`, `.harness/state.md`; anti-entropy per `references/anti_entropy.md`.
 
-## 输出契约
+## Output shape
 
-Before approved installation:
+Before approved installation, write a simple report the user can act on:
 
-```text
-HARNESS EVIDENCE
-EXISTING HARNESS RECONCILIATION
-HARNESS QUESTIONS
-HARNESS RECOMMENDATION CONTRACT
-HARNESS RECOMMENDATION MATRIX
-CAPABILITY RECOMMENDATIONS
-VERIFICATION DESIGN
-HARNESS RECOMMENDATION PLAN
-USER CHECKPOINT
-```
+- codebase profile and evidence summary
+- existing harness reconciliation
+- recommendation table with priority, type, recommendation, value, install surface, approval needed, fallback, and verification probe
+- short notes for deferred/rejected items
+- next choices
 
-After approved installation:
-
-```text
-HARNESS INSTALL REPORT
-PHASE VERIFICATION
-RECORDED STATE
-NEXT
-```
-
-Render localized labels adjacent to protocol token lines, not by changing the token lines.
-
-Always state evidence, unknowns, questions, recommendation assumptions, recommendation decisions, install/patch/archive/defer/reject, capability value/cost, verification plan, phase status, and skipped-gate reasons.
+Use `USER CHECKPOINT` only when asking the user to approve concrete install/patch/archive/config actions. Do not ask `approve / change / stop` for a no-op. After approved installation, report what changed, what verification ran, what remains risky, and the next step.
 
 ## Recommended next skill
 

@@ -249,7 +249,7 @@ function readSkill(slug) {
     routeTables: tableLines(route),
     steps,
     output: truncate(getSection(markdown, "输出契约") || getSection(markdown, "输出格式") || getSection(markdown, "Output contract") || getSection(markdown, "Output Contract"), 420),
-    acceptance: listLines(getSection(markdown, "验收标准") || getSection(markdown, "Mandatory execution gates"), 16),
+    acceptance: listLines(getSection(markdown, "验收标准") || getSection(markdown, "Recommended flow"), 16),
     artifacts: listLines(artifactsSection, 12).length
       ? listLines(artifactsSection, 12)
       : assetRouting
