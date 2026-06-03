@@ -19,27 +19,31 @@
         {
           "id": "description-present",
           "type": "contains_all",
-          "tokens": ["description:", "Project-level Harness Builder"],
+          "tokens": [
+            "description:",
+            "Project-level Harness Builder"
+          ],
           "weight": 1,
           "hard": true
         }
       ]
     },
     {
-      "id": "harness-charter-and-checkpoint",
+      "id": "recommendation-contract-and-checkpoint",
       "split": "train",
-      "prompt": "A project harness install is requested. Verify the skill preserves charter and user checkpoint gates before writing files.",
-      "expected_behavior": "The skill requires evidence, a Harness Charter, Coverage Matrix, and USER CHECKPOINT before installation.",
+      "prompt": "A project harness install is requested. Verify the skill preserves the recommendation protocol and user checkpoint before writing files.",
+      "expected_behavior": "The skill requires evidence, Recommendation contract, Recommendation table, Capability Recommendation pass, and USER CHECKPOINT before approved installation.",
       "checks": [
         {
-          "id": "install-gates",
+          "id": "recommendation-gates",
           "type": "contains_all",
           "tokens": [
-            "Harness Charter gate",
-            "Coverage Matrix gate",
-            "Capability Discovery gate",
+            "Evidence gate",
+            "Recommendation contract",
+            "Recommendation table",
+            "Capability Recommendation pass",
             "USER CHECKPOINT",
-            "Do not install on user silence"
+            "do not install on user silence"
           ],
           "weight": 5,
           "hard": true
@@ -69,16 +73,16 @@
     {
       "id": "capability-fit",
       "split": "test",
-      "prompt": "The agent may add hooks, MCP, subagents, CI, or skills as generic best practices. Verify capability fit rules.",
-      "expected_behavior": "The skill binds every capability to a named coverage gap and rejects unbound tools.",
+      "prompt": "The agent may add hooks, MCP, subagents, CI, or skills as generic best practices. Verify capability recommendation fit rules.",
+      "expected_behavior": "The skill binds every capability candidate to a named recommendation row and rejects unbound tools.",
       "checks": [
         {
           "id": "gap-bound-capabilities",
           "type": "contains_all",
           "tokens": [
             "Add files or capabilities only when they close a named coverage gap",
-            "Bind every candidate capability to one coverage row",
-            "skills, hooks, MCP, subagents, external research, CI, GC",
+            "Bind each candidate to one recommendation row",
+            "Capability decisions cover skills, hooks, MCP, subagents, external research, CI, GC",
             "Required / Recommended / Deferred / Rejected"
           ],
           "weight": 4,
