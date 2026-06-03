@@ -6,7 +6,7 @@ This document explains how to use `microsoft/SkillOpt` ideas safely in this repo
 
 SkillOpt treats a Markdown skill document as trainable state. A target agent runs tasks with the current skill, each rollout is scored, and an optimizer model proposes bounded text edits. A candidate skill is accepted only when validation score improves. The output of a run is a `best_skill.md` artifact plus history and per-step evidence.
 
-For `harness-workflow`, that means SkillOpt is not a replacement for workflow discipline. It is a candidate generator for better skill instructions.
+For `harness-workflow`, that means SkillOpt is not a replacement for workflow discipline. It is a candidate generator for better skill instructions, not a required CI test.
 
 ## Current MVP
 
@@ -17,7 +17,7 @@ node scripts/run-skillopt-eval.mjs --skill plan --skill-file skills/plan/SKILL.m
 node scripts/check-skillopt-eval.mjs docs/skillopt/runs/latest/summary.json
 ```
 
-This scores a candidate skill document against `evals/skillopt/cases/plan/canary.json`. It does not call `codex exec`, Claude Code, or SkillOpt's Python trainer yet. The goal is to make the score surface stable before adding online trajectories.
+This scores a candidate skill document against `evals/skillopt/cases/plan/canary.json`. It does not call `codex exec`, Claude Code, or SkillOpt's Python trainer yet. Treat this as an experiment aid only; the real repository checks stay in `.github/workflows/ci.yml`.
 
 ## Pinned SkillOpt checkout
 
@@ -86,7 +86,6 @@ Allowed experiment files:
 - `scripts/check-skillopt-eval.mjs`
 - `scripts/prepare-skillopt.mjs`
 - `scripts/run-skillopt-smoke.mjs`
-- `.github/workflows/skillopt-evals.yml`
 - `docs/integrations/skillopt.md`
 - compact reports under `docs/skillopt/` when explicitly needed
 
@@ -105,9 +104,9 @@ Candidate patches must not directly edit:
 - `plugins/**`
 - user-level config, hooks, MCP config, or secrets
 
-## Hard gates
+## Optional deterministic comparison
 
-Before any candidate text is manually transplanted into a canonical skill, run:
+Before any candidate text is manually transplanted into a canonical skill, you may run deterministic comparisons for the target skill and adjacent workflow skills:
 
 ```bash
 node scripts/run-skillopt-eval.mjs --skill harness-builder --skill-file skills/harness-builder/SKILL.md --suite canary
@@ -124,7 +123,7 @@ node scripts/check-cursor-install.mjs
 node scripts/install-cursor.mjs --target . --dry-run
 ```
 
-Future online trajectory suites should also keep a holdout split. SkillOpt may optimize against train and validation cases, but final review must check holdout cases that were not used to tune the skill.
+Passing these checks does not make the candidate correct and failure does not automatically block a repository PR. Use them as review evidence for a SkillOpt experiment branch. Future online trajectory suites should also keep a holdout split. SkillOpt may optimize against train and validation cases, but final review must check holdout cases that were not used to tune the skill.
 
 ## No-auto-merge rule
 
@@ -134,4 +133,4 @@ SkillOpt output is a proposed patch source, not the source of truth. The safe pa
 best_skill.md -> compare report -> manual transplant -> review -> verify -> cleanup -> commit
 ```
 
-Do not automatically merge `best_skill.md` into `skills/plan/SKILL.md`. Do not let a judge-only score override deterministic hard gates.
+Do not automatically merge `best_skill.md` into `skills/plan/SKILL.md`. Do not let a judge-only score or deterministic canary override human review and the real plugin checks.
