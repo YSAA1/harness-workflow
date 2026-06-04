@@ -14,7 +14,7 @@ Derived from Anthropic `claude-code-setup` 1.0.0 and adapted for Codex / Claude 
 | Claude Code | `.claude/settings.json` hooks | PreToolUse, PostToolUse, Notification, Stop |
 | Cursor | project rules, extension/task config, or `.cursor/` surfaces | Cursor hook semantics vary; use project scripts as fallback |
 
-Do not install hooks on recommendation alone. Blocking, mutating, global, or long-running hooks need explicit approval.
+Project-local, fast, non-blocking hooks (formatters, post-edit typecheck/test feedback, protected-path guards) are useful capability supplements that live in this repo and are easy to disable: recommend them as `Recommended` at `USER CHECKPOINT` when the repo signal matches. Reserve explicit approval for blocking, mutating, global, or long-running hooks. Recommend freely, but do not install any hook on recommendation alone.
 
 ## Auto-formatting
 

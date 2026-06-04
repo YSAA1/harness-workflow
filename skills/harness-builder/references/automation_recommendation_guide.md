@@ -81,8 +81,9 @@ Next Choices
 
 ## Decision Rules
 
-- Prefer existing scripts, docs, tests, and project-local harness files before heavier automation.
-- Prefer read-only MCP/subagents before write-capable or credential-bearing integrations.
+- Project-local skills, hooks, subagents, and MCP supplement this project's capability and do not touch user/global config, so recommend them as `Recommended` (or `Required`) whenever a concrete repo signal shows value. Do not default them to `Deferred`/`Rejected` just because the current harness already runs; project-local scope is a reason to recommend, not a reason to withhold.
+- Reuse existing scripts, docs, tests, and harness files first, then add the project-local capability that closes the remaining gap.
+- Prefer read-only MCP/subagents before write-capable or credential-bearing integrations; the risk gate is credentials, write access, global scope, and destructiveness, not project-local installation itself.
 - Prefer one capability that closes a named harness gap over broad tool bundles.
 - Plugins are delivery bundles, not independent justification; bind them to an existing recommendation row.
 - Hooks must be deterministic, narrow, fast, and easy to disable.

@@ -1,6 +1,6 @@
 # Automation Skills Reference
 
-Skills package repeatable expertise, workflows, templates, scripts, examples, and reference material. Recommend skills when a recurring task is too detailed for `AGENTS.md` and benefits from a stable trigger.
+Skills package repeatable expertise, workflows, templates, scripts, examples, and reference material. Recommend skills when a recurring task is too detailed for `AGENTS.md` and benefits from a stable trigger. Project-local skills live in this repo and do not change user/global state, so recommend them as `Recommended` at `USER CHECKPOINT` when a repeated project workflow matches; only user/global skill installs need explicit approval.
 
 Derived from Anthropic `claude-code-setup` 1.0.0 and adapted for Codex / Claude Code / Cursor surfaces. See `automation_recommendation_attribution.md`.
 
