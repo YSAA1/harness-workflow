@@ -14,7 +14,7 @@ Derived from Anthropic `claude-code-setup` 1.0.0 and adapted for Codex / Claude 
 | Claude Code | checked-in `.mcp.json` or project `.claude/settings.json` | `claude mcp add`, user settings | `claude --mcp-debug` can diagnose |
 | Cursor | project Cursor MCP settings where available | user Cursor MCP settings | verify against current Cursor config surface |
 
-Prefer project-local, read-only, env-var-backed configuration. Credential-bearing or write-capable MCP is approval-required.
+Prefer project-local, read-only, env-var-backed configuration. Project-local read-only MCP (docs, browser, local DB inspection, filesystem, memory) is a low-risk capability supplement that does not affect user/global config: recommend it as `Recommended` at `USER CHECKPOINT` when a repo signal matches. Reserve `Deferred` or explicit approval for credential-bearing, write-capable, or global MCP.
 
 ## Documentation and Knowledge
 

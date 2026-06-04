@@ -13,6 +13,8 @@ Each row is classified as:
 - `Deferred`: valid gap, intentionally postponed.
 - `Rejected`: not useful, too costly, duplicates a better mechanism, or outside scope.
 
+Default a project-local capability supplement (skill, hook, subagent, MCP) to `Recommended` when a concrete repo signal shows value. Do not drop it to `Deferred`/`Rejected` merely because the harness already runs or to avoid an install — project-local scope does not change user/global state. Reserve `Deferred`/`Rejected` for unclear owner, credential/global/destructive risk, missing fallback, or a mechanism a simpler artifact already covers.
+
 ## Rows
 
 | Coverage area | What to check | Typical artifacts |

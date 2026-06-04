@@ -14,7 +14,7 @@ Derived from Anthropic `claude-code-setup` 1.0.0 and adapted for Codex / Claude 
 | Claude Code | `.claude/agents/<name>.md` | define model, tools, and task boundary |
 | Cursor | Cursor agent/rule equivalents or project docs | verify current support before writing |
 
-Main agent owns writes unless the approved plan splits disjoint write scopes. Default recommendation is read-only review/research.
+Project-local, read-only subagents (review, analysis, mapping) are low-risk capability supplements: recommend them as `Recommended` at `USER CHECKPOINT` when the repo shows the matching failure mode. Main agent owns writes unless the approved plan splits disjoint write scopes; write-capable subagents need explicit approval. Default recommendation is read-only review/research.
 
 ## Review Agents
 
