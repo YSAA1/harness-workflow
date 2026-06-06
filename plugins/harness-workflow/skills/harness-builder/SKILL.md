@@ -11,6 +11,14 @@ Default to project-local output. Do not modify user-global config unless explici
 
 One integrated recommendation model: read the repo, explain what would help, then recommend concrete files, scripts, skills, hooks, MCP, subagents, plugins, commands, or CI/headless automation. The first pass is read-only; installation happens only after approval.
 
+## Scope boundary
+
+Harness Builder's deliverable is the harness itself — the workbench, recovery surface, verification entry, and Capability Recommendations that serve **future** work on this project. It is not a lane for performing the task that the supplied context describes.
+
+When the user hands you task, feature, bug, or requirement context alongside this skill, treat that context as **evidence** for what harness the project needs, not as a work order to carry out. Use it only to decide which harness artifacts and capabilities to recommend, install, or repair. Do not write feature code, fix the bug, or otherwise complete the described task inside this skill.
+
+Recommending or installing a capability is the deliverable; using that capability to do the work is not. The Capability Recommendation pass selects capabilities that serve the project's workflow — it never becomes the act of executing the task. If the user actually wants the task done, finish the harness (or stop at `No install recommended`) and route to `plan`, `implement`, or `diagnose`.
+
 ## 语言策略
 
 - 用户可见文本跟随用户语言；中文用户场景下，Harness 证据、Recommendation Contract、Recommendation Matrix、Capability Recommendations、Plan 和 User Checkpoint 使用中文为主的标题和说明。
@@ -40,7 +48,7 @@ This is not a separate automation shopping lane. Capability recommendations are 
 
 Use this flow unless the user asks for a narrower read-only answer or single-file task. Keep the output concise; prefer one summary table plus short notes over a rigid multi-section protocol.
 
-1. **Evidence gate** — Collect repo evidence before questions or installation (`AGENTS.md`/`CLAUDE.md`, README, docs, scripts, tests, CI, git, `.harness/`, skills dirs). Do not start by generating files. Do not invent acceptance criteria; route unclear goals to `brainstorm` / `plan`. Optionally use `scripts/scan_project.py`.
+1. **Evidence gate** — Collect repo evidence before questions or installation (`AGENTS.md`/`CLAUDE.md`, README, docs, scripts, tests, CI, git, `.harness/`, skills dirs). Do not start by generating files. Read any supplied task/feature/bug context as harness-design evidence, not as a task to execute. Do not invent acceptance criteria; route unclear goals to `brainstorm` / `plan`. Optionally use `scripts/scan_project.py`.
 
 2. **Question gate** — Ask only questions that change harness design (target outcome, non-goals, acceptance criteria, verification depth, source of truth). If none needed: `No user questions needed` plus evidence-backed assumptions.
 
@@ -73,7 +81,7 @@ USER CHECKPOINT
 
 9. **Research Graduation gate** — Only when Research Route is used. See `references/research_route_policy.md`; then `review` and `cleanup`.
 
-**Hard rules (apply throughout):** Reconcile existing harness before adding/replacing. Audit `AGENTS.md` every run; patch only stable facts (overview, map, iron laws, protected paths, required reading, recovery pointer, verification entry). Dynamic state → recovery surface only (`active_slice`, plans, session notes, Research Route state). Do not create a second recovery surface. Add files or capabilities only when they close a named coverage gap. Keep `AGENTS.md` thin. Prefer mechanical enforcement (tests, lint, ratchets) over prose-only rules. Capability decisions cover skills, hooks, MCP, subagents, external research, CI, GC. Use `references/research_route_policy.md` before Research Route work.
+**Hard rules (apply throughout):** Do not execute the supplied task here; treat task context as harness-design evidence and route execution to `plan` / `implement` / `diagnose`. Reconcile existing harness before adding/replacing. Audit `AGENTS.md` every run; patch only stable facts (overview, map, iron laws, protected paths, required reading, recovery pointer, verification entry). Dynamic state → recovery surface only (`active_slice`, plans, session notes, Research Route state). Do not create a second recovery surface. Add files or capabilities only when they close a named coverage gap. Keep `AGENTS.md` thin. Prefer mechanical enforcement (tests, lint, ratchets) over prose-only rules. Capability decisions cover skills, hooks, MCP, subagents, external research, CI, GC. Use `references/research_route_policy.md` before Research Route work.
 
 Working model:
 
