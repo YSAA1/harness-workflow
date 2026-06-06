@@ -8,6 +8,10 @@ alwaysApply: false
 
 Canonical source: `skills/harness-builder/SKILL.md`.
 
+## Scope boundary
+
+The deliverable is the harness that serves future work on the project, not the task the supplied context describes. Treat any task, feature, or bug context as evidence for harness and Capability Recommendation design, not as a work order. Do not implement, fix, or otherwise execute that task here; recommending or installing a capability is the output, while using it to do the work is not. If the user wants the task done, route to `plan`, `implement`, or `diagnose`.
+
 ## When To Use
 
 - The user asks to initialize, bootstrap, create project rules, onboard agents, build a harness, or repair the workbench.
