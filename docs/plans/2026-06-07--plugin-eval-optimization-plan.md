@@ -1,49 +1,49 @@
 # Plugin Eval 优化计划
 
-Date: 2026-06-07
+日期：2026-06-07
 
-Status: proposed
+状态：待执行
 
-Planning surface: docs plan
+计划承载面：`docs/plans/`
 
-Spec source: 用户要求“按照 Plugin Eval skill 给一份修改计划文档”；当前目标和验证策略已足够清楚，不单独创建 Spec。
+需求来源：用户要求“按照 Plugin Eval skill 给一份修改计划文档”。当前目标、边界和验证策略已经足够清楚，因此不单独创建 Spec。
 
-## Objective
+## 目标
 
-把 `harness-workflow` 从 Plugin Eval 的高风险状态推进到可发布、可验证、可持续优化的状态，同时保持 Harness Method Contract 的核心语义不变。
+把 `harness-workflow` 从 Plugin Eval 判定的高风险状态推进到可发布、可验证、可持续优化的状态，同时保持 Harness Method Contract 的核心语义不变。
 
-目标不是重写 workflow 方法论，而是修复 Plugin Eval 和仓库自检暴露的结构、包装、token 成本和可测性问题。
+本计划不重写 workflow 方法论，只修复 Plugin Eval 和仓库自检暴露的结构、包装、token 成本和可测性问题。
 
-## Current Evidence
+## 当前证据
 
-Plugin Eval target: `plugins/harness-workflow`
+Plugin Eval 评估对象：`plugins/harness-workflow`
 
-Fresh command evidence:
+最新命令证据：
 
 ```text
 node C:\Users\shash\.codex\plugins\cache\openai-curated\plugin-eval\3f0def1b\scripts\plugin-eval.js start plugins/harness-workflow --request "请给我一份修改计划文档" --format markdown
-Result: recommended path = Evaluate Plugin; benchmark config present = no; usage log present = no
+结果：推荐路径为 Evaluate Plugin；没有 benchmark 配置；没有 usage log。
 
 node C:\Users\shash\.codex\plugins\cache\openai-curated\plugin-eval\3f0def1b\scripts\plugin-eval.js analyze plugins/harness-workflow --format markdown
-Result: Score 0/100, Grade F, Risk high, 6 fail, 15 warn, 2 info
+结果：Score 0/100，Grade F，Risk high，6 个 fail，15 个 warn，2 个 info。
 
 node C:\Users\shash\.codex\plugins\cache\openai-curated\plugin-eval\3f0def1b\scripts\plugin-eval.js explain-budget plugins/harness-workflow --format markdown
-Result: trigger_cost_tokens 564, invoke_cost_tokens 16496, deferred_cost_tokens 34593, total_tokens 51653
+结果：trigger_cost_tokens 564，invoke_cost_tokens 16496，deferred_cost_tokens 34593，total_tokens 51653。
 
 node scripts/check-plugin.mjs
-Result: FAIL, packaged plugin skill drifted from root skill: brainstorm
+结果：FAIL，packaged plugin 中的 brainstorm skill 与根目录 canonical skill 漂移。
 
 node scripts/check-cursor-install.mjs
-Result: FAIL, Cursor project-preview skill drifted: brainstorm/SKILL.md
+结果：FAIL，Cursor project-preview 中的 brainstorm/SKILL.md 与 canonical skill 漂移。
 
 node scripts/check-claude-code-install.mjs
-Result: PASS
+结果：PASS。
 
 node scripts/install-cursor.mjs --target . --dry-run
-Result: PASS
+结果：PASS。
 ```
 
-Known dirty worktree at plan time:
+计划创建时的已知 dirty worktree：
 
 ```text
 M .gitignore
@@ -52,42 +52,42 @@ M skills/brainstorm/SKILL.md
 ?? revise_plan.md
 ```
 
-Do not fold unrelated dirty files into this plan unless the user explicitly approves.
+除非用户明确批准，不把这些无关改动混入本计划的实施提交。
 
-## Active Slice
+## 当前 Active Slice
 
-First active slice: restore local plugin/package consistency and then address Plugin Eval structural failures in commit-sized steps.
+第一个 active slice：恢复本地插件包和多端镜像的一致性，然后按 commit-sized 步骤处理 Plugin Eval 结构性失败。
 
-Only one implementation slice should be active at a time. The first implementation slice is **P1: repair brainstorm drift and package mirrors**.
+同一时间只允许一个实施切片处于进行中。第一个实施切片是 **P1：修复 brainstorm 漂移并同步插件镜像**。
 
-## Non-goals
+## 非目标
 
-- Do not rename the eight active workflow lanes.
-- Do not make `harness-builder` a mandatory pre-step for all tasks.
-- Do not remove `find-skills`; it remains a helper, not the ninth workflow lane.
-- Do not change the rule that `verify` is the only ready gate.
-- Do not install hooks, MCP config, subagents, or user-level Codex config as part of this optimization.
-- Do not rewrite unrelated README, deck, PRD, or generated artifacts unless a validation check requires it.
+- 不重命名八条 active workflow lane。
+- 不把 `harness-builder` 改成所有任务的强制前置步骤。
+- 不移除 `find-skills`；它仍然是 helper，不是第九条 workflow lane。
+- 不改变 `verify` 是唯一 ready gate 的规则。
+- 本轮优化不安装 hooks、MCP 配置、subagents 或用户级 Codex 配置。
+- 除非验证检查要求，不重写无关 README、deck、PRD 或生成物。
 
-## Success Criteria
+## 成功标准
 
-1. Repository structural checks pass:
+1. 仓库结构验证通过：
    - `node scripts/check-plugin.mjs`
    - `node scripts/check-claude-code-install.mjs`
    - `node scripts/check-cursor-install.mjs`
    - `node scripts/install-cursor.mjs --target . --dry-run`
-2. Plugin Eval manifest failures are gone for `plugins/harness-workflow`.
-3. Plugin Eval budget failures are reduced or converted into documented, measured tradeoffs.
-4. Skill trigger warnings are reduced by rewriting frontmatter descriptions into clear `Use when...` trigger sentences.
-5. Any token slimming preserves the Harness Method Contract invariants in `docs/harness-method-contract.md`.
-6. Any script refactor preserves behavior and adds at least a small local validation path for changed helpers.
-7. Each milestone is committed with a short Chinese commit message after review + verify.
+2. `plugins/harness-workflow` 的 Plugin Eval manifest failure 消失。
+3. Plugin Eval budget failure 被降低，或转化为有真实测量证据支撑的取舍说明。
+4. 通过改写 frontmatter description，减少 skill trigger warning；目标格式可以保留 Plugin Eval 要求的 `Use when...` 触发句。
+5. 任何 token 瘦身都必须保留 `docs/harness-method-contract.md` 中的方法论不变量。
+6. 任何脚本重构都必须保持行为，并为被改 helper 增加至少一个小型本地验证路径。
+7. 每个里程碑在 review + verify 后用简短中文 commit message 提交。
 
-## Verification Path
+## 验证路径
 
-Verification path status: runnable
+验证路径状态：可运行
 
-Required commands:
+必跑命令：
 
 ```text
 node scripts/check-plugin.mjs
@@ -99,47 +99,47 @@ node C:\Users\shash\.codex\plugins\cache\openai-curated\plugin-eval\3f0def1b\scr
 git status --short
 ```
 
-Optional commands after benchmark setup:
+配置 benchmark 后的可选命令：
 
 ```text
 node C:\Users\shash\.codex\plugins\cache\openai-curated\plugin-eval\3f0def1b\scripts\plugin-eval.js init-benchmark plugins/harness-workflow
 node C:\Users\shash\.codex\plugins\cache\openai-curated\plugin-eval\3f0def1b\scripts\plugin-eval.js benchmark plugins/harness-workflow --dry-run
 ```
 
-Fallback evidence: none currently needed. The core checks are local and runnable.
+Fallback evidence：当前不需要。核心检查都是本地可运行命令。
 
-Final integration claim: the packaged `harness-workflow` plugin is structurally consistent across Codex, Claude Code, and Cursor surfaces, and Plugin Eval no longer reports avoidable manifest/package failures.
+最终集成声明：打包后的 `harness-workflow` 插件在 Codex、Claude Code、Cursor 三个 surface 上结构一致，并且 Plugin Eval 不再报告可避免的 manifest/package failure。
 
-## Work Items
+## 工作项
 
-| ID | Status | Scope | Primary checks |
+| ID | 状态 | 范围 | 主要检查 |
 | --- | --- | --- | --- |
-| P0 | done | Write this plan from Plugin Eval evidence | plan exists in `docs/plans/` |
-| P1 | next | Repair `brainstorm` drift and regenerate mirrored plugin surfaces if needed | `check-plugin`, `check-cursor-install` |
-| P2 | pending | Add missing Codex manifest metadata and legal docs if needed | Plugin Eval manifest checks, `check-plugin` |
-| P3 | pending | Rewrite skill descriptions into strong trigger sentences | Plugin Eval skill description warnings |
-| P4 | pending | Slim high-cost `SKILL.md` files without changing method semantics | Plugin Eval budget, contract checks |
-| P5 | pending | Address Python helper warnings with minimal refactors/tests | Plugin Eval Python warnings, targeted helper checks |
-| P6 | pending | Add benchmark starter scenarios and compare before/after | Plugin Eval benchmark dry-run/report |
-| P7 | pending | Final review, verify, cleanup, and milestone commits | all required commands, clean relevant diff |
+| P0 | 已完成 | 根据 Plugin Eval 证据写出本计划 | 计划文档存在于 `docs/plans/` |
+| P1 | 下一步 | 修复 `brainstorm` 漂移，必要时重新生成或同步镜像 surface | `check-plugin`、`check-cursor-install` |
+| P2 | 待处理 | 补齐 Codex manifest 元数据，必要时添加 legal docs | Plugin Eval manifest checks、`check-plugin` |
+| P3 | 待处理 | 把 skill description 改成更强的触发句 | Plugin Eval skill description warnings |
+| P4 | 待处理 | 精简高成本 `SKILL.md`，但不改变方法语义 | Plugin Eval budget、contract checks |
+| P5 | 待处理 | 用最小重构和测试处理 Python helper warning | Plugin Eval Python warnings、相关 helper 检查 |
+| P6 | 待处理 | 添加 benchmark starter scenarios，并比较优化前后结果 | Plugin Eval benchmark dry-run/report |
+| P7 | 待处理 | 最终 review、verify、cleanup 和里程碑提交 | 全部必跑命令、干净的相关 diff |
 
-## Phase Details
+## 阶段详情
 
-### P1 - Repair Brainstorm Drift
+### P1 - 修复 Brainstorm 漂移
 
-Change scope:
+改动范围：
 
-- Remove accidental `plan` and `1` tokens from `skills/brainstorm/SKILL.md`.
-- Sync canonical skill content to `plugins/harness-workflow/skills/brainstorm/SKILL.md`.
-- Sync canonical skill content to `.cursor/skills/brainstorm/SKILL.md`, or run the Cursor adapter if that is the established update path.
+- 从 `skills/brainstorm/SKILL.md` 删除误写的 `plan` 和 `1`。
+- 将 canonical skill 内容同步到 `plugins/harness-workflow/skills/brainstorm/SKILL.md`。
+- 将 canonical skill 内容同步到 `.cursor/skills/brainstorm/SKILL.md`，或按既有路径运行 Cursor adapter。
 
-Acceptance criteria:
+验收标准：
 
-- `skills/brainstorm/SKILL.md`, `plugins/harness-workflow/skills/brainstorm/SKILL.md`, and `.cursor/skills/brainstorm/SKILL.md` match.
-- No unrelated dirty files are staged.
-- No method semantics are changed beyond removing accidental text.
+- `skills/brainstorm/SKILL.md`、`plugins/harness-workflow/skills/brainstorm/SKILL.md`、`.cursor/skills/brainstorm/SKILL.md` 内容一致。
+- 没有暂存无关 dirty 文件。
+- 除删除误写文本外，不改变方法语义。
 
-Verification commands:
+验证命令：
 
 ```text
 node scripts/check-plugin.mjs
@@ -147,52 +147,52 @@ node scripts/check-cursor-install.mjs
 git diff -- skills/brainstorm/SKILL.md plugins/harness-workflow/skills/brainstorm/SKILL.md .cursor/skills/brainstorm/SKILL.md
 ```
 
-Success definition: local package/Cursor drift failures disappear.
+成功定义：本地 package/Cursor drift failure 消失。
 
-### P2 - Fix Manifest Metadata
+### P2 - 修复 Manifest 元数据
 
-Change scope:
+改动范围：
 
-- Add missing `author` to `.codex-plugin/plugin.json`.
-- Add `interface.websiteURL`, `interface.privacyPolicyURL`, and `interface.termsOfServiceURL`.
-- Mirror the manifest to `plugins/harness-workflow/.codex-plugin/plugin.json`.
-- If no stable privacy or terms URL exists, add minimal static docs under `docs/legal/` and link to repository-relative GitHub URLs or documented public URLs.
-- Keep `.claude-plugin/` and `.cursor-plugin/` versions aligned if any public metadata convention changes.
+- 在 `.codex-plugin/plugin.json` 中添加缺失的 `author`。
+- 添加 `interface.websiteURL`、`interface.privacyPolicyURL`、`interface.termsOfServiceURL`。
+- 将 manifest 同步到 `plugins/harness-workflow/.codex-plugin/plugin.json`。
+- 如果没有稳定的隐私政策或服务条款 URL，则在 `docs/legal/` 下添加极简静态文档，并链接到稳定的公开 GitHub URL 或已记录的公开 URL。
+- 如果公共元数据约定发生变化，保持 `.claude-plugin/` 和 `.cursor-plugin/` 版本语义一致。
 
-Acceptance criteria:
+验收标准：
 
-- Plugin Eval no longer reports:
+- Plugin Eval 不再报告：
   - `manifest-missing-author`
   - `interface-missing-websiteURL`
   - `interface-missing-privacyPolicyURL`
   - `interface-missing-termsOfServiceURL`
-- `node scripts/check-plugin.mjs` still passes.
+- `node scripts/check-plugin.mjs` 仍然通过。
 
-Verification commands:
+验证命令：
 
 ```text
 node scripts/check-plugin.mjs
 node C:\Users\shash\.codex\plugins\cache\openai-curated\plugin-eval\3f0def1b\scripts\plugin-eval.js analyze plugins/harness-workflow --format markdown
 ```
 
-Success definition: all avoidable Plugin Eval manifest failures are gone.
+成功定义：Plugin Eval 中所有可避免的 manifest failure 消失。
 
-### P3 - Improve Trigger Descriptions
+### P3 - 优化触发描述
 
-Change scope:
+改动范围：
 
-- Rewrite all active skill frontmatter descriptions to include clear English `Use when...` trigger language.
-- Preserve Chinese explanations inside the body where useful.
-- Keep descriptions concise enough not to increase trigger cost materially.
-- Update packaged and Cursor mirrored skills consistently.
+- 将所有 active skill 的 frontmatter description 改写为清晰的英文 `Use when...` 触发句。
+- 正文中的中文解释按需保留。
+- description 保持简洁，避免明显增加 trigger cost。
+- 同步 packaged plugin 和 Cursor 镜像 skill。
 
-Acceptance criteria:
+验收标准：
 
-- Plugin Eval description-trigger warnings are reduced or eliminated.
-- `name` still matches each skill directory.
-- Each `SKILL.md` keeps YAML frontmatter and `## Recommended next skill`.
+- Plugin Eval 的 description-trigger warning 减少或消失。
+- 每个 skill 的 `name` 仍然匹配目录名。
+- 每个 `SKILL.md` 保留 YAML frontmatter 和 `## Recommended next skill`。
 
-Verification commands:
+验证命令：
 
 ```text
 node scripts/check-plugin.mjs
@@ -200,30 +200,30 @@ node scripts/check-cursor-install.mjs
 node C:\Users\shash\.codex\plugins\cache\openai-curated\plugin-eval\3f0def1b\scripts\plugin-eval.js analyze plugins/harness-workflow --format markdown
 ```
 
-Success definition: trigger descriptions become clearer without breaking skill discovery or package mirrors.
+成功定义：触发描述更清楚，同时不破坏 skill 发现和镜像一致性。
 
-### P4 - Reduce Token Budget
+### P4 - 降低 Token 成本
 
-Change scope:
+改动范围：
 
-- Start with the largest invoke components:
-  - `skills/harness-builder/SKILL.md` at about 5186 tokens.
-  - `skills/plan/SKILL.md` at about 1846 tokens.
-  - `skills/verify/SKILL.md` at about 1792 tokens.
-  - `skills/find-skills/SKILL.md` at about 1666 tokens.
-  - `skills/cleanup/SKILL.md` at about 1443 tokens.
-- Keep each main `SKILL.md` focused on routing, mandatory gates, compact workflow, output contract, and references.
-- Move detail into `references/` only when it is not needed at trigger or first-invoke time.
-- Remove repeated global-method explanation if already covered by `docs/harness-method-contract.md`.
+- 先处理 invoke token 最大的组件：
+  - `skills/harness-builder/SKILL.md`，约 5186 tokens。
+  - `skills/plan/SKILL.md`，约 1846 tokens。
+  - `skills/verify/SKILL.md`，约 1792 tokens。
+  - `skills/find-skills/SKILL.md`，约 1666 tokens。
+  - `skills/cleanup/SKILL.md`，约 1443 tokens。
+- 每个主 `SKILL.md` 只保留 routing、mandatory gates、紧凑 workflow、output contract 和 references。
+- 首次调用不需要的细节移入 `references/`。
+- 如果某些全局方法说明已经由 `docs/harness-method-contract.md` 覆盖，则减少重复表述。
 
-Acceptance criteria:
+验收标准：
 
-- `invoke_cost_tokens` decreases from the current 16496 estimate.
-- `trigger_cost_tokens` does not increase from 564.
-- Contract-critical phrases still pass `scripts/check-plugin.mjs`.
-- Generated skill-flow HTML remains correct if `SKILL.md` structure changes.
+- `invoke_cost_tokens` 低于当前 16496 的估算值。
+- `trigger_cost_tokens` 不高于当前 564。
+- contract-critical phrases 仍然通过 `scripts/check-plugin.mjs`。
+- 如果 `SKILL.md` 结构改变，生成的 skill-flow HTML 仍然正确。
 
-Verification commands:
+验证命令：
 
 ```text
 node scripts/check-plugin.mjs
@@ -233,79 +233,79 @@ node C:\Users\shash\.codex\plugins\cache\openai-curated\plugin-eval\3f0def1b\scr
 node C:\Users\shash\.codex\plugins\cache\openai-curated\plugin-eval\3f0def1b\scripts\plugin-eval.js analyze plugins/harness-workflow --format markdown
 ```
 
-Success definition: active budget is materially lower while method coverage checks still pass.
+成功定义：active budget 明显下降，同时方法覆盖检查仍然通过。
 
-### P5 - Refactor Helper Script Warnings
+### P5 - 重构 Helper 脚本告警
 
-Change scope:
+改动范围：
 
-- Inspect Plugin Eval Python warnings for packaged helper scripts.
-- Prioritize high-complexity helpers such as `skills/harness-builder/scripts/scan_project.py` and `validate_harness.py`.
-- Split complex functions into named helpers only where behavior stays obvious.
-- Add minimal local tests or smoke commands if the repo has no Python test harness.
+- 检查 Plugin Eval 对 packaged helper scripts 的 Python warning。
+- 优先处理高复杂度 helper，例如 `skills/harness-builder/scripts/scan_project.py` 和 `validate_harness.py`。
+- 只在行为仍然清楚的地方把复杂函数拆成具名 helper。
+- 如果仓库没有 Python 测试框架，则添加最小本地测试或 smoke command。
 
-Acceptance criteria:
+验收标准：
 
-- Plugin Eval Python complexity and long-line warnings are reduced.
-- Changed scripts still run in their intended local mode.
-- No package manager or new framework is introduced unless required.
+- Plugin Eval 的 Python complexity 和 long-line warning 减少。
+- 被改脚本仍能以预期本地模式运行。
+- 除非确有必要，不引入 package manager 或新的测试框架。
 
-Verification commands:
+验证命令：
 
 ```text
 node C:\Users\shash\.codex\plugins\cache\openai-curated\plugin-eval\3f0def1b\scripts\plugin-eval.js analyze plugins/harness-workflow --format markdown
 node scripts/check-plugin.mjs
 ```
 
-Additional targeted commands should be chosen after reading each changed script.
+额外的定向命令应在读取被改脚本后再选择。
 
-Success definition: helper scripts are easier to inspect and still preserve current behavior.
+成功定义：helper 脚本更容易检查，同时保持当前行为。
 
-### P6 - Add Benchmark Starter Scenarios
+### P6 - 添加 Benchmark Starter Scenarios
 
-Change scope:
+改动范围：
 
-- Initialize `.plugin-eval/benchmark.json`.
-- Add representative scenarios:
-  - evaluate plugin health
-  - fix a packaging drift
-  - slim a skill without breaking contract checks
-  - verify a ready claim
-  - cleanup after a workflow change
-- Keep benchmark data local and lightweight.
+- 初始化 `.plugin-eval/benchmark.json`。
+- 添加代表性场景：
+  - 评估 plugin 健康度。
+  - 修复 packaging drift。
+  - 精简 skill 且不破坏 contract checks。
+  - 验证 ready claim。
+  - workflow 改动后的 cleanup。
+- benchmark 数据保持本地、轻量。
 
-Acceptance criteria:
+验收标准：
 
-- Benchmark config exists and is documented.
-- Dry-run succeeds.
-- The plan records how to collect observed usage later.
+- benchmark config 存在并有文档说明。
+- dry-run 成功。
+- 计划或后续记录说明如何收集 observed usage。
 
-Verification commands:
+验证命令：
 
 ```text
 node C:\Users\shash\.codex\plugins\cache\openai-curated\plugin-eval\3f0def1b\scripts\plugin-eval.js init-benchmark plugins/harness-workflow
 node C:\Users\shash\.codex\plugins\cache\openai-curated\plugin-eval\3f0def1b\scripts\plugin-eval.js benchmark plugins/harness-workflow --dry-run
 ```
 
-Success definition: future Plugin Eval reports can be checked against real scenario coverage, not static structure alone.
+成功定义：未来 Plugin Eval 报告可以基于真实场景覆盖，而不只依赖静态结构。
 
-### P7 - Final Review, Verify, Cleanup
+### P7 - 最终 Review、Verify 和 Cleanup
 
-Change scope:
+改动范围：
 
-- Run structural review against changed manifests, skills, mirrors, scripts, docs, and generated files.
-- Run fresh verification commands.
-- Reconcile README or install docs only if user-visible metadata or commands changed.
-- Keep `AGENTS.md` thin; do not write session state there.
+- 对变更后的 manifests、skills、mirrors、scripts、docs 和 generated files 做结构性 review。
+- 运行 fresh verification commands。
+- 只有当用户可见元数据或命令发生变化时，才同步 README 或 install docs。
+- 保持 `AGENTS.md` 为薄入口；不把会话状态写进去。
 
-Acceptance criteria:
+验收标准：
 
-- No Critical review findings.
-- All required checks pass or have a clear blocker.
-- Plugin Eval report shows improvements against the baseline.
-- `git status --short` separates intentional optimization changes from pre-existing unrelated files.
+- 没有 Critical review finding。
+- 所有必跑检查通过，或有明确 blocker。
+- Plugin Eval 报告相对 baseline 有改善。
+- `git status --short` 能区分本轮优化改动和既有无关 dirty 文件。
 
-Verification commands:
+验证命令：
 
 ```text
 node scripts/check-plugin.mjs
@@ -317,34 +317,34 @@ node C:\Users\shash\.codex\plugins\cache\openai-curated\plugin-eval\3f0def1b\scr
 git status --short
 ```
 
-Success definition: the plugin is ready for a milestone commit or follow-up PR with fresh evidence.
+成功定义：插件具备带 fresh evidence 的里程碑提交或后续 PR 条件。
 
-## Commit Units
+## 提交单元
 
-| Commit unit | Scope | Includes phases | Pre-commit conditions | Suggested Chinese message |
+| 提交单元 | 范围 | 包含阶段 | 提交前置条件 | 建议中文提交信息 |
 | --- | --- | --- | --- | --- |
-| CU1 | Restore package consistency | P1 | review no Critical + verify PASS | `修复 brainstorm skill 同步漂移` |
-| CU2 | Manifest metadata | P2 | review no Critical + verify PASS | `补齐 Codex 插件元数据` |
-| CU3 | Trigger descriptions | P3 | review no Critical + verify PASS | `优化 workflow skill 触发描述` |
-| CU4 | Token slimming | P4 | review no Critical + verify PASS | `精简 workflow skill 主入口` |
-| CU5 | Helper script quality | P5 | review no Critical + verify PASS | `降低 harness-builder 脚本复杂度` |
-| CU6 | Plugin Eval benchmark | P6 | review no Critical + verify PASS | `添加插件评估基准场景` |
-| CU7 | Final cleanup | P7 | verify PASS | `同步插件优化收尾文档` |
+| CU1 | 恢复包一致性 | P1 | review 无 Critical + verify PASS | `修复 brainstorm skill 同步漂移` |
+| CU2 | manifest 元数据 | P2 | review 无 Critical + verify PASS | `补齐 Codex 插件元数据` |
+| CU3 | 触发描述 | P3 | review 无 Critical + verify PASS | `优化 workflow skill 触发描述` |
+| CU4 | token 瘦身 | P4 | review 无 Critical + verify PASS | `精简 workflow skill 主入口` |
+| CU5 | helper 脚本质量 | P5 | review 无 Critical + verify PASS | `降低 harness-builder 脚本复杂度` |
+| CU6 | Plugin Eval benchmark | P6 | review 无 Critical + verify PASS | `添加插件评估基准场景` |
+| CU7 | 最终收尾 | P7 | verify PASS | `同步插件优化收尾文档` |
 
-## Risks And Decisions
+## 风险和决策
 
-| Risk | Impact | Mitigation |
+| 风险 | 影响 | 缓解方式 |
 | --- | --- | --- |
-| Token slimming accidentally removes method guardrails | Agents may skip required gates | Keep `docs/harness-method-contract.md` as invariant source and run `check-plugin` after each slice |
-| Mirrored surfaces drift again | Codex/Cursor package checks fail | Update canonical skills first, then sync mirrors in the same commit unit |
-| Plugin Eval score remains low after manifest fixes | Static evaluator may still penalize budget | Add benchmark and observed usage path before over-optimizing copy |
-| Legal URL metadata is unclear | Manifest fix may use unstable URLs | Prefer stable repository docs or public GitHub URLs |
-| Existing dirty files obscure review | Accidental unrelated staging | Use `git diff -- <paths>` and stage only files in the current commit unit |
+| token 瘦身误删方法护栏 | agent 可能跳过必需 gate | 以 `docs/harness-method-contract.md` 为不变量来源，每个 slice 后运行 `check-plugin` |
+| 镜像 surface 再次漂移 | Codex/Cursor package checks 失败 | 先更新 canonical skills，再在同一提交单元同步 mirrors |
+| 修完 manifest 后 Plugin Eval 分数仍然偏低 | 静态 evaluator 可能继续惩罚 budget | 先添加 benchmark 和 observed usage 路径，再继续过度压缩文字 |
+| legal URL 元数据不明确 | manifest 可能链接到不稳定 URL | 优先使用稳定仓库文档或公开 GitHub URL |
+| 既有 dirty 文件干扰 review | 误暂存无关改动 | 使用 `git diff -- <paths>` 检查，并只暂存当前提交单元文件 |
 
-## Handoff
+## 交接
 
-Next skill: `implement`
+下一步 skill：`implement`
 
-Reason: the first active slice is narrow, local, and has runnable verification: repair `brainstorm` drift and package mirrors.
+原因：第一个 active slice 范围很小、验证可运行：修复 `brainstorm` 漂移并同步 package mirrors。
 
-Do not begin P2 until P1 has fresh verification evidence. Do not begin broad token slimming until manifest failures and package drift are resolved.
+在 P1 有 fresh verification evidence 之前，不开始 P2。在 manifest failure 和 package drift 解决之前，不开始大范围 token 瘦身。
