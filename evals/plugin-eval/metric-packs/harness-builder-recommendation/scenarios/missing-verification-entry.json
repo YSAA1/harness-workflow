@@ -1,0 +1,17 @@
+{
+  "id": "missing-verification-entry",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "Agents cannot tell which command proves this repo is healthy.",
+  "purpose": "The skill should make verification entry design a first-class harness recommendation.",
+  "required_groups": [
+    "workbench_contract",
+    "verification_fast_local_safe",
+    "verification_agent_readable_failures",
+    "verification_probe_required"
+  ],
+  "failure_modes": [
+    "Adds docs but no runnable or blocked verification path.",
+    "Uses a command that is destructive, remote, or slow by default.",
+    "Returns generic validation failures that do not help the next agent recover."
+  ]
+}

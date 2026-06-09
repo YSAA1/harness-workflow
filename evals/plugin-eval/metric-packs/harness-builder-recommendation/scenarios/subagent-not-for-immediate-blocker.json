@@ -1,0 +1,17 @@
+{
+  "id": "subagent-not-for-immediate-blocker",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "A command is failing right now, and the next step is to fix that immediate blocker.",
+  "purpose": "The skill should not delegate the immediate blocking implementation step and should keep main-agent write ownership.",
+  "required_groups": [
+    "subagent_not_for_immediate_blocker",
+    "subagent_main_writes",
+    "subagent_required_only_when_needed",
+    "route_execution_to_next_skill"
+  ],
+  "failure_modes": [
+    "Hands the critical path fix to a subagent and waits.",
+    "Lets a subagent write harness files without main-agent integration.",
+    "Marks subagents Required without explicit need."
+  ]
+}

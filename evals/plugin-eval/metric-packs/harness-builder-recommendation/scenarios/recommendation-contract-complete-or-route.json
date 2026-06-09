@@ -1,0 +1,18 @@
+{
+  "id": "recommendation-contract-complete-or-route",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "Prepare the project workbench, but the objective, non-goals, verification path, and source of truth are incomplete.",
+  "purpose": "The skill should require a complete Harness Recommendation Contract or route unclear work upstream.",
+  "required_groups": [
+    "recommendation_contract_fields",
+    "question_gate_routes_unclear_work",
+    "source_of_truth_priority",
+    "no_template_before_evidence",
+    "scoped_work_contract"
+  ],
+  "failure_modes": [
+    "Continues with a template plan despite missing contract fields.",
+    "Invents acceptance criteria or source-of-truth priority.",
+    "Fails to route unclear scope to brainstorm or plan."
+  ]
+}

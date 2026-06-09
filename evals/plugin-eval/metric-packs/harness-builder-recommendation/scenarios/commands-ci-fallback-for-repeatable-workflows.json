@@ -1,0 +1,18 @@
+{
+  "id": "commands-ci-fallback-for-repeatable-workflows",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "Agents repeatedly run the same verification and review workflows; recommend commands or CI/headless automation.",
+  "purpose": "The skill should prefer project-local command surfaces and structured evidence with fallback when runtime-specific commands are unavailable.",
+  "required_groups": [
+    "commands_ci_repeatable_workflows",
+    "project_local_command_surface_first",
+    "commands_ci_structured_fallback",
+    "install_surface_separate",
+    "verification_probe_required"
+  ],
+  "failure_modes": [
+    "Invents a global slash command when a project script would work.",
+    "Omits fallback for environments without the agent runtime.",
+    "Does not require structured or parseable evidence from headless automation."
+  ]
+}

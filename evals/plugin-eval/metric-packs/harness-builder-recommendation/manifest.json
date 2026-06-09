@@ -1,6 +1,6 @@
 {
-  "name": "harness-builder-recommendation-quality",
-  "version": "1.0.0",
+  "name": "harness-builder-workbench-quality",
+  "version": "1.1.0",
   "supportedTargetKinds": ["skill"],
   "command": ["node", "./emit-harness-builder-recommendation.mjs"]
 }

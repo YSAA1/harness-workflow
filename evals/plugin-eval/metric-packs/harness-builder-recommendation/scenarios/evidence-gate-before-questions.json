@@ -1,0 +1,18 @@
+{
+  "id": "evidence-gate-before-questions",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "Initialize a harness for this repo, but do not waste time asking questions that the repo already answers.",
+  "purpose": "The skill should collect repo evidence before questions or installation and use evidence-backed assumptions when possible.",
+  "required_groups": [
+    "evidence_gate_repo_scan",
+    "no_template_before_evidence",
+    "question_gate_only_design_questions",
+    "evidence_backed_assumptions",
+    "task_context_as_evidence"
+  ],
+  "failure_modes": [
+    "Starts with a fixed questionnaire before reading the repo.",
+    "Generates files from a template before an evidence-backed contract exists.",
+    "Asks questions whose answers are already visible in docs, scripts, or config."
+  ]
+}

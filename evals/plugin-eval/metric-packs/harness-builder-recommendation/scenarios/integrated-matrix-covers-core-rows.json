@@ -1,0 +1,18 @@
+{
+  "id": "integrated-matrix-covers-core-rows",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "Recommend the full project harness, including docs, recovery, verification, architecture, automation, and dynamic context.",
+  "purpose": "The skill should use one integrated matrix with separate rows for core harness surfaces and capability categories.",
+  "required_groups": [
+    "integrated_matrix_required",
+    "matrix_rows_cover_core_surfaces",
+    "capability_rows_split_by_category",
+    "matrix_before_capability",
+    "gap_binding_rule"
+  ],
+  "failure_modes": [
+    "Replaces the matrix with a generic setup profile.",
+    "Combines skills, hooks, MCP, subagents, commands, and CI into one vague capability row.",
+    "Skips recovery, verification, architecture, anti-entropy, or dynamic context rows."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "dynamic-state-not-in-agents",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "Store the active slice, blockers, and next actions somewhere agents can recover later.",
+  "purpose": "The skill should select a recovery surface and keep AGENTS.md as a stable pointer, not the state store.",
+  "required_groups": [
+    "recovery_field_model",
+    "recovery_backend_selection",
+    "dynamic_state_surface",
+    "thin_instruction_surface"
+  ],
+  "failure_modes": [
+    "Writes active_slice and blockers into AGENTS.md.",
+    "Hard-codes every workflow to a three-file backend.",
+    "Fails to expose success criteria and evidence log fields."
+  ]
+}

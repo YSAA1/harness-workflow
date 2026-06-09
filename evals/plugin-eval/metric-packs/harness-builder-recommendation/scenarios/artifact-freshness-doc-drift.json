@@ -1,0 +1,17 @@
+{
+  "id": "artifact-freshness-doc-drift",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "The README, generated docs, and actual scripts disagree about how to verify the repo.",
+  "purpose": "The skill should identify source-of-truth drift and route generated files through their generator.",
+  "required_groups": [
+    "artifact_freshness_contract",
+    "recovery_drift_repair",
+    "knowledge_cleanup_contract",
+    "verification_agent_readable_failures"
+  ],
+  "failure_modes": [
+    "Hand-edits generated artifacts.",
+    "Updates one doc while leaving the verification command stale elsewhere.",
+    "Does not name the conflicting sources or evidence location."
+  ]
+}

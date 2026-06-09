@@ -24,7 +24,7 @@ if (!fs.existsSync(scenarioDir)) fail(`missing scenarios dir: ${scenarioDir}`);
 
 if (!process.exitCode) {
   const manifest = readJson(manifestPath);
-  if (manifest.name !== "harness-builder-recommendation-quality") fail("unexpected metric pack name");
+  if (manifest.name !== "harness-builder-workbench-quality") fail("unexpected metric pack name");
   if (!Array.isArray(manifest.supportedTargetKinds) || !manifest.supportedTargetKinds.includes("skill")) {
     fail("manifest must support skill targets");
   }
@@ -36,8 +36,8 @@ const scenarioFiles = fs.existsSync(scenarioDir)
   ? fs.readdirSync(scenarioDir).filter((name) => name.endsWith(".json")).sort()
   : [];
 
-if (scenarioFiles.length < 5) {
-  fail(`expected at least 5 P1 scenarios, found ${scenarioFiles.length}`);
+if (scenarioFiles.length < 24) {
+  fail(`expected at least 24 P1 scenarios, found ${scenarioFiles.length}`);
 } else {
   pass(`scenario count validates (${scenarioFiles.length})`);
 }
@@ -102,14 +102,37 @@ if (result.status !== 0) {
       "hb-recommendation-only-integrity",
       "hb-repo-signal-required",
       "hb-install-surface-and-approval",
+      "hb-workbench-system-coverage",
+      "hb-recovery-surface-discipline",
+      "hb-verification-and-evidence-discipline",
+      "hb-recommendation-contract-and-matrix-discipline",
+      "hb-anti-entropy-and-cleanup-discipline",
+      "hb-architecture-enforcement-discipline",
+      "hb-subagent-orchestration-discipline",
+      "hb-research-route-discipline",
+      "hb-commands-ci-headless-discipline",
+      "hb-language-and-output-contract",
       "hb-scenario-task-context-is-evidence-not-work-order",
       "hb-scenario-signal-bound-capability-recommendations",
+      "hb-scenario-research-route-explicit-contract",
+      "hb-scenario-architecture-boundary-with-baseline-ratchet",
+      "hb-scenario-evidence-gate-before-questions",
+      "hb-scenario-integrated-matrix-covers-core-rows",
+      "hb-scenario-commands-ci-fallback-for-repeatable-workflows",
     ]) {
       if (!checkIds.has(requiredId)) fail(`missing required check id: ${requiredId}`);
     }
 
     for (const requiredId of [
       "hb_static_check_pass_rate",
+      "hb_workbench_dimension_count",
+      "hb_recovery_contract_count",
+      "hb_verification_contract_count",
+      "hb_entropy_contract_count",
+      "hb_orchestration_contract_count",
+      "hb_research_contract_count",
+      "hb_matrix_contract_count",
+      "hb_commands_ci_contract_count",
       "hb_p1_scenario_count",
       "hb_p1_scenario_contract_coverage_rate",
     ]) {

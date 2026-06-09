@@ -1,0 +1,18 @@
+{
+  "id": "minimal-harness-no-overload",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "This repo is tiny and only needs a basic agent entry point plus a fast check.",
+  "purpose": "The skill should choose the lightest useful recovery and instruction surface instead of installing a full harness stack.",
+  "required_groups": [
+    "thin_instruction_surface",
+    "recovery_backend_selection",
+    "backend_decoupling_contract",
+    "verification_fast_local_safe",
+    "no_empty_approval_checkpoint"
+  ],
+  "failure_modes": [
+    "Forces a three-file backend onto a trivial project.",
+    "Bloats AGENTS.md with temporary state or long process notes.",
+    "Creates an approval checkpoint when no concrete action is proposed."
+  ]
+}

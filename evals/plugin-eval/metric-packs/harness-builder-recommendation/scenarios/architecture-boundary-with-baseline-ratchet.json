@@ -1,0 +1,17 @@
+{
+  "id": "architecture-boundary-with-baseline-ratchet",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "This legacy repo needs architecture boundary checks, but it already has many violations.",
+  "purpose": "The skill should discover the real code shape, choose the lowest enforcement level, and baseline existing violations.",
+  "required_groups": [
+    "architecture_discovery_first",
+    "architecture_enforcement_ladder",
+    "architecture_baseline_ratchet",
+    "architecture_agent_readable_errors"
+  ],
+  "failure_modes": [
+    "Applies a generic layer template without reading imports.",
+    "Blocks the whole repo on known historical violations.",
+    "Emits errors without file, import, layer relation, or remediation pointer."
+  ]
+}

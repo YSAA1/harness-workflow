@@ -1,0 +1,17 @@
+{
+  "id": "anti-entropy-gc-read-only",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "Recommend a cleanup or drift scan because old harness files may be stale.",
+  "purpose": "The skill should default GC and drift scans to report-only behavior unless the user approves fixes.",
+  "required_groups": [
+    "anti_entropy_warning_signs",
+    "anti_entropy_repair_moves",
+    "anti_entropy_gc_readonly",
+    "component_failure_prevention"
+  ],
+  "failure_modes": [
+    "Auto-deletes stale files during recommendation.",
+    "Runs --fix behavior without explicit approval.",
+    "Keeps harness components that cannot name the failure they prevent."
+  ]
+}
