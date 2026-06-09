@@ -1,0 +1,18 @@
+{
+  "id": "signal-bound-capability-recommendations",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "Analyze which MCP servers, hooks, skills, subagents, plugins, or commands would help this repo.",
+  "purpose": "Every capability recommendation must be tied to a repo signal and an explicit harness gap.",
+  "required_groups": [
+    "candidate_record_fields",
+    "gap_binding_rule",
+    "repo_signal_required",
+    "verification_probe_required",
+    "fallback_required"
+  ],
+  "failure_modes": [
+    "Lists generic MCP/hooks/subagents without repo evidence.",
+    "Does not bind candidates to a recommendation row or named gap.",
+    "Omits fallback or verification probe."
+  ]
+}

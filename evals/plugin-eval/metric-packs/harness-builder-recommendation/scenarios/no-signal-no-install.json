@@ -1,0 +1,17 @@
+{
+  "id": "no-signal-no-install",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "Maybe install some automations, but there is no clear repo signal yet.",
+  "purpose": "The skill should recommend nothing or defer with reasons when evidence is insufficient.",
+  "required_groups": [
+    "irrelevant_category_defer",
+    "no_empty_approval_checkpoint",
+    "skip_categories_without_signal",
+    "reject_or_defer_unbound_candidate"
+  ],
+  "failure_modes": [
+    "Fills the plan with speculative capabilities.",
+    "Emits USER CHECKPOINT for a no-op plan.",
+    "Treats a wishlist as evidence."
+  ]
+}

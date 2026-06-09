@@ -1,0 +1,17 @@
+{
+  "id": "brownfield-reconcile-before-add",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "This brownfield repo already has AGENTS.md, scripts, and partial harness files. Repair the harness and recommend missing automation.",
+  "purpose": "The skill should reconcile existing surfaces before adding new capabilities.",
+  "required_groups": [
+    "existing_harness_reconciliation",
+    "keep_patch_archive_reject",
+    "no_second_recovery_surface",
+    "reuse_existing_before_add"
+  ],
+  "failure_modes": [
+    "Creates a parallel recovery surface.",
+    "Adds new files before deciding whether existing artifacts should be kept or patched.",
+    "Duplicates mechanisms instead of closing remaining gaps."
+  ]
+}

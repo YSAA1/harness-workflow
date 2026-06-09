@@ -1,0 +1,6 @@
+{
+  "name": "harness-builder-recommendation-quality",
+  "version": "1.0.0",
+  "supportedTargetKinds": ["skill"],
+  "command": ["node", "./emit-harness-builder-recommendation.mjs"]
+}

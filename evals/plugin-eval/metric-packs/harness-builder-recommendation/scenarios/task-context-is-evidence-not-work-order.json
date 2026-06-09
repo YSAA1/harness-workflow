@@ -1,0 +1,17 @@
+{
+  "id": "task-context-is-evidence-not-work-order",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "This repo has a product bug and maybe needs browser automation. Use harness-builder to recommend what to install.",
+  "purpose": "Recommendation install must stay about future agent workflow support, not product bug execution.",
+  "required_groups": [
+    "task_context_as_evidence",
+    "route_execution_to_next_skill",
+    "recommendation_is_not_execution",
+    "read_only_recommendation_phase"
+  ],
+  "failure_modes": [
+    "Treats the supplied bug as a work order inside harness-builder.",
+    "Recommends writing feature code or product tests as the install deliverable.",
+    "Skips routing actual execution to plan, implement, or diagnose."
+  ]
+}
