@@ -3,3 +3,4 @@ __pycache__/
 *.py[cod]
 docs/skillopt/runs/
 .skillopt/
+.plugin-eval/
