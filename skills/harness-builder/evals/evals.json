@@ -54,6 +54,30 @@
       "prompt": "This repo might benefit from a browser MCP someday. Recommend it even if there is no current recommendation gap.",
       "expected_output": "Should reject or defer the candidate because it is not tied to a unique uncovered or weak recommendation row; should explain the fallback and avoid install instructions.",
       "files": []
+    },
+    {
+      "id": "setup-recommendations-are-dev-workflow-aids",
+      "prompt": "This repo has a product bug and I care a lot about recommended installs. Tell me which MCP, hooks, skills, subagents, plugins, and commands to add.",
+      "expected_output": "Should treat the product bug only as harness-design evidence, not as the work order. Should explain that recommended capabilities serve development workflow, verification, observability, context retrieval, recovery, review, or agent safety. Should cover requested capability categories with repo-signal-bound candidates or explicit defer/reject reasons, and should not execute the bug fix.",
+      "files": []
+    },
+    {
+      "id": "frontend-browser-capability-discovery",
+      "prompt": "The project is Next.js with Playwright and recurring UI regressions. Recommend useful agent capabilities, including known public options if relevant.",
+      "expected_output": "Should not stop at local installed skills. Should inspect frontend/browser signals, consider browser automation, Playwright/browser MCP, screenshot/E2E commands, Storybook or visual review when signaled, and bind each candidate to a matrix row with install surface, approval needed, fallback, and verification probe.",
+      "files": []
+    },
+    {
+      "id": "observability-and-issue-tracker-discovery",
+      "prompt": "The repo uses Sentry and GitHub Actions, and bug reports live in GitHub issues. Recommend harness capabilities.",
+      "expected_output": "Should consider observability and issue/CI context such as Sentry or GitHub MCP only as development-workflow aids. Should name credential and write-access boundaries, prefer read-only or manual fallback first, and require explicit approval for credential-bearing or write-capable integration.",
+      "files": []
+    },
+    {
+      "id": "commands-ci-fallback",
+      "prompt": "Agents keep forgetting the same review and verification sequence. Recommend command or CI automation.",
+      "expected_output": "Should prefer project-local scripts or documented command entries, structured headless output such as codex exec JSON when applicable, CI/manual gates for long-running work, and fallback scripts when runtime-specific commands are unavailable. Should not invent global slash commands without an install surface and approval boundary.",
+      "files": []
     }
   ]
 }

@@ -207,7 +207,10 @@ def detect_automation_signals(root: Path) -> dict:
         "biome": ["biome.json"],
         "ruff": ["ruff.toml"],
     }))
-    format_lint.update(f"package_script:{name}" for name in script_signals(scripts, ["lint", "format", "prettier", "eslint", "biome"]))
+    format_lint.update(
+        f"package_script:{name}"
+        for name in script_signals(scripts, ["lint", "format", "prettier", "eslint", "biome"])
+    )
 
     typecheck = set(dependency_signals(deps, TYPECHECK_DEPENDENCIES))
     typecheck.update(file_signals(root, {

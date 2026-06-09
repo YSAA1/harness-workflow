@@ -11,6 +11,7 @@ CORE_REFERENCES = [
     "recovery_surface_policy.md",
     "install_policy.md",
     "verification_policy.md",
+    "capability_discovery_playbook.md",
     "automation_recommendation_guide.md",
     "automation_mcp_servers.md",
     "automation_hooks_patterns.md",
@@ -227,7 +228,18 @@ def check_script_compilation(root: Path, issues: list[str]) -> None:
     scan = root / "scripts" / "scan_project.py"
     if scan.exists():
         text = scan.read_text(encoding="utf-8", errors="replace")
-        for token in ["node_script_tooling", "cursor_plugin_or_adapter", "harness_workflow_plugin", "cursor_preview", "packaged_plugin", "plugin_rules", "automation_signals", "frontend_framework", "github_remote"]:
+        current_signals = [
+            "node_script_tooling",
+            "cursor_plugin_or_adapter",
+            "harness_workflow_plugin",
+            "cursor_preview",
+            "packaged_plugin",
+            "plugin_rules",
+            "automation_signals",
+            "frontend_framework",
+            "github_remote",
+        ]
+        for token in current_signals:
             if token not in text:
                 issues.append(f"scan_project.py missing current signal: {token}")
 

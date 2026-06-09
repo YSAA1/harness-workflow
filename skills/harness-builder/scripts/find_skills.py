@@ -28,13 +28,23 @@ def collect_skills(root: Path, scope: str) -> list[dict]:
     for skill_md in sorted(root.rglob("SKILL.md")):
         text = skill_md.read_text(encoding="utf-8", errors="replace")
         meta = parse_frontmatter(text)
-        skills.append({"scope": scope, "name": meta.get("name", skill_md.parent.name), "description": meta.get("description", ""), "path": str(skill_md)})
+        skills.append({
+            "scope": scope,
+            "name": meta.get("name", skill_md.parent.name),
+            "description": meta.get("description", ""),
+            "path": str(skill_md),
+        })
     return skills
 
 
 def main() -> None:
     cwd = Path.cwd()
-    candidates = [(cwd / ".agents" / "skills", "repo"), (Path.home() / ".agents" / "skills", "user"), (cwd / ".codex" / "skills", "repo_codex_legacy"), (cwd / ".claude" / "skills", "repo_claude")]
+    candidates = [
+        (cwd / ".agents" / "skills", "repo"),
+        (Path.home() / ".agents" / "skills", "user"),
+        (cwd / ".codex" / "skills", "repo_codex_legacy"),
+        (cwd / ".claude" / "skills", "repo_claude"),
+    ]
     result = []
     for root, scope in candidates:
         result.extend(collect_skills(root, scope))

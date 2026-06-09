@@ -12,6 +12,7 @@ CORE_REFERENCES = {
     "verification_policy.md",
     "anti_entropy.md",
     "decision_matrix.md",
+    "capability_discovery_playbook.md",
     "automation_recommendation_guide.md",
     "automation_mcp_servers.md",
     "automation_hooks_patterns.md",
@@ -35,7 +36,13 @@ def main() -> int:
         if required not in root_refs:
             issues.append(f"missing core reference: references/{required}")
 
-    forbidden_root = {"stack_routing.md", "boundary_test_templates.md", "ci_templates.md", "gc_patterns.md", "security_template.md"}
+    forbidden_root = {
+        "stack_routing.md",
+        "boundary_test_templates.md",
+        "ci_templates.md",
+        "gc_patterns.md",
+        "security_template.md",
+    }
     for name in forbidden_root:
         if name in root_refs:
             issues.append(f"pack reference leaked into root references: references/{name}")

@@ -54,6 +54,7 @@ Add source evidence, freshness, trust boundary, and risk/cost when they material
 - Plugin candidates: `automation_plugins_reference.md`
 - Slash/CLI and CI/headless automation: `automation_commands_reference.md`
 - Install and approval boundary: `install_policy.md`
+- Precise stack-specific discovery: `capability_discovery_playbook.md`
 
 Use `$find-skills` / `find-skills` when reusable skills are relevant, or record `No reusable skill search needed` with reason. Use `No web research needed` only when local evidence and these references are enough.
 
