@@ -4,3 +4,4 @@ __pycache__/
 docs/skillopt/runs/
 .skillopt/
 .plugin-eval/
+.env

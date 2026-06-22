@@ -1,0 +1,17 @@
+{
+  "id": "status-script-must-not-store-state",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "This repo has .harness/state.md, but scripts/agent/status.sh and selftest.sh also print the active slice, probe inventory, current findings, and long status summaries. Repair the harness.",
+  "purpose": "The skill should treat status scripts as views and keep hot recovery docs bounded instead of creating another state store.",
+  "required_groups": [
+    "hot_recovery_bounded_index",
+    "status_scripts_are_views",
+    "anti_entropy_warning_signs",
+    "recovery_drift_repair"
+  ],
+  "failure_modes": [
+    "Copies dynamic recovery state into status or selftest scripts.",
+    "Lets hot recovery docs grow as append-only reports.",
+    "Deletes evidence instead of rolling it up and linking cold artifacts."
+  ]
+}

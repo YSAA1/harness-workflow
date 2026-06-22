@@ -25,7 +25,7 @@ and does not override plugin-eval's core score.
   leaks, vague recommendations, speculative installs, approval mistakes,
   brownfield duplication, AGENTS.md state bloat, missing verification entry,
   stale ready claims, slow default checks, architecture ratchet mistakes,
-  subagent overuse, unbounded research loops, missing evidence gates,
+  status-script state mirrors, subagent overuse, unbounded research loops, missing evidence gates,
   incomplete recommendation contracts, collapsed recommendation matrices,
   stale dynamic context, and command/CI fallback mistakes.
 

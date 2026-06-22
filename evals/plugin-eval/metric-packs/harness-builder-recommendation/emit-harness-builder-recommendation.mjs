@@ -229,6 +229,18 @@ const groups = {
     file: "skill",
     tokens: ["Do not create a second recovery surface"],
   },
+  hot_recovery_bounded_index: {
+    id: "hot_recovery_bounded_index",
+    label: "hot recovery docs are bounded indexes",
+    files: ["skill", "recovery"],
+    tokens: ["Hot recovery docs are bounded indexes", "not append-only reports"],
+  },
+  status_scripts_are_views: {
+    id: "status_scripts_are_views",
+    label: "status/check/selftest scripts are views",
+    files: ["skill", "recovery"],
+    tokens: ["Status/check/selftest scripts are views/probes", "not state stores"],
+  },
   reuse_existing_before_add: {
     id: "reuse_existing_before_add",
     label: "reuse existing mechanisms before adding",
@@ -425,13 +437,13 @@ const groups = {
     id: "anti_entropy_warning_signs",
     label: "anti-entropy warning signs are explicit",
     file: "antiEntropy",
-    tokens: ["`AGENTS.md` keeps growing", "multiple recovery surfaces claim to be current", "old active slices are mixed"],
+    tokens: ["`AGENTS.md` keeps growing", "hot recovery docs grow as append-only reports", "multiple recovery surfaces claim to be current"],
   },
   anti_entropy_repair_moves: {
     id: "anti_entropy_repair_moves",
     label: "anti-entropy repair moves are explicit",
     file: "antiEntropy",
-    tokens: ["Keep root instructions thin", "split slow checks", "read-only GC/drift scans"],
+    tokens: ["Keep root instructions thin", "roll up hot recovery docs", "read-only GC/drift scans"],
   },
   anti_entropy_gc_readonly: {
     id: "anti_entropy_gc_readonly",
@@ -827,6 +839,8 @@ function main() {
         "recovery_drift_repair",
         "existing_harness_reconciliation",
         "no_second_recovery_surface",
+        "hot_recovery_bounded_index",
+        "status_scripts_are_views",
         "dynamic_state_surface",
       ],
       message: "Recovery surface field, backend, and drift discipline",
@@ -887,6 +901,8 @@ function main() {
         "anti_entropy_warning_signs",
         "anti_entropy_repair_moves",
         "anti_entropy_gc_readonly",
+        "hot_recovery_bounded_index",
+        "status_scripts_are_views",
         "component_failure_prevention",
       ],
       message: "Artifact freshness, anti-entropy, and cleanup discipline",
@@ -995,6 +1011,8 @@ function main() {
     "recovery_drift_repair",
     "existing_harness_reconciliation",
     "no_second_recovery_surface",
+    "hot_recovery_bounded_index",
+    "status_scripts_are_views",
     "dynamic_state_surface",
   ];
   const verificationContractGroups = [
@@ -1010,6 +1028,8 @@ function main() {
     "anti_entropy_warning_signs",
     "anti_entropy_repair_moves",
     "anti_entropy_gc_readonly",
+    "hot_recovery_bounded_index",
+    "status_scripts_are_views",
     "component_failure_prevention",
   ];
   const orchestrationContractGroups = [
@@ -1049,9 +1069,9 @@ function main() {
     metric("hb_static_check_pass_rate", Number(staticPassRate.toFixed(4)), "ratio", bandForRate(staticPassRate)),
     metric("hb_boundary_guardrail_hits", boundaryHits, "checks", bandForCount(boundaryHits, 7, 5, 4)),
     metric("hb_workbench_dimension_count", matchedGroupCount(workbenchDimensionGroups), "dimensions", bandForCount(matchedGroupCount(workbenchDimensionGroups), 14, 11, 8)),
-    metric("hb_recovery_contract_count", matchedGroupCount(recoveryContractGroups), "groups", bandForCount(matchedGroupCount(recoveryContractGroups), 6, 5, 4)),
+    metric("hb_recovery_contract_count", matchedGroupCount(recoveryContractGroups), "groups", bandForCount(matchedGroupCount(recoveryContractGroups), 8, 6, 5)),
     metric("hb_verification_contract_count", matchedGroupCount(verificationContractGroups), "groups", bandForCount(matchedGroupCount(verificationContractGroups), 5, 4, 3)),
-    metric("hb_entropy_contract_count", matchedGroupCount(entropyContractGroups), "groups", bandForCount(matchedGroupCount(entropyContractGroups), 6, 5, 4)),
+    metric("hb_entropy_contract_count", matchedGroupCount(entropyContractGroups), "groups", bandForCount(matchedGroupCount(entropyContractGroups), 8, 6, 5)),
     metric("hb_orchestration_contract_count", matchedGroupCount(orchestrationContractGroups), "groups", bandForCount(matchedGroupCount(orchestrationContractGroups), 8, 6, 4)),
     metric("hb_research_contract_count", matchedGroupCount(researchContractGroups), "groups", bandForCount(matchedGroupCount(researchContractGroups), 6, 5, 4)),
     metric("hb_matrix_contract_count", matchedGroupCount(matrixContractGroups), "groups", bandForCount(matchedGroupCount(matrixContractGroups), 6, 5, 4)),

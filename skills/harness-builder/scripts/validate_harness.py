@@ -18,6 +18,12 @@ from validate_harness_target import check_target_repo_shape
 
 
 def main() -> int:
+    if len(sys.argv) == 3 and sys.argv[1] == "--target":
+        issues: list[str] = []
+        check_target_repo_shape(Path(sys.argv[2]), issues)
+        print(json.dumps({"ok": not issues, "issues": issues}, indent=2, ensure_ascii=False))
+        return 0 if not issues else 1
+
     root = Path.cwd()
     issues: list[str] = []
     check_instruction_skill(root, issues)
