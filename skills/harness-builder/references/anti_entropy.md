@@ -12,6 +12,8 @@ Harnesses can rot. Treat harness maintenance as part of the project.
 - subagents exist but are never useful;
 - MCP servers are enabled "just in case";
 - state/progress files are stale;
+- hot recovery docs grow as append-only reports;
+- status/check/selftest scripts mirror active slices, evidence logs, probe inventories, or long conclusions;
 - multiple recovery surfaces claim to be current;
 - old active slices are mixed with a new user request;
 - `AGENTS.md` contains session notes, review conclusions, or temporary TODOs;
@@ -23,7 +25,7 @@ Harnesses can rot. Treat harness maintenance as part of the project.
 
 ## Repair moves
 
-Keep root instructions thin, split slow checks, classify skills, narrow hooks, defer MCP unless justified, reconcile existing harness drift, and prefer read-only GC/drift scans before cleanup automation.
+Keep root instructions thin, split slow checks, classify skills, narrow hooks, defer MCP unless justified, reconcile existing harness drift, roll up hot recovery docs into bounded indexes with links to cold evidence, and prefer read-only GC/drift scans before cleanup automation.
 
 ## Read-only GC / drift scan
 

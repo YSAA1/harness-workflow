@@ -1,0 +1,18 @@
+{
+  "id": "existing-active-state-migration",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "AGENTS.md contains old TODOs, current status, and one-off review notes from previous sessions.",
+  "purpose": "The skill should migrate volatile state out of AGENTS.md and keep the durable entry thin.",
+  "required_groups": [
+    "thin_instruction_surface",
+    "dynamic_state_surface",
+    "recovery_drift_repair",
+    "knowledge_cleanup_contract",
+    "anti_entropy_warning_signs"
+  ],
+  "failure_modes": [
+    "Leaves dynamic state in AGENTS.md.",
+    "Deletes state without moving it to the selected recovery surface.",
+    "Mixes an old active slice with the new user request."
+  ]
+}

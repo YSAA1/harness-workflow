@@ -1,0 +1,17 @@
+{
+  "id": "language-adaptive-chinese-output",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "用户用中文要求初始化 harness，并希望输出能直接阅读。",
+  "purpose": "The skill should follow the user's visible language while preserving stable protocol tokens.",
+  "required_groups": [
+    "language_adaptive_output",
+    "workbench_contract",
+    "no_empty_approval_checkpoint",
+    "candidate_record_fields"
+  ],
+  "failure_modes": [
+    "Responds in English-only prose to a Chinese user.",
+    "Translates protocol tokens so downstream checks cannot recognize them.",
+    "Asks for approval without a concrete install, patch, archive, or config action."
+  ]
+}

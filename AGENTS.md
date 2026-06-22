@@ -53,7 +53,6 @@
 - `harness-builder` 是 canonical 项目 harness skill；"bootstrap" 只能作为历史别名或触发词出现。
 - Three-file backend 仍可作为可选 recovery surface，但不是所有 skill 的概念依赖。
 - 每个 `SKILL.md` 必须保留 YAML frontmatter，并让 `name` 与目录名匹配。
-- 不要默认加入 hooks、MCP 配置或用户级配置；此插件默认只声明 `Read` / `Write` 能力。
 - 没有 fresh verification，不声明插件结构、流程图或方法论覆盖已经可用。
 - 关键里程碑必须使用 Git commit，commit 信息使用中文，清晰简洁。
 

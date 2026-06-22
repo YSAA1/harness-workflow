@@ -1,0 +1,17 @@
+{
+  "id": "slow-check-split",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "The repo has a full E2E suite that takes hours, and agents keep trying to run it as the default check.",
+  "purpose": "The skill should design a fast local default check and move long checks into deeper smoke or manual evidence.",
+  "required_groups": [
+    "verification_fast_local_safe",
+    "verification_phase_acceptance",
+    "anti_entropy_repair_moves",
+    "artifact_freshness_contract"
+  ],
+  "failure_modes": [
+    "Makes a multi-hour benchmark the default verification entry.",
+    "Treats file existence as enough proof for harness installation.",
+    "Does not record residual risk when deeper checks are skipped."
+  ]
+}

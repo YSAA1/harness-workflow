@@ -1,0 +1,17 @@
+{
+  "id": "fresh-evidence-before-ready",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "The harness files were edited after the last check. Can we call it ready?",
+  "purpose": "The skill should require fresh verification evidence before any ready claim.",
+  "required_groups": [
+    "fresh_evidence_gate",
+    "no_fresh_evidence_ready",
+    "verification_phase_acceptance",
+    "artifact_freshness_contract"
+  ],
+  "failure_modes": [
+    "Treats stale command output as proof.",
+    "Allows unknown evidence to count as ready.",
+    "Claims completion without mapping checks to the changed harness files."
+  ]
+}

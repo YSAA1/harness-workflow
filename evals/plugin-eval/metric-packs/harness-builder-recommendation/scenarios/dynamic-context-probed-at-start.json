@@ -1,0 +1,18 @@
+{
+  "id": "dynamic-context-probed-at-start",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "The repo has changed recently; recommend harness repairs based on the current state, not stale docs.",
+  "purpose": "The skill should probe cheap dynamic context and classify authoritative versus stale sources.",
+  "required_groups": [
+    "dynamic_context_probe",
+    "evidence_gate_repo_scan",
+    "repo_signal_required",
+    "source_of_truth_priority",
+    "recovery_drift_repair"
+  ],
+  "failure_modes": [
+    "Ignores git status, diagnostics, CI, or available runtime health signals.",
+    "Bases recommendations on stale documentation only.",
+    "Does not decide which conflicting source is newer and more authoritative."
+  ]
+}

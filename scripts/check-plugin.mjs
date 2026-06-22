@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 
@@ -470,6 +471,8 @@ if (exists(skillPath("harness-builder"))) {
     "git reset --hard",
     "subagent",
     "anti-entropy",
+    "Hot recovery docs are bounded indexes",
+    "Status/check/selftest scripts are views/probes",
   ]) {
     if (!harnessBuilder.includes(token)) fail(`harness-builder missing token: ${token}`);
   }
@@ -477,6 +480,45 @@ if (exists(skillPath("harness-builder"))) {
   for (const token of ["three-file", "lightweight", "feature-list", "existing", "active_slice", "progress.md", "findings.md"]) {
     if (!harnessBuilder.includes(token)) fail(`recovery surface policy missing token: ${token}`);
   }
+}
+
+const hotTarget = fs.mkdtempSync(path.join(os.tmpdir(), "harness-hot-target-"));
+try {
+  fs.mkdirSync(path.join(hotTarget, "scripts/agent"), { recursive: true });
+  fs.mkdirSync(path.join(hotTarget, ".harness"), { recursive: true });
+  fs.writeFileSync(path.join(hotTarget, "AGENTS.md"), "# Test\n");
+  fs.writeFileSync(path.join(hotTarget, "scripts/agent/check.sh"), "#!/usr/bin/env bash\ntrue\n");
+  fs.writeFileSync(path.join(hotTarget, ".harness/manifest.yaml"), "version: 1\n");
+  fs.writeFileSync(path.join(hotTarget, ".harness/decisions.md"), "# Decisions\n");
+  fs.writeFileSync(path.join(hotTarget, ".harness/state.md"), Array.from({ length: 301 }, (_, i) => `line ${i}`).join("\n"));
+  fs.writeFileSync(
+    path.join(hotTarget, "scripts/agent/status.sh"),
+    [
+      "#!/usr/bin/env bash",
+      "printf '%s\\n' active_slice",
+      "printf '%s\\n' current_phase",
+      "printf '%s\\n' evidence_log",
+      "printf '%s\\n' probe inventory",
+      "printf '%s\\n' current status",
+    ].join("\n"),
+  );
+  const result = spawnSync("python3", ["-B", "scripts/validate_harness.py", "--target", hotTarget], {
+    cwd: path.join(root, "skills/harness-builder"),
+    encoding: "utf8",
+  });
+  const hotStdout = result.stdout || "";
+  const hotStderr = result.stderr || result.error?.message || "";
+  if (result.error) {
+    fail(`target validator command failed: ${hotStderr}`);
+  } else if (result.status === 0) {
+    fail("target validator should reject hot recovery doc and status-script state mirror");
+  } else if (!hotStdout.includes("hot recovery doc too large") || !hotStdout.includes("agent script appears to mirror recovery state")) {
+    fail(`target validator did not report expected hot-surface issues: ${hotStdout || hotStderr}`);
+  } else {
+    pass("target anti-entropy validator catches hot surface bloat");
+  }
+} finally {
+  fs.rmSync(hotTarget, { recursive: true, force: true });
 }
 
 const skillBundle = workflowSkills.map((skill) => (exists(skillPath(skill)) ? read(skillPath(skill)) : "")).join("\n");

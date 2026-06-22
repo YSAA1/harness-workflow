@@ -1,0 +1,18 @@
+{
+  "id": "subagent-fit-for-large-legacy-repo",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "This repo is large and unfamiliar, and the harness plan needs review before installation.",
+  "purpose": "The skill should recommend read-only subagents only when they reduce named gaps.",
+  "required_groups": [
+    "subagent_gap_reducer",
+    "subagent_parallel_readonly",
+    "subagent_fit_record",
+    "subagent_signal_mapping",
+    "subagent_failure_mode_names"
+  ],
+  "failure_modes": [
+    "Spawns subagents because the feature exists.",
+    "Uses job-title names instead of failure-mode names.",
+    "Omits expected output, input, or read-only boundary."
+  ]
+}

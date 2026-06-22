@@ -2,6 +2,8 @@
 {% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
 # {{ 'Harness 状态（Harness State）' if zh else 'Harness State' }}
 
+{{ '本文件是热恢复索引，不是追加式报告。旧进展应压缩为当前状态、决策、风险和证据链接。' if zh else 'This file is a hot recovery index, not an append-only report. Roll old progress into current state, decisions, risks, and evidence links.' }}
+
 ## {{ '项目阶段（Project phase）' if zh else 'Project phase' }}
 
 {{ project_phase }}

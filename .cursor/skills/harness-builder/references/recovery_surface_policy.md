@@ -21,6 +21,19 @@ Every durable recovery surface should make these fields discoverable when the ta
 | `blockers` | External decisions or missing capabilities |
 | `next_actions` | The next concrete recovery step |
 
+## Hot Surface Budget
+
+Hot recovery docs are bounded indexes, not append-only reports. Keep
+`AGENTS.md`, `.harness/state.md`, `task_plan.md`, `progress.md`,
+`findings.md`, and handoff notes small enough for the next agent to read first.
+For complex tasks, replace or roll up old progress into the current state,
+decisions, residual risks, and links to cold evidence.
+
+Append-only detail belongs in cold logs, archived research notes, benchmark
+outputs, or issue/PR history. Status, check, and selftest scripts are views:
+they may validate anchors and print source-of-truth pointers, but they must not
+copy active slices, evidence logs, probe inventories, or long conclusions.
+
 ## Backend Options
 
 | Backend | Use When | Typical Artifacts |

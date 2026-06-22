@@ -1,0 +1,18 @@
+{
+  "id": "unclear-goal-routes-to-brainstorm-or-plan",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "Prepare this repo for agents, but the target outcome and acceptance criteria are unclear.",
+  "purpose": "The skill should ask only harness-design questions or route unclear product scope back to brainstorm or plan.",
+  "required_groups": [
+    "question_gate_only_design_questions",
+    "question_gate_routes_unclear_work",
+    "scoped_work_contract",
+    "task_context_as_evidence",
+    "route_execution_to_next_skill"
+  ],
+  "failure_modes": [
+    "Invents a target outcome and installs templates.",
+    "Asks broad questions that do not change harness design.",
+    "Starts product implementation inside harness-builder."
+  ]
+}
