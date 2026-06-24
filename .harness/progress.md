@@ -35,3 +35,17 @@
 - 用户要求：没用的 legacy root three-file plan templates 直接删除，保持清爽。
 - 改动：删除 `skills/plan/templates/*`、`plugins/harness-workflow/skills/plan/templates/*`、`.cursor/skills/plan/templates/*`；`scripts/check-plugin.mjs` 改为验证这些 legacy templates 不存在。
 - 文档同步：`plan/SKILL.md`、`docs/harness-method-contract.md`、`docs/tutorials/zhihu-harness-workflow-guide.md` 改为说明旧 root 三文件只作为迁移输入，不再提供模板。
+
+## 2026-06-24 — strengthen brainstorm Design Grill
+
+- 用户要求：当前 `brainstorm` 第二阶段 grill 偏保守，参考 `$grill-me` 增强。
+- 改动：`design-grill.md` 改为 relentless interview；每轮先查 repo/docs，提出 working recommendation，用单个 accept/correct/reject 问题压一个具体 stress scenario；Gate 不再允许只靠 coverage label 通过。
+- 同步：`skills/brainstorm/SKILL.md`、`rules/brainstorm.mdc`、`plugins/harness-workflow/skills/brainstorm/*`、`.cursor/rules/brainstorm.mdc`、`.cursor/skills/brainstorm/*`、`docs/skill-flow-review/*.html`。
+- 验证：
+  - `node scripts/generate-skill-flow-html.mjs` -> PASS，生成 9 个 HTML 文件
+  - `node scripts/check-plugin.mjs` -> PASS
+  - `node scripts/check-claude-code-install.mjs` -> PASS
+  - `node scripts/check-cursor-install.mjs` -> PASS
+  - `node scripts/install-cursor.mjs --target . --dry-run` -> PASS
+  - `bash scripts/agent/check.sh` -> PASS
+  - targeted `rg` for Design Grill tokens -> root/package/Cursor surfaces all include stronger grill rules

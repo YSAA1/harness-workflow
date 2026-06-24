@@ -4,21 +4,21 @@
 
 ## Objective
 
-强化 workflow skills 文档纪律：brainstorm Phase A2 Design Grill（非平凡强制）、统一 `.harness/` recovery、Work Index 必填；本仓库 dogfood，并降低 `harness-builder` 默认路径重量。
+强化 `brainstorm` Phase A2 Design Grill：参考 `grill-me` / `grilling` 的 relentless interview 风格，让非平凡需求在进入 Spec 前经过更强的单问追问、推荐答案和具体压力场景。
 
 ## Active slice
 
-修复用户审阅担忧：`harness-builder` 默认 Quick repair / Full recommendation 分流；删除 legacy root three-file plan 模板；三端 skills、Cursor 面和 skill-flow 生成物同步。
+增强 `brainstorm` Phase A2：收紧 `design-grill.md`，补齐主 skill 和 Cursor rule 引用，并加入检查防止退回软 gate。
 
 ## Current phase
 
-review → verify → commit
+verify → commit
 
 ## Success criteria
 
-- `skills/`、`CONTEXT.md`、`AGENTS.md`、`docs/harness-method-contract.md` 语义一致，无 three-file backend 作为主路径
-- `harness-builder` 小修默认不展开 Capability Recommendation / Research Route，除非用户请求或 repo evidence 需要
-- `.harness/recovery_policy.md`、`work_index.md`、`state.md` 存在且可读
+- `skills/brainstorm/references/design-grill.md` 明确要求 relentless interview、working recommendation、stress scenario 和 repo-first answering
+- `skills/brainstorm/SKILL.md` 与 Cursor rule 都把 `design-grill.md` 列为 Phase A 必读
+- `scripts/check-plugin.mjs` 能防止 Design Grill 关键纪律退化
 - `node scripts/check-plugin.mjs`、`node scripts/check-claude-code-install.mjs`、`node scripts/check-cursor-install.mjs`、`node scripts/install-cursor.mjs --target . --dry-run`、`bash scripts/agent/check.sh` PASS
 
 ## Verification path
@@ -37,5 +37,4 @@ bash scripts/agent/check.sh
 
 ## Risks
 
-- legacy root three-file plan 模板已删除；遇到旧 root `task_plan.md` / `progress.md` / `findings.md` 时只迁移或归档
-- 历史 docs/plans / docs/prd 仍含 three-file 用语（冷档案，不阻塞当前 slice）
+- A2 变强可能拉长 brainstorm；仍保留“一条消息一个问题”和 trivial slice waiver，避免把小补丁流程化

@@ -54,7 +54,7 @@ Canonical Spec path: `docs/specs/YYYY-MM-DD--<topic>.md`。不要因为仓库存
 
 ## 先读取这些输入
 
-1. `references/clarification-loop.md` 和 `references/clarification-coverage.md`。
+1. `references/clarification-loop.md`、`references/clarification-coverage.md` 和 `references/design-grill.md`。
 2. 既有 Spec、PRD、issue、plan、README、`AGENTS.md`、相关代码与测试。
 3. selected recovery surface、`git status --short`、`git log --oneline -10`。
 4. 用户给出的链接、截图、设计稿或外部约束。
@@ -112,7 +112,7 @@ Handoff details: `references/spec-drafting.md`. Do not invoke the next skill bef
 
 ## 按需读取
 
-- Phase A：`references/clarification-loop.md`、`references/clarification-coverage.md`
+- Phase A：`references/clarification-loop.md`、`references/clarification-coverage.md`、`references/design-grill.md`
 - Phase B：`references/spec-drafting.md`
 - 自审：`references/spec-review-checklist.md`
 - 模板：`templates/spec.md`

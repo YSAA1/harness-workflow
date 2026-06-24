@@ -18,11 +18,11 @@ Canonical source: `skills/brainstorm/SKILL.md`.
 
 - User request and attached materials.
 - Existing specs, PRDs, plans, issues, README, relevant code, tests, and recovery surface.
-- Phase A references: `skills/brainstorm/references/clarification-loop.md` and `clarification-coverage.md`.
+- Phase A references: `skills/brainstorm/references/clarification-loop.md`, `clarification-coverage.md`, and `design-grill.md`.
 
 ## Procedure
 
-1. **Phase A** — Maintain coverage, ask one question per turn, wait for replies, pass the Clarification Gate, confirm assumptions.
+1. **Phase A** — Maintain coverage, ask one question per turn, wait for replies, pass the Clarification Gate, run Design Grill for non-trivial work, confirm assumptions.
 2. **Phase B** — Follow `spec-drafting.md`: verification first, compare approaches, write Spec, self-review, stop for approval.
 3. Do not write a Spec before Phase A completes. Do not call `plan` or implement before Spec approval.
 

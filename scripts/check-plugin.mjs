@@ -319,6 +319,16 @@ for (const forbidden of [
     fail(`brainstorm clarification coverage still has English-first output token: ${forbidden}`);
   }
 }
+const designGrill = read("skills/brainstorm/references/design-grill.md");
+for (const token of [
+  "relentless interview",
+  "If a question can be answered by exploring the codebase or docs",
+  "Working recommendation",
+  "Stress scenario",
+  "Coverage labels alone do not count",
+]) {
+  if (!designGrill.includes(token)) fail(`brainstorm design grill missing stronger grilling token: ${token}`);
+}
 
 const harnessUserTemplates = [
   ["skills/harness-builder/templates/AGENTS.md.j2", "项目概览（Project overview）", "Project overview"],
