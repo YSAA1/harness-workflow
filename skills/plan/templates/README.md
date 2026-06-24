@@ -1,6 +1,6 @@
-# Three-File Templates
+# Legacy Three-File Templates
 
-These templates are canonical templates for the optional three-file recovery surface.
+These templates are kept only as migration reference for old `planning-with-files` / root three-file projects. New Harness Workflow planning writes Executable Plans to `docs/plans/` and runtime recovery to `.harness/`.
 
 Source:
 
@@ -20,7 +20,8 @@ Local adaptation:
 
 Responsibilities:
 
-- `plan` uses these templates only when the selected planning surface is the three-file backend.
+- `plan` must not use these templates for new work.
+- Use these templates only when migrating or interpreting an existing legacy three-file surface.
 - Chinese users use the `*.zh-CN.md` templates; English or other non-Chinese users use the default templates and may translate human-facing labels as needed.
 - `harness-builder` chooses or repairs the recovery surface; it does not maintain a second copy of these templates.
 - Other skills update the selected recovery surface only when that surface requires it.

@@ -33,4 +33,4 @@ Fallback now: <当前不用该能力时的替代证据>
 - 官方文档是判断依据。
 
 替代：
-- 用户提供链接并把关键决策写入 `findings.md`。
+- 用户提供链接并把关键决策写入 selected recovery surface。

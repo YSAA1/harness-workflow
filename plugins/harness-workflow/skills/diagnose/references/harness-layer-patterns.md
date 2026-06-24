@@ -19,7 +19,7 @@
 - agent 找错入口。
 
 处理：
-- `bootstrap` 重新建立项目地图、验证入口和薄 `AGENTS.md` 指针。
+- `harness-builder` 重新建立项目地图、验证入口和薄 `AGENTS.md` 指针。
 
 ## 工具 / 环境层
 
@@ -38,7 +38,7 @@
 信号：
 - fixture 被改。
 - cache、snapshot、generated file 过期。
-- 三文件和 git state 不一致。
+- selected recovery surface 和 git state 不一致。
 
 处理：
 - 先修状态，再重新验证。

@@ -1,5 +1,6 @@
 # Findings And Decisions
 
+> Legacy migration reference only. New Harness Workflow decisions belong in `.harness/decisions.md`, `docs/adr/`, or the selected recovery surface.
 > Source: adapted from `OthmanAdi/planning-with-files` Chinese `planning-with-files-zh/templates/findings.md`.
 > License: MIT. Local adaptation: Harness Workflow accepted spec, rejected options, risks, and references.
 

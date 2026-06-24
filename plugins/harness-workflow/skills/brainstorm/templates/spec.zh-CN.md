@@ -68,7 +68,7 @@
 
 ### 文档 / 状态检查（Documentation / State Checks）
 
-- [README、AGENTS.md、docs、task_plan.md、progress.md、findings.md、项目地图]
+- [README、AGENTS.md、docs、`.harness/`、issue tracker、项目已有系统、项目地图]
 
 ### 完成前所需 fresh evidence
 

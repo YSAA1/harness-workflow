@@ -1,5 +1,6 @@
 # 发现与决策
 
+> Legacy migration reference only. 新 Harness Workflow 决策写入 `.harness/decisions.md`、`docs/adr/` 或 selected recovery surface。
 > 来源：基于 `OthmanAdi/planning-with-files` 的中文 `planning-with-files-zh/templates/findings.md` 改造。
 > 许可证：MIT。改造目标：适配 Harness Workflow 的 accepted spec、rejected options、risks 和 references。
 

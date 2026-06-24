@@ -7,7 +7,7 @@
 - 本次创建的临时 scratch 文件。
 - 明显 debug output。
 - 未引用的本地报告。
-- 已被 `progress.md` / `findings.md` 吸收的重复笔记。
+- 已被 selected recovery surface 吸收的重复笔记。
 - 本次引入且未使用的 import / variable。
 
 ## 需要谨慎
@@ -31,7 +31,7 @@
 
 ## 关闭前检查
 
-- 三文件状态一致。
+- selected recovery surface 状态一致。
 - README / AGENTS 命令没有漂移。
 - 没有把临时状态写进 durable instructions。
 - 没有用 cleanup 掩盖未验证内容。

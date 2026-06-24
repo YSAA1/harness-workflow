@@ -1,5 +1,6 @@
 # Progress Log
 
+> Legacy migration reference only. New Harness Workflow evidence belongs in `.harness/progress.md` or the selected recovery surface.
 > Source: adapted from `OthmanAdi/planning-with-files` Chinese `planning-with-files-zh/templates/progress.md`.
 > License: MIT. Local adaptation: Harness Workflow append-only evidence log.
 
@@ -8,7 +9,7 @@ Append important progress, verification evidence, failures, and recovery notes h
 ### YYYY-MM-DDTHH:MMZ
 
 - Intent: [purpose of this action]
-- Phase: [planning | bootstrap | implementation | review | verification | cleanup | paused | complete]
+- Phase: [planning | harness-builder | implementation | review | verification | cleanup | paused | complete]
 - Actions:
   - [what was done]
 - Files:

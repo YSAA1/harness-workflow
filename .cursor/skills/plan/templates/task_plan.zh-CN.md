@@ -1,7 +1,8 @@
 # 任务计划：[任务名称]
 
+> Legacy migration reference only. 新 Harness Workflow 计划写入 `docs/plans/`；运行时 recovery 写入 `.harness/`。
 > 来源：基于 `OthmanAdi/planning-with-files` 的中文 `planning-with-files-zh/templates/task_plan.md` 改造。
-> 许可证：MIT。改造目标：适配 Harness Workflow 的三文件模型、active slice、验证命令和成功标准。
+> 许可证：MIT。改造目标：作为 legacy three-file migration reference，保留 active slice、验证命令和成功标准示例。
 
 ## 目标
 
@@ -51,7 +52,7 @@
 成功定义（success_definition）：[一句话：什么状态算成功]
 
 - [ ] 确认项目地图、入口和相关文件。
-- [ ] 确认 `AGENTS.md`、三文件或等价状态入口可用。
+- [ ] 确认 `AGENTS.md`、legacy three-file surface 或等价状态入口可用。
 - [ ] 确认验证命令、smoke / E2E 候选、fallback evidence 和能力缺口。
 - [ ] 如果 verification path blocked 且没有用户接受的 fallback，先转 `harness-builder`。
 
@@ -63,7 +64,7 @@
 成功定义（success_definition）：[一句话：什么状态算成功]
 
 - [ ] 按 active slice 小步实现，不扩大范围。
-- [ ] 修改代码、命令或用户可见行为时同步相关文档和三文件。
+- [ ] 修改代码、命令或用户可见行为时同步相关文档和 legacy three-file artifacts。
 - [ ] 记录 RED / GREEN / REFACTOR 或等价验证证据到 `progress.md`。
 
 ### 阶段 4 - 评审与验证

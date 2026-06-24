@@ -68,7 +68,7 @@
 
 ### Documentation / State Checks
 
-- [README, AGENTS.md, docs, task_plan.md, progress.md, findings.md, project map]
+- [README, AGENTS.md, docs, `.harness/`, issue tracker, existing project system, project map]
 
 ### Fresh Evidence Required Before Completion
 

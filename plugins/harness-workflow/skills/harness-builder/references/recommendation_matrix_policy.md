@@ -13,7 +13,7 @@ Each row is classified as:
 - `Deferred`: valid gap, intentionally postponed.
 - `Rejected`: not useful, too costly, duplicates a better mechanism, or outside scope.
 
-Default a project-local capability supplement (skill, hook, subagent, MCP) to `Recommended` when a concrete repo signal shows value. Do not drop it to `Deferred`/`Rejected` merely because the harness already runs or to avoid an install — project-local scope does not change user/global state. Reserve `Deferred`/`Rejected` for unclear owner, credential/global/destructive risk, missing fallback, or a mechanism a simpler artifact already covers.
+Default a project-local capability supplement (skill, hook, subagent, MCP) to `Recommended` when the selected mode covers that row and a concrete repo signal shows value. Do not drop it to `Deferred`/`Rejected` merely because the harness already runs or to avoid an install — project-local scope does not change user/global state. In Quick repair, capability rows are out of scope unless they block entry, recovery, verification, or anti-entropy; omit out-of-scope rows instead of listing them as `Deferred`. Reserve `Deferred`/`Rejected` for in-scope rows with unclear owner, credential/global/destructive risk, missing fallback, or a mechanism a simpler artifact already covers.
 
 ## Rows
 
@@ -48,7 +48,7 @@ Borrow the useful phase discipline from initialization tools, but map it into re
 | GC / drift scan | anti-entropy |
 | Hooks | hook fit; optional unless blocking a concrete high-risk failure |
 
-The user may ask for one area only. Still run enough discovery to avoid writing against the wrong stack or stale harness, then keep unrelated rows deferred.
+The user may ask for one area only. Still run enough discovery to avoid writing against the wrong stack or stale harness, then omit unrelated rows. Quick repair should not expand into architecture, skills, hooks, MCP, subagents, plugins, commands/CI, or external research unless evidence shows that row is required for the requested repair.
 
 ## Binding Rule
 

@@ -152,11 +152,11 @@ Backend options：
 
 - `none`
 - `lightweight`
-- `three-file`
+- `harness`
 - `feature-list`
 - `existing`
 
-Three-file backend 使用 `task_plan.md`、`progress.md`、`findings.md`，仍适合 rigorous tracked workflow；但它只是 selected backend，不是所有 skill 的概念前提。
+Legacy root `task_plan.md` / `progress.md` / `findings.md` files are migration input only. New runtime recovery lives under `.harness/`; Executable Plans live under `docs/plans/`.
 
 主要 skill：`harness-builder`、all skills。
 

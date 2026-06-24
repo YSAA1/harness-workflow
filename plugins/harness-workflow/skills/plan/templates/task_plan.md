@@ -1,7 +1,8 @@
 # Task Plan: [task name]
 
+> Legacy migration reference only. New Harness Workflow plans belong in `docs/plans/`; runtime recovery belongs in `.harness/`.
 > Source: adapted from `OthmanAdi/planning-with-files` Chinese `planning-with-files-zh/templates/task_plan.md`.
-> License: MIT. Local adaptation: Harness Workflow three-file backend, active slice, verification commands, and success criteria.
+> License: MIT. Local adaptation: legacy three-file migration reference, active slice, verification commands, and success criteria.
 
 ## Objective
 
@@ -51,7 +52,7 @@ Verification commands: [`command 1`, `command 2`]
 Success definition: [one sentence describing the successful state]
 
 - [ ] Confirm project map, entry point, and relevant files.
-- [ ] Confirm `AGENTS.md`, three-file backend, or equivalent state entry is usable.
+- [ ] Confirm `AGENTS.md`, legacy three-file surface, or equivalent state entry is usable.
 - [ ] Confirm verification commands, smoke / E2E candidates, fallback evidence, and capability gaps.
 - [ ] If verification path is blocked and no user-accepted fallback exists, route to `harness-builder`.
 
@@ -63,7 +64,7 @@ Verification commands: [`command 1`, `command 2`]
 Success definition: [one sentence describing the successful state]
 
 - [ ] Implement in small steps within the active slice.
-- [ ] Sync relevant docs and three-file artifacts when code, commands, or user-visible behavior change.
+- [ ] Sync relevant docs and legacy three-file artifacts when code, commands, or user-visible behavior change.
 - [ ] Record RED / GREEN / REFACTOR or equivalent verification evidence in `progress.md`.
 
 ### Phase 4 - Review And Verification

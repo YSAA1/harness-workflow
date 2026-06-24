@@ -140,7 +140,7 @@ pre {
   <div class="toolbar">
     <a class="button" href="../../skills/plan/SKILL.md">打开 SKILL.md</a>
     <span class="button">Executable Plan</span>
-    <span class="button">229 行</span>
+    <span class="button">226 行</span>
   </div>
 </header>
 <main>
@@ -169,13 +169,13 @@ pre {
     <div class="flow">
       <div class="step">
         <div class="num">1</div>
-        <div><h3>第 0 步 — 选择或确认 planning surface</h3><p>默认 planning artifact 是 docs/plans/YYYY-MM-DD--&lt;topic&gt;-plan.md。不要因为仓库存在 docs/prd/、root plan.md、issue、feature-list、existing tracker 或 three-file backend 就改写默认位置。Override 仅在当前用户明确指定路径，或 AGENTS.md 明确声明 canonical Plan surface 时允许，并必须在输出中写明 reason。若任务不需要 durable st...</p></div>
+        <div><h3>第 0 步 — 选择或确认 planning surface</h3><p>默认 planning artifact 是 docs/plans/YYYY-MM-DD--&lt;topic&gt;-plan.md。不要因为 issue、feature-list 或 .harness/ 存在就改写默认位置。Override 仅在当前用户明确指定路径，或 AGENTS.md 明确声明 canonical Plan surface 时允许。若 .harness/ 缺失且任务需要 tracked recovery，转 harness-builder。</p></div>
       </div><div class="step">
         <div class="num">2</div>
         <div><h3>第 1 步 — 写 Executable Plan</h3><p>计划必须包含： - Objective - Active slice - Non-goals - Success criteria - Verification path - Verification path status: runnable | blocked - Required capabilities</p></div>
       </div><div class="step">
         <div class="num">3</div>
-        <div><h3>第 2 步 — 写入选定 artifact</h3><p>- docs plan：写到 docs/plans/YYYY-MM-DD--&lt;topic&gt;-plan.md，除非存在 explicit override。 - issue：写成可发布 issue 或更新 issue body。 - feature-list：更新对应 feature entry。 - existing system：按项目惯例更新，不复制第二套状态。 - three-file backend：中文用户使用 templates/task_plan.zh-CN.md、templates/progres...</p></div>
+        <div><h3>第 2 步 — 写入选定 artifact</h3><p>- docs plan：写到 docs/plans/YYYY-MM-DD--&lt;topic&gt;-plan.md，除非存在 explicit override。 - issue：写成可发布 issue 或更新 issue body。 - feature-list：更新对应 feature entry。 - existing system：按项目惯例更新，不复制第二套状态。 - .harness/ runtime sync：tracked work 在写入 planning artifact 后，更新 .harness/...</p></div>
       </div><div class="step">
         <div class="num">4</div>
         <div><h3>第 3 步 — 检查可执行性</h3><p>每个阶段必须有具体动作和验证含义。不允许&quot;继续优化&quot;、&quot;完善逻辑&quot;这类不可恢复动作。</p></div>
@@ -189,11 +189,11 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text EXECUTABLE PLAN WRITTEN &lt;Planning surface label in user's language&gt; / Planning surface: &lt;docs plan | issue | feature-list | existing | three-file&gt; &lt;Artifact label in user's language&gt; / Artifact: &lt;docs/plans/YYYY-MM-DD--topic-plan.md | explicit override | n/a&gt; &lt;Spec source label in user's language&gt; / Spec source: &lt;path | explicit small-task exception&gt; &lt;Active slice label in user's language&gt; / Active slice: &lt;一句...</pre>
+      <pre>``text EXECUTABLE PLAN WRITTEN &lt;Planning surface label in user's language&gt; / Planning surface: &lt;docs plan | issue | feature-list | existing&gt; &lt;Artifact label in user's language&gt; / Artifact: &lt;docs/plans/YYYY-MM-DD--topic-plan.md | explicit override | n/a&gt; &lt;Runtime recovery sync label in user's language&gt; / Runtime recovery sync: &lt;none | .harness | existing system&gt; &lt;Spec source label in user's language&gt; / Spec source: &lt;...</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
-      <ul><li>selected planning surface：本次重点产物；默认是 docs/plans/YYYY-MM-DD--&lt;topic&gt;-plan.md。</li><li>three-file backend：只有选中时更新 task_plan.md、progress.md、findings.md。</li><li>AGENTS.md：不动；如需项目地图、验证入口或恢复指针，交给 harness-builder 或 cleanup 小幅同步。</li></ul>
+      <ul><li>selected planning surface：本次重点产物；默认是 docs/plans/YYYY-MM-DD--&lt;topic&gt;-plan.md。</li><li>.harness/：tracked 任务时同步 work_index.md、state.md；证据 → progress.md；决策 → decisions.md。</li><li>AGENTS.md：不动；项目地图或 recovery 结构缺口交给 harness-builder 或 cleanup。</li></ul>
     </div>
   </section>
 
@@ -205,7 +205,7 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] 已读取并引用用户批准的 Spec；若没有独立 Spec，已说明为什么该任务足够小且验证策略已明确。</li><li>[ ] 已选择 planning surface 并说明原因。</li><li>[ ] Executable Plan 含目标、active slice、non-goals、成功标准、验证路径、验证路径状态、所需能力、fallback、阶段、风险、下一步。</li><li>[ ] 多阶段或多 commit unit 计划含 final_integration_claim。</li><li>[ ] 若 verification path blocked，已转 harness-builder 或记录用户接受的 fallback evidence。</li><li>[ ] 恰好一个当前 item 是 in-progress 或 next。</li><li>[ ] 没有默认创建第二套 recovery surface。</li><li>[ ] 如使用 three-file backend，模板取自 templates/。</li><li>[ ] 每个阶段含 acceptance_criteria、verification_commands 和 success_definition。</li><li>[ ] 多阶段计划定义了 commit unit 及其提交前置条件。</li><li>[ ] 已显式给出下一步 skill，且除非用户要求继续，否则停在计划边界。</li></ul>
+      <ul><li>[ ] 已读取并引用用户批准的 Spec；若没有独立 Spec，已说明为什么该任务足够小且验证策略已明确。</li><li>[ ] 已选择 planning surface 并说明原因。</li><li>[ ] Executable Plan 含目标、active slice、non-goals、成功标准、验证路径、验证路径状态、所需能力、fallback、阶段、风险、下一步。</li><li>[ ] 多阶段或多 commit unit 计划含 final_integration_claim。</li><li>[ ] 若 verification path blocked，已转 harness-builder 或记录用户接受的 fallback evidence。</li><li>[ ] 恰好一个当前 item 是 in-progress 或 next。</li><li>[ ] 没有默认创建第二套 recovery surface。</li><li>[ ] 如项目使用 tracked recovery，.harness/work_index.md 与 state.md 已同步。</li><li>[ ] 每个阶段含 acceptance_criteria、verification_commands 和 success_definition。</li><li>[ ] 多阶段计划定义了 commit unit 及其提交前置条件。</li><li>[ ] 已显式给出下一步 skill，且除非用户要求继续，否则停在计划边界。</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>

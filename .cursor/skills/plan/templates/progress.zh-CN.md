@@ -1,5 +1,6 @@
 # 进度日志
 
+> Legacy migration reference only. 新 Harness Workflow 证据写入 `.harness/progress.md` 或 selected recovery surface。
 > 来源：基于 `OthmanAdi/planning-with-files` 的中文 `planning-with-files-zh/templates/progress.md` 改造。
 > 许可证：MIT。改造目标：适配 Harness Workflow 的 append-only evidence log。
 
@@ -8,7 +9,7 @@
 ### YYYY-MM-DDTHH:MMZ
 
 - Intent: [这次行动的目的]
-- Phase: [planning | bootstrap | implementation | review | verification | cleanup | paused | complete]
+- Phase: [planning | harness-builder | implementation | review | verification | cleanup | paused | complete]
 - Actions:
   - [执行了什么]
 - Files:

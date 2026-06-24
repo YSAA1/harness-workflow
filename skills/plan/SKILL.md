@@ -13,7 +13,7 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 
 - 用户可见文本跟随用户语言；中文用户场景下，计划说明、阶段标题、验收说明、风险和下一步默认使用中文。
 - 协议稳定优先：协议 token 如 `EXECUTABLE PLAN WRITTEN`、`Executable Plan`、`Verification path status`、`runnable | blocked`、`final_integration_claim`、skill 名、路径和命令可保留英文，必要时使用中文标签 + 英文 token。
-- 不把 Plan 模板硬编码为中文-only；中文用户使用 `templates/task_plan.zh-CN.md`，英文或其他非中文用户使用 `templates/task_plan.md` 作为 default，并按用户语言翻译人类可见说明。
+- 不把 Plan 模板硬编码为中文-only；新工作默认写 `docs/plans/YYYY-MM-DD--<topic>-plan.md`。`templates/task_plan*.md` 是 legacy migration reference，不是默认输出模板。
 - 输出契约中的 `<... label in user's language>` 是占位说明，实际回复时必须替换成用户语言标签，不要原样输出。
 
 ## 路由快照
@@ -78,9 +78,8 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 | issue | 团队用 issue tracker 跟踪 work items |
 | feature-list entry | 多功能产品型项目需要多个独立状态 |
 | existing system | 项目已有可信任务或 roadmap 系统 |
-| `.harness/` sync | 跨会话执行中同步 `.harness/state.md`、`.harness/work_index.md`；证据与决策写入 `.harness/progress.md`、`.harness/decisions.md` |
 
-`.harness/` 是运行时 recovery，不是 Executable Plan 的默认写入面。模板见 `../harness-builder/templates/`。
+`.harness/` 是运行时 recovery，不是 Planning Surface。Tracked work 可以在写入上述 artifact 后同步 `.harness/work_index.md`、`.harness/state.md`、`.harness/progress.md`、`.harness/decisions.md`。
 
 ## 执行流程
 
@@ -131,7 +130,7 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 - issue：写成可发布 issue 或更新 issue body。
 - feature-list：更新对应 feature entry。
 - existing system：按项目惯例更新，不复制第二套状态。
-- `.harness/` sync：更新 `.harness/work_index.md`（新任务时）；重写 `.harness/state.md` 的 active slice、phase、next；按需追加 `.harness/progress.md`、`.harness/decisions.md`。
+- `.harness/` runtime sync：tracked work 在写入 planning artifact 后，更新 `.harness/work_index.md`（新任务时）；重写 `.harness/state.md` 的 active slice、phase、next；按需追加 `.harness/progress.md`、`.harness/decisions.md`。
 
 ### 第 3 步 — 检查可执行性
 
@@ -160,8 +159,9 @@ Commit unit 定义何时可以提交一个里程碑。这是计划产物，不�
 ```text
 EXECUTABLE PLAN WRITTEN
 
-<Planning surface label in user's language> / Planning surface: <docs plan | issue | feature-list | existing | .harness sync>
+<Planning surface label in user's language> / Planning surface: <docs plan | issue | feature-list | existing>
 <Artifact label in user's language> / Artifact: <docs/plans/YYYY-MM-DD--topic-plan.md | explicit override | n/a>
+<Runtime recovery sync label in user's language> / Runtime recovery sync: <none | .harness | existing system>
 <Spec source label in user's language> / Spec source: <path | explicit small-task exception>
 <Active slice label in user's language> / Active slice: <一句话>
 <Success criteria label in user's language> / Success criteria: <可证伪条件>
@@ -222,4 +222,4 @@ Use this as a routing recommendation, not as permission to keep working after pl
 
 - `.harness/` 字段与布局：`../harness-builder/references/recovery_surface_policy.md`
 - 工作面初始化：`../harness-builder/SKILL.md`
-- `templates/` 下的 legacy plan 模板仅用于迁移参考；新工作使用 `../harness-builder/templates/`。
+- `templates/` 下的 legacy plan 模板仅用于迁移参考；新 work 使用本 `SKILL.md` 的 Executable Plan 字段结构写入选定 planning surface。
