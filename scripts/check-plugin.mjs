@@ -419,7 +419,7 @@ if (harnessUserTemplates.every(([file]) => exists(file))) pass("core language-ad
 const activeDocs = `${read(".codex-plugin/plugin.json")}\n${read("README.md")}\n${read("README.zh-CN.md")}\n${read("AGENTS.md")}\n${read("CONTEXT.md")}\n${read("docs/harness-method-contract.md")}\n${read("docs/integrations/autoresearch.md")}\n${read("scripts/generate-skill-flow-html.mjs")}`;
 for (const token of [
   "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
-  "Harness Builder", "recovery surface", "three-file", "Spec", "Executable Plan",
+  "Harness Builder", "recovery surface", ".harness", "Spec", "Executable Plan",
   "Knowledge Cleanup", "Capability Recommendation", "AGENTS.md", "项目铁律", "fresh evidence",
   "Harness Recommendation Matrix",
   "Research Route", "autoresearch", "Evidence Loop", "Research Reset Policy",
@@ -477,7 +477,7 @@ if (exists(skillPath("harness-builder"))) {
     if (!harnessBuilder.includes(token)) fail(`harness-builder missing token: ${token}`);
   }
 
-  for (const token of ["three-file", "lightweight", "feature-list", "existing", "active_slice", "progress.md", "findings.md"]) {
+  for (const token of ["lightweight", "harness", "feature-list", "existing", "active_slice", ".harness/state.md", "work_index.md"]) {
     if (!harnessBuilder.includes(token)) fail(`recovery surface policy missing token: ${token}`);
   }
 }
@@ -533,6 +533,9 @@ if (!/Spec/i.test(brainstorm) || /默认.*findings\.md/.test(brainstorm)) {
 const plan = read(skillPath("plan"));
 if (!/Executable Plan/i.test(plan) || /默认使用 three-file backend/.test(plan)) {
   fail("plan must produce an Executable Plan without default three-file identity");
+}
+if (/three-file backend/i.test(plan) && !/legacy|迁移/.test(plan)) {
+  fail("plan must not promote three-file backend as active planning surface");
 }
 for (const token of [
   "Verification path status",

@@ -7,7 +7,7 @@ description: "用于把模糊需求收敛成用户批准过的 Spec。触发条�
 
 把开放想法收敛成用户批准过的 **Spec**，再交给 `plan`。不写生产代码，不写 Executable Plan。
 
-Canonical Spec path: `docs/specs/YYYY-MM-DD--<topic>.md`。不要因为仓库存在 `docs/prd/`、root `plan.md`、issue、design docs 或其他任务系统就改写默认位置。只有当前用户明确指定路径，或 `AGENTS.md` 明确声明 canonical Spec surface 时，才允许 override，并在输出中说明 override reason。不要默认写三文件；recovery surface 只在项目要求时收短摘要。
+Canonical Spec path: `docs/specs/YYYY-MM-DD--<topic>.md`。不要因为仓库存在 `docs/prd/`、root `plan.md`、issue、design docs 或其他任务系统就改写默认位置。只有当前用户明确指定路径，或 `AGENTS.md` 明确声明 canonical Spec surface 时，才允许 override，并在输出中说明 override reason。不要默认写 `.harness/` 运行时状态；recovery surface 只在项目要求时收短摘要。
 
 ## 语言策略
 

@@ -23,7 +23,7 @@ Use these rules to route work into the eight canonical Harness Workflow lanes. T
 ## Shared Contract
 
 - The repository is the durable truth. Do not rely on chat memory for scope, evidence, or decisions.
-- Recovery surface is a semantic contract. It may be none, lightweight, three-file, feature-list, or an existing tracker. The three-file backend is optional, not mandatory.
+- Recovery surface is a semantic contract. It may be none, lightweight, `.harness/` (harness directory), feature-list, or an existing tracker. Runtime recovery lives under `.harness/`; do not create root-level legacy state files.
 - Ready claims require fresh evidence gathered after the relevant changes.
 - Implementation runs WIP=1: one active slice at a time, with non-goals and success criteria visible.
 - Knowledge Cleanup prevents README, AGENTS.md, docs, generated artifacts, and the selected recovery surface from drifting.

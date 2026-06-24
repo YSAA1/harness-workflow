@@ -1,8 +1,13 @@
 # Clarification Loop
 
-Use during **Phase A** only. Read this together with `clarification-coverage.md` at the start of every `brainstorm` session.
+Use during **Phase A** only. Read this together with `clarification-coverage.md` and `design-grill.md` at the start of every `brainstorm` session.
 
-## Loop
+Phase A has two sub-phases:
+
+- **Phase A1 — Coverage Matrix** (`clarification-coverage.md`): fill the eight coverage dimensions.
+- **Phase A2 — Design Grill** (`design-grill.md`): walk the design tree after A1 gate passes. **Mandatory for non-trivial work.**
+
+## Phase A1 Loop
 
 Repeat until the Clarification Gate passes:
 
@@ -13,63 +18,22 @@ Repeat until the Clarification Gate passes:
 5. Optionally include a recommended answer or 2-3 concrete options to reduce user effort.
 6. Stop and wait for the user reply. Do not enter Phase B in the same turn.
 
-One message means one question. Multiple user replies means multiple loop iterations.
-
 ## Question Order
 
-Ask in this order, skipping dimensions already `confirmed` or `waived`:
+1. Purpose → 2. Scope / non-goals → 3. Users / callers → 4. Behavior → 5. Constraints → 6. Success criteria → 7. Verification strategy → 8. Capability gaps
 
-1. Purpose
-2. Scope / non-goals
-3. Users / callers
-4. Behavior / interfaces
-5. Constraints
-6. Success criteria
-7. Verification strategy
-8. Capability gaps
+## Entering Phase A2
 
-If an answer resolves multiple dimensions, update all of them before choosing the next question.
-
-## When To Explore The Repo Instead Of Asking
-
-Prefer repo exploration over asking when the answer is likely already in:
-
-- `AGENTS.md`, README, existing Specs, PRDs, plans, issues
-- relevant code, tests, CI config, or verification scripts
-- selected recovery surface artifacts
-
-Mark those dimensions `inferred` with the file or command cited, then continue the loop or move to the assumption batch. Do not ask the user to repeat what the repo already states clearly.
-
-## When To Ask The User
-
-Ask when:
-
-- two reasonable interpretations would change scope, behavior, or verification
-- success criteria or verification path cannot be derived from repo evidence
-- the user stated preference, priority, or tradeoff matters
-- a capability gap has no documented fallback
-
-## Same-Turn Forbidden Actions
-
-While Phase A is active, do **not** in the same turn as a clarification question:
-
-- write or update `docs/specs/...` or any explicit Spec override path
-- compare final chosen approaches as if the Spec were ready
-- call `plan`, `implement`, or `verify`
-- treat silence, "sounds good", or no objection as Spec approval
+After Clarification Gate passes and assumption batch is confirmed, start Design Grill unless Phase A2 was explicitly waived for a trivial slice.
 
 ## Entering Phase B
 
-Enter Phase B only after:
-
-- Clarification Gate passes
-- any assumption batch is confirmed or corrected
+Enter Phase B only after: Clarification Gate passes; Design Grill Gate passes or Phase A2 waived; assumption batch confirmed.
 
 Then proceed with `spec-drafting.md`.
 
 ## Phase A Anti-patterns
 
-- Asking one question total, then converging.
-- Writing a Spec in the first turn or in the same turn as a clarification question.
-- Treating repo inference as user confirmation without an assumption batch.
-- Treating silence or "sounds good" as Spec approval.
+- Skipping Phase A2 on non-trivial work because the matrix is complete.
+- One question total then converging.
+- Multiple questions in one message.

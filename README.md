@@ -90,7 +90,7 @@ Three common failure modes show up again and again:
 The harness is not one giant prompt. It is the operating environment around the model:
 
 - **Instructions**: thin `AGENTS.md` or `CLAUDE.md`, project iron laws, protected paths, and task-type reading pointers.
-- **State**: none, lightweight notes, three-file backend, feature list, issue tracker, or an existing project system.
+- **State**: none, lightweight, `.harness/` directory, feature list, issue tracker, or an existing project system.
 - **Feedback**: fast checks, smoke tests, tiny runs, screenshots, logs, and current verification evidence.
 - **Tools**: scripts, project-local skills, targeted MCP, justified hooks, and subagents only when they pay for their cost.
 - **Cleanup**: anti-entropy rules so sessions close with accurate docs, clear next state, and no misleading residue.
@@ -107,7 +107,7 @@ That checklist is not a mandatory artifact list. It is a decision framework. A s
 | Harness contract before install | Before writing harness files, `harness-builder` must state the objective, non-goals, acceptance criteria, verification path, evidence location, recovery surface, and how existing harness files will be kept, patched, archived, or rejected. |
 | One recommendation matrix | Instructions, recovery, verification, architecture boundaries, anti-entropy, dynamic context, and extra capabilities are judged in one table. Skills, MCP, hooks, subagents, plugins, commands, CI, and GC are installed only when they close a named gap. |
 | Repo truth before workflow ceremony | The agent checks docs, source layout, tests, git state, existing rules, and setup commands before it claims the project is ready. |
-| Recovery as a design choice | Some work needs no durable state. Some needs a short checkpoint. Some needs `task_plan.md`, `progress.md`, and `findings.md`. Some should reuse an issue tracker or existing docs. |
+| Recovery as a design choice | Some work needs no durable state. Some needs `.harness/recovery_policy.md` + `work_index.md`. Multi-session work uses full `.harness/` (`state.md`, `progress.md`, `decisions.md`). Some should reuse an issue tracker or existing docs. |
 | Capability fit, not capability hoarding | Skills, MCP servers, hooks, subagents, plugins, commands, CI/headless automation, and external research are judged as separate recommendation rows. Capability Recommendation should be a readable table: priority, type, recommendation, repo signal, value, install surface, approval needed, fallback, verification probe, and classification. Add source/freshness/trust/risk detail only when it changes the decision. The bundled `find-skills` helper is for skill discovery; targeted web research is used when local references only provide common patterns or current external capability facts matter. Recommendation requests stay read-only until `USER CHECKPOINT`. |
 | Research Route for open-ended work | When the user explicitly asks for autoresearch or method exploration, `harness-builder` can build a project-local research harness with hypothesis, baseline, metric, evidence log, bounded iterations, git isolation, graduation gate, and rollback rules. |
 | Fresh evidence for ready claims | `verify` is the only ready gate. It ties every "done" claim to current evidence: tests, build output, smoke checks, screenshots, manual checks, or a clearly stated reason verification is blocked. |

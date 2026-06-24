@@ -191,7 +191,7 @@ for (const token of [
   "Capability Recommendation",
   "Harness Recommendation Matrix",
   "rules adapter",
-  "three-file",
+  ".harness",
 ]) {
   if (!rulesBundle.includes(token)) fail(`Cursor rules missing core token: ${token}`);
 }

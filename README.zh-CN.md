@@ -90,7 +90,7 @@ Harness engineering 听起来容易抽象：给 agent 设计更好的运行环�
 harness 不是一个更长的 prompt。它是围绕模型的一套项目运行环境：
 
 - **Instructions**：薄 `AGENTS.md` 或 `CLAUDE.md`、项目铁律、保护路径、按任务类型的必读入口。
-- **State**：none、lightweight note、three-file backend、feature list、issue tracker，或项目已有系统。
+- **State**：none、lightweight、`.harness/` 目录、feature list、issue tracker，或项目已有系统。
 - **Feedback**：快速检查、smoke test、tiny run、截图、日志和当前验证证据。
 - **Tools**：脚本、项目级 skills、定向 MCP、经过理由筛选的 hooks，以及真的能降低缺口的 subagents。
 - **Cleanup**：防腐化规则，确保每个 session 结束时 docs、状态和残留物不会误导下一位 agent。
@@ -105,7 +105,7 @@ harness 不是一个更长的 prompt。它是围绕模型的一套项目运行�
 | --- | --- |
 | 上下文感知地构建 harness | `harness-builder` 在有条件时应该读取 brainstorm 后的 spec 或可执行 plan，再结合真实仓库证据。它不是空泛模板生成器。 |
 | 先看 repo truth，再谈流程 | agent 会检查 docs、源码布局、测试、git 状态、已有规则和 setup 命令，再判断项目是否真的 ready。 |
-| 恢复面是设计决策 | 有些任务不需要持久状态；有些只要短 checkpoint；有些需要 `task_plan.md`、`progress.md`、`findings.md`；有些应该复用 issue tracker 或已有 docs。 |
+| 恢复面是设计决策 | 有些任务不需要持久状态；有些需要 `.harness/recovery_policy.md` + `work_index.md`；跨会话工作用完整 `.harness/`；有些应复用 issue tracker 或已有 docs。 |
 | 能力必须匹配真实缺口 | Skills、MCP、hooks、subagents、plugins、commands、CI/headless automation 和 external research 会作为独立 recommendation row 判断。Capability Recommendation 应输出易读推荐表：priority、type、recommendation、repo signal、value、install surface、approval needed、fallback、verification probe 和 classification；source/freshness/trust/risk 只在影响决策时展开。插件内置的 `find-skills` 辅助 skill 用于 skill 发现；targeted web research 用于本地 reference 只有 common patterns 或当前外部能力事实很重要的场景。推荐请求保持 read-only，直到 `USER CHECKPOINT`。 |
 | 面向开放研究的 Research Route | 当用户明确要求 autoresearch 或研究性探索时，`harness-builder` 可以生成项目本地 research harness：假设、baseline、metric、evidence log、bounded iterations、git isolation、graduation gate 和 rollback policy。 |
 | ready claim 必须有新证据 | `verify` 是唯一 ready gate。它会把每个“完成了”的声明绑定到当前证据：测试、构建输出、smoke check、截图、人工检查，或明确说明为什么无法验证。 |

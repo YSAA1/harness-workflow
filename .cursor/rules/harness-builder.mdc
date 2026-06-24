@@ -41,7 +41,7 @@ The deliverable is the harness that serves future work on the project, not the t
 11. Propose verification design before installation: fast check, deeper smoke/E2E/manual check, evidence path, and unverified risks.
 12. Show a user checkpoint only when proposing concrete install/patch/archive/config actions; do not ask for approval on a no-op plan.
 13. For Research Route, require goal, hypothesis, baseline, metric, verification, guardrails, iteration budget, artifact policy, and stop rule before any evidence loop.
-14. Choose or repair the recovery surface as a semantic contract; do not force three-file state.
+14. Choose or repair the recovery surface as a semantic contract; runtime state under `.harness/`; Work Index required when recovery ≠ none.
 15. Audit `AGENTS.md` on each run. Patch it only for durable repo-level facts; move dynamic state to the selected recovery surface.
 16. Install only components approved at `USER CHECKPOINT`; keep project-local, non-credential, read-only, or non-destructive components in the normal recommendation path, and require explicit approval for credential-bearing, write-capable, global, or destructive components.
 17. Verify the installed harness with the narrowest real command.

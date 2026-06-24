@@ -7,7 +7,7 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 
 `plan` 把已批准 Spec 或足够明确的请求转成 **Executable Plan**：范围、阶段、验证路径、验证能力、下一步和 commit unit 清楚到可以直接交给 `implement` 或 `verify`。
 
-它不负责发散需求，也不替代 Spec review。它默认不创建三文件；只有当前项目 recovery surface 已选择 three-file backend，或用户明确要求三文件时，才使用 `templates/` 下的 three-file 模板。
+它不负责发散需求，也不替代 Spec review。Executable Plan 默认写入 `docs/plans/`；运行时 recovery 同步到 `.harness/`（见 `../harness-builder/references/recovery_surface_policy.md`），不在仓库根创建 legacy 状态文件。
 
 ## 语言策略
 
@@ -78,9 +78,9 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 | issue | 团队用 issue tracker 跟踪 work items |
 | feature-list entry | 多功能产品型项目需要多个独立状态 |
 | existing system | 项目已有可信任务或 roadmap 系统 |
-| three-file backend | 跨会话、高风险、多 agent 或用户明确要求 |
+| `.harness/` sync | 跨会话执行中同步 `.harness/state.md`、`.harness/work_index.md`；证据与决策写入 `.harness/progress.md`、`.harness/decisions.md` |
 
-Three-file 模板仍保留在 `templates/`，但只是 backend 选项，不是 `plan` 的身份。
+`.harness/` 是运行时 recovery，不是 Executable Plan 的默认写入面。模板见 `../harness-builder/templates/`。
 
 ## 执行流程
 
@@ -90,7 +90,7 @@ Three-file 模板仍保留在 `templates/`，但只是 backend 选项，不是 `
 
 ### 第 0 步 — 选择或确认 planning surface
 
-默认 planning artifact 是 `docs/plans/YYYY-MM-DD--<topic>-plan.md`。不要因为仓库存在 `docs/prd/`、root `plan.md`、issue、feature-list、existing tracker 或 three-file backend 就改写默认位置。Override 仅在当前用户明确指定路径，或 `AGENTS.md` 明确声明 canonical Plan surface 时允许，并必须在输出中写明 reason。若任务不需要 durable state，可以输出轻量 plan 并停下。若缺口影响后续恢复，转 `harness-builder`。
+默认 planning artifact 是 `docs/plans/YYYY-MM-DD--<topic>-plan.md`。不要因为 issue、feature-list 或 `.harness/` 存在就改写默认位置。Override 仅在当前用户明确指定路径，或 `AGENTS.md` 明确声明 canonical Plan surface 时允许。若 `.harness/` 缺失且任务需要 tracked recovery，转 `harness-builder`。
 
 ### 第 1 步 — 写 Executable Plan
 
@@ -131,7 +131,7 @@ Three-file 模板仍保留在 `templates/`，但只是 backend 选项，不是 `
 - issue：写成可发布 issue 或更新 issue body。
 - feature-list：更新对应 feature entry。
 - existing system：按项目惯例更新，不复制第二套状态。
-- three-file backend：中文用户使用 `templates/task_plan.zh-CN.md`、`templates/progress.zh-CN.md`、`templates/findings.zh-CN.md`；英文或其他非中文用户使用 `templates/task_plan.md`、`templates/progress.md`、`templates/findings.md` 作为 default。
+- `.harness/` sync：更新 `.harness/work_index.md`（新任务时）；重写 `.harness/state.md` 的 active slice、phase、next；按需追加 `.harness/progress.md`、`.harness/decisions.md`。
 
 ### 第 3 步 — 检查可执行性
 
@@ -160,7 +160,7 @@ Commit unit 定义何时可以提交一个里程碑。这是计划产物，不�
 ```text
 EXECUTABLE PLAN WRITTEN
 
-<Planning surface label in user's language> / Planning surface: <docs plan | issue | feature-list | existing | three-file>
+<Planning surface label in user's language> / Planning surface: <docs plan | issue | feature-list | existing | .harness sync>
 <Artifact label in user's language> / Artifact: <docs/plans/YYYY-MM-DD--topic-plan.md | explicit override | n/a>
 <Spec source label in user's language> / Spec source: <path | explicit small-task exception>
 <Active slice label in user's language> / Active slice: <一句话>
@@ -188,7 +188,7 @@ Use this as a routing recommendation, not as permission to keep working after pl
 ## 常见反模式
 
 - **用 plan 补问需求。** 如果 goals、non-goals 或 verification strategy 不清楚，回 `brainstorm`。
-- **把所有计划都变成三文件。** Three-file 是 backend，不是默认身份。
+- **把运行时状态写到仓库根。** 使用 `.harness/`，不要创建 root `task_plan.md` / `progress.md` / `findings.md`。
 - **把 plan 写进 `docs/prd/`。** Do not write plans to `docs/prd/` unless the current user explicitly names that exact path or `AGENTS.md` declares it as the canonical Plan surface.
 - **多个阶段同时 in_progress。** 这会让 active slice 失效。
 - **写成愿望清单。** 每个 item 必须可执行、可验证、可恢复。
@@ -207,7 +207,7 @@ Use this as a routing recommendation, not as permission to keep working after pl
 - [ ] 若 verification path blocked，已转 `harness-builder` 或记录用户接受的 fallback evidence。
 - [ ] 恰好一个当前 item 是 in-progress 或 next。
 - [ ] 没有默认创建第二套 recovery surface。
-- [ ] 如使用 three-file backend，模板取自 `templates/`。
+- [ ] 如项目使用 tracked recovery，`.harness/work_index.md` 与 `state.md` 已同步。
 - [ ] 每个阶段含 acceptance_criteria、verification_commands 和 success_definition。
 - [ ] 多阶段计划定义了 commit unit 及其提交前置条件。
 - [ ] 已显式给出下一步 skill，且除非用户要求继续，否则停在计划边界。
@@ -215,14 +215,11 @@ Use this as a routing recommendation, not as permission to keep working after pl
 ## 工件更新
 
 - selected planning surface：本次重点产物；默认是 `docs/plans/YYYY-MM-DD--<topic>-plan.md`。
-- three-file backend：只有选中时更新 `task_plan.md`、`progress.md`、`findings.md`。
-- `AGENTS.md`：不动；如需项目地图、验证入口或恢复指针，交给 `harness-builder` 或 `cleanup` 小幅同步。
+- `.harness/`：tracked 任务时同步 `work_index.md`、`state.md`；证据 → `progress.md`；决策 → `decisions.md`。
+- `AGENTS.md`：不动；项目地图或 recovery 结构缺口交给 `harness-builder` 或 `cleanup`。
 
 ## 按需读取
 
-- `templates/README.md`：three-file 模板来源、许可证、本地改造说明。
-- `templates/task_plan.md`：英文/default three-file Plan 模板，仅在 three-file backend 被选择时使用。
-- `templates/task_plan.zh-CN.md`：中文 three-file Plan 模板，仅在 three-file backend 被选择且用户为中文时使用。
-- `templates/progress.md`、`templates/findings.md`：英文/default three-file 状态模板，仅在 three-file backend 被选择时使用。
-- `templates/progress.zh-CN.md`、`templates/findings.zh-CN.md`：中文 three-file 状态模板，仅在 three-file backend 被选择且用户为中文时使用。
-- 工作面初始化或 recovery surface 选择：`../harness-builder/SKILL.md`
+- `.harness/` 字段与布局：`../harness-builder/references/recovery_surface_policy.md`
+- 工作面初始化：`../harness-builder/SKILL.md`
+- `templates/` 下的 legacy plan 模板仅用于迁移参考；新工作使用 `../harness-builder/templates/`。

@@ -1,0 +1,11 @@
+{% set lang_norm = (target_language | default(user_language | default('en')) | string | lower) %}
+{% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
+# {{ '工作索引（Work Index）' if zh else 'Work Index' }}
+
+{{ '任务注册表（T3，Required）。`AGENTS.md` 只指向本文件。' if zh else 'Task registry (T3, Required). `AGENTS.md` points here only.' }}
+
+| ID | Title | Status | Primary artifact | Last verified |
+| --- | --- | --- | --- | --- |
+| example | Example | complete | `docs/plans/YYYY-MM-DD--example-plan.md` | YYYY-MM-DD |
+
+Status: `active`, `blocked`, `complete`, `abandoned` — only one `active` unless parallelism is declared.

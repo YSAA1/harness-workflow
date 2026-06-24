@@ -11,7 +11,7 @@
 | Harness Recommendation Matrix | `harness-builder` 的统一推荐表，把入口、文档、恢复、验证、架构边界、反漂移、skills、hooks、MCP、subagents、plugins、commands、CI/headless automation、external research 和动态状态放在同一张 Required / Recommended / Deferred / Rejected 表里 |
 | Spec | `brainstorm` 的独立产物，说明要建什么、为什么、如何证明 |
 | Executable Plan | `plan` 的产物，说明 active slice、non-goals、success criteria、verification path、verification path status、required capabilities、fallback evidence、final integration claim 和 next actions |
-| Recovery surface | 让未来 agent 恢复工作的项目工件，可以是 none、lightweight、three-file、feature-list 或 existing system |
+| Recovery surface | 让未来 agent 恢复工作的项目工件：none、lightweight、`.harness/`（harness）、feature-list 或 existing system |
 | Knowledge Cleanup | `cleanup` 的目标：防止 docs、生成物、AGENTS.md 和 recovery surface 漂移 |
 | Capability Recommendation | 为当前任务搜索并评估 skills、MCP、hooks、subagents、plugins、commands、CI/headless automation 或外部 agent 能力 |
 | Capability Recommendation Table | Capability Recommendation 中的紧凑证据绑定推荐表：priority/type/candidate -> repo signal -> why/value -> install surface -> approval needed -> fallback -> verification probe -> classification；source/freshness/trust/risk 只在影响决策时展开 |
@@ -31,13 +31,13 @@ Agent 质量来自项目周围的系统：入口、规则、上下文、验证�
 
 ## C2 Repository As Truth
 
-仓库工件是真相，聊天记录不是唯一事实来源。非平凡工作应能从 Spec、Executable Plan、docs、issue、three-file backend 或其他 selected recovery surface 恢复。
+仓库工件是真相，聊天记录不是唯一事实来源。非平凡工作应能从 Spec、Executable Plan、`.harness/`、docs、issue 或其他 selected recovery surface 恢复。
 
 要求：
 
 - 当前目标、范围、证据和风险必须能从仓库或项目系统中恢复。
 - 不把临时 active slice 写进 `AGENTS.md`。
-- Three-file backend 可用，但不是唯一恢复面。
+- 运行时 recovery 统一在 `.harness/`；`recovery_policy.md` 与 `work_index.md` 在 recovery ≠ `none` 时 Required。
 
 主要 skill：all skills。
 

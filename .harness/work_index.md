@@ -1,0 +1,15 @@
+# Work Index
+
+任务注册表（T3）。`AGENTS.md` 只指向本文件，不指向具体任务 artifact。同一时刻只能有一个 `active` 行。
+
+| ID | 标题 | Status | Primary artifact | Last verified |
+| --- | --- | --- | --- | --- |
+| 001 | brainstorm / harness-builder 文档纪律与 `.harness/` 统一 | active | （本 batch；见 `.harness/state.md`） | 2026-06-24 |
+
+Status values: `active`, `blocked`, `complete`, `abandoned`
+
+## 维护规则
+
+- 新任务：新增行，将旧 `active` 改为 `complete` / `blocked` / `abandoned`
+- 不要删除历史行
+- 会话启动先读本表，再打开 `active` 行的 primary artifact

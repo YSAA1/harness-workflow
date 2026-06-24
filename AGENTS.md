@@ -12,6 +12,7 @@
 - `.cursor-plugin/`: Cursor plugin metadata。
 - `.cursor/rules/`: Cursor project-preview rules。
 - `.cursor/skills/`: Cursor project-preview skills，必须和根目录 `skills/` 保持一致。
+- `.harness/`: 运行时 recovery（Recovery Policy、Work Index、state、progress、decisions）。
 - `rules/`: Cursor project rules 原始编辑面，由 adapter 同步到 `.cursor/rules/`。
 - `README.md`: 用户入口，说明 workflow 分层、使用场景和验证命令。
 - `CONTEXT.md`: 术语和边界澄清。
@@ -48,30 +49,43 @@
 
 - 这是 plugin 仓库；所有改动必须保持 `.codex-plugin/plugin.json`、`README.md`、`docs/harness-method-contract.md` 和 `skills/*/SKILL.md` 之间语义一致。
 - Active workflow skills 只有 `harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`verify`、`cleanup`；`find-skills` 是辅助 skill，不是第九条 workflow lane。
-- `AGENTS.md` 只做薄入口；临时计划、会话摘要、active slice 和一次性结论不要写进这里。
-- Workflow skills 依赖 selected recovery surface 的语义字段，不要把所有任务强绑死到三文件。
+- `AGENTS.md` 只做薄入口（T1）；临时计划、会话摘要、active slice 和当前任务 plan/Spec 路径不要写进这里。
+- 运行时 recovery 统一在 `.harness/`；不要在仓库根创建 `task_plan.md`、`progress.md`、`findings.md`。
 - `harness-builder` 是 canonical 项目 harness skill；"bootstrap" 只能作为历史别名或触发词出现。
-- Three-file backend 仍可作为可选 recovery surface，但不是所有 skill 的概念依赖。
 - 每个 `SKILL.md` 必须保留 YAML frontmatter，并让 `name` 与目录名匹配。
 - 没有 fresh verification，不声明插件结构、流程图或方法论覆盖已经可用。
 - 关键里程碑必须使用 Git commit，commit 信息使用中文，清晰简洁。
 
-## Workflow State
+## 恢复面（Recovery surface）
 
-本仓库维护自身时，默认使用 lightweight state：简单改动可直接以用户请求和 Git diff 为准；跨多步、跨会话或高风险改动再选择 three-file backend 或其他 durable recovery surface。
+Selected recovery surface: `harness`（`.harness/` 目录）
 
-若当前任务进入 tracked workflow：
+会话入口 — 按顺序读取：
 
-- active slice 和 success criteria 写入选定 planning surface。
-- 命令证据追加到选定 evidence log。
-- 设计决策、拒绝方案、风险和 root cause 写入选定 decision/risk artifact。
+1. 本文件（`AGENTS.md`）— T1 durable rules only
+2. `.harness/recovery_policy.md`
+3. `.harness/work_index.md` → 打开 `active` 行的 primary artifact
+4. `.harness/state.md`
 
-不要在仓库根部并行创建第二套恢复面。
+不要在 `AGENTS.md` 里写当前任务名或某个 plan/Spec 路径。新任务只更新 Work Index。
+
+## 真相源优先级（Source-of-truth priority）
+
+| Tier | 内容 |
+| --- | --- |
+| T1 | `AGENTS.md` — 地图、铁律、验证、本表 |
+| T2 | `CONTEXT.md`、`docs/adr/` |
+| T3 | `.harness/work_index.md` |
+| T4 | 当前 Spec / Plan（`docs/specs/`、`docs/plans/`）、`.harness/state.md` |
+| T5 | 命令输出、CI、git log |
+| T6 | `docs/skill-flow-review/*.html` 等生成物 |
+
+冲突时：fresh evidence (T5) > active work (T4) > Work Index (T3) > domain (T2) > entry (T1)。
 
 ## Required Reading By Task Type
 
 - 修改 skill 行为：先读对应 `skills/<skill>/SKILL.md`，再按需读同目录 `references/`。
-- 修改 harness builder：先读 `skills/harness-builder/SKILL.md`，再读相关 `skills/harness-builder/references/*.md`。
+- 修改 harness builder：先读 `skills/harness-builder/SKILL.md`，再读 `references/recovery_policy.md`、`source_of_truth_tiers.md`、`living_docs_discipline.md`。
 - 修改 recovery surface 语义：读 `skills/harness-builder/references/recovery_surface_policy.md`。
 - 修改验证、ready 或 evidence 规则：读 `skills/verify/SKILL.md`、`skills/review/SKILL.md` 和 `docs/harness-method-contract.md`。
 - 修改生成的 HTML：优先改 `scripts/generate-skill-flow-html.mjs`，再重新生成 `docs/skill-flow-review/*.html`。
@@ -105,7 +119,7 @@ node scripts/check-plugin.mjs
 
 ## Definition of Done
 
-- 改动范围能对应用户请求或当前 active slice。
+- 改动范围能对应用户请求或当前 active slice（见 `.harness/state.md`）。
 - 相关文档、manifest、脚本和生成物保持一致。
 - 已运行最窄有意义验证，或明确说明无法验证的原因。
 - `git status` 已检查，未混入无关改动。

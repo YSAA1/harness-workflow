@@ -10,7 +10,7 @@ _Avoid_: bootstrap as the canonical name; keep "bootstrap" only as a historical 
 
 **Skill Independence**:
 The design rule that each workflow skill can run for its own activity without requiring a fixed global sequence or a particular state backend.
-_Avoid_: making Harness Builder, planning, or three-file state a universal prerequisite.
+_Avoid_: making Harness Builder, planning, or `.harness/` recovery a universal prerequisite.
 
 **Capability Recommendation**:
 The Harness Builder activity that searches for task-relevant skills, MCP servers, hooks, subagents, plugins, commands, CI/headless automation, or external agent capabilities before recommending project-level installation.
@@ -37,12 +37,32 @@ The rule that failed code may be discarded only after failed knowledge is preser
 _Avoid_: both extremes: keeping every failed patch until the codebase rots, or deleting failed attempts without evidence.
 
 **Recovery Surface**:
-The durable project-local artifacts that let a future agent resume work without relying on chat history.
-_Avoid_: three files as a synonym, because three-file state is only one possible implementation.
+The durable project-local artifacts that let a future agent resume work without relying on chat history. Canonical runtime layout is `.harness/` (`recovery_policy.md`, `work_index.md`, `state.md`, `progress.md`, `decisions.md`).
+_Avoid_: root-level `task_plan.md` / `progress.md` / `findings.md` or calling legacy layouts "three-file backend".
 
 **Recovery Policy**:
-The project rule that tells agents how to reconstruct context from the recovery surface at session start or after interruption.
-_Avoid_: requiring a dedicated resume skill when AGENTS.md and living project documents already define recovery.
+The session entry contract in `.harness/recovery_policy.md`: read order, field map, update triggers.
+_Avoid_: storing current task state in `AGENTS.md`.
+
+**Work Index**:
+The T3 task registry at `.harness/work_index.md`. **Required** when recovery ≠ `none`. Exactly one `active` row unless parallel actives are declared.
+_Avoid_: pointing `AGENTS.md` at one task's plan when the repo has multiple tasks.
+
+**Source-of-Truth Tiers**:
+T1–T6 classification (entry, domain, index, active work, evidence, generated) for conflict resolution.
+_Avoid_: treating whichever file was edited last as authoritative.
+
+**Design Grill**:
+Phase A2 of `brainstorm`: design-tree questioning with concrete scenarios after the coverage matrix gate. **Mandatory for non-trivial work.**
+_Avoid_: treating eight-dimension coverage as sufficient design stress-testing.
+
+**Living Docs Discipline**:
+When each doc class must update during workflow execution so `.harness/` stays a live index.
+_Avoid_: write-once harness docs that drift within a single task.
+
+**Harness Directory**:
+The unified `.harness/` implementation of runtime recovery. Executable Plans stay in `docs/plans/`; `.harness/` holds active slice, evidence, and decisions during execution.
+_Avoid_: duplicating the full plan inside `state.md` or creating parallel root-level state files.
 
 **Knowledge Cleanup**:
 The end-of-work activity that reconciles code, README, AGENTS.md, docs, generated artifacts, and recovery surface so project knowledge does not rot.
@@ -61,43 +81,47 @@ A focused reusable agent workflow that owns one activity such as brainstorming, 
 _Avoid_: making every workflow skill responsible for choosing project state storage.
 
 **Workflow State Backend**:
-The chosen storage shape for execution contracts, evidence, decisions, risks, blockers, and next actions.
-_Avoid_: assuming the backend must be `task_plan.md`, `progress.md`, and `findings.md`.
+The chosen storage shape for execution contracts, evidence, decisions, risks, blockers, and next actions during tracked work.
+_Avoid_: root-level legacy files; prefer `.harness/`.
 
 **Executable Plan**:
-A planning artifact that turns a clear goal or approved spec into ordered work, success criteria, verification path, and handoff guidance.
-_Avoid_: equating a plan with the three-file backend.
+A planning artifact that turns a clear goal or approved spec into ordered work, success criteria, verification path, and handoff guidance. Defaults to `docs/plans/`.
+_Avoid_: equating a plan with `.harness/state.md`.
 
 **Spec**:
 A user-approved description of the problem, goals, non-goals, behavior, constraints, verification strategy, and plan handoff.
-_Avoid_: storing the full spec inside workflow state logs.
-
-**Three-File Backend**:
-A workflow state backend implemented with `task_plan.md`, `progress.md`, and `findings.md`.
-_Avoid_: treating it as the default dependency of every skill.
+_Avoid_: storing the full spec inside `.harness/progress.md`.
 
 ## Relationships
 
-- A **Harness Builder** selects or repairs the **Recovery Surface** for a project.
-- A **Harness Builder** defines the **Recovery Policy** for a project.
+- A **Harness Builder** selects or repairs the **Recovery Surface** and installs `.harness/recovery_policy.md` plus `.harness/work_index.md` when recovery ≠ `none`.
+- A **Harness Builder** declares **Source-of-Truth Tiers** in `AGENTS.md` (T1); current task pointers live in T3/T4 only.
 - A **Harness Builder** performs **Capability Recommendation** with `$find-skills` and targeted web research when the current task may benefit from reusable skills, MCP servers, hooks, subagents, plugins, commands, CI/headless automation, or agent tooling.
-- A **Capability Recommendation Table** only includes candidates bound to **Harness Recommendation Matrix** gaps; recommendation requests stay read-only until `USER CHECKPOINT`.
 - A **Harness Builder** may create a **Research Route** harness when the user explicitly asks for autoresearch or research exploration and the research contract is clear.
 - A **Research Route** uses an **Evidence Loop** only after goal, hypothesis, baseline, metric, verification, guardrails, budget, and stop rule are defined.
 - A **Research Reset Policy** preserves negative evidence before failed code is removed from the active branch or worktree.
-- A **Recovery Surface** may use a **Three-File Backend**, `.harness/*`, an issue tracker, a feature list, or an existing project status system.
-- A **Workflow Skill** reads and writes through the **Workflow State Backend** only when its own activity requires durable state.
-- A `brainstorm` workflow produces a **Spec**, defaulting to `docs/specs/YYYY-MM-DD--<topic>.md`, and does not default to writing workflow state.
-- An **Executable Plan** defaults to `docs/plans/YYYY-MM-DD--<topic>-plan.md`; it can use an issue, feature-list entry, existing system, or **Three-File Backend** contract only when that surface is explicitly selected.
-- The **Three-File Backend** is an implementation option, not the conceptual contract for all workflow skills.
+- A `brainstorm` workflow runs **Design Grill** (Phase A2) after the coverage matrix gate for non-trivial work.
+- A `brainstorm` workflow produces a **Spec**, defaulting to `docs/specs/YYYY-MM-DD--<topic>.md`, and does not default to writing `.harness/` runtime state.
+- A **Recovery Surface** uses **Harness Directory** (`.harness/`), an issue tracker, a feature list, or an existing project status system — not root-level legacy state files.
+- A **Workflow Skill** reads and writes through `.harness/` or other selected backend only when its activity requires durable state.
+- An **Executable Plan** defaults to `docs/plans/YYYY-MM-DD--<topic>-plan.md`; runtime slice/evidence syncs to `.harness/` when tracked.
 - **Skill Independence** means **Harness Builder** is invoked when project-level workbench or recovery design is needed, not because it occupies a mandatory position before or after `brainstorm` or `plan`.
 - `cleanup` performs **Knowledge Cleanup** against the current project, with special attention to stale docs, bloated AGENTS.md, missing reader-facing docs, and contradictions between code and documentation.
 - **Review**, **Verification**, and **Knowledge Cleanup** are separate gates: review judges correctness and risk, verification proves behavior with fresh evidence, and cleanup reconciles knowledge artifacts.
 
 ## Example Dialogue
 
-> **Dev:** "Should `verify` refuse to run if `task_plan.md` is missing?"
-> **Domain expert:** "No. `verify` should verify a claim using available evidence. If durable state is needed but missing, that is a **Recovery Surface** gap for **Harness Builder**, not a reason for `verify` to depend on the **Three-File Backend**."
+> **Dev:** "Should `AGENTS.md` link to the current plan?"
+> **Domain expert:** "No. T1 points to `.harness/work_index.md`. The active plan is T4, linked from the `active` row."
+
+> **Dev:** "Where does runtime recovery live?"
+> **Domain expert:** "Under `.harness/`: `recovery_policy.md`, `work_index.md`, `state.md`, `progress.md`, `decisions.md`. Not root-level legacy files."
+
+> **Dev:** "Should `verify` refuse to run if `.harness/state.md` is missing?"
+> **Domain expert:** "No. `verify` uses available evidence. Missing `.harness/` when tracked work needs it is a **Harness Builder** gap."
+
+> **Dev:** "Is coverage matrix completion enough before drafting a Spec?"
+> **Domain expert:** "No. **Design Grill** (Phase A2) is mandatory for non-trivial work after the matrix gate."
 
 > **Dev:** "Should every new task run **Harness Builder** before `plan`?"
 > **Domain expert:** "No. Use **Harness Builder** when the project workbench or **Recovery Surface** is unclear. If the task already has enough context, `brainstorm`, `plan`, or another **Workflow Skill** can run independently."
@@ -114,10 +138,10 @@ _Avoid_: treating it as the default dependency of every skill.
 > **Dev:** "Is `git reset --hard` always wrong after a failed research attempt?"
 > **Domain expert:** "No. A failed patch can be reset inside an approved research branch or worktree after the failure evidence is recorded. It is wrong when it erases user work or deletes the only record of why the attempt failed."
 
-> **Dev:** "Does `plan` always create `task_plan.md`, `progress.md`, and `findings.md`?"
-> **Domain expert:** "No. `plan` creates an **Executable Plan**. It writes the **Three-File Backend** only when the project has selected that backend."
+> **Dev:** "Does `plan` write Executable Plans into `.harness/state.md`?"
+> **Domain expert:** "Plans default to `docs/plans/`. `.harness/state.md` holds the hot runtime index; sync active slice and next there during tracked execution."
 
-> **Dev:** "Should `brainstorm` append a summary to `findings.md`?"
+> **Dev:** "Should `brainstorm` append a summary to `.harness/decisions.md`?"
 > **Domain expert:** "Only if the selected **Recovery Surface** asks for that. The core output of `brainstorm` is a **Spec**."
 
 > **Dev:** "Do we need separate `resume` and `save-session` skills?"

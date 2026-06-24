@@ -21,7 +21,8 @@ Default a project-local capability supplement (skill, hook, subagent, MCP) to `R
 | --- | --- | --- |
 | Agent entry and project map | Can a fresh agent find the project shape and first files to read? | `AGENTS.md`, `CLAUDE.md`, `ARCHITECTURE.md`, `docs/agent/project_context.md` |
 | Static docs and durable rules | Are stable rules separated from current task state? | docs, golden-principle notes, local `AGENTS.md` |
-| Recovery surface | Can future agents recover objective, active slice, evidence, decisions, risks, and next actions? | `.harness/state.md`, three-file backend, issue tracker, existing system |
+| Recovery surface | Can future agents recover objective, active slice, evidence, decisions, risks, and next actions? | `.harness/state.md`, `.harness/progress.md`, `.harness/decisions.md`, issue tracker, existing system |
+| Recovery policy and work index | Is session entry explicit? Can agents find the current active task without stale `AGENTS.md` pointers? | `.harness/recovery_policy.md`, `.harness/work_index.md` (**Required** when recovery ≠ `none`) |
 | Verification entry | Is there a fast safe check and a deeper proof path? | `scripts/agent/check.sh`, test/lint/typecheck/smoke docs, CI |
 | Architecture boundaries | Are dependency rules discoverable and enforceable when needed? | `docs/architecture/LAYERS.md`, boundary test, linter import rule, known-violations baseline |
 | Anti-entropy | Can drift be detected without manual rediscovery? | read-only GC scan, doc drift check, stale state check, cleanup checklist |
