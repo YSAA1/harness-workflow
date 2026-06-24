@@ -9,7 +9,7 @@
 ## 2026-06-24 — harness-builder slimming review fix
 
 - 用户担忧：`harness-builder` 默认流程太沉，legacy root three-file 模板仍可能误导 agent，`.harness` 运行时纪律需要更硬。
-- 改动：`skills/harness-builder/SKILL.md` 增加 Quick repair / Full recommendation 分流；`recommendation_matrix_policy.md` 限制 Quick repair 默认矩阵行；`plan/SKILL.md` 和 `skills/plan/templates/` 将 root three-file 降级为 legacy migration reference。
+- 改动：`skills/harness-builder/SKILL.md` 增加 Quick repair / Full recommendation 分流；`recommendation_matrix_policy.md` 限制 Quick repair 默认矩阵行；`plan/SKILL.md` 将 root three-file 降级为迁移输入。
 - 同步：`plugins/harness-workflow/skills/`、`.cursor/skills/`、`docs/skill-flow-review/*.html` 已同步。
 - 验证：
   - `node scripts/generate-skill-flow-html.mjs` -> PASS，生成 9 个 HTML 文件
@@ -29,3 +29,9 @@
   - `node scripts/install-cursor.mjs --target . --dry-run` -> PASS
   - `bash scripts/agent/check.sh` -> PASS
   - targeted `rg` for stale `.harness sync` planning surface / default three-file / stale `findings.md` fallback -> only explicit prohibition or historical decision entries remain
+
+## 2026-06-24 — remove legacy plan templates
+
+- 用户要求：没用的 legacy root three-file plan templates 直接删除，保持清爽。
+- 改动：删除 `skills/plan/templates/*`、`plugins/harness-workflow/skills/plan/templates/*`、`.cursor/skills/plan/templates/*`；`scripts/check-plugin.mjs` 改为验证这些 legacy templates 不存在。
+- 文档同步：`plan/SKILL.md`、`docs/harness-method-contract.md`、`docs/tutorials/zhihu-harness-workflow-guide.md` 改为说明旧 root 三文件只作为迁移输入，不再提供模板。

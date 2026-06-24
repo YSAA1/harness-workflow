@@ -230,13 +230,6 @@ if (!process.exitCode) pass("README exposes the Codex install entry");
 const templateFiles = [
   "skills/brainstorm/templates/spec.md",
   "skills/brainstorm/templates/spec.zh-CN.md",
-  "skills/plan/templates/task_plan.md",
-  "skills/plan/templates/task_plan.zh-CN.md",
-  "skills/plan/templates/progress.md",
-  "skills/plan/templates/progress.zh-CN.md",
-  "skills/plan/templates/findings.md",
-  "skills/plan/templates/findings.zh-CN.md",
-  "skills/plan/templates/README.md",
   "skills/harness-builder/templates/research_route/research_plan.md.j2",
   "skills/harness-builder/templates/research_route/evidence_log.md.j2",
   "skills/harness-builder/templates/research_route/iteration_protocol.md.j2",
@@ -245,7 +238,21 @@ const templateFiles = [
 for (const file of templateFiles) {
   if (!exists(file)) fail(`missing template ${file}`);
 }
-if (templateFiles.every(exists)) pass("planning and research-route templates are preserved");
+if (templateFiles.every(exists)) pass("spec and research-route templates are preserved");
+
+const removedPlanTemplates = [
+  "skills/plan/templates/task_plan.md",
+  "skills/plan/templates/task_plan.zh-CN.md",
+  "skills/plan/templates/progress.md",
+  "skills/plan/templates/progress.zh-CN.md",
+  "skills/plan/templates/findings.md",
+  "skills/plan/templates/findings.zh-CN.md",
+  "skills/plan/templates/README.md",
+];
+for (const file of removedPlanTemplates) {
+  if (exists(file)) fail(`removed legacy plan template still present: ${file}`);
+}
+if (removedPlanTemplates.every((file) => !exists(file))) pass("legacy plan templates are absent");
 
 const languageAdaptiveSkills = ["brainstorm", "plan", "harness-builder"];
 for (const skill of languageAdaptiveSkills) {
@@ -310,63 +317,6 @@ for (const forbidden of [
 ]) {
   if (clarificationCoverage.includes(forbidden)) {
     fail(`brainstorm clarification coverage still has English-first output token: ${forbidden}`);
-  }
-}
-
-const planTaskTemplate = read("skills/plan/templates/task_plan.md");
-const planZhTaskTemplate = read("skills/plan/templates/task_plan.zh-CN.md");
-for (const token of [
-  "## Objective",
-  "## Scope Contract",
-  "- Active slice:",
-  "- Non-goals:",
-  "- Success criteria:",
-  "- Verification path status: `runnable | blocked`",
-  "Acceptance criteria:",
-  "Verification commands:",
-  "Success definition:",
-]) {
-  if (!planTaskTemplate.includes(token)) fail(`plan default task template missing English/default token: ${token}`);
-}
-for (const token of [
-  "当前切片（Active slice）",
-  "非目标（Non-goals）",
-  "成功标准（Success criteria）",
-  "验证路径状态（Verification path status）",
-  "验收标准（acceptance_criteria）",
-  "验证命令（verification_commands）",
-  "成功定义（success_definition）",
-]) {
-  if (!planZhTaskTemplate.includes(token)) fail(`plan zh-CN task template missing bilingual field token: ${token}`);
-}
-for (const forbidden of ["当前切片（Active slice）", "非目标（Non-goals）", "验收标准（acceptance_criteria）"]) {
-  if (planTaskTemplate.includes(forbidden)) fail(`plan default task template should not force Chinese field: ${forbidden}`);
-}
-for (const forbidden of ["- Non-goals：", "Acceptance criteria：", "Verification commands：", "Success definition："]) {
-  if (planZhTaskTemplate.includes(forbidden)) fail(`plan zh-CN task template still has English-first field: ${forbidden}`);
-}
-const planProgressTemplate = read("skills/plan/templates/progress.md");
-const planZhProgressTemplate = read("skills/plan/templates/progress.zh-CN.md");
-const planFindingsTemplate = read("skills/plan/templates/findings.md");
-const planZhFindingsTemplate = read("skills/plan/templates/findings.zh-CN.md");
-for (const token of ["# Progress Log", "## Milestone Commits", "## Test Results", "## Five-Question Recovery Check"]) {
-  if (!planProgressTemplate.includes(token)) fail(`plan default progress template missing English/default token: ${token}`);
-}
-for (const token of ["# 进度日志", "## 里程碑提交记录", "## 测试结果", "## 五问恢复检查"]) {
-  if (!planZhProgressTemplate.includes(token)) fail(`plan zh-CN progress template missing Chinese token: ${token}`);
-}
-for (const token of ["# Findings And Decisions", "## Requirements", "## Accepted Spec", "## Rejected Options / Dead Ends"]) {
-  if (!planFindingsTemplate.includes(token)) fail(`plan default findings template missing English/default token: ${token}`);
-}
-for (const token of ["# 发现与决策", "## 需求", "## 已接受规格", "## 拒绝选项 / 死路"]) {
-  if (!planZhFindingsTemplate.includes(token)) fail(`plan zh-CN findings template missing Chinese token: ${token}`);
-}
-for (const [label, source] of [
-  ["progress", planProgressTemplate],
-  ["findings", planFindingsTemplate],
-]) {
-  for (const forbidden of ["# 进度日志", "# 发现与决策", "## 需求", "## 测试结果"]) {
-    if (source.includes(forbidden)) fail(`plan default ${label} template should not force Chinese token: ${forbidden}`);
   }
 }
 

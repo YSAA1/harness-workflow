@@ -8,7 +8,7 @@
 
 ## Active slice
 
-修复用户审阅担忧：`harness-builder` 默认 Quick repair / Full recommendation 分流；legacy root three-file 模板降级为迁移参考；三端 skills、Cursor 面和 skill-flow 生成物同步。
+修复用户审阅担忧：`harness-builder` 默认 Quick repair / Full recommendation 分流；删除 legacy root three-file plan 模板；三端 skills、Cursor 面和 skill-flow 生成物同步。
 
 ## Current phase
 
@@ -37,5 +37,5 @@ bash scripts/agent/check.sh
 
 ## Risks
 
-- `skills/plan/templates/` 仍保留 legacy root three-file 内容，但已标记为 migration reference；不作为新工作入口
+- legacy root three-file plan 模板已删除；遇到旧 root `task_plan.md` / `progress.md` / `findings.md` 时只迁移或归档
 - 历史 docs/plans / docs/prd 仍含 three-file 用语（冷档案，不阻塞当前 slice）

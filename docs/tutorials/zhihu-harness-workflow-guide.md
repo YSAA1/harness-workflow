@@ -105,7 +105,7 @@ $brainstorm 我想给这个仓库加一个更稳的上下文恢复机制，先�
 $plan 基于 docs/specs/2026-05-13--agent-recovery.md 写一个可执行计划。
 ```
 
-一个关键点：`plan` 默认写到 `docs/plans/YYYY-MM-DD--<topic>-plan.md`，不强行创建 `task_plan.md`、`progress.md`、`findings.md`。运行时恢复默认走 `.harness/`，也可以复用 issue、feature list 或项目已有系统；root 三文件只作为旧项目迁移参考。
+一个关键点：`plan` 默认写到 `docs/plans/YYYY-MM-DD--<topic>-plan.md`，不强行创建 `task_plan.md`、`progress.md`、`findings.md`。运行时恢复默认走 `.harness/`，也可以复用 issue、feature list 或项目已有系统；遇到旧 root 三文件时只迁移或归档，不再提供模板。
 
 ### 3. `harness-builder`：给项目搭工作台
 

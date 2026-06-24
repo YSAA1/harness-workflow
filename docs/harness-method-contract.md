@@ -156,7 +156,7 @@ Backend options：
 - `feature-list`
 - `existing`
 
-Legacy root `task_plan.md` / `progress.md` / `findings.md` files are migration input only. New runtime recovery lives under `.harness/`; Executable Plans live under `docs/plans/`.
+Legacy root `task_plan.md` / `progress.md` / `findings.md` files are migration input only and are no longer bundled as templates. New runtime recovery lives under `.harness/`; Executable Plans live under `docs/plans/`.
 
 主要 skill：`harness-builder`、all skills。
 

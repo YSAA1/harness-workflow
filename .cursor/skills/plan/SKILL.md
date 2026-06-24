@@ -13,7 +13,7 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 
 - 用户可见文本跟随用户语言；中文用户场景下，计划说明、阶段标题、验收说明、风险和下一步默认使用中文。
 - 协议稳定优先：协议 token 如 `EXECUTABLE PLAN WRITTEN`、`Executable Plan`、`Verification path status`、`runnable | blocked`、`final_integration_claim`、skill 名、路径和命令可保留英文，必要时使用中文标签 + 英文 token。
-- 不把 Plan 模板硬编码为中文-only；新工作默认写 `docs/plans/YYYY-MM-DD--<topic>-plan.md`。`templates/task_plan*.md` 是 legacy migration reference，不是默认输出模板。
+- 不把 Plan 模板硬编码为中文-only；新工作默认写 `docs/plans/YYYY-MM-DD--<topic>-plan.md`。不要创建或依赖 root `task_plan.md` / `progress.md` / `findings.md`。
 - 输出契约中的 `<... label in user's language>` 是占位说明，实际回复时必须替换成用户语言标签，不要原样输出。
 
 ## 路由快照
@@ -222,4 +222,4 @@ Use this as a routing recommendation, not as permission to keep working after pl
 
 - `.harness/` 字段与布局：`../harness-builder/references/recovery_surface_policy.md`
 - 工作面初始化：`../harness-builder/SKILL.md`
-- `templates/` 下的 legacy plan 模板仅用于迁移参考；新 work 使用本 `SKILL.md` 的 Executable Plan 字段结构写入选定 planning surface。
+- 新 work 使用本 `SKILL.md` 的 Executable Plan 字段结构写入选定 planning surface；旧 root `task_plan.md` / `progress.md` / `findings.md` 只作为迁移输入读取，不再提供模板。
