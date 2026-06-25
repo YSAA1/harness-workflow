@@ -49,3 +49,21 @@
   - `node scripts/install-cursor.mjs --target . --dry-run` -> PASS
   - `bash scripts/agent/check.sh` -> PASS
   - targeted `rg` for Design Grill tokens -> root/package/Cursor surfaces all include stronger grill rules
+
+## 2026-06-25 — harness-builder check.sh 协议加固（防 fragile 断言）
+
+- 真实项目证据：`scripts/agent/check.sh` 退化成"历史快照断言机"，600+ 行硬编码 run_id、`289 passed, 2 warnings`、`author_800k=5.968893`、recovery surface 字段值字面镜像；用户已在项目本地修复成动态检查。
+- 协议根因：`verification_policy.md` 只约束 fast，没约束 stable-against-progress；`check.sh.j2` 只说 "Keep short"；`anti_entropy.md` 有 "must not mirror recovery state" 原则但没落到 check.sh 生成环节。
+- 改动：
+  - `skills/harness-builder/references/verification_policy.md` 新增 "Fragile check patterns" 段 + "Size budget" 段，明确禁止 run_id 字面值、测试计数、实验数值、recovery surface 字段值镜像、文件系统镜像式 required_files、长结论镜像；要求用 jq/python/awk 动态提取断言谓词。
+  - `skills/harness-builder/templates/check.sh.j2` 顶部注释加结构性禁令（7 条）。
+  - `skills/harness-builder/references/anti_entropy.md` 新增 "`check.sh` mirroring test" 段，把 no-mirror 原则落成 3 条可执行判定 + repair 指引。
+  - `scripts/check-plugin.mjs` 新增 3 组 token 断言：verification_policy 7 token、check.sh.j2 7 token、anti_entropy 3 token，防止约束被无声删掉。
+- 同步：`plugins/harness-workflow/skills/`、`.cursor/skills/` 已同步（用 `install` 而非 `cp`，因为当前 shell 的 `cp` 被覆盖成只 unset proxy 的空操作函数）。
+- 验证：
+  - `node scripts/generate-skill-flow-html.mjs` -> PASS，生成 9 个 HTML 文件
+  - `node scripts/check-plugin.mjs` -> PASS（含新 token 断言）
+  - `node scripts/check-claude-code-install.mjs` -> PASS
+  - `node scripts/check-cursor-install.mjs` -> PASS
+  - `node scripts/install-cursor.mjs --target . --dry-run` -> PASS
+  - `bash scripts/agent/check.sh` -> PASS

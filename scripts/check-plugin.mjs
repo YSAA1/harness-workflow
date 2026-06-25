@@ -442,6 +442,47 @@ if (exists(skillPath("harness-builder"))) {
   }
 }
 
+const verificationPolicy = exists("skills/harness-builder/references/verification_policy.md")
+  ? read("skills/harness-builder/references/verification_policy.md")
+  : "";
+for (const token of [
+  "Fragile check patterns",
+  "Run-id / timestamp literals",
+  "Test-count or pass-count literals",
+  "Experiment-value literals",
+  "Recovery-surface field-value mirroring",
+  "Filesystem-mirror `required_files` lists",
+  "Size budget",
+]) {
+  if (!verificationPolicy.includes(token)) fail(`verification_policy.md missing fragile-pattern token: ${token}`);
+}
+
+const checkShTemplate = exists("skills/harness-builder/templates/check.sh.j2")
+  ? read("skills/harness-builder/templates/check.sh.j2")
+  : "";
+for (const token of [
+  "Fragile-pattern禁令",
+  "run_id / timestamp 字面值",
+  "测试计数字面值",
+  "实验数值字面值",
+  "recovery surface 字段值",
+  "不要把全部源/测试文件塞进 required_files",
+  "动态提取并断言谓词",
+]) {
+  if (!checkShTemplate.includes(token)) fail(`check.sh.j2 missing fragile-pattern guard token: ${token}`);
+}
+
+const antiEntropy = exists("skills/harness-builder/references/anti_entropy.md")
+  ? read("skills/harness-builder/references/anti_entropy.md")
+  : "";
+for (const token of [
+  "`check.sh` mirroring test",
+  "violates the no-mirror rule",
+  "Repair: replace literal `grep -F` with dynamic extraction",
+]) {
+  if (!antiEntropy.includes(token)) fail(`anti_entropy.md missing check.sh mirroring test token: ${token}`);
+}
+
 const hotTarget = fs.mkdtempSync(path.join(os.tmpdir(), "harness-hot-target-"));
 try {
   fs.mkdirSync(path.join(hotTarget, "scripts/agent"), { recursive: true });

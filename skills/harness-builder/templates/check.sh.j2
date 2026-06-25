@@ -2,6 +2,15 @@
 set -euo pipefail
 
 # Fast project verification for agent work.
+#
 # Keep this command short. Do not run long training or deployment here.
+#
+# Fragile-pattern禁令 (see references/verification_policy.md):
+# - 不要 grep -F 硬编码 run_id / timestamp 字面值进 README/state/progress/plan。
+# - 不要 assert "N passed, M warnings" 这种测试计数字面值。
+# - 不要 assert 实验数值字面值 (e.g. author_800k=5.968893)。
+# - 不要 grep -F recovery surface 字段值 (active_slice / Primary artifact / Work Index row) 回 check.sh。
+# - 不要把全部源/测试文件塞进 required_files；只守 protected paths 和 harness 入口文件。
+# - 需要验证 recovery surface 结构属性时，用 jq/python/awk 动态提取并断言谓词，不要字面镜像。
 
 {{ check_commands }}
