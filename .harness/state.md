@@ -4,32 +4,31 @@
 
 ## Objective
 
-让 `plan` 产出的 Executable Plan 和 `harness-builder` 创建的计划/恢复类文档默认使用中文，并把计划进度表达改成可直接打勾的 Markdown checkbox 工作项。
+按 `$write-a-skill` 与 `$skill-creator` 原则瘦身 `plan` skill 的 `SKILL.md`，降低热路径 token 成本，同时保留 Executable Plan、默认中文、checkbox 工作项、验证路径和 recovery sync 契约。
 
 ## Active slice
 
-更新 `plan` 契约、`harness-builder` 模板、项目文档、checker 和当前 `.harness` recovery，让默认计划文件具备 `- [ ]` / `- [x]` 状态表达，并保持三套 skill 分发表面一致。
+将 `skills/plan/SKILL.md` 从 251 行压缩到约 150 行，保留性能关键的 Planning Surface、blocked verification、commit unit、反模式和 checkbox 契约，并同步 `plugins/harness-workflow/skills/plan` 与 `.cursor/skills/plan`，刷新 skill-flow HTML。
 
 ## Non-goals
 
-- 不恢复 legacy root `task_plan.md` / `progress.md` / `findings.md` 模板。
-- 不把协议 token、路径、命令、状态枚举或 skill 名全部翻译成中文。
-- 不修改 workflow lane 数量、recovery surface 语义或默认 plan 路径。
-- 不安装用户级配置、MCP、hooks 或外部插件。
+- 不改变 `plan` 的触发边界、默认 artifact 路径或 recovery surface 语义。
+- 不新增 reference 文件、脚本或模板。
+- 不恢复 legacy root three-file plan 模板。
+- 不改其他 workflow skills。
 
 ## Current phase
 
-verified and committed
+verified; pending commit
 
 ## Success criteria
 
-- `plan/SKILL.md` 明确要求 Executable Plan 使用 Markdown checkbox 工作项表达完成状态。
-- `harness-builder` 用户可见模板在未指定语言时默认中文，显式非中文仍可走英文/default 分支。
-- `state.md.j2` 的下一步默认是 checkbox 工作项，而不是单行普通文本。
-- `README.md`、`README.zh-CN.md` 和 `docs/harness-method-contract.md` 描述新的 checkbox plan 契约。
-- `scripts/check-plugin.mjs` 有静态回归检查覆盖 checkbox plan 契约、中文默认和三套 skill 同步。
-- 当前 `.harness/work_index.md` active 行指向本计划文件，`.harness/state.md` 的下一步是 checkbox 清单。
-- 默认结构验证和生成物检查通过。
+- `skills/plan/SKILL.md` 明显少于原 251 行，保留 YAML frontmatter、清晰 description 和 `## Recommended next skill`。
+- 保留 checker 需要的稳定 token：`Executable Plan`、`Verification path status`、`Required capabilities`、`Fallback evidence`、`final_integration_claim`、checkbox 工作项和 `Next skill`。
+- 保留默认中文、Planning Surface、`.harness` runtime sync、commit unit 和 plan boundary 规则。
+- 三套表面同步：root skills、packaged plugin、Cursor skills。
+- `docs/skill-flow-review/*.html` 由生成脚本刷新。
+- 默认结构验证通过。
 
 ## Verification path
 
@@ -45,13 +44,14 @@ git diff --check
 
 ## Next actions
 
-- [x] 确认现状和风险
-- [x] 更新核心契约和模板
-- [x] 更新 docs、checker 和当前 recovery
-- [x] 同步分发表面并刷新生成物
-- [x] 结构验证和收口
+- [x] 读取 `$write-a-skill` 与 `$skill-creator`
+- [x] 精简 `skills/plan/SKILL.md`
+- [x] 同步 packaged plugin 与 Cursor skill
+- [x] 刷新 skill-flow HTML
+- [x] 运行结构验证
+- [ ] commit
 
 ## Risks
 
-- checker 能证明契约在场，但不能完全证明未来 agent 每次都按 checkbox 写计划。
-- 默认中文不能变成中文-only；显式英文和其他非中文用户仍要可用。
+- 过度瘦身可能丢掉隐性执行纪律；已用 checker token 和结构验证覆盖核心契约。
+- 当前目标不是极限压缩；后续新增内容应优先替换冗余或拆 reference，避免再次回到 200+ 行。

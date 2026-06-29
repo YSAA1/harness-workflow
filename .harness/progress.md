@@ -18,6 +18,7 @@
   - `node scripts/check-cursor-install.mjs` -> PASS
   - `node scripts/install-cursor.mjs --target . --dry-run` -> PASS
   - `bash scripts/agent/check.sh` -> PASS
+  - `git diff --check` -> PASS
 - Review：已启动只读隔离 reviewer `019ef979-e693-7682-8b01-37c0899cac3c`，等待结果。
 - Review result：`CONDITIONAL`，Important findings 指向 `plan` 把 `.harness sync` 混成 Planning Surface，以及按需读取误指 `../harness-builder/templates/`；Minor finding 指向 Quick repair 矩阵范围两套说法。
 - Follow-up fixes：`plan/SKILL.md` 改为 Planning Surface 只包含 `docs plan | issue | feature-list | existing`，`.harness` 作为 runtime sync；按需读取改为使用本 `SKILL.md` 的 Executable Plan 字段结构；`recommendation_matrix_policy.md` 改为 Quick repair 省略 out-of-scope rows。
@@ -90,3 +91,19 @@
   - isolated reviewer attempt: `reviewer` subagent `019f110d-94d9-7c52-9f81-dff4c39fd697` -> timed out after 300000 ms and was closed
   - packet fallback self-review -> PASS，无 Critical / Important / Minor findings
 - Commit：final milestone commit，exact hash from `git log -1 --oneline`
+
+## 2026-06-29 — plan skill 主文件瘦身
+
+- 用户要求：使用 `$write-a-skill` 与 `$skill-creator` 优化 `plan` skill 的 `SKILL.md`，当前 200 多行过于冗余；随后补充要求不要极限瘦到 100 行以内，避免信息丢失影响 skill 性能。
+- 改动：
+  - `skills/plan/SKILL.md` 从 251 行压缩到 147 行。
+  - 保留核心契约和性能关键细节：Executable Plan、默认中文、Planning Surface、blocked verification 分流、checkbox 工作项、验证路径、fallback、`final_integration_claim`、commit unit、recovery sync、常见反模式和下一 skill 路由。
+  - 同步 `plugins/harness-workflow/skills/plan/SKILL.md` 与 `.cursor/skills/plan/SKILL.md`。
+  - 重新生成 `docs/skill-flow-review/index.html` 与 `docs/skill-flow-review/plan.html`。
+- 验证：
+  - `node scripts/generate-skill-flow-html.mjs` -> PASS
+  - `node scripts/check-plugin.mjs` -> PASS
+  - `node scripts/check-claude-code-install.mjs` -> PASS
+  - `node scripts/check-cursor-install.mjs` -> PASS
+  - `node scripts/install-cursor.mjs --target . --dry-run` -> PASS
+  - `bash scripts/agent/check.sh` -> PASS

@@ -140,27 +140,27 @@ pre {
   <div class="toolbar">
     <a class="button" href="../../skills/plan/SKILL.md">打开 SKILL.md</a>
     <span class="button">Executable Plan</span>
-    <span class="button">252 行</span>
+    <span class="button">148 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>这个 skill 解决&quot;计划只活在聊天里&quot;的问题，同时避免把所有项目强绑到同一种状态文件。 - agent 被压缩或新会话开启后，仍能从项目 artifact 恢复执行边界、checkbox 进度和证明方式。 - 多人/多 agent 协作时，能回答&quot;现在做到哪、下一步是什么&quot;。 - 范围不会在追加讨论中悄悄扩张。 - 验证能力在计划阶段暴露，避免做完后才发现无法证明。</p>
+    <p>- 把计划从聊天迁移到仓库 artifact，让压缩或新会话后仍能恢复边界、checkbox 进度和证明方式。 - 让多 agent / 多 session 能回答&quot;现在做到哪、下一步是什么、如何证明完成&quot;。 - 在计划阶段暴露验证能力、fallback 和 commit gate，避免做完后才发现无法证明。</p>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>进入条件</h2>
-      <ul><li>brainstorm 写出并经用户批准的 Spec，需要变成可执行计划。</li><li>用户给出明确请求且任务非平凡：多步、多文件、跨边界或需要验证。</li><li>既有 Executable Plan 过期：active slice 名不副实、blocker 已变、next 不可执行。</li><li>planning surface 中有真相但执行合同没同步。</li><li>用户说「写计划」「列阶段」「拆任务」「定义 active slice」「写 commit unit」。</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
     <div class="panel">
       <h2>禁用条件</h2>
-      <ul><li>需求、边界或验证策略仍模糊：先 brainstorm。</li><li>任务是单点改动，计划 artifact 反而是噪声。</li><li>既有 Executable Plan 仍真实、active slice 与 next 一致。</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
     <div class="panel">
       <h2>先读输入</h2>
-      <ul><li>已批准 Spec：默认从 docs/specs/ 或用户明确指定的 Spec 路径读取。PRD、issue、design docs 是上下文，不是默认 Spec source，除非当前用户或 AGENTS.md 明确指定。</li><li>当前 planning surface：默认使用 docs/plans/YYYY-MM-DD--&lt;topic&gt;-plan.md；只有当前用户明确指定路径，或 AGENTS.md 明确声明 canonical Plan surface 时，才允许 override。</li><li>AGENTS.md：是否声明 recovery surface、验证入口和 protected paths。</li><li>与请求直接相关的代码与 docs，确认 Spec 的可行性。</li><li>git status --short 与 git log --oneline -10：避免计划与已有改动相互踩。</li><li>任何用户附上的需求文档、讨论纪要、issue 链接。</li></ul>
+      <ul><li>Spec 或用户请求；PRD、issue、design docs 默认只是上下文。</li><li>AGENTS.md、当前 recovery surface、验证入口、protected paths、现有 planning surface。</li><li>相关代码/docs/config/tests、git status --short、近期 log、用户附上的需求文档。</li></ul>
     </div>
   </section>
 
@@ -169,10 +169,19 @@ pre {
     <div class="flow">
       <div class="step">
         <div class="num">1</div>
-        <div><h3>第 0 步 — 选择或确认 planning surface</h3><p>默认 planning artifact 是 docs/plans/YYYY-MM-DD--&lt;topic&gt;-plan.md。不要因为 issue、feature-list 或 .harness/ 存在就改写默认位置。Override 仅在当前用户明确指定路径，或 AGENTS.md 明确声明 canonical Plan surface 时允许。若 .harness/ 缺失且任务需要 tracked recovery，转 harness-builder。</p></div>
+        <div><h3>Readiness gate: 确认能回答做什么、不做什么、如何证明、验证路径是 runnable 还是 blocked；否则回 brainstorm。</h3><p></p></div>
       </div><div class="step">
         <div class="num">2</div>
-        <div><h3>第 1 步 — 写 Executable Plan</h3><p>计划必须包含： - Objective - Active slice - Non-goals - Success criteria - Verification path - Verification path status: runnable | blocked - Required capabilities</p></div>
+        <div><h3>Select surface: 优先 docs plan；issue、feature-list、existing system 只在用户指定或项目惯例明确时使用。不要把 .harness/ 当 Planning Surface。</h3><p></p></div>
+      </div><div class="step">
+        <div class="num">3</div>
+        <div><h3>Write plan: 写清 Objective、Active slice、Non-goals、Success criteria、Verification path、Verification path status、Required capabilities、Fallback evidence、Final integration claim、checkbox 工作项、Commit units、Known risks / blockers、Next skill。</h3><p></p></div>
+      </div><div class="step">
+        <div class="num">4</div>
+        <div><h3>Sync recovery: tracked work 更新 .harness/work_index.md active row 与 .harness/state.md；证据进 progress.md，决策进 decisions.md。</h3><p></p></div>
+      </div><div class="step">
+        <div class="num">5</div>
+        <div><h3>Stop: 除非用户明确要求继续，否则写完计划后停在 plan 边界。</h3><p>如果唯一有意义的 verification path 是 blocked，不要直接路由到 implement，除非同时写明用户接受的 fallback evidence；否则转 harness-builder 修复验证能力。</p></div>
       </div>
     </div>
   </section>
@@ -180,23 +189,23 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text EXECUTABLE PLAN WRITTEN &lt;Planning surface label in user's language&gt; / Planning surface: &lt;docs plan | issue | feature-list | existing&gt; &lt;Artifact label in user's language&gt; / Artifact: &lt;docs/plans/YYYY-MM-DD--topic-plan.md | explicit override | n/a&gt; &lt;Runtime recovery sync label in user's language&gt; / Runtime recovery sync: &lt;none | .harness | existing system&gt; &lt;Spec source label in user's language&gt; / Spec source: &lt;...</pre>
+      <pre>``text EXECUTABLE PLAN WRITTEN Planning surface: &lt;docs plan | issue | feature-list | existing&gt; Artifact: &lt;docs/plans/YYYY-MM-DD--topic-plan.md | explicit override | n/a&gt; Runtime recovery sync: &lt;none | .harness | existing system&gt; Spec source: &lt;path | explicit small-task exception&gt;; Active slice: &lt;一句话&gt; Success criteria: &lt;可证伪条件&gt;; Verification path status: &lt;runnable | blocked&gt; Required capabilities: &lt;list&gt;; Fallback evi...</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
-      <ul><li>selected planning surface：本次重点产物；默认是 docs/plans/YYYY-MM-DD--&lt;topic&gt;-plan.md。</li><li>.harness/：tracked 任务时同步 work_index.md、state.md；证据 → progress.md；决策 → decisions.md。</li><li>AGENTS.md：不动；项目地图或 recovery 结构缺口交给 harness-builder 或 cleanup。</li></ul>
+      <ul><li>selected planning surface：默认 docs/plans/YYYY-MM-DD--&lt;topic&gt;-plan.md。</li><li>.harness/：tracked work 同步 work_index.md、state.md；证据写 progress.md；决策写 decisions.md。</li><li>AGENTS.md：不写当前任务状态；结构缺口交给 harness-builder 或 cleanup。</li></ul>
     </div>
   </section>
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>Spec 明确，需要计划 artifact</td><td>本 skill</td></tr><tr><td>项目工作面或 recovery surface 不清楚</td><td>harness-builder</td></tr><tr><td>计划写好且可以实现</td><td>implement</td></tr><tr><td>计划只需要证明当前状态或发布就绪</td><td>verify</td></tr><tr><td>已知失败正在发生</td><td>diagnose</td></tr><tr><td>需求或验证策略不清</td><td>brainstorm</td></tr><tr><td>仅小补丁</td><td>直接执行并按需记录 evidence</td></tr></tbody></table>
+    <table><thead><tr><th>Situation</th><th>Recommended next skill</th></tr></thead><tbody><tr><td>Active slice 清楚、验证路径 runnable、需要实现</td><td>implement</td></tr><tr><td>只需要证明当前状态或发布就绪</td><td>verify</td></tr><tr><td>从失败命令开始且 root cause 不明</td><td>diagnose</td></tr><tr><td>工作面、recovery surface、验证入口或能力缺口阻塞</td><td>harness-builder</td></tr></tbody></table>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] 已读取并引用用户批准的 Spec；若没有独立 Spec，已说明为什么该任务足够小且验证策略已明确。</li><li>[ ] 已选择 planning surface 并说明原因。</li><li>[ ] Executable Plan 含目标、active slice、non-goals、成功标准、验证路径、验证路径状态、所需能力、fallback、checkbox 工作项、风险、下一步。</li><li>[ ] 多阶段或多 commit unit 计划含 final_integration_claim。</li><li>[ ] 若 verification path blocked，已转 harness-builder 或记录用户接受的 fallback evidence。</li><li>[ ] 恰好一个未完成 checkbox 工作项标注为 （当前） 或 （下一步）。</li><li>[ ] 没有默认创建第二套 recovery surface。</li><li>[ ] 如项目使用 tracked recovery，.harness/work_index.md 与 state.md 已同步。</li><li>[ ] 每个 checkbox 工作项含 acceptance_criteria、verification_commands 和 success_definition。</li><li>[ ] 多阶段计划定义了 commit unit 及其提交前置条件。</li><li>[ ] 已显式给出下一步 skill，且除非用户要求继续，否则停在计划边界。</li></ul>
+      <ul><li>[ ] 已读 Spec / 用户请求、repo 证据、git 状态和 recovery surface。</li><li>[ ] 已选 planning surface，且没有把 .harness/ 当 canonical plan。</li><li>[ ] Plan 含目标、active slice、non-goals、成功标准、验证路径、验证路径状态、所需能力、fallback、checkbox 工作项、风险、下一步。</li><li>[ ] 每个 checkbox 工作项含 acceptance_criteria、verification_commands、success_definition，且只有一个未完成项标注当前/下一步。</li><li>[ ] 多阶段或多 commit unit 含 final_integration_claim；blocked verification path 已转 harness-builder 或记录 accepted fallback。</li><li>[ ] tracked work 已同步 .harness/work_index.md 与 .harness/state.md。</li><li>[ ] 已显式给出下一步 skill，并停在计划边界。</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
