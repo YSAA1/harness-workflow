@@ -1,4 +1,4 @@
-{% set lang_norm = (target_language | default(user_language | default('en')) | string | lower) %}
+{% set lang_norm = (target_language | default(user_language | default('zh')) | string | lower) %}
 {% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
 # {{ 'Harness 状态（Harness State）' if zh else 'Harness State' }}
 
@@ -33,7 +33,9 @@
 - {{ '当前 active task' if zh else 'Current active task' }}: {{ current_active_task if current_active_task is defined else ('未记录。' if zh else 'None recorded.') }}
 - {{ '证据位置' if zh else 'Evidence location' }}: {{ evidence_location }}
 - {{ '风险' if zh else 'Risks' }}: {{ current_risks if current_risks is defined else ('未记录。' if zh else 'None recorded.') }}
-- {{ '下一步' if zh else 'Next actions' }}: {{ next_actions if next_actions is defined else ('未记录。' if zh else 'None recorded.') }}
+{{ '下一步（checkbox 工作项）' if zh else 'Next actions (checkbox work items)' }}:
+
+{{ next_actions if next_actions is defined else ('- [ ] 未记录。' if zh else '- [ ] None recorded.') }}
 
 {% if include_recommendation_matrix %}
 ## {{ '推荐矩阵（Harness Recommendation Matrix）' if zh else 'Harness Recommendation Matrix' }}

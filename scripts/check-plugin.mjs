@@ -333,6 +333,8 @@ for (const token of [
 const harnessUserTemplates = [
   ["skills/harness-builder/templates/AGENTS.md.j2", "项目概览（Project overview）", "Project overview"],
   ["skills/harness-builder/templates/state.md.j2", "当前工作（Active work）", "Active work"],
+  ["skills/harness-builder/templates/work_index.md.j2", "工作索引（Work Index）", "Work Index"],
+  ["skills/harness-builder/templates/recovery_policy.md.j2", "恢复策略（Recovery Policy）", "Recovery Policy"],
   ["skills/harness-builder/templates/verification.md.j2", "快速检查（Fast check）", "Fast check"],
   ["skills/harness-builder/templates/project_context.md.j2", "项目上下文（Project Context）", "Project Context"],
   ["skills/harness-builder/templates/workflow.md.j2", "Agent 工作流（Agent Workflow）", "Agent Workflow"],
@@ -349,6 +351,9 @@ for (const [file, zhTitle, enTitle] of harnessUserTemplates) {
   if (!source.includes("lang_norm[:2] == 'zh'") || !source.includes("'中文' in lang_norm") || !source.includes("'chinese' in lang_norm")) {
     fail(`harness user-facing template lacks target language selector: ${file}`);
   }
+  if (!source.includes("default('zh')") || source.includes("default('en')")) {
+    fail(`harness user-facing template must default to Chinese while allowing explicit language override: ${file}`);
+  }
   if (!source.includes(`'${zhTitle}' if zh else '${enTitle}'`)) {
     fail(`harness user-facing template lacks checked bilingual title ${zhTitle}: ${file}`);
   }
@@ -359,6 +364,12 @@ for (const [file, zhTitle, enTitle] of harnessUserTemplates) {
     if (line.trim() === "None recorded.") {
       fail(`harness user-facing template has unconditional English empty placeholder: ${file}`);
     }
+  }
+}
+const harnessStateTemplate = read("skills/harness-builder/templates/state.md.j2");
+for (const token of ["下一步（checkbox 工作项）", "Next actions (checkbox work items)", "- [ ] 未记录。", "- [ ] None recorded."]) {
+  if (!harnessStateTemplate.includes(token)) {
+    fail(`harness state template missing checkbox next-actions token: ${token}`);
   }
 }
 const commitConventionTemplate = read("skills/harness-builder/templates/commit_convention.md.j2");
@@ -545,6 +556,11 @@ for (const token of [
   "Final integration claim",
   "Next skill: <implement | diagnose | harness-builder | verify>",
   "final_integration_claim",
+  "## 工作项",
+  "- [x]",
+  "- [ ]",
+  "Status: completed",
+  "checkbox 工作项",
 ]) {
   if (!plan.includes(token)) fail(`plan contract missing verification-gate token: ${token}`);
 }

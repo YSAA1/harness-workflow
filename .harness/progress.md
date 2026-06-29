@@ -67,3 +67,26 @@
   - `node scripts/check-cursor-install.mjs` -> PASS
   - `node scripts/install-cursor.mjs --target . --dry-run` -> PASS
   - `bash scripts/agent/check.sh` -> PASS
+
+## 2026-06-29 — 中文默认 + 可打勾计划文件
+
+- 用户要求：`plan` 和 `harness-builder` 生成/维护的计划与恢复类文档默认中文，并用 Markdown checkbox `- [ ]` / `- [x]` 表示完成状态。
+- 改动：
+  - `plan/SKILL.md` 改为要求 `## 工作项` 下使用 checkbox 工作项，状态不再靠 `Status: completed` 这类文本字段表达。
+  - `harness-builder` 用户可见模板默认语言从 `en` 改为 `zh`，但保留显式非中文分支。
+  - `state.md.j2` 的 next actions 改为 checkbox 工作项块。
+  - README、方法契约、checker、当前 `.harness` 和 `docs/plans/2026-06-29--checkbox-chinese-plan-docs-plan.md` 已同步。
+  - `plugins/harness-workflow/skills/` 与 `.cursor/skills/` 已同步。
+- 验证：
+  - `node scripts/generate-skill-flow-html.mjs` -> PASS
+  - `node scripts/check-plugin.mjs` -> PASS
+  - `node scripts/check-claude-code-install.mjs` -> PASS
+  - `node scripts/check-cursor-install.mjs` -> PASS
+  - `node scripts/install-cursor.mjs --target . --dry-run` -> PASS
+  - `bash scripts/agent/check.sh` -> PASS
+  - `git diff --check` -> PASS
+  - `diff -qr skills/plan plugins/harness-workflow/skills/plan`、`diff -qr skills/plan .cursor/skills/plan`、`diff -qr skills/harness-builder plugins/harness-workflow/skills/harness-builder`、`diff -qr skills/harness-builder .cursor/skills/harness-builder` -> PASS
+- Review：
+  - isolated reviewer attempt: `reviewer` subagent `019f110d-94d9-7c52-9f81-dff4c39fd697` -> timed out after 300000 ms and was closed
+  - packet fallback self-review -> PASS，无 Critical / Important / Minor findings
+- Commit：final milestone commit，exact hash from `git log -1 --oneline`

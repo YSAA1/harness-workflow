@@ -1,4 +1,4 @@
-{% set lang_norm = (target_language | default(user_language | default('en')) | string | lower) %}
+{% set lang_norm = (target_language | default(user_language | default('zh')) | string | lower) %}
 {% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
 # {{ '恢复策略（Recovery Policy）' if zh else 'Recovery Policy' }}
 

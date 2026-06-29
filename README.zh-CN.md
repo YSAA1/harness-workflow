@@ -178,7 +178,7 @@ stop rule.
 | Skill | 什么时候用 | 应该留下什么 | 推荐下一步 |
 | --- | --- | --- | --- |
 | `brainstorm` | 目标、边界、取舍或成功标准还不够清楚。 | 默认写入 `docs/specs/YYYY-MM-DD--<topic>.md` 的聚焦 Spec：goals、non-goals、考虑过的方案、成功标准和验证策略。 | `plan`，如果任务本身是 harness 设计则转 `harness-builder` |
-| `plan` | spec 或用户请求已经清楚，可以选择第一个可执行 slice。 | 默认写入 `docs/plans/YYYY-MM-DD--<topic>-plan.md` 的 Executable Plan，包括 active slice、`verification_path_status`、所需验证能力、fallback evidence、final integration claim 和 commit-sized work units。 | 工作台或证明路径 blocked 时转 `harness-builder`；纯证明任务转 `verify`；否则转 `implement` |
+| `plan` | spec 或用户请求已经清楚，可以选择第一个可执行 slice。 | 默认写入 `docs/plans/YYYY-MM-DD--<topic>-plan.md` 的 Executable Plan，包括 active slice、`verification_path_status`、所需验证能力、fallback evidence、final integration claim，以及可直接打勾的 Markdown checkbox 工作项。 | 工作台或证明路径 blocked 时转 `harness-builder`；纯证明任务转 `verify`；否则转 `implement` |
 | `harness-builder` | 仓库缺少可靠工作台、恢复面、验证入口或能力决策。 | 基于仓库证据的最小 project-local harness plan，以及经过批准安装的组件。 | `verify`，再进入 `implement` 或 `cleanup` |
 | `implement` | 一个 slice 已经 scoped，项目工作面也足够清楚。 | 小范围改动，以及作为实现反馈的本地检查；如果检查不能跑，要说明原因。它不声明 ready。 | 有意义改动转 `review`，小改动可直接 `verify` |
 | `diagnose` | build、test、lint、typecheck、CI 或运行时行为失败，且根因未知。 | 复现、一个已验证假设、根因、最小修复和回归证据。 | 需要修复时转 `implement`，已修好时转 `verify` |

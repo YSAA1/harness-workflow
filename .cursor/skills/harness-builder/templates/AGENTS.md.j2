@@ -1,5 +1,5 @@
 # AGENTS.md
-{% set lang_norm = (target_language | default(user_language | default('en')) | string | lower) %}
+{% set lang_norm = (target_language | default(user_language | default('zh')) | string | lower) %}
 {% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
 
 ## {{ '项目概览（Project overview）' if zh else 'Project overview' }}

@@ -10,7 +10,7 @@
 | Harness Recommendation Contract | `harness-builder` 安装前的短合同，说明目标、非目标、用户可见验收标准、验证路径、证据落点和已有 harness 处理方式 |
 | Harness Recommendation Matrix | `harness-builder` 的统一推荐表，把入口、文档、恢复、验证、架构边界、反漂移、skills、hooks、MCP、subagents、plugins、commands、CI/headless automation、external research 和动态状态放在同一张 Required / Recommended / Deferred / Rejected 表里 |
 | Spec | `brainstorm` 的独立产物，说明要建什么、为什么、如何证明 |
-| Executable Plan | `plan` 的产物，说明 active slice、non-goals、success criteria、verification path、verification path status、required capabilities、fallback evidence、final integration claim 和 next actions |
+| Executable Plan | `plan` 的产物，说明 active slice、non-goals、success criteria、verification path、verification path status、required capabilities、fallback evidence、final integration claim，并用 Markdown checkbox 工作项记录 next actions 与完成状态 |
 | Recovery surface | 让未来 agent 恢复工作的项目工件：none、lightweight、`.harness/`（harness）、feature-list 或 existing system |
 | Knowledge Cleanup | `cleanup` 的目标：防止 docs、生成物、AGENTS.md 和 recovery surface 漂移 |
 | Capability Recommendation | 为当前任务搜索并评估 skills、MCP、hooks、subagents、plugins、commands、CI/headless automation 或外部 agent 能力 |
@@ -68,6 +68,7 @@ Agent 质量来自项目周围的系统：入口、规则、上下文、验证�
 要求：
 
 - active slice 唯一。
+- Executable Plan 的工作项默认使用 Markdown checkbox：`- [ ]` 表示未完成，`- [x]` 表示已完成。
 - non-goals 明确。
 - success criteria 可证伪。
 - verification path status 必须是 `runnable` 或 `blocked`。

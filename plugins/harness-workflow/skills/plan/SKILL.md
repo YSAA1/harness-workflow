@@ -5,13 +5,13 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 
 # Executable Plan
 
-`plan` 把已批准 Spec 或足够明确的请求转成 **Executable Plan**：范围、阶段、验证路径、验证能力、下一步和 commit unit 清楚到可以直接交给 `implement` 或 `verify`。
+`plan` 把已批准 Spec 或足够明确的请求转成 **Executable Plan**：范围、工作项、验证路径、验证能力、下一步和 commit unit 清楚到可以直接交给 `implement` 或 `verify`。
 
 它不负责发散需求，也不替代 Spec review。Executable Plan 默认写入 `docs/plans/`；运行时 recovery 同步到 `.harness/`（见 `../harness-builder/references/recovery_surface_policy.md`），不在仓库根创建 legacy 状态文件。
 
 ## 语言策略
 
-- 用户可见文本跟随用户语言；中文用户场景下，计划说明、阶段标题、验收说明、风险和下一步默认使用中文。
+- 用户可见文本跟随用户语言；未指定语言时默认使用中文。中文用户场景下，计划说明、工作项、验收说明、风险和下一步默认使用中文。
 - 协议稳定优先：协议 token 如 `EXECUTABLE PLAN WRITTEN`、`Executable Plan`、`Verification path status`、`runnable | blocked`、`final_integration_claim`、skill 名、路径和命令可保留英文，必要时使用中文标签 + 英文 token。
 - 不把 Plan 模板硬编码为中文-only；新工作默认写 `docs/plans/YYYY-MM-DD--<topic>-plan.md`。不要创建或依赖 root `task_plan.md` / `progress.md` / `findings.md`。
 - 输出契约中的 `<... label in user's language>` 是占位说明，实际回复时必须替换成用户语言标签，不要原样输出。
@@ -26,7 +26,7 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 
 这个 skill 解决"计划只活在聊天里"的问题，同时避免把所有项目强绑到同一种状态文件。
 
-- agent 被压缩或新会话开启后，仍能从项目 artifact 恢复执行边界和证明方式。
+- agent 被压缩或新会话开启后，仍能从项目 artifact 恢复执行边界、checkbox 进度和证明方式。
 - 多人/多 agent 协作时，能回答"现在做到哪、下一步是什么"。
 - 范围不会在追加讨论中悄悄扩张。
 - 验证能力在计划阶段暴露，避免做完后才发现无法证明。
@@ -104,17 +104,42 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 - Required capabilities
 - Fallback evidence if full verification is unavailable
 - `final_integration_claim` for multi-stage or multi-commit work
-- 3-7 个阶段或 work items
-- 当前唯一 in-progress/next item
+- `## 工作项` / `## Work Items`，包含 3-7 个 Markdown checkbox 工作项
+- 当前唯一未完成工作项用 `（当前）` 或 `（下一步）` 标注；完成状态只由 `- [x]` / `- [ ]` 表达，不再写 `Status: completed`
 - Commit units
 - Known risks / blockers
 - Handoff to next skill
 
-每个阶段必须包含结构化验收块：
+每个工作项必须包含结构化验收块：
 
 - `acceptance_criteria`：可证伪的完成条件
 - `verification_commands`：验证命令列表
 - `success_definition`：一句话成功定义
+
+工作项格式必须可直接打勾：
+
+```markdown
+## 工作项
+
+- [ ] 阶段 1：<名称>（当前）
+  - acceptance_criteria:
+    - <可证伪条件>
+  - verification_commands:
+    - `<命令>`
+  - success_definition: <一句话成功定义>
+- [ ] 阶段 2：<名称>（下一步）
+  - acceptance_criteria:
+    - <可证伪条件>
+  - verification_commands:
+    - `<命令>`
+  - success_definition: <一句话成功定义>
+- [x] 阶段 0：<已完成基线>
+  - acceptance_criteria:
+    - <已满足条件>
+  - verification_commands:
+    - `<已运行或可复跑命令>`
+  - success_definition: <一句话成功定义>
+```
 
 每个 commit unit 必须包含：
 
@@ -134,7 +159,7 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 
 ### 第 3 步 — 检查可执行性
 
-每个阶段必须有具体动作和验证含义。不允许"继续优化"、"完善逻辑"这类不可恢复动作。
+每个工作项必须有具体动作和验证含义。不允许"继续优化"、"完善逻辑"这类不可恢复动作。
 
 ### 第 4 步 — 停在计划边界
 
@@ -190,25 +215,26 @@ Use this as a routing recommendation, not as permission to keep working after pl
 - **用 plan 补问需求。** 如果 goals、non-goals 或 verification strategy 不清楚，回 `brainstorm`。
 - **把运行时状态写到仓库根。** 使用 `.harness/`，不要创建 root `task_plan.md` / `progress.md` / `findings.md`。
 - **把 plan 写进 `docs/prd/`。** Do not write plans to `docs/prd/` unless the current user explicitly names that exact path or `AGENTS.md` declares it as the canonical Plan surface.
-- **多个阶段同时 in_progress。** 这会让 active slice 失效。
+- **多个工作项同时标注当前。** 这会让 active slice 失效；只能有一个未完成项标注 `（当前）` 或 `（下一步）`。
 - **写成愿望清单。** 每个 item 必须可执行、可验证、可恢复。
 - **验证能力最后才发现。** `verification_path_status` 必须在计划阶段写清楚。
 - **多阶段只验局部。** 多 commit unit 必须有 `final_integration_claim`。
 - **忘了 hand off。** 不指明下一步 skill，会让 agent 默认继续在 planning lane 里磨。
-- **阶段验收标准模糊。** acceptance_criteria 必须可证伪，不允许 "完成优化"、"基本实现"。
+- **工作项验收标准模糊。** acceptance_criteria 必须可证伪，不允许 "完成优化"、"基本实现"。
 - **Commit unit 无验证绑定。** 每个 commit unit 必须关联 review + verify 前置条件。
+- **用文本状态替代 checkbox。** Plan 工作项状态必须用 `- [ ]` / `- [x]` 表达；不要写 `Status: completed` 作为主状态。
 
 ## 验收标准
 
 - [ ] 已读取并引用用户批准的 Spec；若没有独立 Spec，已说明为什么该任务足够小且验证策略已明确。
 - [ ] 已选择 planning surface 并说明原因。
-- [ ] Executable Plan 含目标、active slice、non-goals、成功标准、验证路径、验证路径状态、所需能力、fallback、阶段、风险、下一步。
+- [ ] Executable Plan 含目标、active slice、non-goals、成功标准、验证路径、验证路径状态、所需能力、fallback、checkbox 工作项、风险、下一步。
 - [ ] 多阶段或多 commit unit 计划含 `final_integration_claim`。
 - [ ] 若 verification path blocked，已转 `harness-builder` 或记录用户接受的 fallback evidence。
-- [ ] 恰好一个当前 item 是 in-progress 或 next。
+- [ ] 恰好一个未完成 checkbox 工作项标注为 `（当前）` 或 `（下一步）`。
 - [ ] 没有默认创建第二套 recovery surface。
 - [ ] 如项目使用 tracked recovery，`.harness/work_index.md` 与 `state.md` 已同步。
-- [ ] 每个阶段含 acceptance_criteria、verification_commands 和 success_definition。
+- [ ] 每个 checkbox 工作项含 acceptance_criteria、verification_commands 和 success_definition。
 - [ ] 多阶段计划定义了 commit unit 及其提交前置条件。
 - [ ] 已显式给出下一步 skill，且除非用户要求继续，否则停在计划边界。
 

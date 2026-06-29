@@ -21,7 +21,7 @@ Recommending or installing a capability is the deliverable; using that capabilit
 
 ## 语言策略
 
-- 用户可见文本跟随用户语言；中文用户场景下，Harness 证据、Recommendation Contract、Recommendation Matrix、Capability Recommendations、Plan 和 User Checkpoint 使用中文为主的标题和说明。
+- 用户可见文本跟随用户语言；未指定语言时默认使用中文。中文用户场景下，Harness 证据、Recommendation Contract、Recommendation Matrix、Capability Recommendations、Plan 和 User Checkpoint 使用中文为主的标题和说明。
 - 协议稳定优先：协议 token 如 `HARNESS EVIDENCE`、`HARNESS RECOMMENDATION CONTRACT`、`HARNESS RECOMMENDATION MATRIX`、`USER CHECKPOINT`、`Required / Recommended / Deferred / Rejected`、文件路径、命令、skill 名和安装面标识可保留英文，必要时使用中文标签 + English token。
 
 ## When to use

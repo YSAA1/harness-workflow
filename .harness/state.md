@@ -4,30 +4,32 @@
 
 ## Objective
 
-收紧 `harness-builder` 的 `check.sh` 生成协议，防止真实项目把 `scripts/agent/check.sh` 退化成"历史快照断言机"——硬编码 run_id、测试计数、实验数值、recovery surface 字面内容。
+让 `plan` 产出的 Executable Plan 和 `harness-builder` 创建的计划/恢复类文档默认使用中文，并把计划进度表达改成可直接打勾的 Markdown checkbox 工作项。
 
 ## Active slice
 
-在 `verification_policy.md`、`check.sh.j2`、`anti_entropy.md` 三处加结构性约束，并在 `check-plugin.mjs` 加 token 断言验证约束在场。
+更新 `plan` 契约、`harness-builder` 模板、项目文档、checker 和当前 `.harness` recovery，让默认计划文件具备 `- [ ]` / `- [x]` 状态表达，并保持三套 skill 分发表面一致。
 
 ## Non-goals
 
-- 不改 `harness-builder` 的 Recommendation Matrix 行结构。
-- 不改 `recovery_policy.md` 会话启动顺序（check.sh 仍在第 5 步，但约束它不脆）。
-- 不改 `check.sh` 模板的 `{{ check_commands }}` 注入点（保持生成自由度，只加边界）。
+- 不恢复 legacy root `task_plan.md` / `progress.md` / `findings.md` 模板。
+- 不把协议 token、路径、命令、状态枚举或 skill 名全部翻译成中文。
+- 不修改 workflow lane 数量、recovery surface 语义或默认 plan 路径。
+- 不安装用户级配置、MCP、hooks 或外部插件。
 
 ## Current phase
 
-implement → verify
+verified and committed
 
 ## Success criteria
 
-- `verification_policy.md` 明确禁止 fragile check patterns：run_id 字面值、测试计数、实验数值、recovery surface 字段值字面镜像、文件系统镜像式 required_files。
-- `check.sh.j2` 顶部注释包含结构性禁令，不止 "Keep this command short"。
-- `anti_entropy.md` 把 "check/selftest scripts must not mirror recovery state" 落成可执行判定。
-- `check-plugin.mjs` 断言三处 token 在场，防止约束被无声删掉。
-- 三端同步：root skills → `plugins/harness-workflow/skills` → `.cursor/skills`。
-- `node scripts/check-plugin.mjs`、`node scripts/check-claude-code-install.mjs`、`node scripts/check-cursor-install.mjs`、`node scripts/install-cursor.mjs --target . --dry-run`、`bash scripts/agent/check.sh` PASS。
+- `plan/SKILL.md` 明确要求 Executable Plan 使用 Markdown checkbox 工作项表达完成状态。
+- `harness-builder` 用户可见模板在未指定语言时默认中文，显式非中文仍可走英文/default 分支。
+- `state.md.j2` 的下一步默认是 checkbox 工作项，而不是单行普通文本。
+- `README.md`、`README.zh-CN.md` 和 `docs/harness-method-contract.md` 描述新的 checkbox plan 契约。
+- `scripts/check-plugin.mjs` 有静态回归检查覆盖 checkbox plan 契约、中文默认和三套 skill 同步。
+- 当前 `.harness/work_index.md` active 行指向本计划文件，`.harness/state.md` 的下一步是 checkbox 清单。
+- 默认结构验证和生成物检查通过。
 
 ## Verification path
 
@@ -36,19 +38,20 @@ node scripts/check-plugin.mjs
 node scripts/check-claude-code-install.mjs
 node scripts/check-cursor-install.mjs
 node scripts/install-cursor.mjs --target . --dry-run
+node scripts/generate-skill-flow-html.mjs
 bash scripts/agent/check.sh
+git diff --check
 ```
 
 ## Next actions
 
-- 改 `verification_policy.md`
-- 改 `check.sh.j2`
-- 改 `anti_entropy.md`
-- 改 `check-plugin.mjs` 加断言
-- 三端同步
-- 验证 + commit
+- [x] 确认现状和风险
+- [x] 更新核心契约和模板
+- [x] 更新 docs、checker 和当前 recovery
+- [x] 同步分发表面并刷新生成物
+- [x] 结构验证和收口
 
 ## Risks
 
-- 约束写得过死可能让简单项目的 check.sh 也无法生成；用"禁止字面镜像 + 允许结构化提取"留口子。
-- token 断言只能证明约束文本在场，不能证明生成者真的遵守；这是 check 脚本能做的上限。
+- checker 能证明契约在场，但不能完全证明未来 agent 每次都按 checkbox 写计划。
+- 默认中文不能变成中文-only；显式英文和其他非中文用户仍要可用。

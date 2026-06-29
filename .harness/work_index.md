@@ -5,7 +5,8 @@
 | ID | 标题 | Status | Primary artifact | Last verified |
 | --- | --- | --- | --- | --- |
 | 001 | brainstorm / harness-builder 文档纪律与 `.harness/` 统一 | complete | （本 batch；见 `.harness/state.md`） | 2026-06-24 |
-| 002 | harness-builder check.sh 协议加固（防 fragile 断言） | active | （本 batch；见 `.harness/state.md`） | 2026-06-25 |
+| 002 | harness-builder check.sh 协议加固（防 fragile 断言） | complete | （本 batch；见 `.harness/state.md`） | 2026-06-29 |
+| 003 | 中文默认 + 可打勾计划文件 | active | `docs/plans/2026-06-29--checkbox-chinese-plan-docs-plan.md` | 2026-06-29 |
 
 Status values: `active`, `blocked`, `complete`, `abandoned`
 

@@ -140,13 +140,13 @@ pre {
   <div class="toolbar">
     <a class="button" href="../../skills/plan/SKILL.md">打开 SKILL.md</a>
     <span class="button">Executable Plan</span>
-    <span class="button">226 行</span>
+    <span class="button">252 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>这个 skill 解决&quot;计划只活在聊天里&quot;的问题，同时避免把所有项目强绑到同一种状态文件。 - agent 被压缩或新会话开启后，仍能从项目 artifact 恢复执行边界和证明方式。 - 多人/多 agent 协作时，能回答&quot;现在做到哪、下一步是什么&quot;。 - 范围不会在追加讨论中悄悄扩张。 - 验证能力在计划阶段暴露，避免做完后才发现无法证明。</p>
+    <p>这个 skill 解决&quot;计划只活在聊天里&quot;的问题，同时避免把所有项目强绑到同一种状态文件。 - agent 被压缩或新会话开启后，仍能从项目 artifact 恢复执行边界、checkbox 进度和证明方式。 - 多人/多 agent 协作时，能回答&quot;现在做到哪、下一步是什么&quot;。 - 范围不会在追加讨论中悄悄扩张。 - 验证能力在计划阶段暴露，避免做完后才发现无法证明。</p>
   </section>
 
   <section class="section grid">
@@ -173,15 +173,6 @@ pre {
       </div><div class="step">
         <div class="num">2</div>
         <div><h3>第 1 步 — 写 Executable Plan</h3><p>计划必须包含： - Objective - Active slice - Non-goals - Success criteria - Verification path - Verification path status: runnable | blocked - Required capabilities</p></div>
-      </div><div class="step">
-        <div class="num">3</div>
-        <div><h3>第 2 步 — 写入选定 artifact</h3><p>- docs plan：写到 docs/plans/YYYY-MM-DD--&lt;topic&gt;-plan.md，除非存在 explicit override。 - issue：写成可发布 issue 或更新 issue body。 - feature-list：更新对应 feature entry。 - existing system：按项目惯例更新，不复制第二套状态。 - .harness/ runtime sync：tracked work 在写入 planning artifact 后，更新 .harness/...</p></div>
-      </div><div class="step">
-        <div class="num">4</div>
-        <div><h3>第 3 步 — 检查可执行性</h3><p>每个阶段必须有具体动作和验证含义。不允许&quot;继续优化&quot;、&quot;完善逻辑&quot;这类不可恢复动作。</p></div>
-      </div><div class="step">
-        <div class="num">5</div>
-        <div><h3>第 4 步 — 停在计划边界</h3><p>除非用户明确要求继续，否则产出计划后停止。给出下一步建议：implement、verify、diagnose 或 harness-builder。</p></div>
       </div>
     </div>
   </section>
@@ -205,7 +196,7 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] 已读取并引用用户批准的 Spec；若没有独立 Spec，已说明为什么该任务足够小且验证策略已明确。</li><li>[ ] 已选择 planning surface 并说明原因。</li><li>[ ] Executable Plan 含目标、active slice、non-goals、成功标准、验证路径、验证路径状态、所需能力、fallback、阶段、风险、下一步。</li><li>[ ] 多阶段或多 commit unit 计划含 final_integration_claim。</li><li>[ ] 若 verification path blocked，已转 harness-builder 或记录用户接受的 fallback evidence。</li><li>[ ] 恰好一个当前 item 是 in-progress 或 next。</li><li>[ ] 没有默认创建第二套 recovery surface。</li><li>[ ] 如项目使用 tracked recovery，.harness/work_index.md 与 state.md 已同步。</li><li>[ ] 每个阶段含 acceptance_criteria、verification_commands 和 success_definition。</li><li>[ ] 多阶段计划定义了 commit unit 及其提交前置条件。</li><li>[ ] 已显式给出下一步 skill，且除非用户要求继续，否则停在计划边界。</li></ul>
+      <ul><li>[ ] 已读取并引用用户批准的 Spec；若没有独立 Spec，已说明为什么该任务足够小且验证策略已明确。</li><li>[ ] 已选择 planning surface 并说明原因。</li><li>[ ] Executable Plan 含目标、active slice、non-goals、成功标准、验证路径、验证路径状态、所需能力、fallback、checkbox 工作项、风险、下一步。</li><li>[ ] 多阶段或多 commit unit 计划含 final_integration_claim。</li><li>[ ] 若 verification path blocked，已转 harness-builder 或记录用户接受的 fallback evidence。</li><li>[ ] 恰好一个未完成 checkbox 工作项标注为 （当前） 或 （下一步）。</li><li>[ ] 没有默认创建第二套 recovery surface。</li><li>[ ] 如项目使用 tracked recovery，.harness/work_index.md 与 state.md 已同步。</li><li>[ ] 每个 checkbox 工作项含 acceptance_criteria、verification_commands 和 success_definition。</li><li>[ ] 多阶段计划定义了 commit unit 及其提交前置条件。</li><li>[ ] 已显式给出下一步 skill，且除非用户要求继续，否则停在计划边界。</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
