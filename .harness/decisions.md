@@ -10,3 +10,9 @@
 
 - **Decision**: Coverage Gate 通过后，非平凡工作必须 Design Grill（≥2 轮），trivial 可在 assumption batch 豁免。
 - **Rejected**: Grill 完全 optional。
+
+## D-003 — harness-builder 拆分为一个 lane + 三个 helper
+
+- **Decision**: `harness-builder` 保留为唯一 project workbench workflow lane；新增 `capability-recommender`、`agent-instructions-maintainer`、`recovery-surface-builder` 作为可顶层调用的 helper skills。
+- **Rejected**: 把 helper 仅作为内部 references；保留或绑定 Research Route / autoresearch；照搬 `planning-with-files` 的 root three-file backend。
+- **Why**: 顶层 helper 能降低 `harness-builder` 热路径厚度并便于单独 eval；Research Route 绑定外部插件风险高；`.harness/` 已是本仓库选定 runtime recovery surface。

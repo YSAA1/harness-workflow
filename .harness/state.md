@@ -4,31 +4,33 @@
 
 ## Objective
 
-按 `$write-a-skill` 与 `$skill-creator` 原则瘦身 `plan` skill 的 `SKILL.md`，降低热路径 token 成本，同时保留 Executable Plan、默认中文、checkbox 工作项、验证路径和 recovery sync 契约。
+把 `harness-builder` 从过厚的多职责入口拆成一个轻 controller 和三个可顶层调用的辅助 skill，同时从活跃产品语义中完全移除 Research Route / autoresearch，并保持 Codex、Claude Code、Cursor 三端表面一致。
 
 ## Active slice
 
-将 `skills/plan/SKILL.md` 从 251 行压缩到约 150 行，保留性能关键的 Planning Surface、blocked verification、commit unit、反模式和 checkbox 契约，并同步 `plugins/harness-workflow/skills/plan` 与 `.cursor/skills/plan`，刷新 skill-flow HTML。
+先完成 Research Route / autoresearch 活跃语义删除与验证脚本解绑，再进入官方 helper skill 复制适配。第一阶段必须只删除当前产品面和强制检查里的 research 语义，不改写历史 plan/spec 记录。
 
 ## Non-goals
 
-- 不改变 `plan` 的触发边界、默认 artifact 路径或 recovery surface 语义。
-- 不新增 reference 文件、脚本或模板。
-- 不恢复 legacy root three-file plan 模板。
-- 不改其他 workflow skills。
+- 不新增第九条 workflow lane。
+- 不把 `capability-recommender` 或 `agent-instructions-maintainer` 从零重写。
+- 不默认采用 `planning-with-files` 的 root `task_plan.md` / `findings.md` / `progress.md`。
+- 不保留 `docs/integrations/autoresearch.md` archive。
+- 不绑定 `@Autoresearch-Guard` 或任何外部 autoresearch 插件。
+- 不修改用户级配置、全局 skills、MCP、hooks 或外部 marketplace。
 
 ## Current phase
 
-verified; pending commit
+planned; ready for implementation phase 1
 
 ## Success criteria
 
-- `skills/plan/SKILL.md` 明显少于原 251 行，保留 YAML frontmatter、清晰 description 和 `## Recommended next skill`。
-- 保留 checker 需要的稳定 token：`Executable Plan`、`Verification path status`、`Required capabilities`、`Fallback evidence`、`final_integration_claim`、checkbox 工作项和 `Next skill`。
-- 保留默认中文、Planning Surface、`.harness` runtime sync、commit unit 和 plan boundary 规则。
-- 三套表面同步：root skills、packaged plugin、Cursor skills。
-- `docs/skill-flow-review/*.html` 由生成脚本刷新。
-- 默认结构验证通过。
+- `harness-builder` 主入口只负责 evidence-first orchestration、Recommendation Plan、USER CHECKPOINT 和 helper routing。
+- 顶层辅助 skill 存在并可被发现：`capability-recommender`、`agent-instructions-maintainer`、`recovery-surface-builder`。
+- `capability-recommender` 和 `agent-instructions-maintainer` 是 Anthropic 官方 skill 的复制适配版，并包含清楚的来源、license / attribution 处理。
+- `recovery-surface-builder` 以当前 `harness-builder` recovery model 为主参考，并吸收 `planning-with-files` 的持久工作记忆纪律，但不默认创建 root 三文件。
+- 活跃产品面不再声明内置 Research Route / autoresearch / Evidence Loop / Research Reset Policy。
+- 三端结构验证和 Cursor dry-run 通过。
 
 ## Verification path
 
@@ -38,20 +40,24 @@ node scripts/check-claude-code-install.mjs
 node scripts/check-cursor-install.mjs
 node scripts/install-cursor.mjs --target . --dry-run
 node scripts/generate-skill-flow-html.mjs
-bash scripts/agent/check.sh
 git diff --check
+rg -n "Research Route|autoresearch|Evidence Loop|Research Reset Policy|research_route" README.md README.zh-CN.md CONTEXT.md docs\harness-method-contract.md docs\install skills scripts .codex-plugin .claude-plugin .cursor-plugin
 ```
 
 ## Next actions
 
-- [x] 读取 `$write-a-skill` 与 `$skill-creator`
-- [x] 精简 `skills/plan/SKILL.md`
-- [x] 同步 packaged plugin 与 Cursor skill
-- [x] 刷新 skill-flow HTML
-- [x] 运行结构验证
-- [ ] commit
+- [x] 写入 Spec：`docs/specs/2026-07-06--harness-builder-skill-split.md`
+- [x] 写入 Executable Plan：`docs/plans/2026-07-06--harness-builder-skill-split-plan.md`
+- [ ] 阶段 1：删除 Research Route / autoresearch 活跃产品语义
+- [ ] 阶段 2：读取官方 helper skill 源码并准备 attribution
+- [ ] 阶段 3：复制适配 `capability-recommender`
+- [ ] 阶段 4：复制适配 `agent-instructions-maintainer`
+- [ ] 阶段 5：抽出 `recovery-surface-builder`
+- [ ] 阶段 6：`harness-builder` controller 化与文档同步
+- [ ] 阶段 7：生成物刷新、验证与提交
 
 ## Risks
 
-- 过度瘦身可能丢掉隐性执行纪律；已用 checker token 和结构验证覆盖核心契约。
-- 当前目标不是极限压缩；后续新增内容应优先替换冗余或拆 reference，避免再次回到 200+ 行。
+- Anthropic 官方 skill 完整源码或 license 文件如果无法获取，helper copy-adapt 阶段必须阻塞。
+- 当前 worktree 已有 unrelated 改动，实施和提交必须显式按路径 staging，避免混入。
+- Research token 当前分散在 README、CONTEXT、method contract、manifest、check-plugin 和 generated docs 中，阶段 1 需要同步处理。

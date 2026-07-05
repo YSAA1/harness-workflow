@@ -107,3 +107,13 @@
   - `node scripts/check-cursor-install.mjs` -> PASS
   - `node scripts/install-cursor.mjs --target . --dry-run` -> PASS
   - `bash scripts/agent/check.sh` -> PASS
+
+## 2026-07-06 — harness-builder skill 拆分计划
+
+- 用户批准 `docs/specs/2026-07-06--harness-builder-skill-split.md` 进入计划阶段。
+- 写入 Executable Plan：`docs/plans/2026-07-06--harness-builder-skill-split-plan.md`。
+- Runtime recovery sync：
+  - `.harness/work_index.md` 新增 `005` active row；
+  - 旧 `004` 从 `active` 改为 `blocked`，原因是其 state 显示 `verified; pending commit`，本轮不能替旧任务声明 complete；
+  - `.harness/state.md` 更新为当前 active slice。
+- 当前仅完成计划产物；未进入 implementation。
