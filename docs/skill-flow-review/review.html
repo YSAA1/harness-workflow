@@ -140,7 +140,7 @@ pre {
   <div class="toolbar">
     <a class="button" href="../../skills/review/SKILL.md">打开 SKILL.md</a>
     <span class="button">证据评审</span>
-    <span class="button">243 行</span>
+    <span class="button">260 行</span>
   </div>
 </header>
 <main>
@@ -195,7 +195,7 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text REVIEW: PASS | CONDITIONAL | BLOCK Scope: - Active slice: &lt;一句话&gt; - Files reviewed: &lt;list 或 git stat&gt; - Evidence base for review: &lt;command/diff/manual read or missing&gt; - Isolated reviewer attempt: &lt;yes|no&gt; - Reviewer attempts: - mechanism: &lt;subagent|codex_exec_review|codex_exec_packet|packet_fallback&gt; command: &lt;command/tool/agent type or n/a&gt; status: &lt;completed|failed|skipped&gt; fallback_reason: &lt;none|tiny diff|t...</pre>
+      <pre>``text REVIEW: PASS | CONDITIONAL | BLOCK Scope: - Active slice: &lt;一句话&gt; - Files reviewed: &lt;list 或 git stat&gt; - Evidence base for review: &lt;command/diff/manual read or missing&gt; - Isolated reviewer attempt: &lt;yes|no&gt; - Reviewer attempts: - mechanism: &lt;subagent|codex_exec_review|codex_exec_packet|packet_fallback&gt; command: &lt;command/tool/agent type or n/a&gt; status: &lt;completed|failed|skipped&gt; model_diversity: &lt;cross_family|sam...</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
@@ -211,11 +211,11 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] 至少检查了 Spec / scope / diff / docs / entropy / risk。</li><li>[ ] meaningful diff 已尝试隔离 reviewer；若 fallback，已记录 ordered reviewer attempts、最终机制和原因。</li><li>[ ] 已输出 adversarial hypotheses、defender evidence 和 verify handoff cases。</li><li>[ ] 未把 review 通过当作 ready；pass 状态仍路由到 verify。</li><li>[ ] 每条 Critical / Important finding 有文件路径、命令或工件级证据。</li><li>[ ] Open Questions 与 Residual Risks 明确。</li><li>[ ] Assessment 是 Pass / Conditional / Block 之一。</li><li>[ ] blocking findings 按需写入 selected recovery surface。</li><li>[ ] 当 Executable Plan 存在时，已对照阶段 acceptance criteria 检查。</li><li>[ ] 下一步 skill 与原因显式。</li></ul>
+      <ul><li>[ ] 至少检查了 Spec / scope / diff / docs / entropy / risk。</li><li>[ ] 中高风险改动已尝试至少一层隔离 reviewer；若 fallback，已记录 ordered reviewer attempts、最终机制和原因。</li><li>[ ] 已输出 adversarial hypotheses、defender evidence 和 verify handoff cases。</li><li>[ ] 未把 review 通过当作 ready；pass 状态仍路由到 verify。</li><li>[ ] 每条 Critical / Important finding 有文件路径、命令或工件级证据。</li><li>[ ] Open Questions 与 Residual Risks 明确。</li><li>[ ] Assessment 是 Pass / Conditional / Block 之一。</li><li>[ ] blocking findings 按需写入 selected recovery surface。</li><li>[ ] 当 Executable Plan 存在时，已对照阶段 acceptance criteria 检查。</li><li>[ ] 下一步 skill 与原因显式。</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
-      <ul><li><a href="../../skills/review/references/adversarial-reviewer-prompt.md">Adversarial Reviewer Prompt</a><span class="tag">存在</span></li><li><a href="../../skills/review/references/premature-completion-patterns.md">伪完成模式</a><span class="tag">存在</span></li></ul>
+      <ul><li><a href="../../skills/review/references/adversarial-reviewer-prompt.md">Adversarial Reviewer Prompt</a><span class="tag">存在</span></li><li><a href="../../skills/review/references/attack-taxonomy.md">Attack Taxonomy</a><span class="tag">存在</span></li><li><a href="../../skills/review/references/cross-cutting-anti-patterns.md">Cross-Cutting Anti-Patterns</a><span class="tag">存在</span></li><li><a href="../../skills/review/references/premature-completion-patterns.md">伪完成模式</a><span class="tag">存在</span></li></ul>
     </div>
   </section>
 

@@ -1,36 +1,37 @@
-# Capability Recommendation 格式
+# Capability Gap Recording
 
-用于 `verify`。只推荐，不安装。
+用于 `verify`。当验证能力不足时，只记录缺口，不写完整推荐。项目级能力安装和 Capability Recommendation Table 交给 `harness-builder`。
 
-## 模板
+## 缺口记录格式
 
 ```text
-Recommended: <capability>
-Value: <覆盖什么验证风险>
-Enablement: <项目如何启用>
-Risk / cost: <依赖、权限、flake、token、维护成本>
-Fallback now: <当前不用该能力时的替代证据>
+Capability gap: <缺失能力名称>
+Risk: <未覆盖的验证风险>
+Fallback now: <当前替代证据>
+Route: harness-builder
 ```
 
-## Playwright MCP
+## 示例
 
-适用：
-- web app
-- 多步骤 UI
-- 表单、路由、上传、下载
-- 需要 accessibility snapshot 的浏览器验证
+```text
+Capability gap: browser automation (Playwright MCP)
+Risk: UI 改动无法用命令行验证，只能人眼确认
+Fallback now: accessibility snapshot 手动截图对比
+Route: harness-builder
+```
 
-建议：
-- 默认只推荐 core/browser automation。
-- 测试场景再推荐 testing/storage。
-- 调试场景再推荐 devtools/network。
-- 不建议默认全开 capability。
+```text
+Capability gap: integration test runner
+Risk: 跨组件路径未验证，单测覆盖不到调用链
+Fallback now: 手动 curl smoke check
+Route: harness-builder
+```
 
-## Docs / Search
+## 不做什么
 
-适用：
-- API/SDK 行为可能随版本变化。
-- 官方文档是判断依据。
+- 不评估具体工具方案（Playwright vs Cypress vs Selenium）。
+- 不写安装指南或 enablement 步骤。
+- 不输出 Capability Recommendation Table（那是 harness-builder 的职责）。
+- 不因为"可能有用"就推荐能力。
 
-替代：
-- 用户提供链接并把关键决策写入 selected recovery surface。
+verify 的记录只是触发 harness-builder 消费的信号；完整推荐格式见 `../../harness-builder/references/recommendation_matrix_policy.md`。

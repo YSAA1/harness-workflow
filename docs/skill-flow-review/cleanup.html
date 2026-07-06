@@ -140,7 +140,7 @@ pre {
   <div class="toolbar">
     <a class="button" href="../../skills/cleanup/SKILL.md">打开 SKILL.md</a>
     <span class="button">Knowledge Cleanup</span>
-    <span class="button">188 行</span>
+    <span class="button">202 行</span>
   </div>
 </header>
 <main>
@@ -187,6 +187,9 @@ pre {
         <div><h3>第 6 步 — Record Residual Drift</h3><p>未解决的 drift 写成明确 follow-up：位置、风险、建议下一步、是否阻塞 ready。</p></div>
       </div><div class="step">
         <div class="num">7</div>
+        <div><h3>第 6.5 步 — Record Deferred Cleanup</h3><p>本次发现但跳过的低风险 entropy（用途不明文件、不确定是否能清理的 residue、未到清理时机的旧 artifact）写入 selected recovery surface 的 deferred_cleanup 字段。格式见 references/entropy-checklist.md。 目的：不让&quot;这次不确定，下次再说&quot;变成永久遗忘。下次 cleanup 启动时先读取 deferred_cleanup，逐条重新评估是否达到清理条件。</p></div>
+      </div><div class="step">
+        <div class="num">8</div>
         <div><h3>第 7 步 — Final Git State Summary</h3><p>报告 related changes、unrelated dirty files left alone、removed/deferred residue。报告 milestone commits 完成情况。</p></div>
       </div>
     </div>
@@ -195,7 +198,7 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text CLEANUP: complete|blocked|abandoned|reopen Evidence: - &lt;command -&gt; result&gt; Knowledge cleanup: - README: ok|updated|stale - AGENTS.md: ok|updated|stale - docs: ok|updated|stale - generated artifacts: ok|regenerated|stale - recovery surface: ok|updated|stale Entropy cleanup: - removed: ... - deferred: ... Git state: - related changes: - unrelated changes left alone: Next: - &lt;done | implement | diagnose | plan |...</pre>
+      <pre>``text CLEANUP: complete|blocked|abandoned|reopen Evidence: - &lt;command -&gt; result&gt; Knowledge cleanup: - README: ok|updated|stale - AGENTS.md: ok|updated|stale - docs: ok|updated|stale - generated artifacts: ok|regenerated|stale - recovery surface: ok|updated|stale Entropy cleanup: - removed: ... - deferred: ... Deferred cleanup (for next session): - item: &lt;文件或 artifact&gt; reason: &lt;为何跳过&gt; reevaluate_when: &lt;下次清理的触发条件&gt; Git...</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
@@ -211,7 +214,7 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] Closure state is exactly one of complete, blocked, abandoned, reopen.</li><li>[ ] Fresh evidence is recorded or lack of evidence routes away from cleanup.</li><li>[ ] AGENTS.md、README、docs、generated artifacts 和 recovery surface 已比较。</li><li>[ ] Low-risk cleanup is separated from deferred high-risk cleanup.</li><li>[ ] Generated artifacts are regenerated, not hand-edited.</li><li>[ ] Unrelated dirty files are preserved.</li></ul>
+      <ul><li>[ ] Closure state is exactly one of complete, blocked, abandoned, reopen.</li><li>[ ] Fresh evidence is recorded or lack of evidence routes away from cleanup.</li><li>[ ] AGENTS.md、README、docs、generated artifacts 和 recovery surface 已比较。</li><li>[ ] Low-risk cleanup is separated from deferred high-risk cleanup.</li><li>[ ] Deferred items are recorded in selected recovery surface's deferred_cleanup with reason and reevaluate condition.</li><li>[ ] Generated artifacts are regenerated, not hand-edited.</li><li>[ ] Unrelated dirty files are preserved.</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>

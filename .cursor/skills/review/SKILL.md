@@ -84,21 +84,36 @@ Review packet 只能包含可审事实：
 
 机制选择：
 
-| 状态 | 要求 |
-| --- | --- |
-| meaningful diff 且 subagent 可用 | 尝试 read-only subagent / independent reviewer |
-| Codex 环境且 subagent 不适用 | 尝试 `codex exec review` 或 `codex exec` reviewer packet |
-| 独立 reviewer 失败 | 记录 ordered reviewer attempts、failure summary、fallback reason，再尝试下一层或 packet fallback |
-| tiny / trivial diff | 可 packet fallback，但记录 tiny-diff reason |
+**三端隔离机制：**
+
+| 环境 | 推荐隔离机制 | 机制说明 |
+| --- | --- | --- |
+| Codex | `codex exec review`（首选）或 `codex exec` + reviewer packet | 独立进程执行 review，环境内建隔离 |
+| Claude Code | `Agent` 工具 + `agentType: "Explore"`（read-only） | 子 agent 只读访问仓库文件，不能修改 |
+| Cursor | subagent + read-only context | 子 agent 独立上下文窗口 |
+
+**Fallback 链：**
+
+按优先级尝试：subagent / codex exec review → codex exec + reviewer packet → packet fallback。每层失败后记录 mechanism、status、fallback_reason、failure_summary，再尝试下一层。
+
+**Fallback 条件（风险分级，替代"tiny diff"豁免）：**
+
+| 风险等级 | 改动类型 | 隔离要求 |
+| --- | --- | --- |
+| 低风险 | 纯文档/注释/格式化/非行为重构 | 可 fallback 到 packet-based 自审，记录 risk-graded reason |
+| 中高风险 | 逻辑/配置/依赖/API/数据结构/安全 | 必须尝试至少一层隔离 reviewer；失败需记录完整尝试链 |
+
+不再按 diff 大小判断；一行配置改动也属于中高风险。
 
 ## Adversarial Pass
 
-在常规六把尺之前或同时执行：
+在常规六把尺之前或同时执行。先读取 `references/attack-taxonomy.md`，按改动类型定位核心分类，再逐一构造攻击假设。
 
-1. **Attacker hypotheses**：如果我要让这个改动看起来通过但实际坏掉，最可能藏在哪里？
+1. **Attacker hypotheses**：按 attack taxonomy 的五类攻击面（边界/时序/身份/契约/数据）构造假设。核心分类至少产生一条。如果我要让这个改动看起来通过但实际坏掉，最可能藏在哪里？
 2. **Failure sketches**：为高风险 hypothesis 写最小失败路径，不写 exploit 代码。
 3. **Defender evidence**：寻找代码、测试、文档或已运行 evidence 反证每个 hypothesis。
 4. **Finding or handoff**：没有反证时，升级为 Critical / Important / Minor finding，或写成 `verify_handoff_cases` 交给 `verify` 收集 fresh evidence。
+5. **记录覆盖**：输出中列出 attack taxonomy 每类的覆盖状态（hypothesis 数量 或 `skipped`），不静默省略。
 
 ## 执行流程
 
@@ -155,7 +170,8 @@ Scope:
     - mechanism: <subagent|codex_exec_review|codex_exec_packet|packet_fallback>
       command: <command/tool/agent type or n/a>
       status: <completed|failed|skipped>
-      fallback_reason: <none|tiny diff|tool unavailable|tool failed|cost disproportionate|other>
+      model_diversity: <cross_family|same_family|unknown>
+      fallback_reason: <none|low_risk|tool unavailable|tool failed|cost disproportionate|other>
       failure_summary: <none|short failure output>
   - Final reviewer mechanism: <subagent|codex_exec_review|codex_exec_packet|packet_fallback>
   - Fallback summary: <none|why next layer/final fallback was used>
@@ -207,19 +223,18 @@ Use review findings to route the next lane; review itself should not quietly bec
 
 ## 常见反模式
 
+共享反模式见 `references/cross-cutting-anti-patterns.md`（AGENTS.md 当会话笔记、角色混淆、静默跳过、不对照 source of truth）。
+
+review 特有反模式：
+
 - **鼓励性总结，无证据。**
-- **只看 diff，不对 Spec。**
-- **把缺测试当成以后补。**
-- **review 与 verify 混淆。** review 不声明 ready。
 - **同上下文自审冒充独立评审。** meaningful diff 必须尝试隔离 reviewer；fallback 要记录完整尝试链和原因。
 - **只写攻击假设，不找反证。** adversarial review 必须同时包含 hypotheses 和 defender evidence。
-- **改 `AGENTS.md` 写本次结论。**
-- **有 plan 不对照。** 当存在 Executable Plan 时，review 必须对照阶段 acceptance criteria，不能只检查 Spec coverage。
 
 ## 验收标准
 
 - [ ] 至少检查了 Spec / scope / diff / docs / entropy / risk。
-- [ ] meaningful diff 已尝试隔离 reviewer；若 fallback，已记录 ordered reviewer attempts、最终机制和原因。
+- [ ] 中高风险改动已尝试至少一层隔离 reviewer；若 fallback，已记录 ordered reviewer attempts、最终机制和原因。
 - [ ] 已输出 adversarial hypotheses、defender evidence 和 verify handoff cases。
 - [ ] 未把 review 通过当作 ready；pass 状态仍路由到 `verify`。
 - [ ] 每条 Critical / Important finding 有文件路径、命令或工件级证据。
@@ -237,6 +252,8 @@ Use review findings to route the next lane; review itself should not quietly bec
 ## 按需读取
 
 - `references/premature-completion-patterns.md`：常见伪完成模式与识别信号。
-- `references/adversarial-reviewer-prompt.md`：隔离 reviewer / `codex exec` / fallback 共用提示词。
+- `references/adversarial-reviewer-prompt.md`：隔离 reviewer 共用提示词。
+- `references/attack-taxonomy.md`：对抗式攻击假设分类法（边界/时序/身份/契约/数据）。
+- `references/cross-cutting-anti-patterns.md`：review/verify/cleanup 共享反模式。
 - 行为级验证：`../verify/SKILL.md`
 - 失败诊断：`../diagnose/SKILL.md`

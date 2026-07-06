@@ -46,6 +46,7 @@ description: "用于给具体 ready/done/merge claim 收集 fresh evidence 并�
 3. `git status --short`：确认最后改动后哪些证据已过期。
 4. 项目验证入口：README、`AGENTS.md`、package/build/test config。
 5. 当前 slice 涉及的 source/test/docs 路径。
+6. review 产出的 `verify_handoff_cases`（若有）— 对抗式验证清单，每个 case 是需要用 fresh evidence 验证的假设失败路径。不静默丢弃。
 
 ## Evidence Ladder
 
@@ -63,16 +64,18 @@ description: "用于给具体 ready/done/merge claim 收集 fresh evidence 并�
 
 详细选择规则见 `references/evidence-ladder.md`。
 
-## Capability Recommendation
+## Capability Gap Recording
 
-当验证能力不足时，按四个字段写推荐：
+当验证能力不足时，记录缺口并路由到 `harness-builder`，不在 verify 中做完整推荐：
 
-- **Value**: what risk the capability would cover.
-- **Enablement**: how the user or project would enable it.
-- **Risk / cost**: setup overhead, flake risk, security implications.
-- **Fallback**: what can be done now without installing it.
+```text
+Capability gap: <缺失能力>
+Risk: <未覆盖的验证风险>
+Fallback now: <当前替代证据>
+Route: harness-builder
+```
 
-本 skill 不安装任何能力，只记录 required/recommended/deferred 的验证能力缺口。项目级安装或配置交给 `harness-builder`。
+verify 不评估工具方案、不写安装指南、不输出 Capability Recommendation Table。项目级能力安装和完整推荐格式交给 `harness-builder`（见 `../harness-builder/references/recommendation_matrix_policy.md`）。
 
 ## 执行流程
 
@@ -80,17 +83,56 @@ description: "用于给具体 ready/done/merge claim 收集 fresh evidence 并�
 
 写一句话："We are verifying that `<active slice>` is ready because `<success criteria>`." 写不出来就回 planning 或 review。
 
+### 第 1.5 步 — Consume Review Handoff Cases
+
+若上一步 review 产出了 `verify_handoff_cases`，逐条映射到后续 checks 选择中。每个 handoff case 必须：
+
+- 绑定到具体验证命令（如 "run `npm test -- --grep 'timeout'` 验证边界条件"），或
+- 记录为 `unknown` 并加原因（如 "无法在当前环境构造时序竞争"）
+
+不静默丢弃 review 的 handoff cases。若 review 未产出 handoff cases（无 review 步骤或 review 无此项），跳过本步。
+
 ### 第 2 步 — Identify Evidence Freshness
 
 判断既有证据是否晚于最后相关改动、覆盖目标行为、在当前 cwd/env 运行、结果明确。
 
 ### 第 3 步 — Select Checks
 
-选择能覆盖风险的最小检查集。相关但跳过的高价值检查必须说明原因。
+选择能覆盖风险的最小检查集。读取 `references/evidence-ladder.md` 的"按改动类型选择"表，按当前改动类型定位推荐阶梯组合。相关但跳过的高价值检查必须说明原因。
 
 ### 第 4 步 — Run Checks
 
-按文档命令运行，记录 command、cwd、result、输出摘要、freshness 和跳过原因。检查失败就转 `diagnose`。
+按文档命令运行，记录 command、cwd、result、输出摘要、freshness 和跳过原因。检查失败就转 `diagnose`。保留所有命令的原始输出——不要只保留你的解读，Cold Verification Pass 需要原始输出。
+
+### 第 4.5 步 — Cold Verification Pass（隔离验证）
+
+对中高风险改动（逻辑/行为/API/安全，非纯文档/格式），尝试将证据交给隔离的验证子进程独立判断。
+
+**为什么需要**：同一 agent 在同一个 session 中既实现又验证，存在自我确认偏差。Cold verifier 不共享实现者的上下文、推理链或既得结论，只接收 artifact + criteria + 原始命令输出，独立判断证据是否真正证明 ready。
+
+**三端 dispatch 机制**：
+
+| 环境 | Dispatch 方式 | Cold verifier 接收 |
+| --- | --- | --- |
+| Codex | `codex exec` + cold verification packet | diff + success criteria + 原始命令输出 |
+| Claude Code | `Agent` 工具（独立子 agent） | `skills/verify/references/cold-verifier-prompt.md` + diff + criteria + 原始输出 |
+| Cursor | subagent + isolated context | 同上 |
+
+**Cold verifier 不接收**：实现者的解读、review 结论、聊天上下文、实现者的 ready opinion。
+
+**适用判断**：
+
+| 改动类型 | Cold Verification |
+| --- | --- |
+| 纯文档/注释/格式化 | 跳过，记录 `cold_verification: skipped (low_risk)` |
+| 逻辑/行为/API/配置/安全 | 必须尝试 |
+
+**Fallback**：dispatch 失败或环境不支持时，记录 `cold_verification_attempted: false`、失败原因，回退到主流程自判。不静默跳过——输出中必须出现 `cold_verification` 字段。
+
+**消费 Cold Verdict**：
+- `CONFIRMED`：cold verifier 同意证据充分 → 增强 ready 信心
+- `DISPUTED`：cold verifier 认为证据不足以证明某项 criteria → 该项必须标记为 `unknown` 或回 `diagnose`
+- `INSUFFICIENT`：cold verifier 认为整体证据不足 → 不能声明 ready，回 `diagnose` 或记录 capability gap
 
 ### 第 5 步 — Compare Against Success Criteria
 
@@ -174,10 +216,16 @@ Freshness:
   - Evidence after change: yes|no
 
 Capabilities:
-  - recommended: <none | capability + value/enablement/risk/fallback>
+  - recorded gaps: <none | gap + risk + fallback + route>
 
 Risks:
   - ...
+
+Cold verification:
+  - attempted: yes|no
+  - mechanism: <codex_exec | agent_subagent | cursor_subagent | n/a>
+  - verdict: confirmed|disputed|insufficient|skipped
+  - skip_reason: <low_risk | tool unavailable | cost disproportionate | other>
 
 Ready:
   - YES|NO
@@ -198,10 +246,11 @@ Verification should produce the next lane from evidence, not from optimism.
 
 ## 常见反模式
 
+共享反模式见 `../review/references/cross-cutting-anti-patterns.md`（AGENTS.md 当会话笔记、角色混淆/verify 中修 bug、静默跳过/不记录、不对照 success criteria）。
+
+verify 特有反模式：
+
 - **Counting old commands as proof.** Evidence must be after the relevant change.
-- **Running broad checks without mapping to success criteria.**
-- **Skipping E2E silently.**
-- **Fixing during verification.** If a command fails, switch to `diagnose`.
 - **Claiming ready with unknowns.** Unknown is not pass.
 - **Missing final integration claim.** Local slice proof is not enough for multi-stage work.
 
@@ -212,7 +261,8 @@ Verification should produce the next lane from evidence, not from optimism.
 - [ ] Multi-stage work maps `final_integration_claim` to evidence.
 - [ ] Verification record includes claim_id、covered_paths、latest_change_ref、commands、skipped checks、unknowns 和 ready verdict。
 - [ ] Relevant evidence ladder rungs are run or skipped with reasons.
-- [ ] Capability gap is absent or documented with value/enablement/risk/fallback.
+- [ ] Capability gap is absent or recorded with gap/risk/fallback/route format.
+- [ ] 中高风险改动已尝试 Cold Verification Pass；若跳过或失败，已记录原因。
 - [ ] selected recovery surface records commands, results, timestamp, and limits when required.
 - [ ] 当 commit unit 存在时，已评估 commit eligibility。
 - [ ] Output routes to the next skill.
@@ -224,7 +274,9 @@ Verification should produce the next lane from evidence, not from optimism.
 
 ## 按需读取
 
-- `references/evidence-ladder.md`：detailed verification selection rules。
-- `references/capability-recommendations.md`：recommendation format and examples。
+- `references/evidence-ladder.md`：detailed verification selection rules and scenario mapping。
+- `references/capability-recommendations.md`：capability gap recording format and examples。
+- `references/cold-verifier-prompt.md`：Cold Verification Pass 隔离子进程 prompt。
+- `../review/references/cross-cutting-anti-patterns.md`：review/verify/cleanup 共享反模式。
 - `../diagnose/SKILL.md`：route here on failed verification。
 - `../cleanup/SKILL.md`：route here after PASS。

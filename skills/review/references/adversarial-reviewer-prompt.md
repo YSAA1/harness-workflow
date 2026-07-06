@@ -53,7 +53,8 @@ Scope:
     - mechanism: subagent|codex_exec_review|codex_exec_packet|packet_fallback
       command: command/tool/agent type or n/a
       status: completed|failed|skipped
-      fallback_reason: none|tiny diff|tool unavailable|tool failed|cost disproportionate|other
+      model_diversity: cross_family|same_family|unknown
+      fallback_reason: none|low_risk|tool unavailable|tool failed|cost disproportionate|other
       failure_summary: none|short failure output
   - Final reviewer mechanism: subagent|codex_exec_review|codex_exec_packet|packet_fallback
   - Fallback summary: none|why next layer/final fallback was used
@@ -101,3 +102,4 @@ Next:
 - Do not ignore generated artifacts, docs, or install surfaces when the diff changes workflow behavior.
 - Do not let the implementer narrative override repo evidence.
 - Prefer concrete file paths, commands, and behavior paths over vague confidence.
+- **Model diversity**: When the environment supports it (e.g. Codex can route to a different model family; Claude Code can dispatch to a different model via Agent tool), prefer a reviewer from a different model family than the implementer. Same-family review inherits implementer biases (Zheng et al. 2023). If cross-model review is unavailable, record `model_diversity: same_family` in the reviewer attempts log and proceed — context isolation alone still provides meaningful independence.

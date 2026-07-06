@@ -201,27 +201,27 @@ pre {
         </div>
       </article><article class="panel skill-card">
         <h3><a href="review.html">review</a></h3>
-        <p class="muted">证据评审 · 243 行 · 7 个流程步</p>
+        <p class="muted">证据评审 · 260 行 · 7 个流程步</p>
         <p>review 必须同时检查&quot;做超了&quot;和&quot;做欠了&quot;。它可以判断&quot;没有结构性 blocker&quot;，但不能作为最终 ready gate。通过后仍路由到 verify；若已有 fresh evidence，则走 verify fast-path 做短重检和 claim mapping。 默认原则：meaningful diff 必须先尝试 隔离 reviewer，失败、不可用或成本明显不成比例时才 fallback。隔离优先级： 1. read-only subagent / independent reviewer。 2. Codex 环境中的 codex exec review。 3. Codex 环境中的 codex exec + review packet + reviewer prompt。 4. pack...</p>
         <div class="meta">
-          <span class="tag">2 个 reference</span>
+          <span class="tag">4 个 reference</span>
           <span class="tag">10 条验收项</span>
         </div>
       </article><article class="panel skill-card">
         <h3><a href="verify.html">verify</a></h3>
-        <p class="muted">最终验证 · 231 行 · 8 个流程步</p>
+        <p class="muted">最终验证 · 283 行 · 10 个流程步</p>
         <p>把&quot;可以结束&quot;转化为可追溯证据：每条成功标准都必须对应 fresh command、smoke/E2E 或明确的未验证限制。 用结构化 verification record 绑定 claim、路径、最后改动、命令、跳过项、unknown 和 ready verdict。</p>
         <div class="meta">
-          <span class="tag">2 个 reference</span>
-          <span class="tag">9 条验收项</span>
+          <span class="tag">3 个 reference</span>
+          <span class="tag">10 条验收项</span>
         </div>
       </article><article class="panel skill-card">
         <h3><a href="cleanup.html">cleanup</a></h3>
-        <p class="muted">Knowledge Cleanup · 188 行 · 7 个流程步</p>
+        <p class="muted">Knowledge Cleanup · 202 行 · 8 个流程步</p>
         <p>- 保持 AGENTS.md 是薄规则手册，不写 changelog、临时状态或会话叙事。 - 确保 README、docs、generated artifacts 和验证命令描述当前真实项目。 - 检查 recovery surface 是否漂移、膨胀或与 git diff 矛盾。 - 把未解决的 doc drift 和 residual risk 记录成明确 follow-up。</p>
         <div class="meta">
           <span class="tag">2 个 reference</span>
-          <span class="tag">6 条验收项</span>
+          <span class="tag">7 条验收项</span>
         </div>
       </article><article class="panel skill-card">
         <h3><a href="find-skills.html">find-skills</a></h3>

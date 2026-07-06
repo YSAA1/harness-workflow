@@ -35,3 +35,28 @@
 - README / AGENTS 命令没有漂移。
 - 没有把临时状态写进 durable instructions。
 - 没有用 cleanup 掩盖未验证内容。
+
+## Deferred Cleanup 记录格式
+
+清理时发现但跳过的项，写入 selected recovery surface 的 `deferred_cleanup`：
+
+```text
+deferred_cleanup:
+  - item: <文件路径或 artifact 名>
+    reason: <为何不确定能否清理 | 未到清理时机 | 用途不明>
+    risk: <如果一直不清理会怎样>
+    reevaluate_when: <下次清理的触发条件 | 下个 session | 特定 milestone 后>
+```
+
+示例：
+```text
+deferred_cleanup:
+  - item: temp/debug-output.log
+    reason: 不确定是否还有进程在写入
+    risk: 低，仅占用磁盘
+    reevaluate_when: 下次 cleanup
+  - item: docs/skill-flow-review/old-flow.html
+    reason: 可能是旧版生成物，需确认生成脚本是否仍产出此文件
+    risk: 中，可能误导用户
+    reevaluate_when: 运行 generate-skill-flow-html.mjs 后确认
+```

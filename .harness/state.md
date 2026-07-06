@@ -4,59 +4,55 @@
 
 ## Objective
 
-把 `harness-builder` 从过厚的多职责入口拆成一个轻 controller 和三个可顶层调用的辅助 skill，同时从活跃产品语义中完全移除 Research Route / autoresearch，并保持 Codex、Claude Code、Cursor 三端表面一致。
+对 `review`、`verify`、`cleanup` 三个 workflow skill 做针对性优化：修复 review→verify 的 handoff case 协议断裂、简化 verify 的 capability recommendation 职责越界、三端通用化 review 隔离机制、为 verify 增加 Cold Verification Pass、增加 review 对抗式攻击分类法、增强 verify evidence ladder 场景映射、引入 cleanup deferred cleanup registry、提取跨 skill 共享反模式。
 
 ## Active slice
 
-Implementation complete; milestone commits pushed to remote.
+阶段 2（当前）：Review 隔离机制三端通用化。
 
 ## Non-goals
 
-- 不新增第九条 workflow lane。
-- 不把 `capability-recommender` 或 `agent-instructions-maintainer` 从零重写。
-- 不默认采用 `planning-with-files` 的 root `task_plan.md` / `findings.md` / `progress.md`。
-- 不保留 `docs/integrations/autoresearch.md` archive。
-- 不绑定 `@Autoresearch-Guard` 或任何外部 research-governance 插件。
-- 不修改用户级配置、全局 skills、MCP、hooks 或外部 marketplace。
+- 不改动 `brainstorm`、`plan`、`implement`、`diagnose`、`harness-builder` 或辅助 skill。
+- 不改动 `.harness/` recovery surface 的字段语义。
+- 不改动 `docs/harness-method-contract.md` 的 C6/C8/C9 核心契约。
+- 不改动三端 plugin manifest 或 marketplace catalog。
+- 不引入新的 workflow lane 或 helper skill。
 
 ## Current phase
 
-complete; pushed
+阶段 2：Review 隔离机制三端通用化
 
 ## Success criteria
 
-- [x] `harness-builder` 主入口只负责 evidence-first orchestration、Recommendation Plan、USER CHECKPOINT 和 helper routing。
-- [x] 顶层辅助 skill 存在并可被发现：`capability-recommender`、`agent-instructions-maintainer`、`recovery-surface-builder`。
-- [x] `capability-recommender` 和 `agent-instructions-maintainer` 是 Anthropic 官方 skill 的复制适配版，并包含清楚的来源、license / attribution 处理。
-- [x] `recovery-surface-builder` 以当前 `harness-builder` recovery model 为主参考，并吸收 `planning-with-files` 的持久工作记忆纪律，但不默认创建 root 三文件。
-- [x] 活跃产品面不再声明内置 Research Route / autoresearch / Evidence Loop / Research Reset Policy。
-- [x] 三端结构验证和 Cursor dry-run 通过。
+- [x] review 产出的 verify_handoff_cases 在 verify 的流程中有显式消费步骤。
+- [x] verify 的 Capability Recommendation 逻辑简化为"记录缺口 → route to harness-builder"。
+- [ ] review 隔离机制三端通用化（Codex / Claude Code / Cursor 各有明确路径）。
+- [ ] verify 增加 Cold Verification Pass（三端隔离验证子步骤）。
+- [ ] review 的 adversarial pass 增加了攻击假设分类法。
+- [ ] verify 的 evidence ladder 增加了常见改动类型的阶梯组合推荐。
+- [ ] cleanup 增加了 deferred cleanup registry 机制。
+- [ ] 跨 skill 共享反模式已提取为独立参考文件。
+- [ ] 三端结构验证通过。
+- [ ] Skill flow HTML 重新生成通过。
 
 ## Verification evidence
 
-- `node scripts/generate-skill-flow-html.mjs` -> PASS，Generated 13 HTML files。
-- `node scripts/check-plugin.mjs` -> PASS。
-- `node scripts/check-claude-code-install.mjs` -> PASS。
-- `node scripts/check-cursor-install.mjs` -> PASS。
-- `node scripts/install-cursor.mjs --target . --dry-run` -> PASS，dry-run includes three new helper skills。
-- `git diff --check` -> PASS。
-- Targeted `rg` over public active docs for removed research tokens -> no matches。
-- `python -m unittest skills.harness-builder.tests.test_scripts` -> PASS when rerun outside sandbox; sandbox run failed because Windows user Temp was not writable.
-- Official-helper check: Anthropic reference files copied byte-for-byte; adapted `SKILL.md` files are official body plus narrow rename/adaptation/next-skill additions.
+- 阶段 1: `node scripts/check-plugin.mjs` → PASS（10/10）
+- `grep -n "handoff" skills/verify/SKILL.md` → 确认 handoff cases 在第 1.5 步被消费
+- `grep -n "Capability" skills/verify/SKILL.md` → 确认改为 Capability Gap Recording，不再做完整推荐
 
 ## Next actions
 
-- [x] 写入 Spec：`docs/specs/2026-07-06--harness-builder-skill-split.md`
-- [x] 写入 Executable Plan：`docs/plans/2026-07-06--harness-builder-skill-split-plan.md`
-- [x] 阶段 1：删除 Research Route / autoresearch 活跃产品语义
-- [x] 阶段 2：读取官方 helper skill 源码并准备 attribution
-- [x] 阶段 3：复制适配 `capability-recommender`
-- [x] 阶段 4：复制适配 `agent-instructions-maintainer`
-- [x] 阶段 5：抽出 `recovery-surface-builder`
-- [x] 阶段 6：`harness-builder` controller 化与文档同步
-- [x] 阶段 7：生成物刷新与验证
-- [x] 阶段 8：中文 milestone commit 并 push 到远端
+- [x] 阶段 1：修复 review→verify handoff case 协议断裂 + verify Capability Recommendation 简化
+- [ ] 阶段 2：Review 隔离机制三端通用化（当前）
+- [ ] 阶段 3：Verify Cold Verification Pass
+- [ ] 阶段 4：新建 review 攻击假设分类法 reference
+- [ ] 阶段 5：增强 verify evidence ladder 场景映射
+- [ ] 阶段 6：增加 cleanup deferred cleanup registry
+- [ ] 阶段 7：提取跨 skill 共享反模式
+- [ ] 阶段 8：生成物刷新 + 全量验证 + milestone commits
 
 ## Risks
 
-- Worktree 仍有任务开始前已存在的 unrelated 改动，已在提交中排除。
+- Cold Verification Pass 依赖三端各自的子进程/子 agent 能力，需在 reference 文件中明确各端的隔离等级（强/中/弱）。
+- review 隔离机制三端化以"增加 Claude Code / Cursor 路径 + 统一 fallback 规则"为主，不删除现有 Codex 路径。

@@ -9,6 +9,7 @@
 | 003 | 中文默认 + 可打勾计划文件 | complete | `docs/plans/2026-06-29--checkbox-chinese-plan-docs-plan.md` | 2026-06-29 |
 | 004 | plan skill 主文件瘦身 | blocked | `skills/plan/SKILL.md` | 2026-06-29 |
 | 005 | harness-builder skill 拆分与 Research Route 移除 | complete | `docs/plans/2026-07-06--harness-builder-skill-split-plan.md` | 2026-07-06 |
+| 006 | review / verify / cleanup 三 skill 优化 | active | `docs/plans/2026-07-06--review-verify-cleanup-optimization-plan.md` | — |
 
 Status values: `active`, `blocked`, `complete`, `abandoned`
 

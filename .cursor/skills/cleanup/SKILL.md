@@ -114,6 +114,12 @@ Allowed when obviously created by this task:
 
 未解决的 drift 写成明确 follow-up：位置、风险、建议下一步、是否阻塞 ready。
 
+### 第 6.5 步 — Record Deferred Cleanup
+
+本次发现但跳过的低风险 entropy（用途不明文件、不确定是否能清理的 residue、未到清理时机的旧 artifact）写入 selected recovery surface 的 `deferred_cleanup` 字段。格式见 `references/entropy-checklist.md`。
+
+目的：不让"这次不确定，下次再说"变成永久遗忘。下次 cleanup 启动时先读取 `deferred_cleanup`，逐条重新评估是否达到清理条件。
+
 ### 第 7 步 — Final Git State Summary
 
 报告 related changes、unrelated dirty files left alone、removed/deferred residue。报告 milestone commits 完成情况。
@@ -137,6 +143,11 @@ Entropy cleanup:
   - removed: ...
   - deferred: ...
 
+Deferred cleanup (for next session):
+  - item: <文件或 artifact>
+    reason: <为何跳过>
+    reevaluate_when: <下次清理的触发条件>
+
 Git state:
   - related changes:
   - unrelated changes left alone:
@@ -159,11 +170,12 @@ Cleanup is normally the closing lane. Recommend another skill only when the clea
 
 ## 常见反模式
 
-- **Using cleanup to hide unfinished work.**
-- **Deleting uncertain files.**
-- **Treating doc drift as minor by default.**
+共享反模式见 `../review/references/cross-cutting-anti-patterns.md`（AGENTS.md 当会话笔记、角色混淆/cleanup 隐藏未完成工作、静默跳过/文档漂移当 minor、不对照 source of truth）。
+
+cleanup 特有反模式：
+
+- **Deleting uncertain files.** 不确定用途的文件先问或 defer，不静默删除。
 - **在 cleanup 中创建新系统。** 不引入 hooks、MCP 或新的状态文件。
-- **Updating `AGENTS.md` with session notes.**
 
 ## 验收标准
 
@@ -171,6 +183,7 @@ Cleanup is normally the closing lane. Recommend another skill only when the clea
 - [ ] Fresh evidence is recorded or lack of evidence routes away from cleanup.
 - [ ] `AGENTS.md`、README、docs、generated artifacts 和 recovery surface 已比较。
 - [ ] Low-risk cleanup is separated from deferred high-risk cleanup.
+- [ ] Deferred items are recorded in selected recovery surface's `deferred_cleanup` with reason and reevaluate condition.
 - [ ] Generated artifacts are regenerated, not hand-edited.
 - [ ] Unrelated dirty files are preserved.
 
@@ -182,6 +195,7 @@ Cleanup is normally the closing lane. Recommend another skill only when the clea
 
 ## 按需读取
 
-- `references/entropy-checklist.md`：safe vs unsafe cleanup examples。
+- `references/entropy-checklist.md`：safe vs unsafe cleanup examples and deferred cleanup format。
 - `references/handoff-hygiene.md`：pause/close handoff hygiene checklist。
+- `../review/references/cross-cutting-anti-patterns.md`：review/verify/cleanup 共享反模式。
 - `../harness-builder/references/recovery_surface_policy.md`：recovery surface drift repair。
