@@ -135,3 +135,9 @@
   - public-doc removed-token `rg` -> no matches
   - `python -m unittest skills.harness-builder.tests.test_scripts` -> sandbox Temp permission failed first, rerun with escalation -> PASS
 - Review：self-review 无 Critical / Important findings；剩余风险是 worktree 存在 unrelated dirty files，提交需按路径 staging。
+
+## 2026-07-06 — harness-builder 拆分提交与远端同步
+
+- Milestone commit: `d0afa41 拆分 harness-builder helper skill`。
+- Push: `git push origin master` 命令超时，但本地 `origin/master` 已更新；随后 `git ls-remote origin refs/heads/master` 确认远端 master 指向 `d0afa417663efce145a9518878e5c91adb74b23c`。
+- Unrelated dirty files intentionally left unstaged: `.gitignore`、旧 plugin-eval plan/PDF、`skills/brainstorm` 及其 Cursor/package mirror、`docs/skill-flow-review/brainstorm.html`、`.codex/`、`.review-artifacts/`、`revise_plan.md`。

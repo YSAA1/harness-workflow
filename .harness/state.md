@@ -8,7 +8,7 @@
 
 ## Active slice
 
-Implementation verified; pending milestone commit and push.
+Implementation complete; milestone commits pushed to remote.
 
 ## Non-goals
 
@@ -21,7 +21,7 @@ Implementation verified; pending milestone commit and push.
 
 ## Current phase
 
-verified; pending commit and push
+complete; pushed
 
 ## Success criteria
 
@@ -55,8 +55,8 @@ verified; pending commit and push
 - [x] 阶段 5：抽出 `recovery-surface-builder`
 - [x] 阶段 6：`harness-builder` controller 化与文档同步
 - [x] 阶段 7：生成物刷新与验证
-- [ ] 阶段 8：中文 milestone commit 并 push 到远端
+- [x] 阶段 8：中文 milestone commit 并 push 到远端
 
 ## Risks
 
-- Worktree 仍有任务开始前已存在的 unrelated 改动；commit 必须显式按路径 staging，避免混入。
+- Worktree 仍有任务开始前已存在的 unrelated 改动，已在提交中排除。
