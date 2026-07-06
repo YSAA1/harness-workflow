@@ -28,7 +28,6 @@ const fileMap = {
   antiEntropy: path.join(targetPath, "references", "anti_entropy.md"),
   verification: path.join(targetPath, "references", "verification_policy.md"),
   subagentPolicy: path.join(targetPath, "references", "subagent_orchestration.md"),
-  researchRoute: path.join(targetPath, "references", "research_route_policy.md"),
   architecture: path.join(targetPath, "references", "architecture_enforcement_policy.md"),
   mcp: path.join(targetPath, "references", "automation_mcp_servers.md"),
   hooks: path.join(targetPath, "references", "automation_hooks_patterns.md"),
@@ -407,7 +406,7 @@ const groups = {
     id: "dynamic_state_surface",
     label: "dynamic state stays out of AGENTS",
     file: "skill",
-    tokens: ["Dynamic state", "`active_slice`", "Research Route state"],
+    tokens: ["active state", "active slice", "selected recovery surface"],
   },
   verification_fast_local_safe: {
     id: "verification_fast_local_safe",
@@ -529,41 +528,23 @@ const groups = {
     file: "subagentPolicy",
     tokens: ["user explicitly requests delegation", "main agent alone"],
   },
-  research_route_explicit: {
-    id: "research_route_explicit",
-    label: "research route is explicit and project-local",
-    file: "researchRoute",
-    tokens: ["explicitly asks for autoresearch", "not a ninth workflow lane"],
+  external_research_not_builtin: {
+    id: "external_research_not_builtin",
+    label: "external research governance is not built in",
+    file: "skill",
+    tokens: ["External research-governance wiring is intentionally outside this plugin", "Do not create research gates"],
   },
-  research_route_contract: {
-    id: "research_route_contract",
-    label: "research route has a bounded contract",
-    file: "researchRoute",
-    tokens: ["Goal, Hypothesis, Counter-hypothesis", "Metric, Verify, Guard, Budget", "Stop rule"],
+  research_task_not_harness_execution: {
+    id: "research_task_not_harness_execution",
+    label: "research tasks are not performed by harness-builder",
+    file: "skill",
+    tokens: ["It is not a lane for performing the feature, bugfix, or research task described by the user"],
   },
-  research_isolation: {
-    id: "research_isolation",
-    label: "research route isolates work",
-    file: "researchRoute",
-    tokens: ["Default to isolated worktree or branch", "Record isolation mode"],
-  },
-  research_graduation: {
-    id: "research_graduation",
-    label: "research route graduates with winner or no-winner",
-    file: "researchRoute",
-    tokens: ["Winner", "no-winner", "preserve learning"],
-  },
-  research_entropy_gate: {
-    id: "research_entropy_gate",
-    label: "research route has entropy gate",
-    file: "researchRoute",
-    tokens: ["Entropy gate", "Drop deps introduced only for failed experiments", "Graduate only when entropy is removed"],
-  },
-  research_closeout: {
-    id: "research_closeout",
-    label: "research route closes through review and cleanup",
-    file: "researchRoute",
-    tokens: ["route through `review` then `cleanup`"],
+  external_research_fit_row: {
+    id: "external_research_fit_row",
+    label: "external research remains a capability-fit row",
+    file: "matrix",
+    tokens: ["External research fit", "research notes", "source list"],
   },
   commands_ci_repeatable_workflows: {
     id: "commands_ci_repeatable_workflows",
@@ -935,17 +916,14 @@ function main() {
       remediation: ["Treat subagents as signal-bound gap reducers, keep main-agent write ownership, and avoid delegating the immediate blocker."],
     }),
     evaluateCheck({
-      id: "hb-research-route-discipline",
+      id: "hb-external-research-boundary",
       requiredGroupIds: [
-        "research_route_explicit",
-        "research_route_contract",
-        "research_isolation",
-        "research_graduation",
-        "research_entropy_gate",
-        "research_closeout",
+        "external_research_not_builtin",
+        "research_task_not_harness_execution",
+        "external_research_fit_row",
       ],
-      message: "Research Route contract, isolation, graduation, and closeout discipline",
-      remediation: ["Require explicit Research Route contracts, bounded loops, preserved failed knowledge, entropy gate, review, and cleanup."],
+      message: "External research governance boundary",
+      remediation: ["Keep external research governance outside harness-builder while allowing capability-fit recommendations for source-backed research needs."],
     }),
     evaluateCheck({
       id: "hb-commands-ci-headless-discipline",
@@ -1042,13 +1020,10 @@ function main() {
     "subagent_not_for_immediate_blocker",
     "subagent_required_only_when_needed",
   ];
-  const researchContractGroups = [
-    "research_route_explicit",
-    "research_route_contract",
-    "research_isolation",
-    "research_graduation",
-    "research_entropy_gate",
-    "research_closeout",
+  const externalResearchBoundaryGroups = [
+    "external_research_not_builtin",
+    "research_task_not_harness_execution",
+    "external_research_fit_row",
   ];
   const matrixContractGroups = [
     "recommendation_contract_fields",
@@ -1073,7 +1048,7 @@ function main() {
     metric("hb_verification_contract_count", matchedGroupCount(verificationContractGroups), "groups", bandForCount(matchedGroupCount(verificationContractGroups), 5, 4, 3)),
     metric("hb_entropy_contract_count", matchedGroupCount(entropyContractGroups), "groups", bandForCount(matchedGroupCount(entropyContractGroups), 8, 6, 5)),
     metric("hb_orchestration_contract_count", matchedGroupCount(orchestrationContractGroups), "groups", bandForCount(matchedGroupCount(orchestrationContractGroups), 8, 6, 4)),
-    metric("hb_research_contract_count", matchedGroupCount(researchContractGroups), "groups", bandForCount(matchedGroupCount(researchContractGroups), 6, 5, 4)),
+    metric("hb_external_research_boundary_count", matchedGroupCount(externalResearchBoundaryGroups), "groups", bandForCount(matchedGroupCount(externalResearchBoundaryGroups), 3, 2, 1)),
     metric("hb_matrix_contract_count", matchedGroupCount(matrixContractGroups), "groups", bandForCount(matchedGroupCount(matrixContractGroups), 6, 5, 4)),
     metric("hb_commands_ci_contract_count", matchedGroupCount(commandsContractGroups), "groups", bandForCount(matchedGroupCount(commandsContractGroups), 4, 3, 2)),
     metric("hb_capability_category_count", capabilityCategoryCount(), "categories", bandForCount(capabilityCategoryCount(), 6, 5, 4)),

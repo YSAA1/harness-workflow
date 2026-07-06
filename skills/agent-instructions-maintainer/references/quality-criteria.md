@@ -1,4 +1,4 @@
-# CLAUDE.md Quality Criteria
+# Agent Instructions Quality Criteria
 
 ## Scoring Rubric
 

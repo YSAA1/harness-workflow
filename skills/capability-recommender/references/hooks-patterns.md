@@ -1,6 +1,6 @@
 # Hooks Recommendations
 
-Hooks automatically run commands in response to Claude Code events. They're ideal for enforcement and automation that should happen consistently.
+Hooks automatically run commands in response to agent runtime or repository events. They're ideal for enforcement and automation that should happen consistently.
 
 **Note**: These are common patterns. Use web search to find hooks for tools/frameworks not listed here to recommend the best hooks for the user.
 
@@ -216,11 +216,11 @@ Notification hooks run when Claude Code sends notifications. Use matchers to fil
 
 ## Hook Placement
 
-Hooks go in `.claude/settings.json`:
+For Claude Code targets, hooks go in `.claude/settings.json`; for other runtimes, map the recommendation to the runtime's supported hook or script surface:
 
 ```
 .claude/
 └── settings.json  ← Hook configurations here
 ```
 
-Recommend creating the `.claude/` directory if it doesn't exist.
+Recommend creating the runtime-specific config directory only after user approval.

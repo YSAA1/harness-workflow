@@ -1,4 +1,4 @@
-# CLAUDE.md Templates
+# Agent Instruction Templates
 
 ## Key Principles
 
@@ -245,7 +245,7 @@ For packages within a monorepo or distinct modules.
 
 ## Update Principles
 
-When updating any CLAUDE.md:
+When updating any durable agent instruction file:
 
 1. **Be specific**: Use actual file paths, real commands from this project
 2. **Be current**: Verify info against the actual codebase

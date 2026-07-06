@@ -1,6 +1,6 @@
 # Skills Recommendations
 
-Skills are packaged expertise with workflows, reference materials, and best practices. Create them in `.claude/skills/<name>/SKILL.md`. Skills can be invoked by Claude automatically when relevant, or by users directly with `/skill-name`.
+Skills are packaged expertise with workflows, reference materials, and best practices. Recommend the correct target surface: Codex skills/plugins, Claude Code `.claude/skills/<name>/SKILL.md`, Cursor skills/rules, or a project-local workflow. Skills can be invoked by the runtime when relevant or by users directly when the runtime supports direct invocation.
 
 Some pre-built skills are available through official plugins (install via `/plugin install`).
 
@@ -64,7 +64,7 @@ Some pre-built skills are available through official plugins (install via `/plug
 
 ## Custom Project Skills
 
-Create project-specific skills in `.claude/skills/<name>/SKILL.md`.
+Create project-specific skills in the target runtime's skill surface, for example Claude Code `.claude/skills/<name>/SKILL.md` when Claude Code is the target.
 
 ### Skill Structure
 
@@ -324,7 +324,7 @@ Generate release notes:
 
 ---
 
-### Project Conventions (Claude-only)
+### Project Conventions (Background-only)
 
 Background knowledge Claude applies automatically:
 

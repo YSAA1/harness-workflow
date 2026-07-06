@@ -23,7 +23,7 @@
 - `docs/prd/`: 历史 PRD / 旧本地需求文档；不要作为新 Spec 或 Plan 的默认写入面。
 - `docs/adr/`: 架构决策记录。
 - `docs/tutorials/`: 使用教程和指南。
-- `docs/integrations/`: 可选外部工作流集成说明（如 autoresearch）。
+- `docs/integrations/`: 可选外部工作流集成说明（如 SkillOpt）。
 - `docs/skill-flow-review/`: 由脚本生成的 skill 流程审阅 HTML。
 - `.github/workflows/ci.yml`: GitHub Actions，运行三端安装/结构检查和 Cursor dry-run。
 - `scripts/check-plugin.mjs`: 插件结构和方法论覆盖的快速验证脚本。
@@ -48,7 +48,7 @@
 ## 项目铁律
 
 - 这是 plugin 仓库；所有改动必须保持 `.codex-plugin/plugin.json`、`README.md`、`docs/harness-method-contract.md` 和 `skills/*/SKILL.md` 之间语义一致。
-- Active workflow skills 只有 `harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`verify`、`cleanup`；`find-skills` 是辅助 skill，不是第九条 workflow lane。
+- Active workflow skills 只有 `harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`verify`、`cleanup`；`find-skills`、`capability-recommender`、`agent-instructions-maintainer`、`recovery-surface-builder` 是辅助 skill，不是额外 workflow lane。
 - `AGENTS.md` 只做薄入口（T1）；临时计划、会话摘要、active slice 和当前任务 plan/Spec 路径不要写进这里。
 - 运行时 recovery 统一在 `.harness/`；不要在仓库根创建 `task_plan.md`、`progress.md`、`findings.md`。
 - `harness-builder` 是 canonical 项目 harness skill；"bootstrap" 只能作为历史别名或触发词出现。

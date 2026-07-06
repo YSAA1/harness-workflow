@@ -1,12 +1,12 @@
 ---
 name: agent-instructions-maintainer
-description: Audit and improve durable agent instruction files such as CLAUDE.md, AGENTS.md, .claude.md, .claude.local.md, and Cursor rules. Adapted from Anthropic claude-md-improver for harness-workflow Codex, Claude Code, and Cursor surfaces.
+description: "Use when durable agent instructions need audit or repair: AGENTS.md, CLAUDE.md, .claude.md, .claude.local.md, canonical rules/*.mdc, or Cursor rule mirrors."
 tools: Read, Glob, Grep, Bash, Edit
 ---
 
 # Agent Instructions Maintainer
 
-Adapted from Anthropic official `claude-md-improver`. The main discovery, quality assessment, reporting, and targeted update workflow below are copied from the official skill, with harness-workflow notes added for AGENTS.md and Cursor rules.
+Adapted from Anthropic official `claude-md-improver`. The main discovery, quality assessment, reporting, and targeted update workflow below are copied from the official skill, with harness-workflow notes added for `AGENTS.md`, `CLAUDE.md`, and Cursor rules.
 
 Audit, evaluate, and improve durable agent instruction files across a codebase to ensure agents have optimal project context.
 
@@ -14,7 +14,8 @@ Audit, evaluate, and improve durable agent instruction files across a codebase t
 
 ## Harness Adaptation
 
-- Apply the official CLAUDE.md quality model to `AGENTS.md`, `CLAUDE.md`, `.claude.md`, `.claude.local.md`, and `.cursor/rules/*.mdc`.
+- Apply the official CLAUDE.md quality model to `AGENTS.md`, `CLAUDE.md`, `.claude.md`, `.claude.local.md`, canonical `rules/*.mdc`, and generated `.cursor/rules/*.mdc` mirrors.
+- Prefer the canonical project source when a generated mirror exists. In this repository, edit `rules/*.mdc` and regenerate/sync `.cursor/rules/*.mdc` instead of hand-editing the mirror.
 - Keep durable instructions thin and stable; active task state belongs in the selected recovery surface.
 - For recovery/state/progress/evidence surfaces, route to `recovery-surface-builder` instead of putting transient state in instructions.
 
@@ -25,31 +26,34 @@ Audit, evaluate, and improve durable agent instruction files across a codebase t
 Find all durable agent instruction files in the repository:
 
 ```bash
-find . \( -name "CLAUDE.md" -o -name "AGENTS.md" -o -name ".claude.md" -o -name ".claude.local.md" -o -path "*/.cursor/rules/*.mdc" \) 2>/dev/null | head -50
+find . \( -name "CLAUDE.md" -o -name "AGENTS.md" -o -name ".claude.md" -o -name ".claude.local.md" -o -path "*/rules/*.mdc" -o -path "*/.cursor/rules/*.mdc" \) 2>/dev/null | head -50
 ```
 
 **File Types & Locations:**
 
 | Type | Location | Purpose |
 |------|----------|---------|
-| Project root | `./CLAUDE.md` | Primary project context (checked into git, shared with team) |
+| Codex root | `./AGENTS.md` | Primary project context for Codex-style agents (checked into git, shared with team) |
+| Claude Code root | `./CLAUDE.md` | Primary project context for Claude Code (checked into git, shared with team) |
 | Local overrides | `./.claude.local.md` | Personal/local settings (gitignored, not shared) |
 | Global defaults | `~/.claude/CLAUDE.md` | User-wide defaults across all projects |
 | Package-specific | `./packages/*/CLAUDE.md` | Module-level context in monorepos |
+| Cursor canonical rules | `./rules/*.mdc` | Source rules that should be synced to Cursor preview surfaces |
+| Cursor generated rules | `./.cursor/rules/*.mdc` | Generated or adapter-synced Cursor rules; patch the canonical source when one exists |
 | Subdirectory | Any nested location | Feature/domain-specific context |
 
-**Note:** Claude auto-discovers CLAUDE.md files in parent directories, making monorepo setups work automatically.
+**Note:** Runtime discovery differs. Claude Code auto-discovers `CLAUDE.md`; Codex reads `AGENTS.md`; Cursor consumes `.cursor/rules/*.mdc` after adapter sync.
 
 ### Phase 2: Quality Assessment
 
-For each CLAUDE.md file, evaluate against quality criteria. See [references/quality-criteria.md](references/quality-criteria.md) for detailed rubrics.
+For each durable instruction file, evaluate against quality criteria. See [references/quality-criteria.md](references/quality-criteria.md) for detailed rubrics.
 
 **Quick Assessment Checklist:**
 
 | Criterion | Weight | Check |
 |-----------|--------|-------|
 | Commands/workflows documented | High | Are build/test/deploy commands present? |
-| Architecture clarity | High | Can Claude understand the codebase structure? |
+| Architecture clarity | High | Can an agent understand the codebase structure? |
 | Non-obvious patterns | Medium | Are gotchas and quirks documented? |
 | Conciseness | Medium | No verbose explanations or obvious info? |
 | Currency | High | Does it reflect current codebase state? |
@@ -69,7 +73,7 @@ For each CLAUDE.md file, evaluate against quality criteria. See [references/qual
 Format:
 
 ```
-## CLAUDE.md Quality Report
+## Agent Instructions Quality Report
 
 ### Summary
 - Files found: X
@@ -78,7 +82,7 @@ Format:
 
 ### File-by-File Assessment
 
-#### 1. ./CLAUDE.md (Project Root)
+#### 1. ./AGENTS.md (Project Root)
 **Score: XX/100 (Grade: X)**
 
 | Criterion | Score | Notes |
@@ -120,14 +124,14 @@ After outputting the quality report, ask user for confirmation before updating.
    - Verbose explanations when a one-liner suffices
 
 3. **Show diffs** - For each change, show:
-   - Which CLAUDE.md file to update
+   - Which durable instruction file to update
    - The specific addition (as a diff or quoted block)
    - Brief explanation of why this helps future sessions
 
 **Diff Format:**
 
 ```markdown
-### Update: ./CLAUDE.md
+### Update: ./AGENTS.md
 
 **Why:** Build command was missing, causing confusion about how to run the project.
 
@@ -147,7 +151,7 @@ After user approval, apply changes using the Edit tool. Preserve existing conten
 
 ## Templates
 
-See [references/templates.md](references/templates.md) for CLAUDE.md templates by project type.
+See [references/templates.md](references/templates.md) for durable instruction templates by project type.
 
 ## Common Issues to Flag
 
@@ -162,13 +166,13 @@ See [references/templates.md](references/templates.md) for CLAUDE.md templates b
 
 When presenting recommendations, remind users:
 
-- **`#` key shortcut**: During a Claude session, press `#` to have Claude auto-incorporate learnings into CLAUDE.md
-- **Keep it concise**: CLAUDE.md should be human-readable; dense is better than verbose
+- **Runtime shortcuts vary**: Claude Code supports `#` for incorporating learnings into `CLAUDE.md`; other runtimes may require explicit edits.
+- **Keep it concise**: durable instructions should be human-readable; dense is better than verbose
 - **Actionable commands**: All documented commands should be copy-paste ready
 - **Use `.claude.local.md`**: For personal preferences not shared with team (add to `.gitignore`)
 - **Global defaults**: Put user-wide preferences in `~/.claude/CLAUDE.md`
 
-## What Makes a Great CLAUDE.md
+## What Makes Great Agent Instructions
 
 **Key principles:**
 - Concise and human-readable

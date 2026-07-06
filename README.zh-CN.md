@@ -107,7 +107,8 @@ harness 不是一个更长的 prompt。它是围绕模型的一套项目运行�
 | 先看 repo truth，再谈流程 | agent 会检查 docs、源码布局、测试、git 状态、已有规则和 setup 命令，再判断项目是否真的 ready。 |
 | 恢复面是设计决策 | 有些任务不需要持久状态；有些需要 `.harness/recovery_policy.md` + `work_index.md`；跨会话工作用完整 `.harness/`；有些应复用 issue tracker 或已有 docs。 |
 | 能力必须匹配真实缺口 | Skills、MCP、hooks、subagents、plugins、commands、CI/headless automation、recovery surface 和 instruction surface 会作为独立 recommendation row 判断。Capability Recommendation 应输出易读推荐表：priority、type、recommendation、repo signal、value、install surface、approval needed、fallback、verification probe 和 classification；source/freshness/trust/risk 只在影响决策时展开。插件内置 helper skills 分别负责 skill 发现、能力推荐、指令维护和恢复面构建。推荐请求保持 read-only，直到 `USER CHECKPOINT`。 |
-| Helper skills 让 builder 变薄 | `capability-recommender` 和 `agent-instructions-maintainer` 主要复制并适配 Anthropic 官方插件 skill；`recovery-surface-builder` 从 `harness-builder` 抽出 recovery 工作，并吸收 planning-with-files 的持久工作记忆纪律，但不强制根目录三文件。 |`n| ready claim 必须有新证据 | `verify` 是唯一 ready gate。它会把每个“完成了”的声明绑定到当前证据：测试、构建输出、smoke check、截图、人工检查，或明确说明为什么无法验证。 |
+| Helper skills 让 builder 变薄 | `capability-recommender` 和 `agent-instructions-maintainer` 主要复制并适配 Anthropic 官方插件 skill；`recovery-surface-builder` 从 `harness-builder` 抽出 recovery 工作，并吸收 planning-with-files 的持久工作记忆纪律，但不强制根目录三文件。 |
+| ready claim 必须有新证据 | `verify` 是唯一 ready gate。它会把每个“完成了”的声明绑定到当前证据：测试、构建输出、smoke check、截图、人工检查，或明确说明为什么无法验证。 |
 | cleanup 是交付的一部分 | README 过期、生成物残留、状态不清、恢复笔记缺失，都不是小问题。下一个 agent 读不懂现场，工作就没有真正结束。 |
 
 ## `harness-builder` 应该放在哪里
@@ -152,7 +153,10 @@ Harness Workflow 只有八条 active workflow lane。Helper skills 是顶层可�
 | `review` | 有意义的改动已经稳定，需要在 ready 前做结构性检查。 | 关于正确性、测试缺口、文档漂移、范围膨胀、entropy 和残余风险的 findings。它不替代 verify。 | 通过后转 `verify` 或 verify fast-path，有 findings 转 `implement` 或 `diagnose` |
 | `verify` | agent 准备声明 work ready。 | 绑定具体成功标准、最后改动、命令、跳过项、unknown 和 ready verdict 的结构化 verification record。 | 通过转 `cleanup`，失败或缺能力转 `diagnose` / `harness-builder` |
 | `cleanup` | 工作完成、阻塞、放弃或准备交接。 | 更新后的项目知识、清理后的残留物，以及下个 agent 能读的恢复状态。 | stop，或把明确 follow-up 交给 `plan` / `implement` |
-| `capability-recommender` | 仓库需要只读能力推荐。 | 官方派生的推荐报告，覆盖 skills、hooks、MCP、subagents、plugins、scripts 和 CI/headless automation。 | 批准后转 `harness-builder` 或 `implement` |`n| `agent-instructions-maintainer` | durable agent instructions 需要审计或修复。 | 官方派生的质量报告和 `AGENTS.md`、`CLAUDE.md`、Cursor rules 定向 patch plan。 | 批准 patch 后转 `verify` |`n| `recovery-surface-builder` | active state、progress、evidence 或 recovery 缺失/漂移。 | backend 选择、field map、`.harness` 或既有恢复面修复计划。 | 按状态转 `plan`、`verify` 或 `cleanup` |`n| `find-skills` | 当前任务可能受益于已有可复用 skill。 | 搜索候选 skill，并在推荐或安装前检查质量。 | 要纳入项目能力时转 `harness-builder` |`n
+| `capability-recommender` | 仓库需要只读能力推荐。 | 官方派生的推荐报告，覆盖 skills、hooks、MCP、subagents、plugins、scripts 和 CI/headless automation。 | 批准后转 `harness-builder` 或 `implement` |
+| `agent-instructions-maintainer` | durable agent instructions 需要审计或修复。 | 官方派生的质量报告和 `AGENTS.md`、`CLAUDE.md`、Cursor rules 定向 patch plan。 | 批准 patch 后转 `verify` |
+| `recovery-surface-builder` | active state、progress、evidence 或 recovery 缺失/漂移。 | backend 选择、field map、`.harness` 或既有恢复面修复计划。 | 按状态转 `plan`、`verify` 或 `cleanup` |
+| `find-skills` | 当前任务可能受益于已有可复用 skill。 | 搜索候选 skill，并在推荐或安装前检查质量。 | 要纳入项目能力时转 `harness-builder` |
 ## 常见路径
 
 ```text

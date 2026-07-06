@@ -1,6 +1,6 @@
 ---
 name: recovery-surface-builder
-description: "Use when a project needs a durable recovery surface for active work: work index, active slice, state, progress, decisions, risks, evidence, verification commands, or session catch-up. Extracted from harness-builder and informed by planning-with-files, without forcing a root three-file backend."
+description: "Use when active work needs a durable recovery surface: work index, active slice, state, progress, decisions, risks, evidence, verification commands, or session catch-up."
 ---
 
 # Recovery Surface Builder

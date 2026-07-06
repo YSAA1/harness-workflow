@@ -12,7 +12,7 @@ compatibility. The current pack scope is broader than install recommendations.
 - V0: deterministic static checks over `SKILL.md`, the Harness Method
   Contract, and harness-builder references. These checks cover scope boundary,
   recovery surface design, verification evidence, anti-entropy, architecture
-  enforcement, subagent orchestration, Research Route policy, language/output
+  enforcement, subagent orchestration, external research boundary, language/output
   protocol, and capability recommendations.
 - P1: deterministic scenario coverage fixtures under `scenarios/`. The
   scenario matrix covers real workbench design branches, not just install

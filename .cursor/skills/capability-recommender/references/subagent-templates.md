@@ -150,7 +150,7 @@ Subagents are specialized Claude instances that run in parallel, each with their
 
 ## Subagent Placement
 
-Subagents go in `.claude/agents/`:
+For Claude Code targets, subagents go in `.claude/agents/`; for other runtimes, map this to the available subagent/delegation surface or document it as a project-local review role:
 
 ```
 .claude/

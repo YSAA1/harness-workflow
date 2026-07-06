@@ -1,4 +1,4 @@
-# CLAUDE.md Update Guidelines
+# Agent Instructions Update Guidelines
 
 ## Core Principle
 

@@ -81,7 +81,13 @@ for (const file of [".agents/plugins/marketplace.json", ".claude-plugin/marketpl
 if (!fs.existsSync(packagedRoot)) {
   fail("missing packaged plugin root: plugins/harness-workflow");
 } else {
-  for (const file of [".codex-plugin/plugin.json", ".claude-plugin/plugin.json", ".cursor-plugin/plugin.json"]) {
+  for (const file of [
+    ".codex-plugin/plugin.json",
+    ".claude-plugin/plugin.json",
+    ".claude-plugin/marketplace.json",
+    ".cursor-plugin/plugin.json",
+    ".cursor-plugin/marketplace.json",
+  ]) {
     if (!packageExists(file)) fail(`packaged plugin missing ${file}`);
     else if (packageRead(file) !== read(file)) fail(`packaged plugin drifted from root file: ${file}`);
   }
@@ -137,6 +143,10 @@ for (const token of ["autoresearch", "research_route", "Research Reset Policy", 
 if (!failed) pass("public docs expose helper split and omit removed research gate tokens");
 
 const readme = read("README.md");
+for (const file of ["README.md", "README.zh-CN.md"]) {
+  const body = read(file);
+  if (body.includes("|`n") || body.includes("`n|")) fail(`${file} contains escaped newline residue inside Markdown tables`);
+}
 for (const token of ["YSAA1/harness-workflow", "docs/install/codex.md", "codex plugin marketplace add", "node scripts/check-plugin.mjs", "capability-recommender", "agent-instructions-maintainer", "recovery-surface-builder"]) {
   if (!readme.includes(token)) fail(`README missing token: ${token}`);
 }

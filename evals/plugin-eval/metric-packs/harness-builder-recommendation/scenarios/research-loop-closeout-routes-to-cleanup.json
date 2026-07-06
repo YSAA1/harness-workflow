@@ -1,0 +1,17 @@
+{
+  "id": "research-loop-closeout-routes-to-cleanup",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "A project-specific research loop found no clear winning approach after several failed iterations.",
+  "purpose": "The skill should treat leftover research state as an anti-entropy and cleanup problem, not as built-in research governance.",
+  "required_groups": [
+    "external_research_not_builtin",
+    "knowledge_cleanup_contract",
+    "anti_entropy_gc_readonly",
+    "artifact_freshness_contract"
+  ],
+  "failure_modes": [
+    "Reintroduces built-in research governance.",
+    "Deletes failed work without preserving the reason it failed.",
+    "Leaves orphan branches, dependencies, generated files, or artifacts unrecorded."
+  ]
+}

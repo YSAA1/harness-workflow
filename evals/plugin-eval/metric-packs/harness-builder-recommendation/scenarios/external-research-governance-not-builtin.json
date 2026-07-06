@@ -1,0 +1,17 @@
+{
+  "id": "external-research-governance-not-builtin",
+  "kind": "harness_builder_recommendation_scenario",
+  "user_prompt": "Set up an autonomous research loop to compare several approaches.",
+  "purpose": "The skill should not recreate built-in research governance, but may recommend an external or project-specific research workflow when evidence shows the need.",
+  "required_groups": [
+    "external_research_not_builtin",
+    "research_task_not_harness_execution",
+    "external_research_fit_row",
+    "scoped_work_contract"
+  ],
+  "failure_modes": [
+    "Treats research governance as a built-in workflow lane.",
+    "Creates research gates, templates, hooks, or branch guards from harness-builder.",
+    "Performs the research task instead of designing the project workbench."
+  ]
+}

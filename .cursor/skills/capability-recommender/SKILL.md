@@ -1,6 +1,6 @@
 ---
 name: capability-recommender
-description: Analyze a codebase and recommend agent workbench capabilities (hooks, subagents, skills, plugins, MCP servers, scripts, and verification surfaces). Adapted from Anthropic claude-automation-recommender for harness-workflow Codex, Claude Code, and Cursor use.
+description: "Use when a repo needs read-only agent workbench capability recommendations: skills, hooks, MCP servers, subagents, plugins, scripts, CI/headless automation, or verification/recovery surfaces."
 tools: Read, Glob, Grep, Bash
 ---
 
@@ -31,7 +31,7 @@ Analyze codebase patterns to recommend tailored agent workbench capabilities acr
 |------|----------|
 | **Hooks** | Automatic actions on tool events (format on save, lint, block edits) |
 | **Subagents** | Specialized reviewers/analyzers that run in parallel |
-| **Skills** | Packaged expertise, workflows, and repeatable tasks (invoked by Claude or user via `/skill-name`) |
+| **Skills** | Packaged expertise, workflows, and repeatable tasks (invoked by the user or an agent runtime) |
 | **Plugins** | Collections of skills that can be installed |
 | **MCP Servers** | External tool integrations (databases, APIs, browsers, docs) |
 
@@ -49,8 +49,8 @@ cat package.json 2>/dev/null | head -50
 # Check dependencies for MCP server recommendations
 cat package.json 2>/dev/null | grep -E '"(react|vue|angular|next|express|fastapi|django|prisma|supabase|convex|stripe)"'
 
-# Check for existing Claude Code config
-ls -la .claude/ CLAUDE.md 2>/dev/null
+# Check for existing agent-runtime config
+ls -la AGENTS.md CLAUDE.md .claude/ rules/ .cursor/rules/ 2>/dev/null
 
 # Analyze project structure
 ls -la src/ app/ lib/ tests/ components/ pages/ api/ 2>/dev/null
@@ -97,7 +97,7 @@ See [references/mcp-servers.md](references/mcp-servers.md) for detailed patterns
 
 See [references/skills-reference.md](references/skills-reference.md) for details.
 
-Create skills in `.claude/skills/<name>/SKILL.md`. Some are also available via plugins:
+Recommend the correct skill install surface for the target runtime: Codex skills/plugins, Claude Code `.claude/skills/<name>/SKILL.md`, Cursor skills/rules, or a project-local documented workflow. Some skills are also available via plugins:
 
 | Codebase Signal | Skill | Plugin |
 |-----------------|-------|--------|
@@ -117,7 +117,7 @@ Create skills in `.claude/skills/<name>/SKILL.md`. Some are also available via p
 | Component library | **new-component** (with templates) | User-only |
 | PR workflow | **pr-check** (with checklist) | User-only |
 | Releases | **release-notes** (with git context) | User-only |
-| Code style | **project-conventions** | Claude-only |
+| Code style | **project-conventions** | Background-only |
 | Onboarding | **setup-dev** (with prereq script) | User-only |
 
 #### C. Hooks Recommendations
@@ -163,7 +163,7 @@ See [references/plugins-reference.md](references/plugins-reference.md) for avail
 Format recommendations clearly. **Only include 1-2 recommendations per category** - the most valuable ones for this specific codebase. Skip categories that aren't relevant.
 
 ```markdown
-## Claude Code Automation Recommendations
+## Agent Workbench Capability Recommendations
 
 I've analyzed your codebase and identified the top automations for each category. Here are my top 1-2 recommendations per type:
 
@@ -178,7 +178,7 @@ I've analyzed your codebase and identified the top automations for each category
 
 #### context7
 **Why**: [specific reason based on detected libraries]
-**Install**: `claude mcp add context7`
+**Install surface**: [runtime-specific MCP config or command, for example Claude Code `claude mcp add context7` when Claude Code is the target]
 
 ---
 
@@ -186,8 +186,8 @@ I've analyzed your codebase and identified the top automations for each category
 
 #### [skill name]
 **Why**: [specific reason]
-**Create**: `.claude/skills/[name]/SKILL.md`
-**Invocation**: User-only / Both / Claude-only
+**Install surface**: [Codex skill/plugin | Claude Code `.claude/skills/[name]/SKILL.md` | Cursor skill/rule | project script/doc]
+**Invocation**: User-only / Both / Background-only, using the target runtime's supported controls
 **Also available in**: [plugin-name] plugin (if applicable)
 ```yaml
 ---
@@ -203,7 +203,7 @@ disable-model-invocation: true  # for user-only
 
 #### [hook name]
 **Why**: [specific reason based on detected config]
-**Where**: `.claude/settings.json`
+**Where**: [target runtime hook/config surface, for example Claude Code `.claude/settings.json`]
 
 ---
 
@@ -211,7 +211,7 @@ disable-model-invocation: true  # for user-only
 
 #### [agent name]
 **Why**: [specific reason based on codebase patterns]
-**Where**: `.claude/agents/[name].md`
+**Where**: [target runtime subagent surface, for example Claude Code `.claude/agents/[name].md`]
 
 ---
 
@@ -239,9 +239,9 @@ disable-model-invocation: true  # for user-only
 - Workflows that should run in isolation (`context: fork`)
 
 **Invocation control:**
-- `disable-model-invocation: true` — User-only (for side effects: deploy, commit, send)
-- `user-invocable: false` — Claude-only (for background knowledge)
-- Default (omit both) — Both can invoke
+- User-only — for side effects such as deploy, commit, or send; use the target runtime's opt-in flag, such as Claude Code `disable-model-invocation: true` when available.
+- Background-only — for supporting knowledge that should not appear as a direct user command; use the target runtime's supported control, such as Claude Code `user-invocable: false` when available.
+- Both — default when user invocation and model/runtime invocation are both appropriate.
 
 ### When to Recommend Hooks
 - Repetitive post-edit actions (formatting, linting)
@@ -274,10 +274,10 @@ disable-model-invocation: true  # for user-only
 
 ### Headless Mode (for CI/Automation)
 
-Recommend headless Claude for automated pipelines:
+Recommend the target runtime's headless or CI mode for automated pipelines:
 
 ```bash
-# Pre-commit hook example
+# Pre-commit hook example for Claude Code targets
 claude -p "fix lint errors in src/" --allowedTools Edit,Write
 
 # CI pipeline with structured output
@@ -286,7 +286,7 @@ claude -p "<prompt>" --output-format stream-json | your_command
 
 ### Permissions for Hooks
 
-Configure allowed tools in `.claude/settings.json`:
+Configure allowed tools in the target runtime's permission surface, for example Claude Code `.claude/settings.json`:
 
 ```json
 {

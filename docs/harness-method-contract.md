@@ -19,7 +19,8 @@
 | Helper Skill | 顶层可调用的辅助 skill，承接厚子能力，但不是第九条 workflow lane |
 | Capability Recommender | 从 Anthropic 官方 claude-automation-recommender 复制并适配的只读能力推荐 helper |
 | Agent Instructions Maintainer | 从 Anthropic 官方 claude-md-improver 复制并适配的 durable agent instruction 维护 helper |
-| Recovery Surface Builder | 从 harness-builder 抽出的 recovery backend / work index / active state / progress / evidence / decisions helper || Commit Unit | `plan` 定义的提交单元，绑定一个或多个阶段和提交前置条件。是计划产物而非强制流程。 |
+| Recovery Surface Builder | 从 harness-builder 抽出的 recovery backend / work index / active state / progress / evidence / decisions helper |
+| Commit Unit | `plan` 定义的提交单元，绑定一个或多个阶段和提交前置条件。是计划产物而非强制流程。 |
 | Milestone Commit | 经过 review + verify 后的正式提交，对应一个 commit unit |
 | Commit Eligibility | `verify` 在 PASS 后评估的提交资格：eligible / not eligible / no commit unit |
 

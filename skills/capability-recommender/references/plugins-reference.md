@@ -1,6 +1,6 @@
 # Plugin Recommendations
 
-Plugins are installable collections of skills, commands, agents, and hooks. Install via `/plugin install`.
+Plugins are installable collections of skills, commands, agents, and hooks. Install with the target runtime's plugin flow, such as `/plugin install` for Claude Code or the Codex plugin marketplace for Codex.
 
 **Note**: These are plugins from the official repository. Use web search to discover additional community plugins.
 
