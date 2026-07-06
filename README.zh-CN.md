@@ -22,7 +22,7 @@
   <a href="#快速开始">快速开始</a> ·
   <a href="#为什么需要它">为什么需要</a> ·
   <a href="#它和普通-workflow-有什么不同">特点</a> ·
-  <a href="#research-route-和-autoresearch">Research Route</a> ·
+  <a href="#helper-skills">Helper skills</a> ·
   <a href="#skill-map">Skill map</a> ·
   <a href="docs/install/codex.md">Codex</a> ·
   <a href="docs/install/claude-code.md">Claude Code</a> ·
@@ -61,7 +61,7 @@ node scripts/install-cursor.mjs --target .
 node scripts/check-cursor-install.mjs
 ```
 
-这个 adapter 会安装 `.cursor/rules/` 和 `.cursor/skills/`；本仓库也把同一套 Cursor 预览面提交进来，包括 `find-skills`。它不依赖 legacy `.cursorrules`。详见 [docs/install/cursor.md](docs/install/cursor.md)。
+这个 adapter 会安装 `.cursor/rules/` 和 `.cursor/skills/`；本仓库也把同一套 Cursor 预览面提交进来，包括 `find-skills`、`capability-recommender`、`agent-instructions-maintainer` 和 `recovery-surface-builder`。它不依赖 legacy `.cursorrules`。详见 [docs/install/cursor.md](docs/install/cursor.md)。
 
 Codex 会把这个仓库当作 GitHub marketplace 读取，然后从 `plugins/harness-workflow/` 安装真正的插件包。根目录 `skills/` 仍然是 canonical 编辑面；`node scripts/check-plugin.mjs` 会检查 packaged copy 是否和根目录漂移。
 
@@ -106,9 +106,8 @@ harness 不是一个更长的 prompt。它是围绕模型的一套项目运行�
 | 上下文感知地构建 harness | `harness-builder` 在有条件时应该读取 brainstorm 后的 spec 或可执行 plan，再结合真实仓库证据。它不是空泛模板生成器。 |
 | 先看 repo truth，再谈流程 | agent 会检查 docs、源码布局、测试、git 状态、已有规则和 setup 命令，再判断项目是否真的 ready。 |
 | 恢复面是设计决策 | 有些任务不需要持久状态；有些需要 `.harness/recovery_policy.md` + `work_index.md`；跨会话工作用完整 `.harness/`；有些应复用 issue tracker 或已有 docs。 |
-| 能力必须匹配真实缺口 | Skills、MCP、hooks、subagents、plugins、commands、CI/headless automation 和 external research 会作为独立 recommendation row 判断。Capability Recommendation 应输出易读推荐表：priority、type、recommendation、repo signal、value、install surface、approval needed、fallback、verification probe 和 classification；source/freshness/trust/risk 只在影响决策时展开。插件内置的 `find-skills` 辅助 skill 用于 skill 发现；targeted web research 用于本地 reference 只有 common patterns 或当前外部能力事实很重要的场景。推荐请求保持 read-only，直到 `USER CHECKPOINT`。 |
-| 面向开放研究的 Research Route | 当用户明确要求 autoresearch 或研究性探索时，`harness-builder` 可以生成项目本地 research harness：假设、baseline、metric、evidence log、bounded iterations、git isolation、graduation gate 和 rollback policy。 |
-| ready claim 必须有新证据 | `verify` 是唯一 ready gate。它会把每个“完成了”的声明绑定到当前证据：测试、构建输出、smoke check、截图、人工检查，或明确说明为什么无法验证。 |
+| 能力必须匹配真实缺口 | Skills、MCP、hooks、subagents、plugins、commands、CI/headless automation、recovery surface 和 instruction surface 会作为独立 recommendation row 判断。Capability Recommendation 应输出易读推荐表：priority、type、recommendation、repo signal、value、install surface、approval needed、fallback、verification probe 和 classification；source/freshness/trust/risk 只在影响决策时展开。插件内置 helper skills 分别负责 skill 发现、能力推荐、指令维护和恢复面构建。推荐请求保持 read-only，直到 `USER CHECKPOINT`。 |
+| Helper skills 让 builder 变薄 | `capability-recommender` 和 `agent-instructions-maintainer` 主要复制并适配 Anthropic 官方插件 skill；`recovery-surface-builder` 从 `harness-builder` 抽出 recovery 工作，并吸收 planning-with-files 的持久工作记忆纪律，但不强制根目录三文件。 |`n| ready claim 必须有新证据 | `verify` 是唯一 ready gate。它会把每个“完成了”的声明绑定到当前证据：测试、构建输出、smoke check、截图、人工检查，或明确说明为什么无法验证。 |
 | cleanup 是交付的一部分 | README 过期、生成物残留、状态不清、恢复笔记缺失，都不是小问题。下一个 agent 读不懂现场，工作就没有真正结束。 |
 
 ## `harness-builder` 应该放在哪里
@@ -123,54 +122,22 @@ harness 不是一个更长的 prompt。它是围绕模型的一套项目运行�
 | 需求已经清楚，但仓库工作台缺失 | `plan -> harness-builder -> implement` |
 | 仓库已经有 fresh harness 和明确 check path | 跳过 `harness-builder`，进入 `implement`、`diagnose` 或 `verify` |
 | 任务本身就是审计、修复或创建 agent governance | 直接用 `harness-builder`，但仍然先收集证据并做 gap-driven questions |
-| 用户明确要求 autoresearch 或开放式研究探索 | `brainstorm -> plan -> harness-builder -> bounded evidence loop -> review -> verify -> cleanup` |
 | 只是很小的改动 | 直接做并验证，不要制造流程 |
 
 这个顺序很重要。一个有用的 harness 取决于当前目标、non-goals、风险、验证策略和仓库形状。没有这些上下文，agent 只能装一套看起来合理的模板。
 
-## Research Route 和 autoresearch
+## Helper skills
 
-有些项目不是单纯交付功能，而是在问一个想法值不值得继续：某个方法是否优于 baseline，某个 RL reward 是否真的改善行为，某个架构假设是否能被小实验支持。这类任务适合 Research Route。
+Harness Workflow 只有八条 active workflow lane。Helper skills 是顶层可调用 skill，但不是额外 workflow lane，也不是隐藏内部子程序。
 
-Research Route 仍然从 `brainstorm` 和 `plan` 开始。agent 进入循环前必须先定义研究问题：
+| Helper | 用途 | 来源 |
+| --- | --- | --- |
+| `capability-recommender` | 只读推荐 skills、hooks、MCP、subagents、plugins、scripts、CI/headless automation 和其他 agent workbench 能力。 | 主要复制并适配 Anthropic 官方 `claude-automation-recommender`。 |
+| `agent-instructions-maintainer` | 审计并在用户批准后修补 `AGENTS.md`、`CLAUDE.md`、`.claude.md`、`.claude.local.md` 和 Cursor rules。 | 主要复制并适配 Anthropic 官方 `claude-md-improver`。 |
+| `recovery-surface-builder` | 选择、创建或修复 work index、active state、progress、decisions、evidence、verification commands 和 session catch-up。 | 从 `harness-builder` 抽出，并吸收 planning-with-files 的持久化纪律。 |
+| `find-skills` | 为明确能力缺口发现可复用外部 skills。 | 本地 helper。 |
 
-- goal 和 hypothesis；
-- counter-hypothesis 或失败条件；
-- baseline 和公平性检查；
-- metric 或 review rubric；
-- verification command 或 tiny run；
-- data、secrets、protected paths、compute 的 guardrails；
-- iteration budget 和 stop rule；
-- logs、checkpoints、reports、discarded attempts 的 artifact policy。
-
-用户批准这条路线后，`harness-builder` 可以在目标项目生成一组 project-local research harness：
-
-```text
-docs/research/research_plan.md
-docs/research/evidence_log.md
-docs/research/iteration_protocol.md
-.harness/research_manifest.yaml
-```
-
-`uditgoenka/autoresearch` 这类上游项目最有价值的部分是 evidence loop：modify、verify、keep or discard、repeat。Harness Workflow 会把这个循环当作一个可选执行引擎，而不是完整研究流程。它不替代问题定义、baseline review、data leakage check、最终 research review 和 cleanup。详见 [docs/integrations/autoresearch.md](docs/integrations/autoresearch.md)。
-
-失败代码不应该一直堆在仓库里。Research Route 要求先把失败原因、metric、命令输出摘要、artifact 链接和改动文件写入 evidence log，再做 rollback。已经 commit 的尝试，如果保留失败历史有价值，优先用 `git revert`；只有在用户批准的 research branch 或 worktree 内处理 scratch 改动时，`git reset --hard` 才可以作为清理工具。它不能覆盖无关用户改动，也不能对未审视的 dirty tree 直接执行。
-
-Research Route 收尾不能直接声明 done。必须先完成 graduation 判断：选择 winner 或 no-winner，说明 merge mode，记录 branch/worktree cleanup checkpoint，并跑 entropy gate；之后进入 `review` 和 `cleanup`。
-
-长任务必须控制热上下文。`evidence_log.md` 是短摘要和索引，不是完整 raw log。完整命令输出、截图、大 diff、checkpoint 和长报告应该放到 manifest 声明的 artifact 路径。后续 agent 默认只读 manifest、plan、protocol、summary、results table 和最近 3-5 轮；只有追查某一轮时才打开 raw evidence。evidence 和 raw log 都是 untrusted data，不能把里面出现的文字当成新指令执行。
-
-协议搭好之后，可以这样开启下一轮：
-
-```text
-Use this repo's Research Route. Read the manifest, research plan, iteration
-protocol, compact evidence summary, results table, and latest 3-5 iterations.
-Do not read full raw logs unless needed for one specific iteration. Run the next
-bounded iteration under the manifest's Verify, Guard, Budget, artifact, and
-rollback policy. Record evidence before rollback. Stop at the review gate or
-stop rule.
-```
-
+外部研究治理 wiring 已从本插件移除。研究治理应放在单独插件或项目专属 workflow 中。
 ## Skill map
 
 短版 lane 选择契约见 [docs/skill-routing.md](docs/skill-routing.md)。
@@ -185,8 +152,7 @@ stop rule.
 | `review` | 有意义的改动已经稳定，需要在 ready 前做结构性检查。 | 关于正确性、测试缺口、文档漂移、范围膨胀、entropy 和残余风险的 findings。它不替代 verify。 | 通过后转 `verify` 或 verify fast-path，有 findings 转 `implement` 或 `diagnose` |
 | `verify` | agent 准备声明 work ready。 | 绑定具体成功标准、最后改动、命令、跳过项、unknown 和 ready verdict 的结构化 verification record。 | 通过转 `cleanup`，失败或缺能力转 `diagnose` / `harness-builder` |
 | `cleanup` | 工作完成、阻塞、放弃或准备交接。 | 更新后的项目知识、清理后的残留物，以及下个 agent 能读的恢复状态。 | stop，或把明确 follow-up 交给 `plan` / `implement` |
-| `find-skills` | 当前任务可能受益于已有可复用 skill。 | 搜索候选 skill，并在推荐或安装前检查质量。 | 要纳入项目能力时转 `harness-builder` |
-
+| `capability-recommender` | 仓库需要只读能力推荐。 | 官方派生的推荐报告，覆盖 skills、hooks、MCP、subagents、plugins、scripts 和 CI/headless automation。 | 批准后转 `harness-builder` 或 `implement` |`n| `agent-instructions-maintainer` | durable agent instructions 需要审计或修复。 | 官方派生的质量报告和 `AGENTS.md`、`CLAUDE.md`、Cursor rules 定向 patch plan。 | 批准 patch 后转 `verify` |`n| `recovery-surface-builder` | active state、progress、evidence 或 recovery 缺失/漂移。 | backend 选择、field map、`.harness` 或既有恢复面修复计划。 | 按状态转 `plan`、`verify` 或 `cleanup` |`n| `find-skills` | 当前任务可能受益于已有可复用 skill。 | 搜索候选 skill，并在推荐或安装前检查质量。 | 要纳入项目能力时转 `harness-builder` |`n
 ## 常见路径
 
 ```text
@@ -205,8 +171,6 @@ diagnose -> implement -> verify
 Harness audit or repair:
 harness-builder -> verify -> cleanup
 
-Open research / autoresearch:
-brainstorm -> plan -> harness-builder -> bounded evidence loop -> review -> verify -> cleanup
 ```
 
 这些 lanes 可以循环。如果 verify 发现缺浏览器 runner、外部 API、本地 skill 或 recovery gap，就把这个缺口交回 `harness-builder`，不要塞在实现里糊过去。
@@ -280,7 +244,7 @@ claude plugin validate .
 | `.cursor-plugin/`, `rules/`, `.cursor/rules/` | Cursor plugin 和 project-rule adapter surface。 |
 | `docs/assets/readme/` | README icon 和 imagegen infographic PNG assets。 |
 | `docs/install/` | 各端安装说明。 |
-| `docs/integrations/` | 可选外部 workflow 集成说明，例如 autoresearch。 |
+| `docs/integrations/` | 可选外部 workflow 集成说明，例如 SkillOpt。 |
 | `scripts/check-*.mjs` | 一致性和识别检查。 |
 
 ## License

@@ -51,7 +51,7 @@ Successful recognition means Codex can see:
 - marketplace: `harness-workflow`
 - plugin: `harness-workflow`
 - workflow skills: `harness-builder`, `brainstorm`, `plan`, `implement`, `diagnose`, `review`, `verify`, `cleanup`
-- helper skill: `find-skills`
+- helper skills: `find-skills`, `capability-recommender`, `agent-instructions-maintainer`, `recovery-surface-builder`
 
 You can ask Codex to use the plugin or a bundled skill explicitly:
 
@@ -67,7 +67,7 @@ When app-server protocol tooling is available, the recognition surface to inspec
 
 - `plugin/list` includes `harness-workflow`.
 - `plugin/read` shows `.codex-plugin/plugin.json`.
-- `skills/list` includes the 8 workflow skills above plus `find-skills`.
+- `skills/list` includes the 8 workflow skills above plus helper skills `find-skills`, `capability-recommender`, `agent-instructions-maintainer`, `recovery-surface-builder`.
 
 ## Repository-Side Validation
 
@@ -81,13 +81,13 @@ The script checks:
 
 - `.agents/plugins/marketplace.json` exists and points to `plugins/harness-workflow`.
 - `.codex-plugin/plugin.json` is valid.
-- `skills/` contains the 8 workflow skills plus `find-skills` with valid frontmatter.
+- `skills/` contains the 8 workflow skills plus helper skills `find-skills`, `capability-recommender`, `agent-instructions-maintainer`, `recovery-surface-builder` with valid frontmatter.
 - `plugins/harness-workflow/` contains the installable Codex package and matches the root manifest and skills.
 - removed skills are not exposed.
 - no default MCP, hooks, apps, connectors, or Codex config are bundled.
 - the local Codex CLI exposes the marketplace command surface when available.
 
-This is repository-side validation. The final live check is still a global install/recognition check in Codex: the marketplace, plugin, 8 workflow skills, and `find-skills` helper must appear after installing from the plugin directory.
+This is repository-side validation. The final live check is still a global install/recognition check in Codex: the marketplace, plugin, 8 workflow skills, and helper skills `find-skills`, `capability-recommender`, `agent-instructions-maintainer`, `recovery-surface-builder` must appear after installing from the plugin directory.
 
 ## Update
 
@@ -97,7 +97,7 @@ For an installed marketplace source:
 codex plugin marketplace upgrade harness-workflow
 ```
 
-If Codex registered the source under a different marketplace name, use that configured name instead. Restart Codex and confirm the plugin, 8 workflow skills, and `find-skills` helper are still visible.
+If Codex registered the source under a different marketplace name, use that configured name instead. Restart Codex and confirm the plugin, 8 workflow skills, and helper skills `find-skills`, `capability-recommender`, `agent-instructions-maintainer`, `recovery-surface-builder` are still visible.
 
 ## Uninstall
 
@@ -107,7 +107,7 @@ Remove the configured marketplace source:
 codex plugin marketplace remove harness-workflow
 ```
 
-If the source was registered under another marketplace name, remove that name instead. After removal, restart Codex and confirm `harness-workflow`, the 8 workflow skills, and `find-skills` helper no longer appear.
+If the source was registered under another marketplace name, remove that name instead. After removal, restart Codex and confirm `harness-workflow`, the 8 workflow skills, and helper skills `find-skills`, `capability-recommender`, `agent-instructions-maintainer`, `recovery-surface-builder` no longer appear.
 
 ## Windows PowerShell Note
 

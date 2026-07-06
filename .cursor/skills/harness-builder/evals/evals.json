@@ -34,7 +34,7 @@
     {
       "id": "minimal-harness-no-overload",
       "prompt": "Prepare this repo for AI agents with the smallest useful harness.",
-      "expected_output": "Should collect repo evidence, audit AGENTS/CLAUDE, choose a recovery surface, define fast verification, emit USER CHECKPOINT, and not default to hooks/MCP/subagents/skills/Research Route.",
+      "expected_output": "Should collect repo evidence, audit AGENTS/CLAUDE, choose a recovery surface, define fast verification, emit USER CHECKPOINT, and not default to hooks/MCP/subagents/skills/external research workflow.",
       "files": []
     },
     {

@@ -22,7 +22,6 @@ CORE_REFERENCES = {
     "automation_commands_reference.md",
     "automation_recommendation_attribution.md",
     "subagent_orchestration.md",
-    "research_route_policy.md",
 }
 
 

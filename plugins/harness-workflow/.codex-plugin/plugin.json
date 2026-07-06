@@ -1,7 +1,7 @@
 {
   "name": "harness-workflow",
   "version": "0.3.0",
-  "description": "Practical Codex workflow skills for Harness Builder, Spec, Executable Plan, Research Route, scoped implementation, fresh verification, review, Knowledge Cleanup, and skill discovery.",
+  "description": "Practical Codex workflow skills for Harness Builder, Spec, Executable Plan, scoped implementation, fresh verification, review, Knowledge Cleanup, helper skills, and helper skill discovery.",
   "author": {
     "name": "harness-workflow maintainers"
   },
@@ -17,7 +17,7 @@
   "interface": {
     "displayName": "Harness Workflow",
     "shortDescription": "Daily project harness workflows for Codex.",
-    "longDescription": "Turns Learn Harness Engineering ideas into practical Codex skills for project-level Harness Builder, recovery surface design, Spec creation, Executable Plan writing, Research Route harnesses, implementation, diagnosis, review, verification, Knowledge Cleanup, and project-fit skill discovery.",
+    "longDescription": "Turns Learn Harness Engineering ideas into practical Codex skills for project-level Harness Builder, recovery surface design, Spec creation, Executable Plan writing, implementation, diagnosis, review, verification, Knowledge Cleanup, helper skills, and project-fit helper skill discovery.",
     "developerName": "YSAA1",
     "websiteURL": "https://github.com/YSAA1/harness-workflow",
     "privacyPolicyURL": "https://github.com/YSAA1/harness-workflow/blob/master/docs/legal/privacy-policy.md",

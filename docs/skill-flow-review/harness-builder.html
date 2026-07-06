@@ -136,23 +136,23 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>harness-builder</h1>
-  <p>Use when the user asks to bootstrap, initialize, onboard, repair, or recommend a project-level AI-agent workbench: AGENTS/CLAUDE entry, verification, recovery surface, Capability Recommendation, hooks, MCP, subagents, skills, commands, or anti-entropy guardrails.</p>
+  <p>Use when the user asks to bootstrap, initialize, onboard, repair, or recommend a project-level AI-agent workbench: project entry, recovery surface, verification gate, capability recommendation, agent instructions, skills, scripts, or anti-entropy guardrails.</p>
   <div class="toolbar">
     <a class="button" href="../../skills/harness-builder/SKILL.md">打开 SKILL.md</a>
     <span class="button">项目级 harness</span>
-    <span class="button">114 行</span>
+    <span class="button">103 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>Build or repair the minimal useful project-level harness for AI coding agents: thin project entry, Project iron laws, protected paths, verification entry, selected recovery surface, and cleanup discipline. Optional skills, hooks, MCP, subagents, plugins, commands, CI/headless automation, and Research Route belong only when repo evidence or the user request ...</p>
+    <p>Build or repair the minimal useful project-level harness for AI coding agents. This skill is now the controller: it reads project evidence, classifies the workbench gap, routes thick sub-capabilities to helper skills, and only implements a concrete patch after user approval. Harness Builder's deliverable is the harness itself: project entry, protected paths...</p>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>进入条件</h2>
-      <ul><li>User asks to bootstrap, initialize, onboard, build harness, create project rules, or repair agent governance.</li><li>Project entry, verification command, recovery surface, protected paths, or capability policy is unclear.</li><li>The repo needs project-local skills, hooks, MCP, subagents, or anti-entropy rules evaluated.</li><li>User explicitly asks for autoresearch, autonomous research, repeated investigation, or method exploration.</li></ul>
+      <ul><li>User asks to bootstrap, initialize, onboard, repair, or recommend an agent workbench.</li><li>Project entry, verification command, recovery surface, protected paths, or capability policy is unclear.</li><li>The repo needs project-local skills, scripts, optional hooks/MCP/subagents/plugins, install docs, or anti-entropy checks evaluated.</li><li>A thick skill should be split into callable helper skills and a thinner controller.</li></ul>
     </div>
     <div class="panel">
       <h2>禁用条件</h2>
@@ -169,34 +169,28 @@ pre {
     <div class="flow">
       <div class="step">
         <div class="num">1</div>
-        <div><h3>Evidence gate — Collect repo evidence before questions or installation (AGENTS.md/CLAUDE.md, README, docs, scripts, tests, CI, git, .harness/, skills dirs). Do not start by generating files. Read any supplied task/feature/bug context as harness-design evidence, not as a task to execute. Do not invent acceptance criteria; route unclear goals to brainstorm / plan. Probe cheap dynamic context (git status, diagnostics, CI if available). Optionally use scripts/scan_project.py.</h3><p></p></div>
+        <div><h3>Evidence pass: read actual project surfaces before recommending changes.</h3><p></p></div>
       </div><div class="step">
         <div class="num">2</div>
-        <div><h3>Question gate — Ask only questions that change harness design (target outcome, non-goals, acceptance criteria, verification depth, source of truth). If none needed: No user questions needed plus evidence-backed assumptions.</h3><p></p></div>
+        <div><h3>Boundary check: distinguish harness work from the user's real task. Do not perform the real task in this skill.</h3><p></p></div>
       </div><div class="step">
         <div class="num">3</div>
-        <div><h3>Mode + Harness Hypothesis + recommendation contract — Pick Quick repair or Full recommendation, then state known facts, dynamic state, intent, missing info, questions, assumptions, objective, non-goals, verification path, evidence basis, selected recovery surface, source-of-truth priority, and existing components to keep/patch/archive/reject. Unknown fields → ask or route; no template filler.</h3><p></p></div>
+        <div><h3>Gap classification: classify each gap as entry, recovery, verification, capability, install, generated mirror, or anti-entropy.</h3><p></p></div>
       </div><div class="step">
         <div class="num">4</div>
-        <div><h3>Recommendation table — One Required / Recommended / Deferred / Rejected table. Quick repair only covers: agent entry and project map; static docs and durable rules; recovery surface; recovery policy and work index; verification entry; anti-entropy. Full recommendation adds architecture boundaries, skills, hooks, MCP, subagents, plugins, commands/CI/headless automation, external research, dynamic context, and commit protocol (default Deferred). See references/recommendation_matrix_policy.md, references/recovery_policy.md, references/source_of_truth_tiers.md, references/living_docs_discipline.md, references/architecture_enforcement_policy.md, references/anti_entropy.md, and references/automation_recommendation_guide.md.</h3><p></p></div>
+        <div><h3>Helper routing: route thick sub-capabilities to capability-recommender, agent-instructions-maintainer, recovery-surface-builder, or find-skills.</h3><p></p></div>
       </div><div class="step">
         <div class="num">5</div>
-        <div><h3>Capability Recommendation pass — Run only for Full recommendation or a concrete Quick repair capability gap. Bind each candidate to one recommendation row and show enough detail to act: type, recommendation, repo signal, why, install surface, approval needed, fallback, verification probe, and priority/classification. Default 1-2 candidates per relevant category. If the user explicitly asks for setup or installation recommendations, cover MCP, skills, hooks, subagents, plugins, and commands/CI/headless automation with candidates or clear defer/reject reasons. Do not stop at installed/local skills; use references/capability_discovery_playbook.md, automation_recommendation_guide.md, the automation_* references, $find-skills / find-skills, targeted web search, or local official docs when repo evidence points to ecosystem-specific tools. In Quick repair with no capability gap, record No capability recommendation needed, No reusable skill search needed, and No web research needed with evidence-backed reasons.</h3><p></p></div>
+        <div><h3>Recommendation matrix: rank Required / Recommended / Deferred / Rejected with evidence, risk, and verification path.</h3><p></p></div>
       </div><div class="step">
         <div class="num">6</div>
-        <div><h3>Verification design gate — Fast check, deeper smoke/E2E/manual check, evidence location, unverified risks, and per-phase acceptance before installation.</h3><p></p></div>
+        <div><h3>USER CHECKPOINT: ask before writing unless the user already approved the exact patch.</h3><p></p></div>
       </div><div class="step">
         <div class="num">7</div>
-        <div><h3>User checkpoint — Only ask for approval when there is at least one concrete install, patch, archive, or config action. If there is no action to approve, say No install recommended and stop with the recommendation summary.</h3><p></p></div>
+        <div><h3>Install/repair: patch only the approved harness slice. Prefer canonical sources, then sync mirrors.</h3><p></p></div>
       </div><div class="step">
         <div class="num">8</div>
-        <div><h3>Approved install phase — Install or patch only approved project-local items; Required only unless the user approves more. Quick repair installs only the required entry/recovery/verification patches. Prefer AGENTS.md, scripts/agent/check.sh, docs, .harness/*, .agents/skills/*, and templates. Recovery backend options: none, lightweight, harness, feature-list, existing. Map runtime fields: .harness/state.md (hot index), .harness/progress.md (evidence), .harness/decisions.md (decisions); recovery_policy.md and work_index.md Required when recovery ≠ none. No root-level legacy state files.</h3><p></p></div>
-      </div><div class="step">
-        <div class="num">9</div>
-        <div><h3>Verification — After installation, run validation and phase checks, or record blockers. No fresh evidence → no ready claim.</h3><p></p></div>
-      </div><div class="step">
-        <div class="num">10</div>
-        <div><h3>Research Graduation gate — Only when Research Route is used. See references/research_route_policy.md and templates/research_route; preserve failed evidence before git reset --hard on isolated research branches only, then route through review and cleanup.</h3><p>Hard rules: Do not execute the supplied task here. Reconcile existing harness before adding/replacing. Audit AGENTS.md every run; patch only stable facts and remove stale task-specific pointers. Dynamic state → .harness/ only: active_slice in .harness/state.m...</p></div>
+        <div><h3>Verify: run the narrowest relevant checks and report fresh evidence.</h3><p></p></div>
       </div>
     </div>
   </section>
@@ -214,7 +208,7 @@ pre {
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <table><thead><tr><th>Situation</th><th>Recommended next skill</th></tr></thead><tbody><tr><td>Harness files or capabilities were installed or repaired</td><td>verify</td></tr><tr><td>Harness hypothesis exposes unclear goals, non-goals, or success criteria</td><td>brainstorm</td></tr><tr><td>Harness plan is approved and first work slice is clear</td><td>implement</td></tr><tr><td>Research Route completes</td><td>review, then cleanup</td></tr><tr><td>Harness verification fails or setup breaks</td><td>diagnose</td></tr><tr><td>Harness is current and no implementation is requested</td><td>cleanup</td></tr></tbody></table>
+    <p class="muted">该 skill 没有显式路由表；以执行流程的下一步为准。</p>
   </section>
 
   <section class="section grid">
@@ -224,7 +218,7 @@ pre {
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
-      <ul><li><a href="../../skills/harness-builder/references/recommendation_matrix_policy.md">Harness Recommendation Matrix Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/recovery_policy.md">Recovery Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/source_of_truth_tiers.md">Source-of-Truth Tiers</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/living_docs_discipline.md">Living Docs Discipline</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/architecture_enforcement_policy.md">Architecture Enforcement Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/anti_entropy.md">Anti-Entropy Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/automation_recommendation_guide.md">Harness Recommendation Guide</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/capability_discovery_playbook.md">Capability Discovery Playbook</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/research_route_policy.md">Research Route policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/recovery_surface_policy.md">Recovery Surface Policy</a><span class="tag">存在</span></li><li><a href="../../skills/harness-builder/references/subagent_orchestration.md">Subagent Orchestration</a><span class="tag">存在</span></li></ul>
+      <p class="muted">无额外 reference；审阅 SKILL.md 即可。</p>
     </div>
   </section>
 

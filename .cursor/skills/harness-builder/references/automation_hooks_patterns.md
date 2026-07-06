@@ -68,7 +68,6 @@ Every protection hook needs a repair/disable path and false-positive policy.
 | repeated verification omissions | verification reminder | `templates/hooks/verification_reminder.py.j2` |
 | destructive command risk | destructive shell blocker | `templates/hooks/block_destructive_shell.py.j2` |
 | protected paths | protected-path guard | `templates/hooks/protected_paths.py.j2` |
-| Research Route branch discipline | research branch push guard | `templates/hooks/research_branch_push_guard.py.j2` |
 | milestone commit protocol | commit trailer enforcer | `templates/hooks/commit_trailer_enforcer.py.j2` |
 | audit trail | command/event logger | `templates/hooks/research_iteration_logger.py.j2` |
 

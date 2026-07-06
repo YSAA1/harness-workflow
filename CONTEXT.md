@@ -24,18 +24,21 @@ _Avoid_: turning recommendations into a separate automation profile or shopping 
 The concise evidence-bound table inside Harness Recommendation Mode: recommendation type, candidate, repo signal, why, install surface, approval needed, fallback, verification probe, and priority/classification. Add source evidence, freshness, trust boundary, and risk/cost only when they materially change the decision.
 _Avoid_: recommending capabilities that do not close a named recommendation row.
 
-**Research Route**:
-A Harness Builder mode for explicit autoresearch or open-ended method exploration after enough brainstorm or plan context exists. It creates a project-local research plan, evidence log, iteration protocol, and research manifest.
-_Avoid_: treating Research Route as a mandatory lane for all work, a replacement for brainstorm, or a generic hyperparameter-tuning loop.
+**Helper Skill**:
+A top-level callable support skill that owns a thick sub-capability but is not one of the eight active workflow lanes.
+_Avoid_: treating helper skills as mandatory workflow steps or hidden internal subroutines.
 
-**Evidence Loop**:
-The bounded research cycle that tests one iteration hypothesis, changes the project, verifies the result, records evidence, then keeps, reverts, resets, discards, or stops.
-_Avoid_: looping without a baseline, metric, verification path, budget, or failure record.
+**Capability Recommender**:
+The official-derived helper skill adapted from Anthropic's Claude automation recommender. It performs read-only recommendations for skills, MCP servers, hooks, subagents, plugins, commands, CI/headless automation, and agent tooling.
+_Avoid_: installing optional capabilities without a concrete gap and approval boundary.
 
-**Research Reset Policy**:
-The rule that failed code may be discarded only after failed knowledge is preserved. `git reset --hard` can be valid inside an approved research branch or worktree, but not over unrelated user work or an unreviewed dirty tree.
-_Avoid_: both extremes: keeping every failed patch until the codebase rots, or deleting failed attempts without evidence.
+**Agent Instructions Maintainer**:
+The official-derived helper skill adapted from Anthropic's CLAUDE.md improver. It audits and patches durable agent instruction surfaces such as `AGENTS.md`, `CLAUDE.md`, `.claude.md`, `.claude.local.md`, and Cursor rules after a USER CHECKPOINT.
+_Avoid_: storing active task state, session logs, or one-off conclusions in durable instruction files.
 
+**Recovery Surface Builder**:
+The helper skill that chooses, creates, or repairs the selected recovery backend: `.harness/`, issue tracker, feature list, existing planning files, or no durable state for tiny tasks. It adopts planning-with-files style persistence without forcing root `task_plan.md`, `findings.md`, and `progress.md`.
+_Avoid_: creating a second recovery surface when a project already has one that works.
 **Recovery Surface**:
 The durable project-local artifacts that let a future agent resume work without relying on chat history. Canonical runtime layout is `.harness/` (`recovery_policy.md`, `work_index.md`, `state.md`, `progress.md`, `decisions.md`).
 _Avoid_: root-level `task_plan.md` / `progress.md` / `findings.md` or calling legacy layouts "three-file backend".
@@ -97,9 +100,6 @@ _Avoid_: storing the full spec inside `.harness/progress.md`.
 - A **Harness Builder** selects or repairs the **Recovery Surface** and installs `.harness/recovery_policy.md` plus `.harness/work_index.md` when recovery ≠ `none`.
 - A **Harness Builder** declares **Source-of-Truth Tiers** in `AGENTS.md` (T1); current task pointers live in T3/T4 only.
 - A **Harness Builder** performs **Capability Recommendation** with `$find-skills` and targeted web research when the current task may benefit from reusable skills, MCP servers, hooks, subagents, plugins, commands, CI/headless automation, or agent tooling.
-- A **Harness Builder** may create a **Research Route** harness when the user explicitly asks for autoresearch or research exploration and the research contract is clear.
-- A **Research Route** uses an **Evidence Loop** only after goal, hypothesis, baseline, metric, verification, guardrails, budget, and stop rule are defined.
-- A **Research Reset Policy** preserves negative evidence before failed code is removed from the active branch or worktree.
 - A `brainstorm` workflow runs **Design Grill** (Phase A2) after the coverage matrix gate for non-trivial work.
 - A `brainstorm` workflow produces a **Spec**, defaulting to `docs/specs/YYYY-MM-DD--<topic>.md`, and does not default to writing `.harness/` runtime state.
 - A **Recovery Surface** uses **Harness Directory** (`.harness/`), an issue tracker, a feature list, or an existing project status system — not root-level legacy state files.
@@ -131,12 +131,6 @@ _Avoid_: storing the full spec inside `.harness/progress.md`.
 
 > **Dev:** "Can Capability Recommendation recommend every automation that looks helpful?"
 > **Domain expert:** "No. It should produce a **Capability Recommendation Table** bound to Harness Recommendation Matrix gaps. Keep it readable: candidate, repo signal, value, install surface, approval boundary, fallback, verification probe, and Required / Recommended / Deferred / Rejected classification. Add trust/risk/source details only when they affect the decision."
-
-> **Dev:** "If the user asks for autoresearch, should we skip `brainstorm` and start looping?"
-> **Domain expert:** "No. Autoresearch needs an approved **Research Route** contract first: goal, hypothesis, baseline, metric, verification, guardrails, budget, and stop rule. The loop starts only after that contract exists."
-
-> **Dev:** "Is `git reset --hard` always wrong after a failed research attempt?"
-> **Domain expert:** "No. A failed patch can be reset inside an approved research branch or worktree after the failure evidence is recorded. It is wrong when it erases user work or deletes the only record of why the attempt failed."
 
 > **Dev:** "Does `plan` write Executable Plans into `.harness/state.md`?"
 > **Domain expert:** "Plans default to `docs/plans/`. `.harness/state.md` holds the hot runtime index; sync active slice and next there during tracked execution."

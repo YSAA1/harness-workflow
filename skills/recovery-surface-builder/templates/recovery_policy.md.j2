@@ -1,0 +1,22 @@
+{% set lang_norm = (target_language | default(user_language | default('zh')) | string | lower) %}
+{% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
+# {{ '恢复策略（Recovery Policy）' if zh else 'Recovery Policy' }}
+
+{{ '本文件是会话入口契约。运行时状态在 `.harness/work_index.md` 与 `.harness/state.md`。' if zh else 'Session entry contract. Runtime state lives in `.harness/work_index.md` and `.harness/state.md`.' }}
+
+## {{ '会话启动（Session start）' if zh else 'Session start' }}
+
+1. {{ '读取 `AGENTS.md`（T1）。' if zh else 'Read `AGENTS.md` (T1).' }}
+2. {{ '读取本 Recovery Policy。' if zh else 'Read this Recovery Policy.' }}
+3. {{ '读取 Work Index' if zh else 'Read Work Index' }}: {{ work_index_path | default('`.harness/work_index.md`') }}
+4. {{ '打开 `active` 行的 primary artifact。' if zh else 'Open primary artifact for `active` row.' }}
+5. {{ '读取 hot index' if zh else 'Read hot index' }}: {{ hot_recovery_path | default('`.harness/state.md`') }}
+6. {{ '探测 git 与验证命令。' if zh else 'Probe git and verification commands.' }}
+
+## {{ '字段映射（Field map）' if zh else 'Field map' }}
+
+| Field | Location |
+| --- | --- |
+| `active_slice` | `.harness/state.md` |
+| `evidence_log` | `.harness/progress.md` |
+| `decisions` | `.harness/decisions.md` or `docs/adr/` |

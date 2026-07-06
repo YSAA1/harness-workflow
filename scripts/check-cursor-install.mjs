@@ -17,7 +17,7 @@ const activeWorkflows = [
   "verify",
   "cleanup",
 ];
-const helperSkills = ["find-skills"];
+const helperSkills = ["find-skills", "capability-recommender", "agent-instructions-maintainer", "recovery-surface-builder"];
 const bundledSkills = [...activeWorkflows, ...helperSkills];
 
 const fail = (message) => {
@@ -261,7 +261,7 @@ console.log("Manual Cursor recognition check:");
 console.log("1. For marketplace usage, install with /add-plugin harness-workflow and confirm the plugin appears.");
 console.log("2. For project adapter usage, run node scripts/install-cursor.mjs --target . from the target project.");
 console.log("3. Open the target project in Cursor and inspect active rules in Settings > Rules or the Agent sidebar.");
-console.log("4. Confirm Harness Workflow overview, eight workflow rules, and .cursor/skills appear, including find-skills.");
+console.log("4. Confirm Harness Workflow overview, eight workflow rules, and .cursor/skills appear, including helper skills.");
 console.log("5. Test prompt: Use Harness Workflow to plan a scoped implementation.");
 
 if (!process.exitCode) pass("Cursor install workflow checks passed");

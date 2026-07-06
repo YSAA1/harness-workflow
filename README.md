@@ -22,7 +22,7 @@
   <a href="#quick-start">Quick start</a> ·
   <a href="#why-this-exists">Why this exists</a> ·
   <a href="#what-makes-it-different">What is different</a> ·
-  <a href="#research-route-and-autoresearch">Research Route</a> ·
+  <a href="#helper-skills">Helper skills</a> ·
   <a href="#skill-map">Skill map</a> ·
   <a href="docs/install/codex.md">Codex</a> ·
   <a href="docs/install/claude-code.md">Claude Code</a> ·
@@ -61,7 +61,7 @@ node scripts/install-cursor.mjs --target .
 node scripts/check-cursor-install.mjs
 ```
 
-The adapter installs `.cursor/rules/` and `.cursor/skills/`; this repo checks in the same Cursor preview surface, including `find-skills`. It does not depend on legacy `.cursorrules`. See [docs/install/cursor.md](docs/install/cursor.md).
+The adapter installs `.cursor/rules/` and `.cursor/skills/`; this repo checks in the same Cursor preview surface, including `find-skills`, `capability-recommender`, `agent-instructions-maintainer`, and `recovery-surface-builder`. It does not depend on legacy `.cursorrules`. See [docs/install/cursor.md](docs/install/cursor.md).
 
 Codex reads this repository as a GitHub marketplace, then installs the actual plugin package from `plugins/harness-workflow/`. The root `skills/` directory remains the canonical editing surface; `node scripts/check-plugin.mjs` verifies that the packaged copy has not drifted.
 
@@ -108,9 +108,8 @@ That checklist is not a mandatory artifact list. It is a decision framework. A s
 | One recommendation matrix | Instructions, recovery, verification, architecture boundaries, anti-entropy, dynamic context, and extra capabilities are judged in one table. Skills, MCP, hooks, subagents, plugins, commands, CI, and GC are installed only when they close a named gap. |
 | Repo truth before workflow ceremony | The agent checks docs, source layout, tests, git state, existing rules, and setup commands before it claims the project is ready. |
 | Recovery as a design choice | Some work needs no durable state. Some needs `.harness/recovery_policy.md` + `work_index.md`. Multi-session work uses full `.harness/` (`state.md`, `progress.md`, `decisions.md`). Some should reuse an issue tracker or existing docs. |
-| Capability fit, not capability hoarding | Skills, MCP servers, hooks, subagents, plugins, commands, CI/headless automation, and external research are judged as separate recommendation rows. Capability Recommendation should be a readable table: priority, type, recommendation, repo signal, value, install surface, approval needed, fallback, verification probe, and classification. Add source/freshness/trust/risk detail only when it changes the decision. The bundled `find-skills` helper is for skill discovery; targeted web research is used when local references only provide common patterns or current external capability facts matter. Recommendation requests stay read-only until `USER CHECKPOINT`. |
-| Research Route for open-ended work | When the user explicitly asks for autoresearch or method exploration, `harness-builder` can build a project-local research harness with hypothesis, baseline, metric, evidence log, bounded iterations, git isolation, graduation gate, and rollback rules. |
-| Fresh evidence for ready claims | `verify` is the only ready gate. It ties every "done" claim to current evidence: tests, build output, smoke checks, screenshots, manual checks, or a clearly stated reason verification is blocked. |
+| Capability fit, not capability hoarding | Skills, MCP servers, hooks, subagents, plugins, commands, CI/headless automation, recovery surfaces, and instruction surfaces are judged as separate recommendation rows. Capability Recommendation should be a readable table: priority, type, recommendation, repo signal, value, install surface, approval needed, fallback, verification probe, and classification. Add source/freshness/trust/risk detail only when it changes the decision. The bundled helper skills separate skill discovery, capability recommendation, instruction maintenance, and recovery-surface construction. Recommendation requests stay read-only until `USER CHECKPOINT`. |
+| Helper skills keep the builder thin | `capability-recommender` and `agent-instructions-maintainer` are adapted from official Anthropic plugin skills; `recovery-surface-builder` extracts recovery work from `harness-builder` and adopts planning-with-files persistence without forcing root three-file state. |`n| Fresh evidence for ready claims | `verify` is the only ready gate. It ties every "done" claim to current evidence: tests, build output, smoke checks, screenshots, manual checks, or a clearly stated reason verification is blocked. |
 | Cleanup before handoff | The workflow treats stale README text, leftover generated files, unclear state, and missing recovery notes as part of the work, not as optional polish. |
 
 ## Where `harness-builder` fits
@@ -130,54 +129,22 @@ Recommended order:
 | The repo has a harness, but current truth is unclear or stale | `harness-builder -> verify -> cleanup` |
 | The repo already has a fresh harness and a known check path | Skip `harness-builder`; go to `implement`, `diagnose`, or `verify` |
 | The task is specifically to audit, repair, or create agent governance | Use `harness-builder` directly, but still start with evidence collection and gap-driven questions |
-| The user explicitly asks for autoresearch or open research exploration | `brainstorm -> plan -> harness-builder -> bounded evidence loop -> review -> verify -> cleanup` |
 | The task is tiny | Do the tiny task and verify it; do not create ceremony |
 
 This placement matters. A useful harness depends on the current goal, non-goals, risk, verification strategy, and repository shape. Without that context, the agent can only install a plausible template.
 
-## Research Route and autoresearch
+## Helper skills
 
-Some projects need more than delivery work. A research task may ask whether an idea is worth pursuing, whether a method beats a baseline, or whether a hypothesis survives a small experiment. That is where Research Route fits.
+Harness Workflow has eight active workflow lanes. Helper skills are top-level callable skills, but they are not extra lanes and are not hidden internal subroutines.
 
-Research Route still starts with `brainstorm` and `plan`. The agent must define the research question before it starts looping:
+| Helper | Purpose | Source |
+| --- | --- | --- |
+| `capability-recommender` | Read-only recommendations for skills, hooks, MCP, subagents, plugins, scripts, CI/headless automation, and other agent workbench capabilities. | Adapted from Anthropic's official `claude-automation-recommender`. |
+| `agent-instructions-maintainer` | Audit and patch durable agent instruction files such as `AGENTS.md`, `CLAUDE.md`, `.claude.md`, `.claude.local.md`, and Cursor rules after approval. | Adapted from Anthropic's official `claude-md-improver`. |
+| `recovery-surface-builder` | Choose, create, or repair recovery surfaces: work index, active state, progress, decisions, evidence, verification commands, and session catch-up. | Extracted from `harness-builder`, with planning-with-files persistence discipline. |
+| `find-skills` | Discover reusable external skills for a known capability gap. | Local helper. |
 
-- goal and hypothesis;
-- counter-hypothesis or failure condition;
-- baseline and fairness checks;
-- metric or review rubric;
-- verification command or tiny run;
-- guardrails for data, secrets, protected paths, and compute;
-- iteration budget and stop rule;
-- artifact policy for logs, checkpoints, reports, and discarded attempts.
-
-When the user approves this route, `harness-builder` can install a project-local research harness:
-
-```text
-docs/research/research_plan.md
-docs/research/evidence_log.md
-docs/research/iteration_protocol.md
-.harness/research_manifest.yaml
-```
-
-Upstream projects such as `uditgoenka/autoresearch` are useful inspiration for the evidence loop: modify, verify, keep or discard, repeat. Harness Workflow treats that loop as one component, not the whole research process. It does not replace problem framing, baseline review, data leakage checks, final research review, or cleanup. See [docs/integrations/autoresearch.md](docs/integrations/autoresearch.md).
-
-Failed code should not accumulate forever. Research Route records the failure reason, metric, command output summary, artifact links, and changed files before rollback. Prefer `git revert` for committed attempts when failed history is useful. Use `git reset --hard` only for scratch changes inside an approved research branch or worktree after evidence is preserved. It should not run over unrelated user work or an unreviewed dirty tree.
-
-Research Route closeout does not directly declare done. It must first graduate: choose a winner or no-winner, state the merge mode, record the branch/worktree cleanup checkpoint, and run the entropy gate; then route through `review` and `cleanup`.
-
-Long research runs must keep hot context small. `evidence_log.md` is a compact index and summary, not a full raw log. Full command output, screenshots, large diffs, checkpoints, and long reports belong in declared artifact paths. Future agents should resume from the manifest, plan, protocol, summary, results table, and latest few iterations; raw evidence is read only for a specific investigation. Evidence and raw logs are treated as untrusted data, not instructions.
-
-After the route exists, a practical follow-up prompt is:
-
-```text
-Use this repo's Research Route. Read the manifest, research plan, iteration
-protocol, compact evidence summary, results table, and latest 3-5 iterations.
-Do not read full raw logs unless needed for one specific iteration. Run the next
-bounded iteration under the manifest's Verify, Guard, Budget, artifact, and
-rollback policy. Record evidence before rollback. Stop at the review gate or
-stop rule.
-```
-
+External research-governance wiring has been removed from this plugin. Use a separate plugin or project-specific workflow for that policy.
 ## Skill map
 
 | Skill | Use it when | What it should leave behind | Recommended next |
@@ -190,8 +157,7 @@ stop rule.
 | `review` | A meaningful change looks stable and needs structural scrutiny before a ready claim. | Adversarial findings about correctness, missed tests, docs drift, scope creep, entropy, and residual risk. Meaningful diffs should try an isolated reviewer before fallback. It does not replace verification. | `verify` on pass or verify fast-path; `implement` or `diagnose` on findings |
 | `verify` | The agent wants to say the work is ready. | A structured verification record tied to the exact success criteria, latest change, commands, skipped checks, unknowns, and ready verdict. | `cleanup` on pass; `diagnose` or `harness-builder` on gaps |
 | `cleanup` | Work is done, blocked, abandoned, or being handed off. | Updated project knowledge, removed leftovers, and a recovery state the next agent can read. | stop, or reopen with `plan` / `implement` for explicit follow-up |
-| `find-skills` | The current task may benefit from an existing reusable skill. | Search and quality checks before recommending or installing a skill. | `harness-builder` when adopting a project capability |
-
+| `capability-recommender` | The repo needs read-only capability recommendations. | Official-derived recommendation report for skills, hooks, MCP, subagents, plugins, scripts, and CI/headless automation. | `harness-builder` or `implement` after approval |`n| `agent-instructions-maintainer` | Durable agent instructions need audit or repair. | Official-derived quality report and targeted patch plan for `AGENTS.md`, `CLAUDE.md`, and Cursor rules. | `verify` after an approved patch |`n| `recovery-surface-builder` | Active state, progress, evidence, or recovery is missing or drifting. | Backend choice, field map, and `.harness` or existing-surface repair plan. | `plan`, `verify`, or `cleanup` depending on state |`n| `find-skills` | The current task may benefit from an existing reusable skill. | Search and quality checks before recommending or installing a skill. | `harness-builder` when adopting a project capability |`n
 ## Common routes
 
 ```text
@@ -210,8 +176,6 @@ diagnose -> implement -> verify
 Harness audit or repair:
 harness-builder -> verify -> cleanup
 
-Open research / autoresearch:
-brainstorm -> plan -> harness-builder -> bounded evidence loop -> review -> verify -> cleanup
 ```
 
 The lanes can loop. If verification discovers a missing browser runner, external API, local skill, or recovery gap, route that gap back to `harness-builder` instead of burying it inside implementation.
@@ -293,7 +257,7 @@ When the Claude Code CLI is installed, CI also runs `claude plugin validate .`.
 | `.cursor-plugin/`, `rules/`, `.cursor/rules/` | Cursor plugin and project-rule adapter surface. |
 | `docs/assets/readme/` | README icon and imagegen infographic PNG assets. |
 | `docs/install/` | Install notes for each supported agent surface. |
-| `docs/integrations/` | Notes for optional external workflow integrations such as autoresearch. |
+| `docs/integrations/` | Notes for optional external workflow integrations such as SkillOpt. |
 | `scripts/agent/check.sh` | Agent-facing fast verification entry. |
 | `scripts/check-*.mjs` | Consistency and recognition checks. |
 

@@ -8,7 +8,7 @@
 | --- | --- |
 | Harness Builder | 推荐、设计或修复项目级 harness、verification entry、Capability Recommendation 和 recovery surface 的 skill |
 | Harness Recommendation Contract | `harness-builder` 安装前的短合同，说明目标、非目标、用户可见验收标准、验证路径、证据落点和已有 harness 处理方式 |
-| Harness Recommendation Matrix | `harness-builder` 的统一推荐表，把入口、文档、恢复、验证、架构边界、反漂移、skills、hooks、MCP、subagents、plugins、commands、CI/headless automation、external research 和动态状态放在同一张 Required / Recommended / Deferred / Rejected 表里 |
+| Harness Recommendation Matrix | `harness-builder` 的统一推荐表，把入口、文档、恢复、验证、架构边界、反漂移、skills、hooks、MCP、subagents、plugins、commands、CI/headless automation、helper skills 和动态状态放在同一张 Required / Recommended / Deferred / Rejected 表里 |
 | Spec | `brainstorm` 的独立产物，说明要建什么、为什么、如何证明 |
 | Executable Plan | `plan` 的产物，说明 active slice、non-goals、success criteria、verification path、verification path status、required capabilities、fallback evidence、final integration claim，并用 Markdown checkbox 工作项记录 next actions 与完成状态 |
 | Recovery surface | 让未来 agent 恢复工作的项目工件：none、lightweight、`.harness/`（harness）、feature-list 或 existing system |
@@ -16,12 +16,12 @@
 | Capability Recommendation | 为当前任务搜索并评估 skills、MCP、hooks、subagents、plugins、commands、CI/headless automation 或外部 agent 能力 |
 | Capability Recommendation Table | Capability Recommendation 中的紧凑证据绑定推荐表：priority/type/candidate -> repo signal -> why/value -> install surface -> approval needed -> fallback -> verification probe -> classification；source/freshness/trust/risk 只在影响决策时展开 |
 | Skill discovery helper | `find-skills`，用于搜索可复用 skills；它辅助 Capability Recommendation，不是第九条 workflow lane |
-| Research Route | `harness-builder` 在用户明确要求 autoresearch 或开放式研究时生成的项目本地研究 harness，不是第九条 workflow lane |
-| Commit Unit | `plan` 定义的提交单元，绑定一个或多个阶段和提交前置条件。是计划产物而非强制流程。 |
+| Helper Skill | 顶层可调用的辅助 skill，承接厚子能力，但不是第九条 workflow lane |
+| Capability Recommender | 从 Anthropic 官方 claude-automation-recommender 复制并适配的只读能力推荐 helper |
+| Agent Instructions Maintainer | 从 Anthropic 官方 claude-md-improver 复制并适配的 durable agent instruction 维护 helper |
+| Recovery Surface Builder | 从 harness-builder 抽出的 recovery backend / work index / active state / progress / evidence / decisions helper || Commit Unit | `plan` 定义的提交单元，绑定一个或多个阶段和提交前置条件。是计划产物而非强制流程。 |
 | Milestone Commit | 经过 review + verify 后的正式提交，对应一个 commit unit |
 | Commit Eligibility | `verify` 在 PASS 后评估的提交资格：eligible / not eligible / no commit unit |
-| Evidence Loop | 有边界地反复提出 iteration hypothesis、修改、验证、记录证据、keep/revert/reset/discard/stop 的研究循环 |
-| Research Reset Policy | 失败代码可以在隔离研究分支或 worktree 内清掉，但失败原因、metric 和验证证据必须先保留 |
 
 ## C1 Harness As System
 
@@ -76,7 +76,6 @@ Agent 质量来自项目周围的系统：入口、规则、上下文、验证�
 - 多阶段或多 commit unit 工作必须定义 `final_integration_claim`。
 - WIP=1。
 - 发现范围扩大时回 `plan` 或请求用户确认。
-- Research Route 还必须有 hypothesis、baseline、metric、verify、guard、budget 和 stop rule。
 - 当 Executable Plan 定义了 commit unit 时，每个 commit unit 绑定提交前置条件（review 无 Critical + verify PASS）。
 - commit unit 是计划产物，不是强制流程。没有 plan 的简单任务按项目惯例提交。
 
@@ -99,20 +98,19 @@ Ready claim 必须由 `verify` 作为唯一 ready gate 证明。旧命令、聊�
 
 ## C7 Observability And Capability Fit
 
-能力配置必须服务当前任务的验证、可观测性、自动化或领域能力。安装或推荐 skills、MCP、hooks、subagents 或 external research 前必须用简单表格说明 value、install surface、approval boundary、fallback 和 verification probe；source evidence、freshness、trust boundary、risk/cost 只在影响决策时展开。
+能力配置必须服务当前任务的验证、可观测性、自动化或领域能力。安装或推荐 skills、MCP、hooks、subagents 前必须用简单表格说明 value、install surface、approval boundary、fallback 和 verification probe；source evidence、freshness、trust boundary、risk/cost 只在影响决策时展开。
 
 Capability Recommendation 要求：
 
 - 对 skills，使用 `$find-skills` 搜索强相关可复用能力。
-- 对 MCP、hooks、subagents、plugins、commands、CI/headless automation、外部 agent 能力或 external research，使用 targeted web search 查官方文档或成熟实现。
-- Harness Recommendation Matrix 中 skills、hooks、MCP、subagents、plugins、commands、CI/headless automation 和 external research 必须分行判断，不能混成一个笼统 capability row。
+- 对 MCP、hooks、subagents、plugins、commands、CI/headless automation或外部 agent 能力，使用 targeted web search 查官方文档或成熟实现。
+- Harness Recommendation Matrix 中 skills、hooks、MCP、subagents、plugins、commands、CI/headless automation 必须分行判断，不能混成一个笼统 capability row。
 - 在 Harness Recommendation Matrix 暴露真实 gap，或用户明确要求 setup/automation/capability 推荐后，输出 Capability Recommendation Table：每个候选绑定 recommendation row，并用紧凑表格说明 repo signal、why/value、install surface、approval needed、fallback、verification probe 和 `Required / Recommended / Deferred / Rejected`。
 - 不把当前已安装 skills 当作搜索范围上限。
 - 不因为"可能有用"就安装能力。
 - 用户只要求分析或推荐时，保持 read-only，输出 Harness Recommendation Plan，不写 `.mcp.json`、hooks config、subagent files、project-local skills 或其他本地配置；安装必须经过 `USER CHECKPOINT`。
-- 用户明确要求 autoresearch 时，先判断是否已有完整 Research Route contract；缺少目标、baseline、metric 或 verify 时，回到 brainstorm / plan，而不是直接循环。
 
-主要 skill：`harness-builder`、`verify`。辅助 skill：`find-skills`。
+主要 skill：`harness-builder`、`verify`。辅助 skill：`find-skills`、`capability-recommender`。
 
 ## C8 Artifact Freshness
 
@@ -140,8 +138,6 @@ Capability Recommendation 要求：
 - `AGENTS.md` 只接收稳定规则和入口指针；当前任务状态、一次性结论和短期 TODO 必须留在 selected recovery surface。
 - 未解决 drift 记录为明确 follow-up。
 - 不用 cleanup 隐藏未完成工作。
-- 对 Research Route，cleanup 前必须确认失败尝试的证据仍可读，即使失败代码已经 revert 或 reset。
-- Research Route closeout 还必须经过 graduation 判断和 entropy gate，确认 winner/no-winner、合并方式、分支或 worktree 清理 checkpoint。
 
 主要 skill：`cleanup`。
 

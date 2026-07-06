@@ -1,0 +1,21 @@
+{% set lang_norm = (target_language | default(user_language | default('zh')) | string | lower) %}
+{% set zh = lang_norm[:2] == 'zh' or '中文' in lang_norm or 'chinese' in lang_norm %}
+# {{ '进度（Progress）' if zh else 'Progress' }}
+
+{{ '用这个文件跨会话保存任务状态。' if zh else 'Use this file to preserve task state across sessions.' }}
+
+## {{ '当前任务（Current task）' if zh else 'Current task' }}
+
+{{ '未记录。' if zh else 'None recorded.' }}
+
+## {{ '已完成（Completed）' if zh else 'Completed' }}
+
+{{ '未记录。' if zh else 'None recorded.' }}
+
+## {{ '阻塞项（Blocked）' if zh else 'Blocked' }}
+
+{{ '未记录。' if zh else 'None recorded.' }}
+
+## {{ '验证证据（Verification evidence）' if zh else 'Verification evidence' }}
+
+{{ '未记录。' if zh else 'None recorded.' }}

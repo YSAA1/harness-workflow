@@ -18,6 +18,10 @@ const skillOrder = [
   ["review", "证据评审"],
   ["verify", "最终验证"],
   ["cleanup", "Knowledge Cleanup"],
+  ["find-skills", "Helper"],
+  ["capability-recommender", "Helper"],
+  ["agent-instructions-maintainer", "Helper"],
+  ["recovery-surface-builder", "Helper"],
 ];
 
 const routeMap = [
@@ -543,7 +547,7 @@ ${shell()}
 <body>
 <header>
   <h1>${pageTitle}</h1>
-  <p>这些页面把 ${skills.length} 个 Harness Workflow active skill 抽成可审阅的条件路由图谱：什么时候进、怎么走、产出什么、验收什么、下一步去哪里。</p>
+  <p>这些页面把 ${skills.length} 个 Harness Workflow skill/helper 抽成可审阅的条件路由图谱：什么时候进、怎么走、产出什么、验收什么、下一步去哪里。</p>
   <div class="toolbar">
     <a class="button" href="../harness-method-contract.md">Method Contract</a>
     <a class="button" href="../../README.md">插件 README</a>

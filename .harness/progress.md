@@ -117,3 +117,21 @@
   - 旧 `004` 从 `active` 改为 `blocked`，原因是其 state 显示 `verified; pending commit`，本轮不能替旧任务声明 complete；
   - `.harness/state.md` 更新为当前 active slice。
 - 当前仅完成计划产物；未进入 implementation。
+
+## 2026-07-06 — harness-builder skill 拆分实施验证
+
+- 完成拆分：`harness-builder` 瘦身为 controller；新增 `capability-recommender`、`agent-instructions-maintainer`、`recovery-surface-builder` 三个顶层 helper。
+- 官方复制约束：`capability-recommender` 基于 Anthropic 官方 `claude-automation-recommender`；`agent-instructions-maintainer` 基于官方 `claude-md-improver`；两者 references 直接复制官方 raw 文件，并新增 attribution。
+- Recovery builder：从当前 `harness-builder` recovery model 抽出，复制 recovery 参考/模板，并加入 planning-with-files 的 read-before-decide / update-after-act 持久化纪律，不默认 root three-file backend。
+- 移除：删除 active product surface 的 built-in research-governance gate、模板、reference、hook、integration doc 和 manifest/doc/checker 引用；历史 specs/plans 不改写。
+- 同步：Codex、Claude Code、Cursor manifests、install docs、rules、packaged plugin、`.cursor/skills`、skill-flow HTML 已同步。
+- 验证：
+  - `node scripts/generate-skill-flow-html.mjs` -> PASS，Generated 13 HTML files
+  - `node scripts/check-plugin.mjs` -> PASS
+  - `node scripts/check-claude-code-install.mjs` -> PASS
+  - `node scripts/check-cursor-install.mjs` -> PASS
+  - `node scripts/install-cursor.mjs --target . --dry-run` -> PASS，包含三个新 helper
+  - `git diff --check` -> PASS
+  - public-doc removed-token `rg` -> no matches
+  - `python -m unittest skills.harness-builder.tests.test_scripts` -> sandbox Temp permission failed first, rerun with escalation -> PASS
+- Review：self-review 无 Critical / Important findings；剩余风险是 worktree 存在 unrelated dirty files，提交需按路径 staging。

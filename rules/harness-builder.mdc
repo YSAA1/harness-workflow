@@ -1,62 +1,49 @@
 ---
-description: Use Harness Builder when the project workbench, verification entry, Capability Recommendation, or recovery surface needs to be created or repaired.
-globs:
+description: Build or repair a project-level AI-agent workbench; route thick sub-capabilities to helper skills.
 alwaysApply: false
 ---
 
-# Harness Builder
+# Harness Builder Rule
 
-Canonical source: `skills/harness-builder/SKILL.md`.
-
-## Scope boundary
-
-The deliverable is the harness that serves future work on the project, not the task the supplied context describes. Treat any task, feature, or bug context as evidence for harness and Capability Recommendation design, not as a work order. Do not implement, fix, or otherwise execute that task here; recommending or installing a capability is the output, while using it to do the work is not. If the user wants the task done, route to `plan`, `implement`, or `diagnose`.
+Canonical skill: `skills/harness-builder/SKILL.md`.
 
 ## When To Use
 
-- The user asks to initialize, bootstrap, create project rules, onboard agents, build a harness, or repair the workbench.
-- Project entry, protected paths, verification commands, recovery surface, or Capability Recommendation are unclear.
-- The task needs project-local skills, hooks, MCP policy, subagents, or anti-entropy rules evaluated.
-- The user explicitly asks for autoresearch, autonomous research, or repeated research exploration and needs a project-local Research Route harness.
+Use `harness-builder` when project entry, recovery surface, verification command, protected paths, capability policy, install surface, or anti-entropy checks are unclear.
+
+Do not use it to perform the user's feature, bugfix, or delivery task. It prepares the workbench for later workflow skills.
 
 ## Inputs
 
-- User intent and repository evidence.
-- Existing `AGENTS.md`, README, docs, scripts, and project rules.
-- Current verification commands and any selected recovery surface.
-- Official or mature external references only when current external facts matter.
+- Current user request or approved Spec/Executable Plan.
+- Repository evidence: `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/`, manifests, README, install docs, skills, scripts, generated artifacts, and selected recovery surface.
+- Any known validation command or failure evidence.
 
 ## Procedure
 
-1. Collect repository evidence before generating files.
-2. Identify known facts, unknowns, protected paths, verification signals, and recovery options.
-3. Ask gap-driven user questions when answers affect the harness. If fast/deep verification is unclear, ask at least one verification question.
-4. Produce a Harness Hypothesis when important gaps remain.
-5. Run Capability Recommendation when the Matrix exposes a real gap or the user explicitly asks for setup/automation recommendations. Include concrete candidates that materially help verification, observability, automation, or domain work.
-6. For skill gaps, invoke `find-skills` or state why no reusable skill search is needed.
-7. For hooks, MCP, subagents, agent config, or recently changed external tool behavior, use targeted web search or state why no web research is needed.
-8. Use a compact recommendation table. For every candidate, state type, recommendation, repo signal, why, install surface, approval needed, fallback, verification probe, and priority/classification. Actively recommend useful project-local, non-credential, read-only, or non-destructive skills, hooks, subagents, and MCP supplements at `USER CHECKPOINT`; reserve explicit approval pressure or deferral for credential-bearing, write-capable, global, or destructive items. Add source evidence, freshness, trust boundary, or risk/cost only when they materially change the decision.
-9. Harness Recommendation Matrix includes an optional commit protocol row (default Deferred).
-10. If the user asked only for analysis or recommendations, stay read-only and output a simple Harness Recommendation Plan without writing files, MCP config, hooks config, subagents, or project-local skills.
-11. Propose verification design before installation: fast check, deeper smoke/E2E/manual check, evidence path, and unverified risks.
-12. Show a user checkpoint only when proposing concrete install/patch/archive/config actions; do not ask for approval on a no-op plan.
-13. For Research Route, require goal, hypothesis, baseline, metric, verification, guardrails, iteration budget, artifact policy, and stop rule before any evidence loop.
-14. Choose or repair the recovery surface as a semantic contract; runtime state under `.harness/`; Work Index required when recovery ≠ none.
-15. Audit `AGENTS.md` on each run. Patch it only for durable repo-level facts; move dynamic state to the selected recovery surface.
-16. Install only components approved at `USER CHECKPOINT`; keep project-local, non-credential, read-only, or non-destructive components in the normal recommendation path, and require explicit approval for credential-bearing, write-capable, global, or destructive components.
-17. Verify the installed harness with the narrowest real command.
+1. Read actual repo evidence before recommending changes.
+2. Classify gaps as entry, recovery, verification, capability, install, generated mirror, or anti-entropy.
+3. Route thick sub-capabilities to helper skills:
+   - `capability-recommender` for read-only capability recommendations.
+   - `agent-instructions-maintainer` for durable instruction files.
+   - `recovery-surface-builder` for work index, active state, progress, decisions, evidence, and session catch-up.
+   - `find-skills` for reusable external skill discovery.
+4. Keep durable instruction files thin; active task state belongs in the selected recovery surface.
+5. Do not add hooks, MCP, subagents, global config, or project-local skills without a USER CHECKPOINT.
+6. Patch only approved harness files and sync generated/mirrored surfaces through the canonical path.
 
 ## Outputs
 
-- Harness Hypothesis or Harness Recommendation Plan.
-- User questions when needed, Capability Recommendation decisions, recommendation rows, and verification design before installation.
-- Project-local rules, docs, validation entry points, and recovery-surface declaration when approved.
-- For approved Research Route: research plan, evidence log, iteration protocol, and research manifest.
-- Capability Recommendation decisions with rejected and deferred options.
+For non-trivial changes, produce:
+
+- `HARNESS EVIDENCE`
+- `HARNESS RECOMMENDATION MATRIX` / Harness Recommendation Matrix
+- `USER CHECKPOINT`
+- Approved file list and validation command
 
 ## Verification / Done Criteria
 
-- The repository has a clear project map, hard rules, verification entry, and recovery path when needed.
-- Research Route preserves failed evidence before rollback; `git reset --hard` is limited to an approved research branch or worktree.
-- No credential-bearing, write-capable, user-global, or destructive config, hooks, MCP, or extensions were added without explicit approval; project-local non-destructive additions match the approved `USER CHECKPOINT`.
-- The chosen check command ran successfully, or the blocker is concrete.
+- The approved harness slice is patched only where needed.
+- Canonical sources and mirrored surfaces stay semantically aligned.
+- The narrowest relevant validation command has fresh evidence.
+- No default MCP, hooks, subagents, or global config are installed without approval.

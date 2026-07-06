@@ -135,7 +135,7 @@ pre {
 <body>
 <header>
   <h1>Harness Workflow Skill 流程审阅</h1>
-  <p>这些页面把 8 个 Harness Workflow active skill 抽成可审阅的条件路由图谱：什么时候进、怎么走、产出什么、验收什么、下一步去哪里。</p>
+  <p>这些页面把 12 个 Harness Workflow skill/helper 抽成可审阅的条件路由图谱：什么时候进、怎么走、产出什么、验收什么、下一步去哪里。</p>
   <div class="toolbar">
     <a class="button" href="../harness-method-contract.md">Method Contract</a>
     <a class="button" href="../../README.md">插件 README</a>
@@ -161,10 +161,10 @@ pre {
     <div class="grid">
       <article class="panel skill-card">
         <h3><a href="harness-builder.html">harness-builder</a></h3>
-        <p class="muted">项目级 harness · 114 行 · 10 个流程步</p>
-        <p>Build or repair the minimal useful project-level harness for AI coding agents: thin project entry, Project iron laws, protected paths, verification entry, selected recovery surface, and cleanup discipline. Optional skills, hooks, MCP, subagents, plugins, commands, CI/headless automation, and Research Route belong only when repo evidence or the user request ...</p>
+        <p class="muted">项目级 harness · 103 行 · 8 个流程步</p>
+        <p>Build or repair the minimal useful project-level harness for AI coding agents. This skill is now the controller: it reads project evidence, classifies the workbench gap, routes thick sub-capabilities to helper skills, and only implements a concrete patch after user approval. Harness Builder's deliverable is the harness itself: project entry, protected paths...</p>
         <div class="meta">
-          <span class="tag">11 个 reference</span>
+          <span class="tag">0 个 reference</span>
           <span class="tag">0 条验收项</span>
         </div>
       </article><article class="panel skill-card">
@@ -222,6 +222,38 @@ pre {
         <div class="meta">
           <span class="tag">2 个 reference</span>
           <span class="tag">6 条验收项</span>
+        </div>
+      </article><article class="panel skill-card">
+        <h3><a href="find-skills.html">find-skills</a></h3>
+        <p class="muted">Helper · 162 行 · 0 个流程步</p>
+        <p>This skill helps you discover and install skills from the open agent skills ecosystem. Inside Harness Workflow, this is an auxiliary skill for Capability Recommendation. Use it to search for reusable skills only after the task gap is clear. Do not install a skill just because it is related; recommend or install it only when it helps the current repo's verif...</p>
+        <div class="meta">
+          <span class="tag">0 个 reference</span>
+          <span class="tag">0 条验收项</span>
+        </div>
+      </article><article class="panel skill-card">
+        <h3><a href="capability-recommender.html">capability-recommender</a></h3>
+        <p class="muted">Helper · 304 行 · 0 个流程步</p>
+        <p>Adapted from Anthropic official claude-automation-recommender. The main workflow, categories, tables, and reference routing below are copied from the official skill, with harness-workflow notes added for Codex, Claude Code, and Cursor. Analyze codebase patterns to recommend tailored agent workbench capabilities across all extensibility options. This skill i...</p>
+        <div class="meta">
+          <span class="tag">0 个 reference</span>
+          <span class="tag">0 条验收项</span>
+        </div>
+      </article><article class="panel skill-card">
+        <h3><a href="agent-instructions-maintainer.html">agent-instructions-maintainer</a></h3>
+        <p class="muted">Helper · 194 行 · 0 个流程步</p>
+        <p>Adapted from Anthropic official claude-md-improver. The main discovery, quality assessment, reporting, and targeted update workflow below are copied from the official skill, with harness-workflow notes added for AGENTS.md and Cursor rules. Audit, evaluate, and improve durable agent instruction files across a codebase to ensure agents have optimal project co...</p>
+        <div class="meta">
+          <span class="tag">0 个 reference</span>
+          <span class="tag">0 条验收项</span>
+        </div>
+      </article><article class="panel skill-card">
+        <h3><a href="recovery-surface-builder.html">recovery-surface-builder</a></h3>
+        <p class="muted">Helper · 82 行 · 0 个流程步</p>
+        <p>This helper designs, creates, or repairs a project's recovery surface: the durable place an agent can read after /clear, interruption, or handoff to know what is active, what changed, what was decided, and what evidence exists. It is extracted from harness-builder so the main builder can stay thin. It also adopts the useful idea from planning-with-files: pe...</p>
+        <div class="meta">
+          <span class="tag">0 个 reference</span>
+          <span class="tag">0 条验收项</span>
         </div>
       </article>
     </div>

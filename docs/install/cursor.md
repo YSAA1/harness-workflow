@@ -21,7 +21,7 @@ Successful recognition means Cursor can see:
 
 - plugin: `harness-workflow`
 - bundled workflow skills: `harness-builder`, `brainstorm`, `plan`, `implement`, `diagnose`, `review`, `verify`, `cleanup`
-- bundled helper skill: `find-skills`
+- bundled helper skills: `find-skills`, `capability-recommender`, `agent-instructions-maintainer`, `recovery-surface-builder`
 - rules that carry the Harness Workflow operating model
 
 The Cursor plugin metadata lives in:
@@ -70,7 +70,7 @@ For project adapter install:
 1. Open the target project in Cursor.
 2. Open Cursor Settings > Rules or inspect active Project Rules in the Agent sidebar.
 3. Confirm Harness Workflow overview and 8 workflow rules are visible.
-4. Confirm the target repo's `.cursor/skills/` contains the 8 workflow skill directories plus `find-skills`.
+4. Confirm the target repo's `.cursor/skills/` contains the 8 workflow skill directories plus helper skills `find-skills`, `capability-recommender`, `agent-instructions-maintainer`, `recovery-surface-builder`.
 
 Test prompt:
 

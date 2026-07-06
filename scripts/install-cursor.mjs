@@ -15,6 +15,9 @@ const activeSkills = [
   "verify",
   "cleanup",
   "find-skills",
+  "capability-recommender",
+  "agent-instructions-maintainer",
+  "recovery-surface-builder",
 ];
 
 const args = process.argv.slice(2);

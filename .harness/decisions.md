@@ -16,3 +16,10 @@
 - **Decision**: `harness-builder` 保留为唯一 project workbench workflow lane；新增 `capability-recommender`、`agent-instructions-maintainer`、`recovery-surface-builder` 作为可顶层调用的 helper skills。
 - **Rejected**: 把 helper 仅作为内部 references；保留或绑定 Research Route / autoresearch；照搬 `planning-with-files` 的 root three-file backend。
 - **Why**: 顶层 helper 能降低 `harness-builder` 热路径厚度并便于单独 eval；Research Route 绑定外部插件风险高；`.harness/` 已是本仓库选定 runtime recovery surface。
+
+## D-004 — helper skill attribution and recovery split
+
+- **Decision**: `capability-recommender` and `agent-instructions-maintainer` keep the Anthropic official skill body and references as the primary source, with narrow harness-workflow adaptation notes and attribution files.
+- **Decision**: `recovery-surface-builder` owns recovery backend selection and planning-with-files-inspired persistence; `harness-builder` only routes to it.
+- **Rejected**: rewriting the two official-derived helpers from scratch; keeping research-governance gate assets inside this plugin.
+- **Why**: official helper skill quality is already high; the split keeps hot-path harness-builder smaller while preserving explicit callable capabilities.

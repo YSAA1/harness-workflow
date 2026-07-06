@@ -14,7 +14,7 @@ const workflowSkills = [
   "verify",
   "cleanup",
 ];
-const helperSkills = ["find-skills"];
+const helperSkills = ["find-skills", "capability-recommender", "agent-instructions-maintainer", "recovery-surface-builder"];
 const activeSkills = [...workflowSkills, ...helperSkills];
 const removedSkills = ["bootstrap", "state-contract", "resume", "save-session"];
 

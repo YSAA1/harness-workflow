@@ -51,6 +51,9 @@ Successful recognition means Claude Code can see the installed plugin and namesp
 /harness-workflow:verify
 /harness-workflow:cleanup
 /harness-workflow:find-skills
+/harness-workflow:capability-recommender
+/harness-workflow:agent-instructions-maintainer
+/harness-workflow:recovery-surface-builder
 ```
 
 You can also ask:
@@ -59,7 +62,7 @@ You can also ask:
 List all available Skills
 ```
 
-Expected result: the 8 Harness Workflow lanes plus the `find-skills` helper appear under the `harness-workflow` namespace.
+Expected result: the 8 Harness Workflow lanes plus the helper skills appear under the `harness-workflow` namespace.
 
 ## Local Marketplace Test
 
@@ -94,6 +97,9 @@ cp -r skills/review ~/.claude/skills/
 cp -r skills/verify ~/.claude/skills/
 cp -r skills/cleanup ~/.claude/skills/
 cp -r skills/find-skills ~/.claude/skills/
+cp -r skills/capability-recommender ~/.claude/skills/
+cp -r skills/agent-instructions-maintainer ~/.claude/skills/
+cp -r skills/recovery-surface-builder ~/.claude/skills/
 ```
 
 On Windows PowerShell:
@@ -109,6 +115,9 @@ Copy-Item -Recurse -Force skills\review "$env:USERPROFILE\.claude\skills\"
 Copy-Item -Recurse -Force skills\verify "$env:USERPROFILE\.claude\skills\"
 Copy-Item -Recurse -Force skills\cleanup "$env:USERPROFILE\.claude\skills\"
 Copy-Item -Recurse -Force skills\find-skills "$env:USERPROFILE\.claude\skills\"
+Copy-Item -Recurse -Force skills\capability-recommender "$env:USERPROFILE\.claude\skills\"
+Copy-Item -Recurse -Force skills\agent-instructions-maintainer "$env:USERPROFILE\.claude\skills\"
+Copy-Item -Recurse -Force skills\recovery-surface-builder "$env:USERPROFILE\.claude\skills\"
 ```
 
 Equivalent Windows path: `%USERPROFILE%\.claude\skills`.
@@ -131,7 +140,7 @@ The script checks:
 
 - `.claude-plugin/plugin.json` is valid.
 - `.claude-plugin/marketplace.json` exposes `harness-workflow`.
-- `skills/` contains the 8 active workflow skills plus `find-skills` with valid frontmatter.
+- `skills/` contains the 8 active workflow skills plus helper skills `find-skills`, `capability-recommender`, `agent-instructions-maintainer`, `recovery-surface-builder` with valid frontmatter.
 - Supporting files remain available under each skill.
 - The docs describe global plugin or personal-skill installation, not project-local `.claude/skills` as the primary path.
 
@@ -146,7 +155,7 @@ claude plugin update harness-workflow
 
 If the plugin was installed from a marketplace under a different name, use that marketplace/plugin identifier from `claude plugin list`.
 
-For personal skills fallback, recopy the 8 workflow skill directories plus `find-skills` into `~/.claude/skills/`.
+For personal skills fallback, recopy the 8 workflow skill directories plus helper skills into `~/.claude/skills/`.
 
 ## Uninstall
 
@@ -168,5 +177,8 @@ For personal skills fallback, delete only these directories from `~/.claude/skil
 - `verify`
 - `cleanup`
 - `find-skills`
+- `capability-recommender`
+- `agent-instructions-maintainer`
+- `recovery-surface-builder`
 
 Do not delete the whole `~/.claude` directory.

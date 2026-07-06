@@ -17,7 +17,6 @@ CORE_REFERENCES = [
     "automation_commands_reference.md",
     "automation_recommendation_attribution.md",
     "subagent_orchestration.md",
-    "research_route_policy.md",
 ]
 CONDITIONAL_REFERENCES = [
     "anti_entropy.md",
@@ -44,7 +43,6 @@ CONDITIONAL_TEMPLATES = [
 ]
 OPTIONAL_TEMPLATE_GLOBS = [
     "templates/hooks/*.j2",
-    "templates/research_route/*.j2",
 ]
 FORBIDDEN_REFERENCES = [
     "capability_signal_policy.md",
@@ -76,16 +74,13 @@ REMOVED_ASSETS = {
 }
 REQUIRED_SKILL_PHRASES = [
     "USER CHECKPOINT",
-    "Harness Recommendation Matrix",
-    "Capability Recommendation",
-    "Capability Recommendation pass",
+    "HARNESS RECOMMENDATION MATRIX",
+    "Helper routing",
+    "capability-recommender",
+    "agent-instructions-maintainer",
+    "recovery-surface-builder",
     "selected recovery surface",
-    "repo signal",
-    "approval needed",
-    "verification probe",
-    "Harness Recommendation Plan",
-    "No install recommended",
-    "automation_recommendation_guide.md",
+    "verification",
 ]
 MANIFEST_TOKENS = ["harness_goals", "orchestration", "asset_loading", "selected_assets"]
 STATE_TOKENS = ["Active work", "Open user decisions", "Last known good verification", "Known broken checks"]

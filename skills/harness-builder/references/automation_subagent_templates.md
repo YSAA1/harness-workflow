@@ -98,7 +98,6 @@ Writing tests requires an approved disjoint write scope.
 | verification-scout | finding exact test/build entry | read-only; good for unfamiliar repos |
 | repo-explorer | mapping project structure and protected paths | read-only; useful before harness install |
 | harness-plan-reviewer | checking Harness Recommendation Plan before install | read-only; catches scope drift |
-| research-critic | challenging Research Route hypotheses | read-only; use in explicit research mode |
 
 ## Model and Tool Guidance
 
