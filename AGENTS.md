@@ -85,8 +85,8 @@ Selected recovery surface: `harness`（`.harness/` 目录）
 ## Required Reading By Task Type
 
 - 修改 skill 行为：先读对应 `skills/<skill>/SKILL.md`，再按需读同目录 `references/`。
-- 修改 harness builder：先读 `skills/harness-builder/SKILL.md`，再读 `references/recovery_policy.md`、`source_of_truth_tiers.md`、`living_docs_discipline.md`。
-- 修改 recovery surface 语义：读 `skills/harness-builder/references/recovery_surface_policy.md`。
+- 修改 harness builder：先读 `skills/harness-builder/SKILL.md`（总控 / Helper routing），再按需读 `references/recommendation_matrix_policy.md`、`install_policy.md`、`decision_matrix.md`。
+- 修改 recovery surface 语义：读 `skills/recovery-surface-builder/SKILL.md` 与 `skills/recovery-surface-builder/references/recovery_surface_policy.md`。
 - 修改验证、ready 或 evidence 规则：读 `skills/verify/SKILL.md`、`skills/review/SKILL.md` 和 `docs/harness-method-contract.md`。
 - 修改生成的 HTML：优先改 `scripts/generate-skill-flow-html.mjs`，再重新生成 `docs/skill-flow-review/*.html`。
 - 修改 manifest 或能力声明：同步检查 `.codex-plugin/`、`.claude-plugin/`、`.cursor-plugin/`、`README.md`、`docs/install/` 和对应 `scripts/check-*.mjs`。

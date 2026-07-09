@@ -6,7 +6,7 @@
 
 | Term | Meaning |
 | --- | --- |
-| Harness Builder | 推荐、设计或修复项目级 harness、verification entry、Capability Recommendation 和 recovery surface 的 skill |
+| Harness Builder | 项目级 workbench 总控 skill：证据分类、Helper Skill routing、Recommendation Matrix、USER CHECKPOINT；厚子能力交给 helper，自身只修 verification / install / anti-entropy 等 controller-owned 片 |
 | Harness Recommendation Contract | `harness-builder` 安装前的短合同，说明目标、非目标、用户可见验收标准、验证路径、证据落点和已有 harness 处理方式 |
 | Harness Recommendation Matrix | `harness-builder` 的统一推荐表，把入口、文档、恢复、验证、架构边界、反漂移、skills、hooks、MCP、subagents、plugins、commands、CI/headless automation、helper skills 和动态状态放在同一张 Required / Recommended / Deferred / Rejected 表里 |
 | Spec | `brainstorm` 的独立产物，说明要建什么、为什么、如何证明 |
@@ -54,9 +54,10 @@ Agent 质量来自项目周围的系统：入口、规则、上下文、验证�
 
 要求：
 
+- Harness Builder 是总控：厚子能力必须 Helper Skill routing 到 `capability-recommender`、`agent-instructions-maintainer`、`recovery-surface-builder`（或 `find-skills`）；controller 不重做 helper。
 - Harness Builder 不能从空泛意图直接生成模板；必须先有证据支持的 Harness Recommendation Contract。
 - Harness Recommendation Contract 至少包含 objective、non-goals、user-facing acceptance criteria、verification path、evidence location、selected recovery surface 和 source-of-truth priority。
-- Harness Recommendation Plan 前必须有 Harness Recommendation Matrix；skills、MCP、hooks、subagents、plugins、commands、CI、GC 或架构检查只能作为某个 recommendation gap 的解决手段。
+- Harness Recommendation Plan 前必须有 Harness Recommendation Matrix；skills、MCP、hooks、subagents、plugins、commands、CI、GC 或架构检查只能作为某个 recommendation gap 的解决手段；每行必须有 Owner skill。
 - 如果这些字段无法从用户请求、已批准 Spec/Plan 或仓库证据推出，应先提问或回到 `brainstorm` / `plan`。
 - 已有 harness 的仓库必须先 reconcile：keep、patch、archive/deprecate、reject/remove，再安装新内容。
 
@@ -105,7 +106,7 @@ Capability Recommendation 要求：
 
 - 对 skills，使用 `$find-skills` 搜索强相关可复用能力。
 - 对 MCP、hooks、subagents、plugins、commands、CI/headless automation或外部 agent 能力，使用 targeted web search 查官方文档或成熟实现。
-- Harness Recommendation Matrix 中 skills、hooks、MCP、subagents、plugins、commands、CI/headless automation 必须分行判断，不能混成一个笼统 capability row。
+- Harness Recommendation Matrix 中 skills、hooks、MCP、subagents、plugins、commands、CI/headless automation 和 external research 必须分行判断，不能混成一个笼统 capability row。
 - 在 Harness Recommendation Matrix 暴露真实 gap，或用户明确要求 setup/automation/capability 推荐后，输出 Capability Recommendation Table：每个候选绑定 recommendation row，并用紧凑表格说明 repo signal、why/value、install surface、approval needed、fallback、verification probe 和 `Required / Recommended / Deferred / Rejected`。
 - 不把当前已安装 skills 当作搜索范围上限。
 - 不因为"可能有用"就安装能力。

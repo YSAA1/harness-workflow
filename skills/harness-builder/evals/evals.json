@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "我有一个新的 ML 项目，只知道要做用户购买预测。请帮我在开工前搭建适合 Codex 的项目 harness，但不要过度工程。先 brainstorm，不要直接写文件。",
-      "expected_output": "Should collect evidence, produce a gap-driven Harness Hypothesis, ask only design-changing questions, consider Learn Harness Engineering dimensions, then propose a minimal plan with AGENTS/project map/iron laws/check/state/audit and defer extra components.",
+      "expected_output": "Should collect evidence, classify gaps, route thick work to helpers (instructions/recovery/capability), produce a gap-driven recommendation matrix with Owner skill, ask only design-changing questions, then propose a minimal plan and defer extra components.",
       "files": []
     },
     {
@@ -16,13 +16,13 @@
     {
       "id": 3,
       "prompt": "我的 AGENTS.md 已经 800 行了，check.sh 每次会跑 3 小时训练，skills 也越来越多。请用 harness_builder repair 一下。",
-      "expected_output": "Should use anti-entropy reasoning: split AGENTS into project map/iron laws plus docs/local AGENTS, make fast check, classify skills to keep/delete/specialize, update manifest/decisions, avoid adding unnecessary components.",
+      "expected_output": "Should route instruction bloat to agent-instructions-maintainer and verification/anti-entropy to controller-owned repair: thin AGENTS, fast check, classify skills to keep/delete/specialize, avoid adding unnecessary components.",
       "files": []
     },
     {
       "id": 4,
       "prompt": "帮我给一个 FastAPI + PostgreSQL 老项目设计 AGENTS.md，要求有项目概览、快速开始、硬约束、专题文档、harness map 和 protected paths。",
-      "expected_output": "Should generate an AGENTS.md structure with project overview, project map, quick start, project iron laws, required reading by task type, selected recovery surface, source-of-truth priority, verification, protected paths, and DoD. It should not imply optional harness files exist unless selected.",
+      "expected_output": "Should route AGENTS design to agent-instructions-maintainer (or apply its quality model), keep AGENTS thin with project overview, map, quick start, iron laws, required reading, selected recovery surface, source-of-truth priority, verification, protected paths, and DoD. It should not imply optional harness files exist unless selected.",
       "files": []
     },
     {
@@ -34,19 +34,19 @@
     {
       "id": "minimal-harness-no-overload",
       "prompt": "Prepare this repo for AI agents with the smallest useful harness.",
-      "expected_output": "Should collect repo evidence, audit AGENTS/CLAUDE, choose a recovery surface, define fast verification, emit USER CHECKPOINT, and not default to hooks/MCP/subagents/skills/external research workflow.",
+      "expected_output": "Should collect repo evidence, route instruction audit and recovery choice to helpers, define fast verification as controller-owned, emit USER CHECKPOINT, and not default to hooks/MCP/subagents/skills/external research workflow.",
       "files": []
     },
     {
       "id": "agents-thin-active-state",
       "prompt": "Existing AGENTS.md contains current active task notes. Repair the harness.",
-      "expected_output": "Should keep AGENTS.md stable and thin, preserve or migrate dynamic state to the selected recovery surface, record source-of-truth priority, and avoid duplicating state across AGENTS.md and the recovery surface.",
+      "expected_output": "Should route to agent-instructions-maintainer + recovery-surface-builder: keep AGENTS.md stable and thin, migrate dynamic state to the selected recovery surface, record source-of-truth priority, and avoid duplicating state across AGENTS.md and the recovery surface.",
       "files": []
     },
     {
       "id": "automation-recommendation-only",
       "prompt": "Analyze which MCP servers, hooks, skills, or subagents would help this repo.",
-      "expected_output": "Should stay read-only, use repo signals and targeted external capability search only when current facts matter, cover MCP, skills, hooks, subagents, plugins, and commands/CI/headless automation with actionable candidates or clear defer reasons, include approval_needed, fallback, verification_probe, and priority/classification, and not write files or proceed to installation without USER CHECKPOINT.",
+      "expected_output": "Should route to capability-recommender (read-only), use repo signals and targeted external capability search only when current facts matter, cover MCP, skills, hooks, subagents, plugins, and commands/CI/headless automation with actionable candidates or clear defer reasons, include approval_needed, fallback, verification_probe, and priority/classification, and not write files or proceed to installation without USER CHECKPOINT via harness-builder.",
       "files": []
     },
     {

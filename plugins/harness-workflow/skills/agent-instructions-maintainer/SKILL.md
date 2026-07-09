@@ -1,6 +1,6 @@
 ---
 name: agent-instructions-maintainer
-description: "Use when durable agent instructions need audit or repair: AGENTS.md, CLAUDE.md, .claude.md, .claude.local.md, canonical rules/*.mdc, or Cursor rule mirrors."
+description: "Use when durable agent instructions need audit or repair only: AGENTS.md, CLAUDE.md, .claude.md, .claude.local.md, canonical rules/*.mdc, or Cursor rule mirrors. For cross-surface workbench bootstrap or repair, use harness-builder."
 tools: Read, Glob, Grep, Bash, Edit
 ---
 
@@ -192,7 +192,7 @@ When presenting recommendations, remind users:
 
 ## Recommended next skill
 
+- Use `harness-builder` when this audit is one row in a broader workbench recommendation (controller synthesizes the matrix).
 - Use `recovery-surface-builder` if the audit finds missing or broken state/progress/evidence/recovery artifacts.
 - Use `capability-recommender` if the audit implies a new skill, hook, MCP server, subagent, plugin, script, or automation surface.
-- Use `harness-builder` for project-wide workbench recommendations spanning instructions, recovery, verification, and capabilities.
 - Use `implement` after the user approves the concrete instruction patch.

@@ -10,7 +10,7 @@ Cursor support is a rules adapter, not a plugin runtime. Codex and Claude Code c
 
 Use these rules to route work into the eight canonical Harness Workflow lanes. The bundled `find-skills` helper supports Capability Recommendation, but it is not a workflow lane:
 
-- `harness-builder`: recommend, build, or repair the project workbench, verification entry, recovery surface, and Capability Recommendation policy.
+- `harness-builder`: recommend, build, or repair the project workbench as controller — route thick gaps to helpers, synthesize the recommendation matrix, and patch controller-owned slices (verification, install, anti-entropy).
 - `brainstorm`: turn unclear requirements into an approved Spec.
 - `plan`: turn an approved Spec or clear request into an Executable Plan.
 - `implement`: make one scoped change with WIP=1 discipline.

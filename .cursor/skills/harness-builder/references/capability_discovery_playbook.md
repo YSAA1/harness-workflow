@@ -1,5 +1,7 @@
 # Capability Discovery Playbook
 
+> Primary owner: `capability-recommender`. Keep this file as controller fallback when that helper is unavailable.
+
 Use this when the user asks for setup, installation, automation, or capability
 recommendations, or when local evidence shows a workflow gap that bundled
 references do not cover well enough.

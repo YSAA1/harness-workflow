@@ -1,5 +1,7 @@
 # Harness Recommendation Guide
 
+> Primary owner for thick capability design: `capability-recommender`. `harness-builder` uses this as fallback / matrix context only.
+
 Use this guide in Harness Recommendation Mode. The user's goal is to know what harness contents should be installed or repaired for this project: project entry docs, recovery surface, verification scripts, MCP, hooks, skills, subagents, plugins, slash/CLI commands, CI/headless automation, and related guardrails.
 
 Derived from Anthropic `claude-code-setup` / `claude-automation-recommender` 1.0.0, adapted for this Harness Builder and for Codex / Claude Code / Cursor surfaces. See `automation_recommendation_attribution.md`.

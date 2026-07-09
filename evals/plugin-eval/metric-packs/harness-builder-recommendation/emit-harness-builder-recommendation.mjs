@@ -20,6 +20,7 @@ const listScenarioFiles = () => fs.readdirSync(path.join(__dirname, "scenarios")
 
 const fileMap = {
   skill: path.join(targetPath, "SKILL.md"),
+  controller: path.join(targetPath, "references", "controller_discipline.md"),
   methodContract: path.join(repoRoot, "docs", "harness-method-contract.md"),
   guide: path.join(targetPath, "references", "automation_recommendation_guide.md"),
   install: path.join(targetPath, "references", "install_policy.md"),
@@ -93,31 +94,31 @@ const groups = {
   task_context_as_evidence: {
     id: "task_context_as_evidence",
     label: "task context is harness evidence",
-    file: "skill",
-    tokens: ["treat that context as **evidence**", "not as a work order"],
+    files: ["skill", "controller"],
+    tokens: ["as **evidence**", "not as a work order"],
   },
   route_execution_to_next_skill: {
     id: "route_execution_to_next_skill",
     label: "route actual execution to another workflow skill",
-    file: "skill",
-    tokens: ["route to `plan`, `implement`, or `diagnose`"],
+    files: ["skill", "controller"],
+    tokens: ["Route actual execution to `plan`, `implement`, or `diagnose`"],
   },
   recommendation_is_not_execution: {
     id: "recommendation_is_not_execution",
     label: "recommendation is not execution",
-    file: "skill",
-    tokens: ["recommending or installing a capability is the deliverable", "using that capability to do the work is not"],
+    files: ["skill", "controller"],
+    tokens: ["Recommending or installing a capability is the deliverable", "using that capability to do the"],
   },
   read_only_recommendation_phase: {
     id: "read_only_recommendation_phase",
     label: "read-only recommendation phase",
-    files: ["skill", "guide"],
+    files: ["skill", "controller", "guide"],
     tokens: ["read-only", "do not write"],
   },
   approved_install_phase: {
     id: "approved_install_phase",
     label: "approved install phase",
-    file: "skill",
+    files: ["skill", "controller"],
     tokens: ["Approved install phase", "USER CHECKPOINT"],
   },
   candidate_record_fields: {
@@ -177,7 +178,7 @@ const groups = {
   no_empty_approval_checkpoint: {
     id: "no_empty_approval_checkpoint",
     label: "no approval checkpoint for empty plans",
-    file: "skill",
+    files: ["skill", "controller"],
     tokens: ["No install recommended", "no action to approve"],
   },
   install_surface_separate: {
@@ -213,19 +214,19 @@ const groups = {
   existing_harness_reconciliation: {
     id: "existing_harness_reconciliation",
     label: "existing harness is reconciled before adding",
-    file: "skill",
+    files: ["skill", "controller", "recovery"],
     tokens: ["Reconcile", "existing harness"],
   },
   keep_patch_archive_reject: {
     id: "keep_patch_archive_reject",
     label: "existing components are classified",
-    file: "skill",
+    files: ["skill", "controller"],
     tokens: ["keep/patch/archive/reject"],
   },
   no_second_recovery_surface: {
     id: "no_second_recovery_surface",
     label: "no second recovery surface",
-    file: "skill",
+    files: ["skill", "controller", "recovery"],
     tokens: ["Do not create a second recovery surface"],
   },
   hot_recovery_bounded_index: {
@@ -291,13 +292,13 @@ const groups = {
   question_gate_only_design_questions: {
     id: "question_gate_only_design_questions",
     label: "question gate asks only design-changing questions",
-    file: "skill",
+    files: ["skill", "controller"],
     tokens: ["Question gate", "Ask only questions that change harness design", "No user questions needed"],
   },
   evidence_gate_repo_scan: {
     id: "evidence_gate_repo_scan",
     label: "repo evidence is collected before questions or installation",
-    file: "skill",
+    files: ["skill", "controller"],
     tokens: ["Evidence gate", "Collect repo evidence before questions or installation", "Do not start by generating files"],
   },
   no_template_before_evidence: {
@@ -309,7 +310,7 @@ const groups = {
   evidence_backed_assumptions: {
     id: "evidence_backed_assumptions",
     label: "questions can be replaced by evidence-backed assumptions",
-    file: "skill",
+    files: ["skill", "controller"],
     tokens: ["No user questions needed", "evidence-backed assumptions"],
   },
   scoped_work_contract: {
@@ -351,8 +352,8 @@ const groups = {
   dynamic_context_probe: {
     id: "dynamic_context_probe",
     label: "cheap dynamic context is probed at session start",
-    file: "skill",
-    tokens: ["probe cheap dynamic context", "`git status`", "diagnostics", "CI if available"],
+    files: ["skill", "controller"],
+    tokens: ["Probe cheap dynamic context", "`git status`", "diagnostics", "CI if available"],
   },
   fresh_evidence_gate: {
     id: "fresh_evidence_gate",
@@ -394,7 +395,7 @@ const groups = {
     id: "recovery_backend_selection",
     label: "recovery backend is selected by task shape",
     file: "recovery",
-    tokens: ["`none`", "`lightweight`", "`three-file`", "`existing`", "not a synonym for workflow state"],
+    tokens: ["`none`", "`lightweight`", "`harness`", "`existing`", "not a synonym for workflow state"],
   },
   recovery_drift_repair: {
     id: "recovery_drift_repair",
@@ -405,8 +406,8 @@ const groups = {
   dynamic_state_surface: {
     id: "dynamic_state_surface",
     label: "dynamic state stays out of AGENTS",
-    file: "skill",
-    tokens: ["active state", "active slice", "selected recovery surface"],
+    files: ["skill", "controller"],
+    tokens: ["Dynamic task state", "selected recovery surface", "not in `AGENTS.md`"],
   },
   verification_fast_local_safe: {
     id: "verification_fast_local_safe",
@@ -429,8 +430,8 @@ const groups = {
   no_fresh_evidence_ready: {
     id: "no_fresh_evidence_ready",
     label: "no fresh evidence means no ready claim",
-    file: "skill",
-    tokens: ["No fresh evidence", "no ready claim"],
+    files: ["skill", "controller"],
+    tokens: ["No fresh evidence", "not ready"],
   },
   anti_entropy_warning_signs: {
     id: "anti_entropy_warning_signs",
@@ -531,14 +532,14 @@ const groups = {
   external_research_not_builtin: {
     id: "external_research_not_builtin",
     label: "external research governance is not built in",
-    file: "skill",
+    files: ["skill", "controller"],
     tokens: ["External research-governance wiring is intentionally outside this plugin", "Do not create research gates"],
   },
   research_task_not_harness_execution: {
     id: "research_task_not_harness_execution",
     label: "research tasks are not performed by harness-builder",
-    file: "skill",
-    tokens: ["It is not a lane for performing the feature, bugfix, or research task described by the user"],
+    files: ["skill", "controller"],
+    tokens: ["feature, bug fix, or research task"],
   },
   external_research_fit_row: {
     id: "external_research_fit_row",

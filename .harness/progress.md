@@ -141,3 +141,10 @@
 - Milestone commit: `d0afa41 拆分 harness-builder helper skill`。
 - Push: `git push origin master` 命令超时，但本地 `origin/master` 已更新；随后 `git ls-remote origin refs/heads/master` 确认远端 master 指向 `d0afa417663efce145a9518878e5c91adb74b23c`。
 - Unrelated dirty files intentionally left unstaged: `.gitignore`、旧 plugin-eval plan/PDF、`skills/brainstorm` 及其 Cursor/package mirror、`docs/skill-flow-review/brainstorm.html`、`.codex/`、`.review-artifacts/`、`revise_plan.md`。
+
+## 2026-07-09 — harness-builder controller rewrite
+
+- Rewrote `skills/harness-builder/SKILL.md` as thin controller with Helper routing table + completion criteria.
+- Added `references/controller_discipline.md`; tightened helper descriptions; synced README/CONTEXT/method contract/rules/mirrors.
+- Updated eval metric pack emitter + checker for controller semantics; removed obsolete research-route required ids.
+- Evidence: `bash scripts/agent/check.sh` PASS; `node scripts/check-plugin-eval-metric-pack.mjs` PASS.

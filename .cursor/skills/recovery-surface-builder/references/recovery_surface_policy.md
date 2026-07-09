@@ -1,6 +1,6 @@
 # Recovery Surface Policy
 
-Harness Builder owns project-level recovery surface design. Other workflow skills may use a selected recovery surface, but they should not require a dedicated state lane before doing useful work.
+`recovery-surface-builder` owns recovery surface design; `harness-builder` routes recovery-class gaps to it. Other workflow skills may use a selected recovery surface, but they should not require a dedicated state lane before doing useful work.
 
 **Recovery Policy** (`references/recovery_policy.md`) is the session entry contract. **Work Index** (`references/source_of_truth_tiers.md`) is the task registry (**Required** whenever recovery is not `none`). **`AGENTS.md` must not index the current task** — it points to Recovery Policy and Work Index only.
 
@@ -54,7 +54,7 @@ Templates: `templates/recovery_policy.md.j2`, `templates/work_index.md.j2`, `tem
 
 ## Hot Surface Budget
 
-Hot recovery docs are bounded indexes, not append-only reports. Keep
+Hot recovery docs are bounded indexes, not append-only reports. Status/check/selftest scripts are views/probes, not state stores. Keep
 `AGENTS.md`, `.harness/state.md`, `.harness/work_index.md`, and handoff notes
 small enough for the next agent to read first.
 For complex tasks, replace or roll up old progress into the current state,
@@ -68,6 +68,8 @@ probe inventories, or long conclusions.
 
 ## Backend Options
 
+Backend choice (`none` | `lightweight` | `harness` | `feature-list` | `existing`) is not a synonym for workflow state.
+
 | Backend | Use When | Typical Artifacts |
 | --- | --- | --- |
 | `none` | Trivial one-off work where durable state would add noise | final response and git diff |
@@ -76,7 +78,7 @@ probe inventories, or long conclusions.
 | `feature-list` | Product work with many independent features | `.harness/features.json`, `.harness/work_index.md`, issue tracker |
 | `existing` | Credible external task tracking already exists | Recovery Policy pointer to issues/roadmap + `.harness/work_index.md` sync |
 
-Prefer `harness` over ad hoc root-level state files. Legacy root `task_plan.md` / `progress.md` / `findings.md` should be reconciled into `.harness/` or archived.
+Do not create a second recovery surface when one already works. Prefer `harness` over ad hoc root-level state files. Legacy root `task_plan.md` / `progress.md` / `findings.md` should be reconciled into `.harness/` or archived.
 
 ## Existing Harness Reconciliation
 
@@ -84,4 +86,4 @@ When a repo already has harness artifacts, Harness Builder must reconcile before
 
 ## Drift Repair
 
-When recovery artifacts conflict with code or git state, identify the conflicting sources, apply tier priority, append a correction to the evidence log, rewrite the hot index, and never put temporary active-slice status into `AGENTS.md`.
+When recovery artifacts conflict with code or git state, identify the conflicting sources, apply tier priority, append a correction to the selected evidence log, rewrite the hot index, and never put temporary active-slice status into `AGENTS.md`.

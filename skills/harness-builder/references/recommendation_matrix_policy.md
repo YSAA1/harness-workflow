@@ -52,7 +52,7 @@ The user may ask for one area only. Still run enough discovery to avoid writing 
 
 ## Binding Rule
 
-Every proposed file, script, skill, hook, MCP, subagent, plugin, command, CI job, or GC scan must bind to exactly one primary recommendation row.
+Every proposed file, script, skill, hook, MCP, subagent, plugin, command, CI job, or GC scan must bind to exactly one recommendation row **and** exactly one Owner skill (`harness-builder` for controller-owned rows; otherwise the Helper Skill that owns the gap class).
 
 If a candidate cannot name the failure it prevents, reject or defer it.
 

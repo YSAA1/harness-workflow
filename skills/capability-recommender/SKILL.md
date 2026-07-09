@@ -1,6 +1,6 @@
 ---
 name: capability-recommender
-description: "Use when a repo needs read-only agent workbench capability recommendations: skills, hooks, MCP servers, subagents, plugins, scripts, CI/headless automation, or verification/recovery surfaces."
+description: "Use when the need is read-only capability design only: skills, hooks, MCP servers, subagents, plugins, scripts, or CI/headless automation. For cross-surface workbench bootstrap or repair, use harness-builder."
 tools: Read, Glob, Grep, Bash
 ---
 
@@ -298,7 +298,7 @@ Configure allowed tools in the target runtime's permission surface, for example 
 
 ## Recommended next skill
 
-- Use `harness-builder` when the user wants these recommendations integrated into the project workbench.
+- Use `harness-builder` when these recommendations must be integrated into a cross-surface workbench matrix and USER CHECKPOINT.
 - Use `agent-instructions-maintainer` when the recommended change is primarily `AGENTS.md`, `CLAUDE.md`, `.claude.md`, or Cursor rules.
 - Use `recovery-surface-builder` when the recommendation concerns active state, progress, evidence, decisions, or session recovery.
 - Use `implement` only after the user approves a concrete change slice.

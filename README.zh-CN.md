@@ -107,13 +107,13 @@ harness 不是一个更长的 prompt。它是围绕模型的一套项目运行�
 | 先看 repo truth，再谈流程 | agent 会检查 docs、源码布局、测试、git 状态、已有规则和 setup 命令，再判断项目是否真的 ready。 |
 | 恢复面是设计决策 | 有些任务不需要持久状态；有些需要 `.harness/recovery_policy.md` + `work_index.md`；跨会话工作用完整 `.harness/`；有些应复用 issue tracker 或已有 docs。 |
 | 能力必须匹配真实缺口 | Skills、MCP、hooks、subagents、plugins、commands、CI/headless automation、recovery surface 和 instruction surface 会作为独立 recommendation row 判断。Capability Recommendation 应输出易读推荐表：priority、type、recommendation、repo signal、value、install surface、approval needed、fallback、verification probe 和 classification；source/freshness/trust/risk 只在影响决策时展开。插件内置 helper skills 分别负责 skill 发现、能力推荐、指令维护和恢复面构建。推荐请求保持 read-only，直到 `USER CHECKPOINT`。 |
-| Helper skills 让 builder 变薄 | `capability-recommender` 和 `agent-instructions-maintainer` 主要复制并适配 Anthropic 官方插件 skill；`recovery-surface-builder` 从 `harness-builder` 抽出 recovery 工作，并吸收 planning-with-files 的持久工作记忆纪律，但不强制根目录三文件。 |
+| Helper skills 让 builder 变薄 | `harness-builder` 只做路由，不重做 helper。`capability-recommender` 和 `agent-instructions-maintainer` 主要复制并适配 Anthropic 官方插件 skill；`recovery-surface-builder` 承接 recovery backend，并吸收 planning-with-files 的持久工作记忆纪律，但不强制根目录三文件。 |
 | ready claim 必须有新证据 | `verify` 是唯一 ready gate。它会把每个“完成了”的声明绑定到当前证据：测试、构建输出、smoke check、截图、人工检查，或明确说明为什么无法验证。 |
 | cleanup 是交付的一部分 | README 过期、生成物残留、状态不清、恢复笔记缺失，都不是小问题。下一个 agent 读不懂现场，工作就没有真正结束。 |
 
 ## `harness-builder` 应该放在哪里
 
-`harness-builder` 负责创建或修复项目工作台：`AGENTS.md` 或 `CLAUDE.md`、项目地图、验证入口、恢复面、本地规则，以及经过理由筛选的可选能力。
+`harness-builder` 是工作台**总控**：分类缺口、把厚活路由到 Helper Skills（`capability-recommender`、`agent-instructions-maintainer`、`recovery-surface-builder`）、合成一张推荐矩阵，并只修补 controller-owned 片（验证入口、安装面对齐、反漂移、薄入口指针）。
 
 推荐顺序：
 
@@ -147,7 +147,7 @@ Harness Workflow 只有八条 active workflow lane。Helper skills 是顶层可�
 | --- | --- | --- | --- |
 | `brainstorm` | 目标、边界、取舍或成功标准还不够清楚。 | 默认写入 `docs/specs/YYYY-MM-DD--<topic>.md` 的聚焦 Spec：goals、non-goals、考虑过的方案、成功标准和验证策略。 | `plan`，如果任务本身是 harness 设计则转 `harness-builder` |
 | `plan` | spec 或用户请求已经清楚，可以选择第一个可执行 slice。 | 默认写入 `docs/plans/YYYY-MM-DD--<topic>-plan.md` 的 Executable Plan，包括 active slice、`verification_path_status`、所需验证能力、fallback evidence、final integration claim，以及可直接打勾的 Markdown checkbox 工作项。 | 工作台或证明路径 blocked 时转 `harness-builder`；纯证明任务转 `verify`；否则转 `implement` |
-| `harness-builder` | 仓库缺少可靠工作台、恢复面、验证入口或能力决策。 | 基于仓库证据的最小 project-local harness plan，以及经过批准安装的组件。 | `verify`，再进入 `implement` 或 `cleanup` |
+| `harness-builder` | 仓库缺少可靠工作台，或缺口跨入口 / 恢复 / 验证 / 能力 / 安装面。 | 证据、Helper Skill routing、推荐矩阵、USER CHECKPOINT，以及已批准的 controller-owned 修补。 | 厚行交给 helpers；再进入 `verify`、`implement` 或 `cleanup` |
 | `implement` | 一个 slice 已经 scoped，项目工作面也足够清楚。 | 小范围改动，以及作为实现反馈的本地检查；如果检查不能跑，要说明原因。它不声明 ready。 | 有意义改动转 `review`，小改动可直接 `verify` |
 | `diagnose` | build、test、lint、typecheck、CI 或运行时行为失败，且根因未知。 | 复现、一个已验证假设、根因、最小修复和回归证据。 | 需要修复时转 `implement`，已修好时转 `verify` |
 | `review` | 有意义的改动已经稳定，需要在 ready 前做结构性检查。 | 关于正确性、测试缺口、文档漂移、范围膨胀、entropy 和残余风险的 findings。它不替代 verify。 | 通过后转 `verify` 或 verify fast-path，有 findings 转 `implement` 或 `diagnose` |

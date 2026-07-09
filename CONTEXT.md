@@ -5,15 +5,15 @@ This context defines the language for the Harness Workflow plugin that turns har
 ## Language
 
 **Harness Builder**:
-The project-level skill that designs or repairs the agent workbench: project map, recovery surface, verification entry, local skills, hooks, subagents, MCP policy, and anti-entropy rules.
-_Avoid_: bootstrap as the canonical name; keep "bootstrap" only as a historical alias or trigger word.
+The project-level **controller** skill that classifies workbench gaps, **routes** thick work to Helper Skills, synthesizes one Harness Recommendation Matrix, and patches controller-owned slices (verification entry, install alignment, anti-entropy, thin entry pointers).
+_Avoid_: bootstrap as the canonical name; keep "bootstrap" only as a historical alias or trigger word. Avoid re-implementing helper-owned work inside the controller.
 
 **Skill Independence**:
 The design rule that each workflow skill can run for its own activity without requiring a fixed global sequence or a particular state backend.
 _Avoid_: making Harness Builder, planning, or `.harness/` recovery a universal prerequisite.
 
 **Capability Recommendation**:
-The Harness Builder activity that searches for task-relevant skills, MCP servers, hooks, subagents, plugins, commands, CI/headless automation, or external agent capabilities before recommending project-level installation.
+The workbench activity (routed via Harness Builder to `capability-recommender` / `find-skills`) that searches for task-relevant skills, MCP servers, hooks, subagents, plugins, commands, CI/headless automation, or external agent capabilities before recommending project-level installation.
 _Avoid_: treating the current user's installed skills as the full capability universe, or installing optional capabilities without clear value.
 
 **Harness Recommendation Matrix**:
@@ -25,7 +25,7 @@ The concise evidence-bound table inside Harness Recommendation Mode: recommendat
 _Avoid_: recommending capabilities that do not close a named recommendation row.
 
 **Helper Skill**:
-A top-level callable support skill that owns a thick sub-capability but is not one of the eight active workflow lanes.
+A top-level callable support skill that owns a thick sub-capability but is not one of the eight active workflow lanes. `harness-builder` **routes** to helpers; it does not re-implement them.
 _Avoid_: treating helper skills as mandatory workflow steps or hidden internal subroutines.
 
 **Capability Recommender**:
@@ -97,9 +97,9 @@ _Avoid_: storing the full spec inside `.harness/progress.md`.
 
 ## Relationships
 
-- A **Harness Builder** selects or repairs the **Recovery Surface** and installs `.harness/recovery_policy.md` plus `.harness/work_index.md` when recovery ≠ `none`.
-- A **Harness Builder** declares **Source-of-Truth Tiers** in `AGENTS.md` (T1); current task pointers live in T3/T4 only.
-- A **Harness Builder** performs **Capability Recommendation** with `$find-skills` and targeted web research when the current task may benefit from reusable skills, MCP servers, hooks, subagents, plugins, commands, CI/headless automation, or agent tooling.
+- A **Harness Builder** **routes** recovery-class gaps to **Recovery Surface Builder**, which selects or repairs the **Recovery Surface** and installs `.harness/recovery_policy.md` plus `.harness/work_index.md` when recovery ≠ `none`.
+- A **Harness Builder** declares **Source-of-Truth Tiers** in `AGENTS.md` (T1) via instruction maintenance routing; current task pointers live in T3/T4 only.
+- A **Harness Builder** performs **Capability Recommendation** by routing to `capability-recommender` / `$find-skills` (and targeted web research when needed) when the current task may benefit from reusable skills, MCP servers, hooks, subagents, plugins, commands, CI/headless automation, or agent tooling.
 - A `brainstorm` workflow runs **Design Grill** (Phase A2) after the coverage matrix gate for non-trivial work.
 - A `brainstorm` workflow produces a **Spec**, defaulting to `docs/specs/YYYY-MM-DD--<topic>.md`, and does not default to writing `.harness/` runtime state.
 - A **Recovery Surface** uses **Harness Directory** (`.harness/`), an issue tracker, a feature list, or an existing project status system — not root-level legacy state files.
@@ -139,7 +139,7 @@ _Avoid_: storing the full spec inside `.harness/progress.md`.
 > **Domain expert:** "Only if the selected **Recovery Surface** asks for that. The core output of `brainstorm` is a **Spec**."
 
 > **Dev:** "Do we need separate `resume` and `save-session` skills?"
-> **Domain expert:** "No. The **Recovery Policy** belongs to **Harness Builder**, while closure and handoff hygiene belong to `cleanup` and the project documents."
+> **Domain expert:** "No. The **Recovery Policy** belongs to **Recovery Surface Builder** (routed from **Harness Builder**), while closure and handoff hygiene belong to `cleanup` and the project documents."
 
 > **Dev:** "Is `cleanup` mainly about marking a task complete?"
 > **Domain expert:** "No. `cleanup` mainly prevents knowledge rot by reconciling code, docs, AGENTS.md, generated artifacts, and the selected **Recovery Surface**."
@@ -150,4 +150,4 @@ _Avoid_: storing the full spec inside `.harness/progress.md`.
 ## Flagged Ambiguities
 
 - "bootstrap" was used to mean the canonical project harness construction skill. Resolved: the canonical term is **Harness Builder**; "bootstrap" remains only a historical alias or trigger word.
-- "resume" and "save-session" were used as workflow skills. Resolved: recovery is a project-level policy generated by **Harness Builder**, not a dedicated skill lane.
+- "resume" and "save-session" were used as workflow skills. Resolved: recovery is a project-level policy owned by **Recovery Surface Builder** under **Harness Builder** routing, not a dedicated workflow lane.

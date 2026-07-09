@@ -4,38 +4,36 @@
 
 ## Objective
 
-（全部完成）对 `review`、`verify`、`cleanup` 三个 workflow skill 做针对性优化。
+把 `harness-builder` 写成三个 helper 的薄总控：可检查的 Helper routing、progressive disclosure、description 去竞争、文档/镜像/eval 一致。
 
 ## Active slice
 
-无（task 006 已完成并 milestone committed）。
+无（task 007 实现与验证已完成；ready claim 留给 verify）。
 
 ## Current phase
 
-complete — 8/8 阶段完成，commit `92edf15`。
+implement complete — 等待 review/verify。
 
 ## Success criteria
 
-- [x] review 产出的 verify_handoff_cases 在 verify 的流程中有显式消费步骤。
-- [x] verify 的 Capability Recommendation 逻辑简化为"记录缺口 → route to harness-builder"。
-- [x] review 隔离机制三端通用化（Codex / Claude Code / Cursor 各有明确路径）。
-- [x] verify 增加 Cold Verification Pass（Agent team dispatch）。
-- [x] review 的 adversarial pass 增加了攻击假设分类法。
-- [x] verify 的 evidence ladder 增加了常见改动类型的阶梯组合推荐。
-- [x] cleanup 增加了 deferred cleanup registry 机制。
-- [x] 跨 skill 共享反模式已提取为独立参考文件。
-- [x] 三端结构验证通过（29/29 PASS）。
-- [x] Skill flow HTML 重新生成通过。
+- [x] harness-builder SKILL 以 route/Helper routing 为中心，每步有 completion criterion
+- [x] 厚 gap 有 owner 表；controller 只修 verification/install/anti-entropy
+- [x] references 有 context pointer；新增 `controller_discipline.md`
+- [x] helper descriptions 不再抢跨面 bootstrap
+- [x] 三端结构验证 PASS（`bash scripts/agent/check.sh`）
+- [x] metric pack emitter 0 fail；skill flow HTML 已重生
 
 ## Verification evidence
 
-- `bash scripts/agent/check.sh` → 29/29 PASS
-- `node scripts/generate-skill-flow-html.mjs` → 13 HTML files generated
-- Milestone commit: `92edf15`
+- `bash scripts/agent/check.sh` → PASS（plugin / Claude / Cursor / dry-run）
+- `node scripts/check-plugin-eval-metric-pack.mjs` → PASS
+- `node scripts/generate-skill-flow-html.mjs` → 13 HTML files
+- `node scripts/check-plugin.mjs` → PASS
 
 ## Next actions
 
-等待新任务。
+- 可选：`review` → `verify` → milestone commit（需用户明确要求）
+- 后续可再 prune harness-builder 内与 capability-recommender 重复的 automation_* 文件（当前标为 fallback，未删）
 
 ## Blocked tasks
 

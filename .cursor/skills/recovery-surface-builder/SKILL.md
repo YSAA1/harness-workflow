@@ -1,13 +1,13 @@
 ---
 name: recovery-surface-builder
-description: "Use when active work needs a durable recovery surface: work index, active slice, state, progress, decisions, risks, evidence, verification commands, or session catch-up."
+description: "Use when the need is recovery surface only: work index, active slice, state, progress, decisions, risks, evidence, verification commands, or session catch-up. For cross-surface workbench bootstrap or repair, use harness-builder."
 ---
 
 # Recovery Surface Builder
 
 This helper designs, creates, or repairs a project's recovery surface: the durable place an agent can read after `/clear`, interruption, or handoff to know what is active, what changed, what was decided, and what evidence exists.
 
-It is extracted from `harness-builder` so the main builder can stay thin. It also adopts the useful idea from planning-with-files: persistent working memory must be read before decisions and updated after actions. Harness-workflow keeps that idea backend-neutral and does not default every project to root `task_plan.md`, `findings.md`, and `progress.md`.
+It is a **Helper Skill** owned by `harness-builder` routing for recovery-class gaps. It also adopts the useful idea from planning-with-files: persistent working memory must be read before decisions and updated after actions. Harness-workflow keeps that idea backend-neutral and does not default every project to root `task_plan.md`, `findings.md`, and `progress.md`.
 
 ## Scope
 
@@ -76,7 +76,7 @@ Harness adaptation: do not force root `task_plan.md`, `findings.md`, and `progre
 
 ## Recommended next skill
 
-- Use `harness-builder` when recovery is one part of a broader project workbench recommendation.
+- Use `harness-builder` when recovery is one row in a broader workbench recommendation (controller synthesizes the matrix).
 - Use `agent-instructions-maintainer` when durable instructions must be updated beyond a thin pointer.
 - Use `plan` when an approved spec needs an executable active slice.
 - Use `verify` when the recovery surface already claims ready and needs fresh evidence.

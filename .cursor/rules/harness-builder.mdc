@@ -9,41 +9,39 @@ Canonical skill: `skills/harness-builder/SKILL.md`.
 
 ## When To Use
 
-Use `harness-builder` when project entry, recovery surface, verification command, protected paths, capability policy, install surface, or anti-entropy checks are unclear.
+Use `harness-builder` when the project workbench needs bootstrap, repair, or cross-surface recommendation: entry, recovery, verification, capability policy, install alignment, or anti-entropy.
 
-Do not use it to perform the user's feature, bugfix, or delivery task. It prepares the workbench for later workflow skills.
+Do not use it to perform the user's feature, bug fix, or delivery task. It **routes** harness gaps; thick work belongs to helpers.
 
 ## Inputs
 
 - Current user request or approved Spec/Executable Plan.
-- Repository evidence: `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/`, manifests, README, install docs, skills, scripts, generated artifacts, and selected recovery surface.
+- Repository evidence: entry docs, manifests, README/install docs, skills/rules, scripts/CI, selected recovery surface.
 - Any known validation command or failure evidence.
 
 ## Procedure
 
-1. Read actual repo evidence before recommending changes.
-2. Classify gaps as entry, recovery, verification, capability, install, generated mirror, or anti-entropy.
-3. Route thick sub-capabilities to helper skills:
-   - `capability-recommender` for read-only capability recommendations.
-   - `agent-instructions-maintainer` for durable instruction files.
-   - `recovery-surface-builder` for work index, active state, progress, decisions, evidence, and session catch-up.
-   - `find-skills` for reusable external skill discovery.
-4. Keep durable instruction files thin; active task state belongs in the selected recovery surface.
-5. Do not add hooks, MCP, subagents, global config, or project-local skills without a USER CHECKPOINT.
-6. Patch only approved harness files and sync generated/mirrored surfaces through the canonical path.
+1. Evidence → classify gaps (`entry` | `recovery` | `verification` | `capability` | `install` | `generated-mirror` | `anti-entropy`).
+2. **Helper routing** — every thick gap gets an owner:
+   - `capability-recommender` — read-only capability design
+   - `agent-instructions-maintainer` — durable instruction files
+   - `recovery-surface-builder` — recovery backend / state / catch-up
+   - `find-skills` — external skill discovery
+   - this skill — verification entry, install alignment, anti-entropy, thin entry pointer
+3. Synthesize one Harness Recommendation Matrix (`HARNESS RECOMMENDATION MATRIX`) with Owner skill on every row.
+4. USER CHECKPOINT before writes.
+5. Patch only approved controller-owned rows; do not shadow-write helper-owned files.
 
 ## Outputs
 
-For non-trivial changes, produce:
-
 - `HARNESS EVIDENCE`
-- `HARNESS RECOMMENDATION MATRIX` / Harness Recommendation Matrix
+- `HARNESS RECOMMENDATION MATRIX`
 - `USER CHECKPOINT`
 - Approved file list and validation command
 
 ## Verification / Done Criteria
 
-- The approved harness slice is patched only where needed.
-- Canonical sources and mirrored surfaces stay semantically aligned.
-- The narrowest relevant validation command has fresh evidence.
-- No default MCP, hooks, subagents, or global config are installed without approval.
+- Every thick gap has a helper result or explicit Deferred/Rejected reason.
+- Approved controller slice patched; mirrors synced via canonical path.
+- Narrowest relevant check has fresh evidence.
+- No default MCP, hooks, subagents, or global config without approval.
