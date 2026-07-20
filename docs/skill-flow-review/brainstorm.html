@@ -169,10 +169,10 @@ pre {
     <div class="flow">
       <div class="step">
         <div class="num">1</div>
-        <div><h3>第 1 步 — Phase A Clarification</h3><p>Gate 通过前禁止写 Spec。复述问题，维护 Coverage Matrix，每轮只问一个最高优先级问题并等待用户回复。Gate 通过后，对所有 inferred 项做 assumption batch 确认。</p></div>
+        <div><h3>第 1 步 — Phase A Grill</h3><p>Gate 通过前禁止写 Spec。Phase A 是一场 relentless interview（对齐 /grill-with-docs）：Coverage 是进度账本，不是独立填表阶段；每轮选最高优先级未决点，给出 working recommendation，一问 accept/correct/reject，设计敏感点附 stress scenario，术语/ADR 当场落地。维护 Coverage Matrix，等待用户回复。Gate 通过后，对所有 inferred 项做 assumption batc...</p></div>
       </div><div class="step">
         <div class="num">2</div>
-        <div><h3>第 2 步 — Phase B Spec Drafting</h3><p>Gate 与 assumption batch 完成后，按 references/spec-drafting.md 执行：先验证策略 → 比方案 → 写 Spec → 自审 → 请求用户批准。</p></div>
+        <div><h3>第 2 步 — Phase B Spec Drafting</h3><p>Phase A Gate 与 assumption batch 完成后，按 references/spec-drafting.md 执行：先验证策略 → 比方案 → 写 Spec → 自审 → 请求用户批准。</p></div>
       </div>
     </div>
   </section>
@@ -196,11 +196,11 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] Clarification Gate 通过；purpose、scope、success criteria、verification strategy 非 unknown</li><li>[ ] 至少等待过一次用户回复，或用户提供了无 blocking 歧义的完整 brief</li><li>[ ] 独立 Spec 已写、已自审、已请求用户批准</li></ul>
+      <ul><li>[ ] Phase A Gate 通过；purpose、scope、success criteria、verification strategy 非 unknown；非平凡工作满足 grill 深度或已显式豁免</li><li>[ ] 至少等待过一次用户回复，或用户提供了无 blocking 歧义的完整 brief</li><li>[ ] 独立 Spec 已写、已自审、已请求用户批准</li></ul>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
-      <ul><li><a href="../../skills/brainstorm/references/clarification-loop.md">Clarification Loop</a><span class="tag">存在</span></li><li><a href="../../skills/brainstorm/references/clarification-coverage.md">Clarification Coverage</a><span class="tag">存在</span></li><li><a href="../../skills/brainstorm/references/design-grill.md">Design Grill</a><span class="tag">存在</span></li><li><a href="../../skills/brainstorm/references/spec-drafting.md">Spec Drafting (Phase B)</a><span class="tag">存在</span></li><li><a href="../../skills/brainstorm/references/spec-review-checklist.md">Spec Review Checklist</a><span class="tag">存在</span></li></ul>
+      <ul><li><a href="../../skills/brainstorm/references/clarification-loop.md">Grill Loop (Phase A)</a><span class="tag">存在</span></li><li><a href="../../skills/brainstorm/references/clarification-coverage.md">Clarification Coverage</a><span class="tag">存在</span></li><li><a href="../../skills/brainstorm/references/design-grill.md">Design Grill (craft)</a><span class="tag">存在</span></li><li><a href="../../skills/brainstorm/references/spec-drafting.md">Spec Drafting (Phase B)</a><span class="tag">存在</span></li><li><a href="../../skills/brainstorm/references/spec-review-checklist.md">Spec Review Checklist</a><span class="tag">存在</span></li></ul>
     </div>
   </section>
 

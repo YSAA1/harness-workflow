@@ -61,13 +61,13 @@ Canonical Spec path: `docs/specs/YYYY-MM-DD--<topic>.md`。不要因为仓库存
 
 ## 执行流程
 
-### 第 1 步 — Phase A Clarification
+### 第 1 步 — Phase A Grill
 
-Gate 通过前禁止写 Spec。复述问题，维护 Coverage Matrix，每轮只问一个最高优先级问题并等待用户回复。Gate 通过后，对所有 `inferred` 项做 assumption batch 确认。
+Gate 通过前禁止写 Spec。Phase A 是**一场** relentless interview（对齐 `/grill-with-docs`）：Coverage 是进度账本，不是独立填表阶段；每轮选最高优先级未决点，给出 working recommendation，一问 accept/correct/reject，设计敏感点附 stress scenario，术语/ADR 当场落地。维护 Coverage Matrix，等待用户回复。Gate 通过后，对所有 `inferred` 项做 assumption batch 确认。细节见 `clarification-loop.md`。
 
 ### 第 2 步 — Phase B Spec Drafting
 
-Gate 与 assumption batch 完成后，按 `references/spec-drafting.md` 执行：先验证策略 → 比方案 → 写 Spec → 自审 → 请求用户批准。
+Phase A Gate 与 assumption batch 完成后，按 `references/spec-drafting.md` 执行：先验证策略 → 比方案 → 写 Spec → 自审 → 请求用户批准。
 
 ## 输出契约
 
@@ -90,7 +90,7 @@ BRAINSTORM CLARIFICATION IN PROGRESS | BRAINSTORM SPEC READY
 
 ## 验收标准
 
-- [ ] Clarification Gate 通过；purpose、scope、success criteria、verification strategy 非 `unknown`
+- [ ] Phase A Gate 通过；purpose、scope、success criteria、verification strategy 非 `unknown`；非平凡工作满足 grill 深度或已显式豁免
 - [ ] 至少等待过一次用户回复，或用户提供了无 blocking 歧义的完整 brief
 - [ ] 独立 Spec 已写、已自审、已请求用户批准
 
@@ -112,9 +112,9 @@ Handoff details: `references/spec-drafting.md`. Do not invoke the next skill bef
 
 ## 按需读取
 
-- Phase A：`references/clarification-loop.md`、`references/clarification-coverage.md`、`references/design-grill.md`
+- Phase A Grill：`references/clarification-loop.md`、`references/clarification-coverage.md`、`references/design-grill.md`
 - Phase B：`references/spec-drafting.md`
 - 自审：`references/spec-review-checklist.md`
 - 模板：`templates/spec.md`
 - 下一步：`../plan/SKILL.md`；工作面缺口：`../harness-builder/SKILL.md`
-- 共享语言：`../../CONTEXT.md`（必读；使用其词汇写 Spec；引入新概念词时在 Phase B 当场补入 CONTEXT.md）
+- 共享语言：`../../CONTEXT.md`（必读；使用其词汇写 Spec；引入新概念词时在 Phase A/B 当场补入 CONTEXT.md）

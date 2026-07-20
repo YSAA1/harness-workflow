@@ -1,6 +1,8 @@
 # Clarification Coverage
 
-Use this during **Phase A** of `brainstorm`. Maintain a coverage matrix in chat until the Clarification Gate passes. Do not write a Spec while any blocking dimension remains unresolved.
+Use this during **Phase A** of `brainstorm` as the **progress ledger** for the unified grill loop. Maintain the matrix in chat every turn. Do not write a Spec while any blocking dimension remains unresolved.
+
+Coverage does **not** run as a separate survey phase before Design Grill. Filling a ledger row and grilling a design branch happen in the same interview — see `clarification-loop.md` and `design-grill.md`.
 
 ## Coverage Dimensions
 
@@ -28,7 +30,7 @@ Track these eight dimensions. Map each to the eventual Spec sections.
 
 ## Blocking Dimensions
 
-These cannot remain `unknown` or unconfirmed `inferred` at the Clarification Gate:
+These cannot remain `unknown` or unconfirmed `inferred` at the Phase A Gate:
 
 - Purpose
 - Scope
@@ -37,21 +39,24 @@ These cannot remain `unknown` or unconfirmed `inferred` at the Clarification Gat
 
 Behavior may stay `inferred` only when the slice is trivial and the inferred behavior is already demonstrated in repo evidence; still confirm in the assumption batch.
 
-## Clarification Gate
+## Phase A Gate
 
-Phase A is complete only when all of the following are true:
+Phase A is complete only when the full gate in `clarification-loop.md` passes. Ledger-facing summary:
 
 1. Every dimension is `confirmed` or `waived`, or `inferred` with no blocking dimension left `unknown`.
 2. Purpose, scope, success criteria, and verification strategy are not `unknown`.
 3. Any remaining `inferred` items were presented in an assumption batch and the user confirmed or corrected them.
-4. At least one of:
+4. Non-trivial depth requirements (grill rounds / stress scenario) from `clarification-loop.md` are met or waived.
+5. At least one of:
    - the user replied at least once after the initial framing, or
    - the user provided a comprehensive brief that already covers all dimensions with no blocking ambiguity.
-5. The current turn ends by waiting for user input, unless the gate is already passed and you are presenting the assumption batch or asking to enter Phase B.
+6. The current turn ends by waiting for user input, unless the gate is already passed and you are presenting the assumption batch or asking to enter Phase B.
+
+Do not treat "all eight rows labeled" as sufficient on non-trivial work — design branches and stress scenarios are part of the same gate.
 
 ## Coverage Matrix Template
 
-Copy the default template for English/non-Chinese users and update it every clarification turn. For Chinese users, use the localized example below instead. Preserve stable status values and gate tokens.
+Copy the default template for English/non-Chinese users and update it every Phase A turn. For Chinese users, use the localized example below instead. Preserve stable status values and gate tokens.
 
 ```text
 Clarification Coverage
@@ -67,7 +72,7 @@ Clarification Coverage
 | Capability gaps | unknown | |
 
 Gate: BLOCKED
-Next question: <one question on the highest-priority unresolved dimension>
+Next question: <one recommendation-backed question; include stress scenario when design-sensitive>
 ```
 
 Chinese-user example:
@@ -86,7 +91,7 @@ Chinese-user example:
 | 能力缺口（Capability gaps） | unknown | |
 
 闸门 / Gate: BLOCKED
-下一个问题 / Next question: <one question on the highest-priority unresolved dimension>
+下一个问题 / Next question: <one recommendation-backed question; include stress scenario when design-sensitive>
 ```
 
 When the gate passes, set `Gate: PASSED` and move to the assumption batch if needed, then Phase B.
@@ -103,6 +108,8 @@ Before I draft the Spec, please confirm or correct:
 4. Verification: ...
 5. Other inferred items: ...
 ```
+
+For trivial slices, the batch may also record an explicit waiver of further design-branch or stress-scenario depth.
 
 Wait for user confirmation or corrections. Update the matrix to `confirmed` or revise and re-ask only the affected items.
 
@@ -130,6 +137,7 @@ Clarification Coverage
 
 Question: <exactly one question>
 Recommended answer (optional): <short recommendation or options>
+Stress scenario (when design-sensitive): <one concrete case>
 
 Waiting for: user reply before Phase B
 ```
@@ -156,6 +164,7 @@ BRAINSTORM CLARIFICATION IN PROGRESS
 
 问题 / Question: <exactly one question>
 推荐回答 / Recommended answer (optional): <short recommendation or options>
+压力场景 / Stress scenario (when design-sensitive): <one concrete case>
 
 等待 / Waiting for: user reply before Phase B
 ```

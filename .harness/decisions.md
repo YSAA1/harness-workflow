@@ -6,10 +6,12 @@
 - **Rejected**: 继续推广 three-file backend 作为可选主路径。
 - **Why**: 多任务时 AGENTS 漂移；根目录状态文件与 harness 目录并存造成事实源分裂。
 
-## D-002 — brainstorm Phase A2 非平凡强制
+## D-002 — brainstorm Phase A 统一 Grill（非平凡强制深度）
 
-- **Decision**: Coverage Gate 通过后，非平凡工作必须 Design Grill（≥2 轮），trivial 可在 assumption batch 豁免。
-- **Rejected**: Grill 完全 optional。
+- **Decision**: Phase A 是一场统一 grill interview；Coverage 是进度账本，Design Grill 是同场招式而非 A2。非平凡工作必须满足 grill 深度（≥2 轮且 ≥1 stress scenario），trivial 可在 assumption batch 豁免。
+- **Supersedes**: 旧「Coverage Gate 后再跑 Phase A2」双阶段模型。
+- **Rejected**: Grill 完全 optional；先填矩阵再切第二套访谈协议。
+- **Why**: A1 调查式填表与 A2 挑战式 grill 内容重叠、体验割裂；对齐 `/grill-with-docs` 的单场 interview + 文档结晶。
 
 ## D-003 — harness-builder 拆分为一个 lane + 三个 helper
 

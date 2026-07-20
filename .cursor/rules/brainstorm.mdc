@@ -22,7 +22,7 @@ Canonical source: `skills/brainstorm/SKILL.md`.
 
 ## Procedure
 
-1. **Phase A** — Maintain coverage, ask one question per turn, wait for replies, pass the Clarification Gate, run Design Grill for non-trivial work, confirm assumptions.
+1. **Phase A Grill** — One interview: maintain coverage ledger, ask one recommendation-backed question per turn (stress scenario when design-sensitive), weave domain/ADR, pass Phase A Gate, confirm assumptions. Do not run a survey phase then a separate grill phase.
 2. **Phase B** — Follow `spec-drafting.md`: verification first, compare approaches, write Spec, self-review, stop for approval.
 3. Do not write a Spec before Phase A completes. Do not call `plan` or implement before Spec approval.
 
@@ -34,6 +34,6 @@ Canonical source: `skills/brainstorm/SKILL.md`.
 
 ## Verification / Done Criteria
 
-- Clarification Gate passed; blocking dimensions confirmed.
+- Phase A Gate passed; blocking dimensions confirmed; non-trivial grill depth met or waived.
 - Independent Spec written, self-reviewed, and sent for user approval.
 - No `plan` or implementation before Spec approval.

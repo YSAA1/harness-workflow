@@ -56,8 +56,8 @@ T1–T6 classification (entry, domain, index, active work, evidence, generated) 
 _Avoid_: treating whichever file was edited last as authoritative.
 
 **Design Grill**:
-Phase A2 of `brainstorm`: design-tree questioning with concrete scenarios after the coverage matrix gate. **Mandatory for non-trivial work.**
-_Avoid_: treating eight-dimension coverage as sufficient design stress-testing.
+The grilling craft inside `brainstorm` Phase A: recommendation-first questions, concrete stress scenarios, domain-language sharpening, and inline CONTEXT/ADR capture — in the same interview as the coverage ledger. **Mandatory depth for non-trivial work.**
+_Avoid_: treating eight-dimension coverage labels as a prior phase that replaces design stress-testing.
 
 **Living Docs Discipline**:
 When each doc class must update during workflow execution so `.harness/` stays a live index.
@@ -100,7 +100,7 @@ _Avoid_: storing the full spec inside `.harness/progress.md`.
 - A **Harness Builder** **routes** recovery-class gaps to **Recovery Surface Builder**, which selects or repairs the **Recovery Surface** and installs `.harness/recovery_policy.md` plus `.harness/work_index.md` when recovery ≠ `none`.
 - A **Harness Builder** declares **Source-of-Truth Tiers** in `AGENTS.md` (T1) via instruction maintenance routing; current task pointers live in T3/T4 only.
 - A **Harness Builder** performs **Capability Recommendation** by routing to `capability-recommender` / `$find-skills` (and targeted web research when needed) when the current task may benefit from reusable skills, MCP servers, hooks, subagents, plugins, commands, CI/headless automation, or agent tooling.
-- A `brainstorm` workflow runs **Design Grill** (Phase A2) after the coverage matrix gate for non-trivial work.
+- A `brainstorm` workflow runs **Design Grill** as craft inside one Phase A interview (coverage ledger + stress scenarios); non-trivial work requires grill depth before Spec drafting.
 - A `brainstorm` workflow produces a **Spec**, defaulting to `docs/specs/YYYY-MM-DD--<topic>.md`, and does not default to writing `.harness/` runtime state.
 - A **Recovery Surface** uses **Harness Directory** (`.harness/`), an issue tracker, a feature list, or an existing project status system — not root-level legacy state files.
 - A **Workflow Skill** reads and writes through `.harness/` or other selected backend only when its activity requires durable state.
@@ -120,8 +120,8 @@ _Avoid_: storing the full spec inside `.harness/progress.md`.
 > **Dev:** "Should `verify` refuse to run if `.harness/state.md` is missing?"
 > **Domain expert:** "No. `verify` uses available evidence. Missing `.harness/` when tracked work needs it is a **Harness Builder** gap."
 
-> **Dev:** "Is coverage matrix completion enough before drafting a Spec?"
-> **Domain expert:** "No. **Design Grill** (Phase A2) is mandatory for non-trivial work after the matrix gate."
+> **Dev:** "Is filling the coverage matrix enough before drafting a Spec?"
+> **Domain expert:** "No. Coverage is a ledger for one Phase A grill interview. Non-trivial work still needs **Design Grill** depth (recommendations + stress scenarios), not a second phase after a survey."
 
 > **Dev:** "Should every new task run **Harness Builder** before `plan`?"
 > **Domain expert:** "No. Use **Harness Builder** when the project workbench or **Recovery Surface** is unclear. If the task already has enough context, `brainstorm`, `plan`, or another **Workflow Skill** can run independently."
