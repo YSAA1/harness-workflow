@@ -11,7 +11,7 @@ description: "用于把 build/test/lint/typecheck/CI 或运行时失败诊断成
 
 - **Use when**: 失败存在且 root cause 不能由单一证据解释。
 - **Do not use when**: 这是实现中的预期 RED、根因已知、或问题其实是需求/范围不清。
-- **Route to**: 根因明确且修复直接转 `implement`；修复稳定转 `review` 或 `verify`；命令链路缺口转 `harness-builder`。
+- **Route to**: 根因明确且修复直接转 `implement`；修复稳定转 `review`；命令链路缺口转 `harness-builder`。
 
 ## 目的
 
@@ -45,7 +45,7 @@ description: "用于把 build/test/lint/typecheck/CI 或运行时失败诊断成
 | 根因已找到、修复直接 | `implement` |
 | 根因影响多文件或范围 | `plan` |
 | 根因揭示需求边界错 | `brainstorm` |
-| 修复稳定 | `review` 或 `verify` |
+| 修复稳定 | `review` |
 | 根因是已提交里程碑的回归 | 记录到 recovery surface + `implement` 修复 + 重新 verify |
 | 三轮诊断未果 | 记录 blocker 并向用户升级 |
 | 命令链路本身坏 | `harness-builder` |
@@ -90,7 +90,7 @@ description: "用于把 build/test/lint/typecheck/CI 或运行时失败诊断成
 
 ### 第 8 步 — fresh 验证
 
-先跑 reproduction 命令，再跑相邻验证。失败则继续诊断；通过后转 `review` 或 `verify`。
+先跑 reproduction 命令，再跑相邻验证。失败则继续诊断；通过后转 `review`。
 
 ## 输出契约
 
@@ -121,7 +121,7 @@ Route based on what the diagnosis proved; do not keep debugging after a single r
 | --- | --- |
 | Root cause is proven and the fix still needs code changes | `implement` |
 | Fix was applied and the change is meaningful | `review` |
-| Fix was applied and only fresh proof remains | `verify` |
+| Fix was applied and only fresh proof remains | `review` |
 | Root cause points to missing tooling, environment, MCP, hook, or recovery surface | `harness-builder` |
 | Diagnosis changes task scope or success criteria | `plan` |
 

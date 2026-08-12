@@ -13,7 +13,7 @@ Inside Harness Workflow, this is an auxiliary skill for Capability Recommendatio
 
 - **Use when**: a clear task gap might be covered by an existing reusable skill.
 - **Do not use when**: the task gap is unclear, or the question is about hooks, MCP, subagents, CI, or repo governance.
-- **Route to**: project-level adoption goes to `harness-builder`; one-off use returns to the calling skill; verification path changes go to `verify`.
+- **Route to**: project-level adoption goes to `harness-builder`; one-off use returns to the calling skill; verification path changes go to `review`.
 
 ## When to Use This Skill
 
@@ -35,7 +35,7 @@ This helper only discovers candidates. Adoption belongs to the workflow lane tha
 | A reusable skill should become part of this project's harness | `harness-builder` |
 | The skill is only needed once and no install is justified | return to the calling skill |
 | Search finds no trustworthy candidate | return to `harness-builder` or continue with the existing plan |
-| Installed or adopted skill changes the verification path | `verify` |
+| Installed or adopted skill changes the verification path | `review` |
 
 ## What is the Skills CLI?
 

@@ -14,10 +14,10 @@ const activeWorkflows = [
   "implement",
   "diagnose",
   "review",
-  "verify",
   "cleanup",
 ];
-const helperSkills = ["find-skills", "capability-recommender", "agent-instructions-maintainer", "recovery-surface-builder"];
+const helperSkills = ["find-skills", "capability-recommender", "agent-instructions-maintainer", "recovery-surface-builder", "verify"];
+const aliasRules = ["verify"]; // historical lane aliases kept as thin rules
 const bundledSkills = [...activeWorkflows, ...helperSkills];
 
 const fail = (message) => {
@@ -94,17 +94,25 @@ if (!exists(`${pluginRulesDir}/harness-workflow-overview.mdc`)) fail("Cursor plu
 
 if (exists(rulesDir)) {
   const ruleFiles = fs.readdirSync(path.join(root, rulesDir)).filter((file) => file.endsWith(".mdc"));
-  const expectedCount = activeWorkflows.length + 1;
+  const expectedCount = activeWorkflows.length + 1 + aliasRules.length;
   if (ruleFiles.length !== expectedCount) {
     fail(`Cursor rules should contain ${expectedCount} MDC files, found ${ruleFiles.length}`);
   }
 }
 if (exists(pluginRulesDir)) {
   const pluginRuleFiles = fs.readdirSync(path.join(root, pluginRulesDir)).filter((file) => file.endsWith(".mdc"));
-  const expectedCount = activeWorkflows.length + 1;
+  const expectedCount = activeWorkflows.length + 1 + aliasRules.length;
   if (pluginRuleFiles.length !== expectedCount) {
     fail(`Cursor plugin rules should contain ${expectedCount} MDC files, found ${pluginRuleFiles.length}`);
   }
+}
+
+for (const alias of aliasRules) {
+  const rulePath = `${rulesDir}/${alias}.mdc`;
+  const pluginRulePath = `${pluginRulesDir}/${alias}.mdc`;
+  if (!exists(rulePath)) fail(`missing Cursor alias rule for ${alias}`);
+  if (!exists(pluginRulePath)) fail(`missing Cursor plugin alias rule for ${alias}`);
+  if (read(rulePath) !== read(pluginRulePath)) fail(`Cursor plugin alias rule and project adapter rule drifted: ${alias}`);
 }
 
 for (const workflow of activeWorkflows) {
@@ -261,7 +269,7 @@ console.log("Manual Cursor recognition check:");
 console.log("1. For marketplace usage, install with /add-plugin harness-workflow and confirm the plugin appears.");
 console.log("2. For project adapter usage, run node scripts/install-cursor.mjs --target . from the target project.");
 console.log("3. Open the target project in Cursor and inspect active rules in Settings > Rules or the Agent sidebar.");
-console.log("4. Confirm Harness Workflow overview, eight workflow rules, and .cursor/skills appear, including helper skills.");
+console.log("4. Confirm Harness Workflow overview, seven workflow rules, and .cursor/skills appear, including helper skills.");
 console.log("5. Test prompt: Use Harness Workflow to plan a scoped implementation.");
 
 if (!process.exitCode) pass("Cursor install workflow checks passed");

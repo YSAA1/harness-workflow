@@ -21,8 +21,9 @@
 | Agent Instructions Maintainer | 从 Anthropic 官方 claude-md-improver 复制并适配的 durable agent instruction 维护 helper |
 | Recovery Surface Builder | 从 harness-builder 抽出的 recovery backend / work index / active state / progress / evidence / decisions helper |
 | Commit Unit | `plan` 定义的提交单元，绑定一个或多个阶段和提交前置条件。是计划产物而非强制流程。 |
-| Milestone Commit | 经过 review + verify 后的正式提交，对应一个 commit unit |
-| Commit Eligibility | `verify` 在 PASS 后评估的提交资格：eligible / not eligible / no commit unit |
+| Milestone Commit | 经过 `review` ready PASS 后的正式提交，对应一个 commit unit |
+| Commit Eligibility | `review` 在 ready PASS 后评估的提交资格：eligible / not eligible / no commit unit |
+| Verify alias | `verify` 是历史触发词 / helper alias，执行合并后的 `review` ready gate，不是独立公开 lane |
 
 ## C1 Harness As System
 
@@ -78,25 +79,26 @@ Agent 质量来自项目周围的系统：入口、规则、上下文、验证�
 - 多阶段或多 commit unit 工作必须定义 `final_integration_claim`。
 - WIP=1。
 - 发现范围扩大时回 `plan` 或请求用户确认。
-- 当 Executable Plan 定义了 commit unit 时，每个 commit unit 绑定提交前置条件（review 无 Critical + verify PASS）。
+- 当 Executable Plan 定义了 commit unit 时，每个 commit unit 绑定提交前置条件（`review` 无 Critical + ready PASS）。
 - commit unit 是计划产物，不是强制流程。没有 plan 的简单任务按项目惯例提交。
 
 主要 skill：`brainstorm`、`plan`、`implement`、`review`。
 
 ## C6 Fresh Evidence
 
-Ready claim 必须由 `verify` 作为唯一 ready gate 证明。旧命令、聊天记忆和过期截图不能证明最新工作树。
+Ready claim 必须由 `review` 作为唯一 ready gate 证明（结构对抗审查 + fresh evidence）。旧命令、聊天记忆和过期截图不能证明最新工作树。`verify` 仅作别名触发词，路由到 `review`。
 
 要求：
 
 - `implement` 可以跑局部检查，但这些检查只是 implementation feedback，不是 final ready proof。
-- `review` 做 scope、spec、diff、docs、entropy 和 risk 的结构性评审；meaningful diff 默认尝试隔离 reviewer，并用对抗式 hypotheses / defender evidence 找隐藏失败路径；它不能替代 `verify`。
-- `verify` 必须把每条 success criterion 映射到 fresh evidence，状态只能是 pass、fail 或 unknown。
-- unknown 不能算 ready。
+- `review` 先做 scope、spec、diff、docs、entropy 和 risk 的对抗式结构审查；meaningful / 中高风险 diff 默认尝试 **独立只读子 agent**，并用 hypotheses / defender evidence 找隐藏失败路径。
+- 同一 `review` 再把每条 success criterion 映射到 fresh evidence，状态只能是 pass、fail 或 unknown。
+- unknown 不能算 ready；结构 Critical 未清也不能算 ready。
+- 隔离机制在协议中只使用宿主中立 token：`subagent` | `packet_fallback`（后者仅低风险或子 agent 不可用时的降级记录）。
 - 结构化 verification record 至少包含 claim、covered paths、latest change、commands、skipped high-value checks、unknowns 和 ready verdict。
-- milestone commit 应当是 verified state 的产物。当 plan 定义了 commit unit 时，提交前须有对应的 verify PASS 记录。
+- milestone commit 应当是 reviewed+verified state 的产物。当 plan 定义了 commit unit 时，提交前须有对应的 `review` ready PASS 记录。
 
-主要 skill：`verify`、`review`、`diagnose`。
+主要 skill：`review`、`diagnose`。
 
 ## C7 Observability And Capability Fit
 
@@ -112,7 +114,7 @@ Capability Recommendation 要求：
 - 不因为"可能有用"就安装能力。
 - 用户只要求分析或推荐时，保持 read-only，输出 Harness Recommendation Plan，不写 `.mcp.json`、hooks config、subagent files、project-local skills 或其他本地配置；安装必须经过 `USER CHECKPOINT`。
 
-主要 skill：`harness-builder`、`verify`。辅助 skill：`find-skills`、`capability-recommender`。
+主要 skill：`harness-builder`、`review`。辅助 skill：`find-skills`、`capability-recommender`。
 
 ## C8 Artifact Freshness
 
@@ -124,7 +126,7 @@ Capability Recommendation 要求：
 - 生成物只能通过生成器更新。
 - 新需求进入已有 harness 时，先声明当前 source of truth，避免旧 active slice 和新需求混写。
 - 稳定架构边界优先用测试、lint、baseline/ratchet 或只读扫描机械化；不清晰或高噪声时先记录为 deferred gap。
-- Review 可以指出 drift；ready claim 仍先进入 `verify`。系统性 reconciliation 由 Knowledge Cleanup 完成。
+- Review 可以指出 drift；ready claim 仍由同一 `review` 的 evidence 段证明。系统性 reconciliation 由 Knowledge Cleanup 完成。
 
 主要 skill：`review`、`cleanup`。
 
@@ -168,7 +170,7 @@ Legacy root `task_plan.md` / `progress.md` / `findings.md` files are migration i
 | `plan` | Executable Plan |
 | `implement` | scoped change with evidence |
 | `diagnose` | root cause, minimal fix, regression evidence |
-| `review` | findings-first review |
-| `verify` | fresh evidence for a claim |
+| `review` | adversarial findings + fresh-evidence ready gate |
+| `verify` | alias → `review` (not a public lane) |
 | `cleanup` | Knowledge Cleanup and aligned artifacts |
 | `find-skills` | reusable skill discovery and quality screening |

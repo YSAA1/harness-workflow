@@ -1,8 +1,8 @@
 # Clarification Coverage
 
-Use this during **Phase A** of `brainstorm` as the **progress ledger** for the unified grill loop. Maintain the matrix in chat every turn. Do not write a Spec while any blocking dimension remains unresolved.
+Use this during `brainstorm` as the **progress ledger** for the frontier grill loop. Maintain the matrix in chat every round. Do not write a Spec while any blocking dimension remains unresolved.
 
-Coverage does **not** run as a separate survey phase before Design Grill. Filling a ledger row and grilling a design branch happen in the same interview — see `clarification-loop.md` and `design-grill.md`.
+Coverage does **not** run as a separate survey phase before Design Grill. Filling a ledger row and grilling design branches happen in the same interview — see `clarification-loop.md` and `design-grill.md`.
 
 ## Coverage Dimensions
 
@@ -21,7 +21,7 @@ Track these eight dimensions. Map each to the eventual Spec sections.
 
 ## Status Values
 
-| Status | Meaning | Allowed in Phase B? |
+| Status | Meaning | Allowed before Spec draft? |
 | --- | --- | --- |
 | `unknown` | Not answered; only a guess or open question | No |
 | `inferred` | Filled from repo, docs, or reasonable inference; user has not confirmed | No, until assumption batch is confirmed or corrected |
@@ -30,7 +30,7 @@ Track these eight dimensions. Map each to the eventual Spec sections.
 
 ## Blocking Dimensions
 
-These cannot remain `unknown` or unconfirmed `inferred` at the Phase A Gate:
+These cannot remain `unknown` or unconfirmed `inferred` at the Grill Gate:
 
 - Purpose
 - Scope
@@ -39,24 +39,25 @@ These cannot remain `unknown` or unconfirmed `inferred` at the Phase A Gate:
 
 Behavior may stay `inferred` only when the slice is trivial and the inferred behavior is already demonstrated in repo evidence; still confirm in the assumption batch.
 
-## Phase A Gate
+## Grill Gate
 
-Phase A is complete only when the full gate in `clarification-loop.md` passes. Ledger-facing summary:
+Clarification is complete only when the full gate in `clarification-loop.md` passes. Ledger-facing summary:
 
 1. Every dimension is `confirmed` or `waived`, or `inferred` with no blocking dimension left `unknown`.
 2. Purpose, scope, success criteria, and verification strategy are not `unknown`.
 3. Any remaining `inferred` items were presented in an assumption batch and the user confirmed or corrected them.
-4. Non-trivial depth requirements (grill rounds / stress scenario) from `clarification-loop.md` are met or waived.
+4. Non-trivial depth requirements (frontier rounds / stress scenario) from `clarification-loop.md` are met or waived.
 5. At least one of:
    - the user replied at least once after the initial framing, or
    - the user provided a comprehensive brief that already covers all dimensions with no blocking ambiguity.
-6. The current turn ends by waiting for user input, unless the gate is already passed and you are presenting the assumption batch or asking to enter Phase B.
+6. Frontier is empty and shared understanding is confirmed before Spec drafting.
+7. The current turn ends by waiting for user input, unless the gate is already passed and you are presenting the assumption batch, confirming shared understanding, or asking to draft Spec.
 
 Do not treat "all eight rows labeled" as sufficient on non-trivial work — design branches and stress scenarios are part of the same gate.
 
 ## Coverage Matrix Template
 
-Copy the default template for English/non-Chinese users and update it every Phase A turn. For Chinese users, use the localized example below instead. Preserve stable status values and gate tokens.
+Copy the default template for English/non-Chinese users and update it every frontier round. For Chinese users, use the localized example below instead. Preserve stable status values and gate tokens.
 
 ```text
 Clarification Coverage
@@ -72,33 +73,14 @@ Clarification Coverage
 | Capability gaps | unknown | |
 
 Gate: BLOCKED
-Next question: <one recommendation-backed question; include stress scenario when design-sensitive>
+Frontier: <N open questions this round>
 ```
 
-Chinese-user example:
-
-```text
-澄清覆盖矩阵（Clarification Coverage）
-| 维度（Dimension） | 状态（Status） | 来源 / 备注（Source / note） |
-| --- | --- | --- |
-| 目的（Purpose） | unknown | |
-| 范围（Scope） | unknown | |
-| 用户 / 调用者（Users / callers） | unknown | |
-| 行为（Behavior） | unknown | |
-| 约束（Constraints） | unknown | |
-| 成功标准（Success criteria） | unknown | |
-| 验证策略（Verification strategy） | unknown | |
-| 能力缺口（Capability gaps） | unknown | |
-
-闸门 / Gate: BLOCKED
-下一个问题 / Next question: <one recommendation-backed question; include stress scenario when design-sensitive>
-```
-
-When the gate passes, set `Gate: PASSED` and move to the assumption batch if needed, then Phase B.
+When the gate passes, set `Gate: PASSED` and move to the assumption batch if needed, then shared understanding + Spec drafting.
 
 ## Assumption Batch
 
-Before Phase B, if any dimension is still `inferred`, present a numbered assumption list:
+Before Spec drafting, if any dimension is still `inferred`, present a numbered assumption list:
 
 ```text
 Before I draft the Spec, please confirm or correct:
@@ -113,7 +95,9 @@ For trivial slices, the batch may also record an explicit waiver of further desi
 
 Wait for user confirmation or corrections. Update the matrix to `confirmed` or revise and re-ask only the affected items.
 
-## Phase A Output
+## Round Output
+
+
 
 Default English/non-Chinese output:
 
@@ -122,6 +106,7 @@ BRAINSTORM CLARIFICATION IN PROGRESS
 
 Coverage: <confirmed+waived>/<8> confirmed or waived; <N> inferred pending assumption batch
 Gate: BLOCKED | PASSED (assumption batch pending) | PASSED
+Frontier: open | empty
 
 Clarification Coverage
 | Dimension | Status | Source / note |
@@ -135,38 +120,13 @@ Clarification Coverage
 | Verification strategy | ... | ... |
 | Capability gaps | ... | ... |
 
-Question: <exactly one question>
-Recommended answer (optional): <short recommendation or options>
-Stress scenario (when design-sensitive): <one concrete case>
+❓ **Q1** - **<title>**: <body>
+➡️ <recommended answer>
 
-Waiting for: user reply before Phase B
+❓ **Q2** - **<title>**: <body>
+➡️ <recommended answer>
+
+Waiting for: numbered answers to this frontier round
 ```
 
-Chinese-user output:
-
-```text
-BRAINSTORM CLARIFICATION IN PROGRESS
-
-覆盖度 / Coverage: <confirmed+waived>/<8> 已确认或豁免（confirmed or waived）；<N> 条推断项待假设批次确认（inferred pending assumption batch）
-闸门 / Gate: BLOCKED | PASSED (assumption batch pending) | PASSED
-
-澄清覆盖矩阵（Clarification Coverage）
-| 维度（Dimension） | 状态（Status） | 来源 / 备注（Source / note） |
-| --- | --- | --- |
-| 目的（Purpose） | ... | ... |
-| 范围（Scope） | ... | ... |
-| 用户 / 调用者（Users / callers） | ... | ... |
-| 行为（Behavior） | ... | ... |
-| 约束（Constraints） | ... | ... |
-| 成功标准（Success criteria） | ... | ... |
-| 验证策略（Verification strategy） | ... | ... |
-| 能力缺口（Capability gaps） | ... | ... |
-
-问题 / Question: <exactly one question>
-推荐回答 / Recommended answer (optional): <short recommendation or options>
-压力场景 / Stress scenario (when design-sensitive): <one concrete case>
-
-等待 / Waiting for: user reply before Phase B
-```
-
-When the gate passed but assumptions remain, replace the `Question` block with the assumption batch.
+中文用户：同一结构，标签可中文化；提问仍用 `❓` / `➡️`。

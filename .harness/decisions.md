@@ -25,3 +25,8 @@
 - **Decision**: `recovery-surface-builder` owns recovery backend selection and planning-with-files-inspired persistence; `harness-builder` only routes to it.
 - **Rejected**: rewriting the two official-derived helpers from scratch; keeping research-governance gate assets inside this plugin.
 - **Why**: official helper skill quality is already high; the split keeps hot-path harness-builder smaller while preserving explicit callable capabilities.
+## D-009 — Workflow lane slim
+
+- **Decision**: 公开 lane 七条；`verify` 为 `review` alias；`review` 唯一 ready gate；隔离仅独立只读子 agent；brainstorm 用 frontier rounds；skill 协议宿主中立。
+- **Supersedes**: C6「verify 唯一 ready」、D-002「一问一轮」、2026-05-27 review 不声明 ready、分端 CLI reviewer 链。
+- **Date**: 2026-08-12

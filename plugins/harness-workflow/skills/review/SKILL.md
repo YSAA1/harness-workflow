@@ -1,259 +1,91 @@
 ---
 name: review
-description: "用于对稳定 diff 做 scope、correctness、docs、entropy 和 risk 的结构性评审。触发条件：implement/diagnose 后准备进入 ready 证明，或用户要求 review/sanity check。不要在 WIP、失败未解释或只需要 fresh evidence 时使用；review 不能声明 ready。"
+description: "用于对稳定 diff 做对抗审查并用 fresh evidence 判定 ready。触发：implement/diagnose 后要结束、用户说 review/verify/最终检查。WIP 或未解释失败时不用；本 skill 是唯一 ready gate。"
 ---
 
-# 工作流结构评审
+# 对抗审查与 Ready Gate
 
-`review` 用 **Spec / scope / diff / docs / entropy / risk** 六把尺检查当前结果，并默认采用 **adversarial review posture**：把实现视为未证明可信，先构造可能失败路径，再寻找代码、文档、测试或 evidence 反证。它抓正确性、范围、设计风险、缺失测试和文档漂移；fresh evidence sufficiency 与 ready judgement 归 `verify`。
+实现后的唯一公开闸门。两段：**结构对抗** → **fresh evidence / ready**。`verify` 是别名，仍走这里。不修代码。
 
-## 路由快照
+Leading words: **adversarial** · **subagent** · **fresh evidence** · **ready**
 
-- **Use when**: 有意义改动已经稳定，需要在 ready 前判断范围、正确性、文档、熵和风险。
-- **Do not use when**: 工作仍在 WIP、失败正在发生、或唯一问题是缺 fresh evidence。
-- **Route to**: 无 blocking finding 转 `verify`；有结构问题转 `implement`；失败不明转 `diagnose`。
+## 路由
 
-## 目的
+- **Use**: 切片稳定；或要证明 ready。
+- **Don't**: WIP → `implement`；命令红且根因不明 → `diagnose`；标准不清 → `brainstorm`/`plan`。
+- **Next**: ready YES → milestone commit（若 eligible）→ `cleanup`；Critical/Important → `implement`；行为失败 → `diagnose`；能力缺口 → `harness-builder`。
 
-review 必须同时检查"做超了"和"做欠了"。它可以判断"没有结构性 blocker"，但不能作为最终 ready gate。通过后仍路由到 `verify`；若已有 fresh evidence，则走 `verify` fast-path 做短重检和 claim mapping。
+低风险、用户不要求 tracked evidence 的单行非行为改动：可轻量自检，不必满配闸门。
 
-默认原则：meaningful diff 必须先尝试 **隔离 reviewer**，失败、不可用或成本明显不成比例时才 fallback。隔离优先级：
+## 输入
 
-1. read-only subagent / independent reviewer。
-2. Codex 环境中的 `codex exec review`。
-3. Codex 环境中的 `codex exec` + review packet + reviewer prompt。
-4. packet-based fallback，由当前 agent 按同一 prompt 做弱隔离审查。
+1. Claim：active slice、success criteria、verification path。
+2. Diff 事实：`git status --short`、相关 diff、untracked、相关源/测/文档。
+3. Spec / Plan / recovery；项目检查入口（README、`AGENTS.md`）。
+4. 中高风险再读：`references/adversarial-reviewer-prompt.md`、`attack-taxonomy.md`、`evidence-ladder.md`、`cold-verifier-prompt.md`。
 
-fallback 不是静默自审；输出必须记录机制、失败原因或跳过原因。Tiny / trivial diff 可以直接 fallback，但必须说明为什么不属于 meaningful diff。
+## 流程
 
-## 何时使用
+### 1. 重述 claim
 
-### 触发信号
+一句话：slice +「ready because \<criteria\>」。写不出 → 回 `plan`/`brainstorm`。
 
-- `implement` 完成一个 slice、即将转下一阶段。
-- `diagnose` 修复稳定，要回主流程。
-- 用户说「review 一下」「这样可以吗」「能不能合并」「commit 前检查」「sanity check」。
-- 准备调用 `verify` 之前的结构性把关。
-- 多 agent 协作时上一个 agent 刚交付，本 agent 接手前。
+完成：claim 可证伪。
 
-### 不要使用
+### 2. 结构对抗（subagent）
 
-- 工作还在 WIP 中、active slice 未稳定：继续 `implement`。
-- 工作完全没有稳定到可审状态：继续 `implement`。
-- 用户要架构建议：转 `brainstorm`。
-- 失败正在发生：转 `diagnose`。
+组 **只含事实** 的 packet（不要实现者辩解）。中高风险：spawn **独立只读 subagent**，用 adversarial prompt。机制只记 `subagent` | `packet_fallback`（后者仅低风险或 subagent 不可用；中高风险无 subagent → 不得 ready）。
 
-### 路由规则
+完成：findings 分级；handoff cases 列出。
 
-| 状态 | 下一步 |
-| --- | --- |
-| review 通过或仅有 evidence gap | `verify` |
-| review 找出 Critical/Important findings | `implement` |
-| review 发现 Spec 漂移 | `brainstorm` 或 `plan` |
-| 发现项目工作面缺口 | `harness-builder` |
-| 文档/知识漂移需要整理 | 先 `verify` ready claim；通过后 `cleanup` |
+### 3. Fresh evidence
 
-## 先读取这些输入
+按 `evidence-ladder.md` 跑最小检查；每条 criterion → pass|fail|unknown。消费 handoff cases。中高风险：冷证据交给只读 subagent（`cold-verifier-prompt.md`），只给原始输出。
 
-1. `references/adversarial-reviewer-prompt.md`。
-2. scope / diff / 文件列表：`git status --short`、`git diff --stat`、实际改动文件，以及 untracked files。
-3. accepted Spec、Executable Plan 或用户请求。
-4. selected recovery surface：active slice、success criteria、evidence、risks。
-5. 与本次 slice 相关的源文件、测试、配置。
-6. README / `AGENTS.md` 的相关段，确认文档与代码同步。
+完成：verification record 填齐；unknown/fail 则 ready=no。
 
-## 检查重点
+### 4. 判定与路由
 
-- **Spec coverage**：是否实现 goals，是否越过 non-goals。
-- **Evidence routing**：是否存在 evidence gap，是否需要 `verify` fast-path；不在 review 中做 ready 判定。
-- **Correctness and design risk**：边界、错误处理、数据、并发、兼容性是否合理。
-- **Docs/artifacts**：命令、配置、用户可见行为、API 是否同步。
-- **Entropy**：调试输出、TODO、未使用代码、未批准依赖或第二套状态来源。
-- **Phase acceptance criteria**（当 Executable Plan 存在时）：对照当前阶段的 acceptance_criteria 逐条检查是否满足。没有 Executable Plan 时，此项自动跳过，review 仍用上述六把尺正常工作。
+Ready = 无 Critical **且** 所需 criterion 全 pass。写 recovery；输出契约。
 
-## Context Isolation
+完成：READY 明确；Next skill 明确。
 
-Review packet 只能包含可审事实：
+## 结构尺（扁平）
 
-- 用户请求、accepted Spec / Executable Plan、active slice、non-goals、success criteria。
-- `git status --short`、`git diff --stat`、相关 diff、实际改动文件、untracked files 和相关源文件。
-- 已运行命令、输出摘要、已知风险、capability gaps。
-- README / docs / `AGENTS.md` 中与本 slice 相关的规则。
+Spec/non-goals · 正确性/设计风险 · docs · entropy ·（有 Plan 时）阶段 acceptance。
 
-不要把实现者的自我解释、聊天中的辩护、未验证假设或“我觉得没问题”放进 reviewer packet。独立 reviewer 可以读取 repo 文件和命令输出，但不能把实现者 rationale 当作 evidence。Reviewer packet 不能只依赖 `git diff --stat`，因为它不会列出 untracked files；至少要包含 `git status --short` 或等价文件清单。
-
-机制选择：
-
-**三端隔离机制：**
-
-| 环境 | 推荐隔离机制 | 机制说明 |
-| --- | --- | --- |
-| Codex | `codex exec review`（首选）或 `codex exec` + reviewer packet | 独立进程执行 review，环境内建隔离 |
-| Claude Code | `Agent` 工具 + `agentType: "Explore"`（read-only） | 子 agent 只读访问仓库文件，不能修改 |
-| Cursor | subagent + read-only context | 子 agent 独立上下文窗口 |
-
-**Fallback 链：**
-
-按优先级尝试：subagent / codex exec review → codex exec + reviewer packet → packet fallback。每层失败后记录 mechanism、status、fallback_reason、failure_summary，再尝试下一层。
-
-**Fallback 条件（风险分级，替代"tiny diff"豁免）：**
-
-| 风险等级 | 改动类型 | 隔离要求 |
-| --- | --- | --- |
-| 低风险 | 纯文档/注释/格式化/非行为重构 | 可 fallback 到 packet-based 自审，记录 risk-graded reason |
-| 中高风险 | 逻辑/配置/依赖/API/数据结构/安全 | 必须尝试至少一层隔离 reviewer；失败需记录完整尝试链 |
-
-不再按 diff 大小判断；一行配置改动也属于中高风险。
-
-## Adversarial Pass
-
-在常规六把尺之前或同时执行。先读取 `references/attack-taxonomy.md`，按改动类型定位核心分类，再逐一构造攻击假设。
-
-1. **Attacker hypotheses**：按 attack taxonomy 的五类攻击面（边界/时序/身份/契约/数据）构造假设。核心分类至少产生一条。如果我要让这个改动看起来通过但实际坏掉，最可能藏在哪里？
-2. **Failure sketches**：为高风险 hypothesis 写最小失败路径，不写 exploit 代码。
-3. **Defender evidence**：寻找代码、测试、文档或已运行 evidence 反证每个 hypothesis。
-4. **Finding or handoff**：没有反证时，升级为 Critical / Important / Minor finding，或写成 `verify_handoff_cases` 交给 `verify` 收集 fresh evidence。
-5. **记录覆盖**：输出中列出 attack taxonomy 每类的覆盖状态（hypothesis 数量 或 `skipped`），不静默省略。
-
-## 执行流程
-
-### 第 1 步 — 重述 scope
-
-一句话回答本次 review 的 active slice、改动文件和完成声明。
-
-### 第 2 步 — 尝试隔离 adversarial reviewer
-
-为 meaningful diff 生成 review packet，并按优先级尝试隔离 reviewer。记录完整尝试链，而不是只记录最终机制：
-
-- `isolated_reviewer_attempt`: yes|no
-- `reviewer_attempts[]`: ordered attempts；每项包含 mechanism、command/tool/agent、status、fallback_reason、failure_summary
-- `final_reviewer_mechanism`: subagent|codex_exec_review|codex_exec_packet|packet_fallback
-- `fallback_summary`: none 或为何进入下一层 / 最终 fallback
-
-如果先后经历 `subagent`、`codex_exec_review`、`codex_exec_packet` 多次失败，必须逐项记录；不要用单个失败摘要覆盖整条链。
-
-### 第 3 步 — 用六把尺和 adversarial pass 逐项过
-
-对每条问题给状态、证据和严重级。当 Executable Plan 存在时，读取当前阶段的 acceptance_criteria 和 verification_commands 作为额外对照维度。
-
-### 第 4 步 — 分级 findings
-
-| 级别 | 含义 | 处置 |
-| --- | --- | --- |
-| Critical | 正确性错误、安全漏洞、数据丢失、核心行为破坏、违反 accepted Spec | 必须修复 |
-| Important | 设计缺陷、关键测试缺失、文档严重失真、scope creep；等同于 broader audit 里的 Major | 应修或明确 deferred |
-| Minor | 风格、可读性、非阻塞清理 | 可选 |
-
-### 第 5 步 — 列 Open Questions / Residual Risks
-
-把无法判断的项明确列出，不把不确定伪装成通过。
-
-### 第 6 步 — 给出 Assessment
-
-结论只能是 Pass / Conditional / Block。
-
-### 第 7 步 — 按需同步 artifacts
-
-blocking findings 和 residual risks 写入 selected recovery surface；不把一次性 review 结论写进 `AGENTS.md`。
-
-## 输出契约
+## 输出（精简）
 
 ```text
 REVIEW: PASS | CONDITIONAL | BLOCK
+VERIFICATION: PASS|FAIL|INSUFFICIENT
+READY: yes|no
 
-Scope:
-  - Active slice: <一句话>
-  - Files reviewed: <list 或 git stat>
-  - Evidence base for review: <command/diff/manual read or missing>
-  - Isolated reviewer attempt: <yes|no>
-  - Reviewer attempts:
-    - mechanism: <subagent|codex_exec_review|codex_exec_packet|packet_fallback>
-      command: <command/tool/agent type or n/a>
-      status: <completed|failed|skipped>
-      model_diversity: <cross_family|same_family|unknown>
-      fallback_reason: <none|low_risk|tool unavailable|tool failed|cost disproportionate|other>
-      failure_summary: <none|short failure output>
-  - Final reviewer mechanism: <subagent|codex_exec_review|codex_exec_packet|packet_fallback>
-  - Fallback summary: <none|why next layer/final fallback was used>
-
-Adversarial Review:
-  Hypotheses:
-    - <failure path the implementation might hide>
-  Defender evidence:
-    - <hypothesis -> code/test/doc/evidence that refutes it, or missing>
-  Verify handoff cases:
-    - <case that verify should prove with fresh evidence>
-
-Findings:
-  Critical:
-    - <一句话> (<file:line | command | artifact>) - <evidence>
-  Important:
-    - <一句话> (<file:line | command | artifact>) - <evidence>
-  Minor:
-    - <一句话>
-
-Open Questions / Residual Risks:
-  - ...
-
-Assessment:
-  - Spec coverage: <ok|partial|miss>
-  - Evidence routing: <verify required|verify fast-path|blocked>
-  - Docs sync: <ok|drift>
-  - Entropy: <ok|residue>
-  - Phase acceptance: <all met|partial|unmet|no plan>
-  - Adversarial coverage: <ok|partial|missing>
-  - Commit eligibility: <eligible|not eligible|no commit unit>
-
-Next:
-  - Skill: <implement | diagnose | verify | plan>
+Isolation: subagent|packet_fallback|failed
+Findings: Critical/Important/Minor ...
+Criteria: [criterion -> pass|fail|unknown]
+Cold: confirmed|disputed|insufficient|skipped
+Commit gate: eligible|not eligible|no commit unit
+Next: cleanup | implement | diagnose | harness-builder | plan
 ```
 
-## Recommended next skill
+完整字段需要时沿用 `references/adversarial-reviewer-prompt.md` 与既有 verification record 习惯即可，不必每项填表。
 
-Use review findings to route the next lane; review itself should not quietly become implementation.
+## 验收
 
-| Situation | Recommended next skill |
-| --- | --- |
-| Pass, but fresh evidence is missing or stale | `verify` |
-| Pass and evidence is already fresh | `verify` fast-path |
-| Correctness, docs, or scope findings need edits | `implement` |
-| A finding needs root-cause work before a fix | `diagnose` |
-| The implementation no longer matches the plan or Spec | `plan` |
-| Missing verification capability blocks confidence | `harness-builder` |
-
-## 常见反模式
-
-共享反模式见 `references/cross-cutting-anti-patterns.md`（AGENTS.md 当会话笔记、角色混淆、静默跳过、不对照 source of truth）。
-
-review 特有反模式：
-
-- **鼓励性总结，无证据。**
-- **同上下文自审冒充独立评审。** meaningful diff 必须尝试隔离 reviewer；fallback 要记录完整尝试链和原因。
-- **只写攻击假设，不找反证。** adversarial review 必须同时包含 hypotheses 和 defender evidence。
-
-## 验收标准
-
-- [ ] 至少检查了 Spec / scope / diff / docs / entropy / risk。
-- [ ] 中高风险改动已尝试至少一层隔离 reviewer；若 fallback，已记录 ordered reviewer attempts、最终机制和原因。
-- [ ] 已输出 adversarial hypotheses、defender evidence 和 verify handoff cases。
-- [ ] 未把 review 通过当作 ready；pass 状态仍路由到 `verify`。
-- [ ] 每条 Critical / Important finding 有文件路径、命令或工件级证据。
-- [ ] Open Questions 与 Residual Risks 明确。
-- [ ] Assessment 是 Pass / Conditional / Block 之一。
-- [ ] blocking findings 按需写入 selected recovery surface。
-- [ ] 当 Executable Plan 存在时，已对照阶段 acceptance criteria 检查。
-- [ ] 下一步 skill 与原因显式。
-
-## 工件更新
-
-- selected recovery surface：Critical / Important findings、Open Questions、Residual Risks、review entry。
-- `AGENTS.md`：不动；稳定规则漂移交给 `cleanup`。
+- [ ] 中高风险尝试了独立 subagent，或明确不得 ready
+- [ ] 每条所需 criterion 有 fresh 映射；unknown ≠ ready
+- [ ] 未在本 skill 修代码
 
 ## 按需读取
 
-- `references/premature-completion-patterns.md`：常见伪完成模式与识别信号。
-- `references/adversarial-reviewer-prompt.md`：隔离 reviewer 共用提示词。
-- `references/attack-taxonomy.md`：对抗式攻击假设分类法（边界/时序/身份/契约/数据）。
-- `references/cross-cutting-anti-patterns.md`：review/verify/cleanup 共享反模式。
-- 行为级验证：`../verify/SKILL.md`
-- 失败诊断：`../diagnose/SKILL.md`
+- `references/adversarial-reviewer-prompt.md` · `attack-taxonomy.md` · `evidence-ladder.md` · `cold-verifier-prompt.md` · `capability-recommendations.md` · `cross-cutting-anti-patterns.md`
+
+## Recommended next skill
+
+| Situation | Next |
+| --- | --- |
+| READY yes | `cleanup` |
+| Structural findings | `implement` |
+| Unexplained fail | `diagnose` |
+| Capability gap | `harness-builder` |

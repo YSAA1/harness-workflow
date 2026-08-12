@@ -11,14 +11,14 @@ description: "用于在一个 scoped active slice 上做最小代码或文档改
 
 - **Use when**: 恰好一个 active slice 可以开始改文件，且验证入口足够清楚。
 - **Do not use when**: 需求不清、计划不清、失败根因不清、或项目工作面缺失。
-- **Route to**: 稳定后转 `review` 或小改直接转 `verify`；失败根因不清转 `diagnose`；范围漂移转 `plan`。
+- **Route to**: 稳定后转 `review`；失败根因不清转 `diagnose`；范围漂移转 `plan`。
 
 ## 目的
 
 - 当前 active slice 没拿到证据前，不开新 slice。
 - 修代码就同步命令、文档或 recovery surface，否则下次会话恢复会失真。
 - 验证强度按风险匹配，不机械要求覆盖率。
-- 本 lane 可以跑局部检查，但不能声明 ready；ready claim 只能由 `verify` 证明。
+- 本 lane 可以跑局部检查，但不能声明 ready；ready claim 只能由 `review` 证明。
 - 失败了不靠猜，转 `diagnose`。
 
 ## 何时使用
@@ -44,7 +44,7 @@ description: "用于在一个 scoped active slice 上做最小代码或文档改
 | --- | --- |
 | 实现失败、根因不清 | `diagnose` |
 | 当前 slice 稳定，需评审 | `review` |
-| 准备声明 ready | `verify` |
+| 准备声明 ready | `review` |
 | 范围变模糊 | `plan` 或 `brainstorm` |
 | 工作面不清 | `harness-builder` |
 | 验证路径 blocked | `harness-builder` 或回 `plan` 记录 fallback |
@@ -104,7 +104,7 @@ description: "用于在一个 scoped active slice 上做最小代码或文档改
 
 按风险选验证强度。结果应该是失败的或当前缺失的；如果一开始就过，确认它是否真的覆盖目标行为。
 
-这些检查是 implementation feedback，不是 final ready proof。即使全绿，也要转 `verify` 做独立 ready claim。
+这些检查是 implementation feedback，不是 final ready proof。即使全绿，也要转 `review` 做独立 ready claim。
 
 ### 第 4 步 — 最小实现
 
@@ -124,7 +124,7 @@ description: "用于在一个 scoped active slice 上做最小代码或文档改
 
 ### 第 8 步 — 决定下一步
 
-稳定后转 `review`；低风险小改动可直接转 `verify`。如果一个明确假设循环仍无法解释失败，或错误信号不稳定，转 `diagnose`。
+稳定后转 `review`（含 evidence / ready 段）。如果一个明确假设循环仍无法解释失败，或错误信号不稳定，转 `diagnose`。
 
 ## 输出契约
 
@@ -153,7 +153,7 @@ Pick the next lane from current evidence instead of defaulting to more implement
 | --- | --- |
 | Same active slice still has scoped work left | `implement` |
 | Meaningful code or docs changed and local checks are stable | `review` |
-| Tiny low-risk change is complete and review would add little signal | `verify` |
+| Tiny low-risk change is complete | `review` |
 | A clear hypothesis loop fails, errors change, or root cause is unclear | `diagnose` |
 | Scope, success criteria, or active slice no longer matches reality | `plan` |
 
@@ -163,7 +163,7 @@ Pick the next lane from current evidence instead of defaulting to more implement
 - **跳测试直接改源码。** 即使是 1 行修复，也至少留一个 reproduction 案例；写不出就转 `diagnose`。
 - **改命令但不改 README。** 下一次冷启动会迷路。
 - **机械追求覆盖率。** 风险低的代码不需要厚测试；风险高的代码只看百分比也不够。
-- **把本地绿灯当 ready。** 本地检查只是实现反馈；ready 交给 `verify`。
+- **把本地绿灯当 ready。** 本地检查只是实现反馈；ready 交给 `review`。
 - **假设循环失败还接着试。** 转 `diagnose`。
 - **未经验证就提交里程碑。** 当 plan 定义了 commit unit 时，正式 commit 应在 review + verify 之后。
 
@@ -172,7 +172,7 @@ Pick the next lane from current evidence instead of defaulting to more implement
 - [ ] active slice 仍是唯一当前工作且未越界。
 - [ ] 测试或等价 focused check 覆盖本步行为。
 - [ ] 改完后检查为绿，且相邻验证未 regress。
-- [ ] 未在 `implement` 中声明 ready；已路由到 `review` 或 `verify`。
+- [ ] 未在 `implement` 中声明 ready；已路由到 `review`。
 - [ ] 文档和 selected recovery surface 已按需同步。
 - [ ] 下一步 skill 已显式标注。
 

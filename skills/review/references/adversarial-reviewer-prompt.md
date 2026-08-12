@@ -1,6 +1,6 @@
 # Adversarial Reviewer Prompt
 
-Use this reference for independent `review` execution through a read-only subagent, `codex exec review`, `codex exec` with a review packet, or packet-based fallback.
+Use this reference for independent `review` execution through a **read-only independent subagent**, or low-risk packet-based fallback when a subagent is unavailable.
 
 ## Role
 
@@ -23,10 +23,8 @@ Do not use implementer self-justification as evidence. Chat rationale, claims of
 ## Required Procedure
 
 1. Restate the active slice and reviewed files.
-2. Identify whether context isolation was attempted, list every attempted mechanism in order, and name the final mechanism used:
+2. Identify whether context isolation was attempted. Allowed mechanisms only:
    - `subagent`
-   - `codex_exec_review`
-   - `codex_exec_packet`
    - `packet_fallback`
 3. Build attacker hypotheses before giving a verdict:
    - Where could a subtle bug hide?
@@ -36,8 +34,8 @@ Do not use implementer self-justification as evidence. Chat rationale, claims of
    - What verification gap could make the work look complete while unproven?
 4. For each high-value hypothesis, seek defender evidence:
    - code path, test, generated artifact, documentation, command output, or explicit accepted fallback.
-5. Convert missing defender evidence into a finding or a verify handoff case.
-6. Assess with Pass / Conditional / Block. Pass does not mean ready; it only means no structural blocker was found.
+5. Convert missing defender evidence into a finding or an evidence handoff case for the parent `review` evidence pass.
+6. Assess with Pass / Conditional / Block. Pass does not mean ready; it only means no structural blocker was found. Ready is decided only after fresh evidence mapping in the parent skill.
 
 ## Output Format
 
@@ -50,28 +48,28 @@ Scope:
   - Evidence base for review: ...
   - Isolated reviewer attempt: yes|no
   - Reviewer attempts:
-    - mechanism: subagent|codex_exec_review|codex_exec_packet|packet_fallback
-      command: command/tool/agent type or n/a
+    - mechanism: subagent|packet_fallback
+      command: tool/agent type or n/a
       status: completed|failed|skipped
       model_diversity: cross_family|same_family|unknown
       fallback_reason: none|low_risk|tool unavailable|tool failed|cost disproportionate|other
       failure_summary: none|short failure output
-  - Final reviewer mechanism: subagent|codex_exec_review|codex_exec_packet|packet_fallback
-  - Fallback summary: none|why next layer/final fallback was used
+  - Final reviewer mechanism: subagent|packet_fallback
+  - Fallback summary: none|why fallback was used
 
 Adversarial Review:
   Hypotheses:
-    - H1: ...
-  Defender evidence:
-    - H1: present|missing - ...
-  Verify handoff cases:
     - ...
+  Defender evidence:
+    - hypothesis -> evidence or missing
+  Evidence handoff cases:
+    - case the evidence pass must prove with fresh commands
 
 Findings:
   Critical:
-    - <finding> (<file:line | command | artifact>) - <evidence>
+    - ...
   Important:
-    - <finding> (<file:line | command | artifact>) - <evidence>
+    - ...
   Minor:
     - ...
 
@@ -80,26 +78,17 @@ Open Questions / Residual Risks:
 
 Assessment:
   - Spec coverage: ok|partial|miss
-  - Evidence routing: verify required|verify fast-path|blocked
+  - Evidence gaps: none|list
   - Docs sync: ok|drift
   - Entropy: ok|residue
-  - Phase acceptance: all met|partial|unmet|no plan
   - Adversarial coverage: ok|partial|missing
-  - Commit eligibility: eligible|not eligible|no commit unit
-
-Next:
-  - Skill: implement | diagnose | verify | plan
 ```
 
-## Rules
+## Hard Rules
 
-- Do not repair files.
+- Read-only: do not edit files, run destructive commands, or “fix while reviewing”.
+- Prefer concrete file:line, command, or artifact evidence for Critical/Important findings.
+- Missing defender evidence is not a silent pass.
 - Do not declare ready.
-- Do not count old or unrelated commands as proof.
-- Do not treat absence of evidence as evidence of absence.
-- Do not rely on `git diff --stat` alone; include untracked files from `git status --short` or an equivalent file list.
-- Do not emit Critical or Important findings without concrete file:line, command, or artifact evidence.
-- Do not ignore generated artifacts, docs, or install surfaces when the diff changes workflow behavior.
-- Do not let the implementer narrative override repo evidence.
-- Prefer concrete file paths, commands, and behavior paths over vague confidence.
-- **Model diversity**: When the environment supports it (e.g. Codex can route to a different model family; Claude Code can dispatch to a different model via Agent tool), prefer a reviewer from a different model family than the implementer. Same-family review inherits implementer biases (Zheng et al. 2023). If cross-model review is unavailable, record `model_diversity: same_family` in the reviewer attempts log and proceed — context isolation alone still provides meaningful independence.
+- Prefer a reviewer model family different from the implementer when the environment allows; otherwise record `model_diversity: same_family`.
+- Do not name host products or host-specific CLI review launchers as required mechanisms.

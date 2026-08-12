@@ -79,4 +79,4 @@ Harness adaptation: do not force root `task_plan.md`, `findings.md`, and `progre
 - Use `harness-builder` when recovery is one row in a broader workbench recommendation (controller synthesizes the matrix).
 - Use `agent-instructions-maintainer` when durable instructions must be updated beyond a thin pointer.
 - Use `plan` when an approved spec needs an executable active slice.
-- Use `verify` when the recovery surface already claims ready and needs fresh evidence.
+- Use `review` when the recovery surface already claims ready and needs fresh evidence.

@@ -1,38 +1,13 @@
 # Handoff Hygiene
 
-Use this checklist during Knowledge Cleanup when a substantial batch is closing, blocked, abandoned, or likely to be resumed by another agent.
+Substantial batch 关闭/阻塞/放弃/交接时，recovery 应能答：
 
-## Required Answers
+1. 当前 work surface / active slice？
+2. 什么证据证明现状？
+3. 改了哪些文件？
+4. 风险 / blocker？
+5. 下一步（禁止只写「continue」）？
+6. 不要重试什么？
+7. 哪些 milestone 已提交？有无已 verify 未提交？
 
-The selected recovery surface should answer:
-
-| Question | Why it matters |
-| --- | --- |
-| What is the current active slice? | Prevents scope drift |
-| What proves the current state? | Prevents stale evidence from becoming truth |
-| What files changed? | Helps the next agent inspect quickly |
-| What remains risky or blocked? | Prevents hidden uncertainty |
-| What should happen next? | Avoids vague "continue" handoffs |
-| What should not be retried? | Preserves rejected options and dead ends |
-| Which milestones are committed? | Prevents losing verified work across sessions |
-| Are there verified but uncommitted changes? | Ensures milestone commits are not forgotten |
-
-If an answer is unknown, write `unknown` with the reason instead of guessing.
-
-## Pause / Closure States
-
-| State | Meaning |
-| --- | --- |
-| `complete` | Success criteria are met with fresh evidence |
-| `blocked` | External input or capability is required |
-| `abandoned` | The attempt is intentionally stopped |
-| `reopen` | Cleanup found missing work |
-
-## Anti-Patterns
-
-- Claiming "done" without fresh commands or explicit evidence limits.
-- Writing temporary task status into `AGENTS.md`.
-- Creating a fourth handoff file when the selected recovery surface already exists.
-- Leaving next action as "continue".
-- Hiding failed commands or skipped checks.
-- Verified changes left uncommitted across session boundaries.
+未知就写 `unknown` + 原因。不要把临时任务状态写进 `AGENTS.md`，不要另造第四套交接文件。

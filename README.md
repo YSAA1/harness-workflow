@@ -83,7 +83,7 @@ Three common failure modes show up again and again:
 | --- | --- | --- |
 | "Harness engineering" stays theoretical | The team likes the idea, but nobody knows what to create first. | `harness-builder` turns the idea into concrete project artifacts: project map, thin rules, check scripts, recovery surface, capability decisions, and cleanup policy. |
 | Every project gets the same global setup | Users install all skills, MCP servers, hooks, memories, and rules globally. Context gets noisy, tools fight each other, and small projects inherit irrelevant process. | The plugin pushes project-fit decisions: adopt what this repo needs, defer what might help later, reject what adds cost without signal. |
-| Agents finish work but leave entropy behind | Tests may pass, but docs lie, temp files remain, state is stale, and the next agent has to rediscover the same facts. | `verify` requires fresh evidence, and `cleanup` keeps README, generated artifacts, recovery state, and handoff knowledge aligned. |
+| Agents finish work but leave entropy behind | Tests may pass, but docs lie, temp files remain, state is stale, and the next agent has to rediscover the same facts. | `review` requires fresh evidence for ready claims, and `cleanup` keeps README, generated artifacts, recovery state, and handoff knowledge aligned. |
 
 ## Harness engineering in practice
 
@@ -110,7 +110,7 @@ That checklist is not a mandatory artifact list. It is a decision framework. A s
 | Recovery as a design choice | Some work needs no durable state. Some needs `.harness/recovery_policy.md` + `work_index.md`. Multi-session work uses full `.harness/` (`state.md`, `progress.md`, `decisions.md`). Some should reuse an issue tracker or existing docs. |
 | Capability fit, not capability hoarding | Skills, MCP servers, hooks, subagents, plugins, commands, CI/headless automation, recovery surfaces, and instruction surfaces are judged as separate recommendation rows. Capability Recommendation should be a readable table: priority, type, recommendation, repo signal, value, install surface, approval needed, fallback, verification probe, and classification. Add source/freshness/trust/risk detail only when it changes the decision. The bundled helper skills separate skill discovery, capability recommendation, instruction maintenance, and recovery-surface construction. Recommendation requests stay read-only until `USER CHECKPOINT`. |
 | Helper skills keep the builder thin | `harness-builder` routes; it does not re-implement helpers. `capability-recommender` and `agent-instructions-maintainer` are adapted from official Anthropic plugin skills; `recovery-surface-builder` owns recovery backends and adopts planning-with-files persistence without forcing root three-file state. |
-| Fresh evidence for ready claims | `verify` is the only ready gate. It ties every "done" claim to current evidence: tests, build output, smoke checks, screenshots, manual checks, or a clearly stated reason verification is blocked. |
+| Fresh evidence for ready claims | `review` is the only ready gate. It combines adversarial structure review with fresh evidence: tests, build output, smoke checks, screenshots, manual checks, or a clearly stated reason verification is blocked. |
 | Cleanup before handoff | The workflow treats stale README text, leftover generated files, unclear state, and missing recovery notes as part of the work, not as optional polish. |
 
 ## Where `harness-builder` fits
@@ -127,8 +127,8 @@ Recommended order:
 | --- | --- |
 | The request is fuzzy or still has tradeoffs | `brainstorm -> plan -> harness-builder -> implement` |
 | The request is clear, but the repo workbench is missing | `plan -> harness-builder -> implement` |
-| The repo has a harness, but current truth is unclear or stale | `harness-builder -> verify -> cleanup` |
-| The repo already has a fresh harness and a known check path | Skip `harness-builder`; go to `implement`, `diagnose`, or `verify` |
+| The repo has a harness, but current truth is unclear or stale | `harness-builder -> review -> cleanup` |
+| The repo already has a fresh harness and a known check path | Skip `harness-builder`; go to `implement`, `diagnose`, or `review` |
 | The task is specifically to audit, repair, or create agent governance | Use `harness-builder` directly, but still start with evidence collection and gap-driven questions |
 | The task is tiny | Do the tiny task and verify it; do not create ceremony |
 
@@ -136,7 +136,7 @@ This placement matters. A useful harness depends on the current goal, non-goals,
 
 ## Helper skills
 
-Harness Workflow has eight active workflow lanes. Helper skills are top-level callable skills, but they are not extra lanes and are not hidden internal subroutines.
+Harness Workflow has seven active workflow lanes. `verify` is an alias helper that routes to `review`. Other helper skills are top-level callable skills, but they are not extra lanes and are not hidden internal subroutines.
 
 | Helper | Purpose | Source |
 | --- | --- | --- |
@@ -151,34 +151,34 @@ External research-governance wiring has been removed from this plugin. Use a sep
 | Skill | Use it when | What it should leave behind | Recommended next |
 | --- | --- | --- | --- |
 | `brainstorm` | The goal, boundary, tradeoff, or success criteria is not clear enough to plan. | A focused spec: goals, non-goals, options considered, success criteria, and verification strategy. | `plan`, or `harness-builder` for direct harness work |
-| `plan` | The spec or user request is clear enough to choose a first executable slice. | A plan in the selected planning surface, with active slice, `verification_path_status`, required capabilities, fallback evidence, final integration claim, and Markdown checkbox work items that can be checked off as progress is made. | `harness-builder` when the workbench or proof path is blocked; `verify` for proof-only work; otherwise `implement` |
-| `harness-builder` | The repo lacks a reliable workbench, or gaps span entry / recovery / verification / capability / install. | Evidence, Helper Skill routing, recommendation matrix, USER CHECKPOINT, and approved controller-owned patches. | helpers for thick rows; then `verify`, `implement`, or `cleanup` |
-| `implement` | One slice is scoped and the workbench is clear enough to change files. | A small scoped change, with local checks as implementation feedback or a clear reason checks cannot run. It does not declare ready. | `review` for meaningful changes; `verify` for tiny changes |
-| `diagnose` | A build, test, lint, typecheck, CI run, or runtime behavior fails without a known root cause. | Reproduction, one tested hypothesis, root cause, minimal fix, and regression evidence. | `implement` for the fix, or `verify` when already fixed |
-| `review` | A meaningful change looks stable and needs structural scrutiny before a ready claim. | Adversarial findings about correctness, missed tests, docs drift, scope creep, entropy, and residual risk. Meaningful diffs should try an isolated reviewer before fallback. It does not replace verification. | `verify` on pass or verify fast-path; `implement` or `diagnose` on findings |
-| `verify` | The agent wants to say the work is ready. | A structured verification record tied to the exact success criteria, latest change, commands, skipped checks, unknowns, and ready verdict. | `cleanup` on pass; `diagnose` or `harness-builder` on gaps |
+| `plan` | The spec or user request is clear enough to choose a first executable slice. | A plan in the selected planning surface, with active slice, `verification_path_status`, required capabilities, fallback evidence, final integration claim, and Markdown checkbox work items that can be checked off as progress is made. | `harness-builder` when the workbench or proof path is blocked; `review` for proof-only work; otherwise `implement` |
+| `harness-builder` | The repo lacks a reliable workbench, or gaps span entry / recovery / verification / capability / install. | Evidence, Helper Skill routing, recommendation matrix, USER CHECKPOINT, and approved controller-owned patches. | helpers for thick rows; then `review`, `implement`, or `cleanup` |
+| `implement` | One slice is scoped and the workbench is clear enough to change files. | A small scoped change, with local checks as implementation feedback or a clear reason checks cannot run. It does not declare ready. | `review` (adversarial + ready evidence) |
+| `diagnose` | A build, test, lint, typecheck, CI run, or runtime behavior fails without a known root cause. | Reproduction, one tested hypothesis, root cause, minimal fix, and regression evidence. | `implement` for the fix, or `review` when already fixed |
+| `review` | A meaningful change looks stable and needs adversarial scrutiny plus ready proof. | Adversarial findings plus a structured verification record mapped to success criteria. Mid/high-risk diffs should try an independent read-only subagent. This is the sole ready gate. | `cleanup` on ready PASS; `implement` or `diagnose` on findings |
+| `verify` | Alias for ready / final-check triggers. | Routes to `review`. Not an independent public lane. | `review` |
 | `cleanup` | Work is done, blocked, abandoned, or being handed off. | Updated project knowledge, removed leftovers, and a recovery state the next agent can read. | stop, or reopen with `plan` / `implement` for explicit follow-up |
 | `capability-recommender` | The repo needs read-only capability recommendations. | Official-derived recommendation report for skills, hooks, MCP, subagents, plugins, scripts, and CI/headless automation. | `harness-builder` or `implement` after approval |
-| `agent-instructions-maintainer` | Durable agent instructions need audit or repair. | Official-derived quality report and targeted patch plan for `AGENTS.md`, `CLAUDE.md`, and Cursor rules. | `verify` after an approved patch |
-| `recovery-surface-builder` | Active state, progress, evidence, or recovery is missing or drifting. | Backend choice, field map, and `.harness` or existing-surface repair plan. | `plan`, `verify`, or `cleanup` depending on state |
+| `agent-instructions-maintainer` | Durable agent instructions need audit or repair. | Official-derived quality report and targeted patch plan for `AGENTS.md`, `CLAUDE.md`, and project rules. | `review` after an approved patch |
+| `recovery-surface-builder` | Active state, progress, evidence, or recovery is missing or drifting. | Backend choice, field map, and `.harness` or existing-surface repair plan. | `plan`, `review`, or `cleanup` depending on state |
 | `find-skills` | The current task may benefit from an existing reusable skill. | Search and quality checks before recommending or installing a skill. | `harness-builder` when adopting a project capability |
 ## Common routes
 
 ```text
 Tiny edit:
-implement -> verify
+implement -> review
 
 Unclear feature:
-brainstorm -> plan -> harness-builder -> implement -> review -> verify -> cleanup
+brainstorm -> plan -> harness-builder -> implement -> review -> cleanup
 
 Clear task in an unfamiliar repo:
-plan -> harness-builder -> implement -> review -> verify
+plan -> harness-builder -> implement -> review
 
 Broken command:
-diagnose -> implement -> verify
+diagnose -> implement -> review
 
 Harness audit or repair:
-harness-builder -> verify -> cleanup
+harness-builder -> review -> cleanup
 
 ```
 

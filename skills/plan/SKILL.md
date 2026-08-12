@@ -17,7 +17,7 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 
 - **Use when**: Spec 或请求清楚，但缺 active slice、work items、验证路径、能力缺口或 commit unit。
 - **Do not use when**: 目标、边界、non-goals、success criteria 或验证策略不清；先 `brainstorm`。单点小补丁可直接执行。
-- **Route to**: 可实现转 `implement`；只证明转 `verify`；失败根因不明转 `diagnose`；工作面或验证能力缺口转 `harness-builder`。
+- **Route to**: 可实现转 `implement`；只证明转 `review`；失败根因不明转 `diagnose`；工作面或验证能力缺口转 `harness-builder`。
 
 ## 目的
 
@@ -48,8 +48,8 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 
 1. **Readiness gate**: 确认能回答做什么、不做什么、如何证明、验证路径是 `runnable` 还是 `blocked`；否则回 `brainstorm`。
 2. **Select surface**: 优先 docs plan；issue、feature-list、existing system 只在用户指定或项目惯例明确时使用。不要把 `.harness/` 当 Planning Surface。
-3. **Write plan**: 写清 Objective、Active slice、Non-goals、Success criteria、Verification path、Verification path status、Required capabilities、Fallback evidence、Final integration claim、checkbox 工作项、Commit units、Known risks / blockers、Next skill。
-4. **Sync recovery**: tracked work 更新 `.harness/work_index.md` active row 与 `.harness/state.md`；证据进 `progress.md`，决策进 `decisions.md`。
+3. **Write plan**: 写清 Objective、Active slice、Non-goals、Success criteria、Verification path、Verification path status、Required capabilities、Fallback evidence、Final integration claim、checkbox 工作项、Commit units、Known risks / blockers、Next skill。文首加 `Status: active`。
+4. **One work surface**: 新 plan 成为权威前，把 Work Index 旧 `active` 标为 `complete` / `blocked` / `abandoned`；若旧 plan 文件仍像「进行中」，改其 `Status` 为 `done` / `superseded` / `abandoned`（搬 archive 可留给 `cleanup`）。然后写入新 active 行并同步 `state.md`；证据进 `progress.md`，决策进 `decisions.md`。
 5. **Stop**: 除非用户明确要求继续，否则写完计划后停在 `plan` 边界。
 
 如果唯一有意义的 verification path 是 `blocked`，不要直接路由到 `implement`，除非同时写明用户接受的 fallback evidence；否则转 `harness-builder` 修复验证能力。
@@ -62,7 +62,7 @@ description: "用于把已批准 Spec 或足够明确的非平凡请求转成 Ex
 - Verification path; Verification path status: `runnable | blocked`
 - Required capabilities; Fallback evidence; Final integration claim / `final_integration_claim`
 - `## 工作项` / `## Work Items`; Commit units; Known risks / blockers
-- Next skill: `<implement | diagnose | harness-builder | verify>`
+- Next skill: `<implement | diagnose | harness-builder | review>`
 
 工作项必须是 Markdown checkbox 工作项：
 
@@ -94,7 +94,7 @@ Commit unit 是计划产物，不是强制流程。定义 commit unit 时：
 3. commit message 应能映射到对应阶段或 unit。
 4. 提交后同步 selected recovery surface 的阶段状态。
 
-没有 plan 或任务简单到不需要 commit unit 时，`implement` / `review` / `verify` 正常工作，提交时机按用户要求或项目惯例。
+没有 plan 或任务简单到不需要 commit unit 时，`implement` / `review` 正常工作，提交时机按用户要求或项目惯例。
 
 ## 输出契约
 
@@ -116,7 +116,7 @@ Reason: <一句话>
 | Situation | Recommended next skill |
 | --- | --- |
 | Active slice 清楚、验证路径 runnable、需要实现 | `implement` |
-| 只需要证明当前状态或发布就绪 | `verify` |
+| 只需要证明当前状态或发布就绪 | `review` |
 | 从失败命令开始且 root cause 不明 | `diagnose` |
 | 工作面、recovery surface、验证入口或能力缺口阻塞 | `harness-builder` |
 

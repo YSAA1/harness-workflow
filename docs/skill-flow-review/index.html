@@ -169,11 +169,11 @@ pre {
         </div>
       </article><article class="panel skill-card">
         <h3><a href="brainstorm.html">brainstorm</a></h3>
-        <p class="muted">构思 Spec · 121 行 · 2 个流程步</p>
-        <p>- 防止模糊想法过早进入计划或实现。 - 在选择方案前先把验证策略说清楚。 - 通过独立 Spec 留下 goals、non-goals、方案取舍、成功标准和 plan handoff。</p>
+        <p class="muted">构思 Spec · 73 行 · 0 个流程步</p>
+        <p>收敛模糊想法 → 用户批准的 Spec → plan。不写生产代码，不写 Executable Plan。 Leading words: frontier · design tree · shared understanding Canonical Spec：docs/specs/YYYY-MM-DD--&lt;topic&gt;.md（仅用户或 AGENTS.md 明示时可 override）。默认不写 .harness/。 用户可见语言跟随用户；协议 token（BRAINSTORM …、Spec、Gate、路径）可保留英文。</p>
         <div class="meta">
-          <span class="tag">5 个 reference</span>
-          <span class="tag">3 条验收项</span>
+          <span class="tag">2 个 reference</span>
+          <span class="tag">0 条验收项</span>
         </div>
       </article><article class="panel skill-card">
         <h3><a href="plan.html">plan</a></h3>
@@ -186,7 +186,7 @@ pre {
       </article><article class="panel skill-card">
         <h3><a href="implement.html">implement</a></h3>
         <p class="muted">小步执行 · 191 行 · 8 个流程步</p>
-        <p>- 当前 active slice 没拿到证据前，不开新 slice。 - 修代码就同步命令、文档或 recovery surface，否则下次会话恢复会失真。 - 验证强度按风险匹配，不机械要求覆盖率。 - 本 lane 可以跑局部检查，但不能声明 ready；ready claim 只能由 verify 证明。 - 失败了不靠猜，转 diagnose。</p>
+        <p>- 当前 active slice 没拿到证据前，不开新 slice。 - 修代码就同步命令、文档或 recovery surface，否则下次会话恢复会失真。 - 验证强度按风险匹配，不机械要求覆盖率。 - 本 lane 可以跑局部检查，但不能声明 ready；ready claim 只能由 review 证明。 - 失败了不靠猜，转 diagnose。</p>
         <div class="meta">
           <span class="tag">1 个 reference</span>
           <span class="tag">6 条验收项</span>
@@ -201,27 +201,27 @@ pre {
         </div>
       </article><article class="panel skill-card">
         <h3><a href="review.html">review</a></h3>
-        <p class="muted">证据评审 · 260 行 · 7 个流程步</p>
-        <p>review 必须同时检查&quot;做超了&quot;和&quot;做欠了&quot;。它可以判断&quot;没有结构性 blocker&quot;，但不能作为最终 ready gate。通过后仍路由到 verify；若已有 fresh evidence，则走 verify fast-path 做短重检和 claim mapping。 默认原则：meaningful diff 必须先尝试 隔离 reviewer，失败、不可用或成本明显不成比例时才 fallback。隔离优先级： 1. read-only subagent / independent reviewer。 2. Codex 环境中的 codex exec review。 3. Codex 环境中的 codex exec + review packet + reviewer prompt。 4. pack...</p>
+        <p class="muted">证据评审 · 92 行 · 0 个流程步</p>
+        <p>实现后的唯一公开闸门。两段：结构对抗 → fresh evidence / ready。verify 是别名，仍走这里。不修代码。 Leading words: adversarial · subagent · fresh evidence · ready</p>
         <div class="meta">
-          <span class="tag">4 个 reference</span>
-          <span class="tag">10 条验收项</span>
+          <span class="tag">1 个 reference</span>
+          <span class="tag">0 条验收项</span>
         </div>
       </article><article class="panel skill-card">
         <h3><a href="verify.html">verify</a></h3>
-        <p class="muted">最终验证 · 283 行 · 10 个流程步</p>
-        <p>把&quot;可以结束&quot;转化为可追溯证据：每条成功标准都必须对应 fresh command、smoke/E2E 或明确的未验证限制。 用结构化 verification record 绑定 claim、路径、最后改动、命令、跳过项、unknown 和 ready verdict。</p>
+        <p class="muted">最终验证 · 15 行 · 0 个流程步</p>
+        <p>执行 ../review/SKILL.md。本目录不重复证据协议。</p>
         <div class="meta">
-          <span class="tag">3 个 reference</span>
-          <span class="tag">10 条验收项</span>
+          <span class="tag">0 个 reference</span>
+          <span class="tag">0 条验收项</span>
         </div>
       </article><article class="panel skill-card">
         <h3><a href="cleanup.html">cleanup</a></h3>
-        <p class="muted">Knowledge Cleanup · 202 行 · 8 个流程步</p>
-        <p>- 保持 AGENTS.md 是薄规则手册，不写 changelog、临时状态或会话叙事。 - 确保 README、docs、generated artifacts 和验证命令描述当前真实项目。 - 检查 recovery surface 是否漂移、膨胀或与 git diff 矛盾。 - 把未解决的 doc drift 和 residual risk 记录成明确 follow-up。</p>
+        <p class="muted">Knowledge Cleanup · 114 行 · 0 个流程步</p>
+        <p>cleanup 是收尾闸门。对齐 living docs、生成物和 recovery；保证同一时刻只有一个 work surface；把假活执行纸 archive。不是重构许可证。 Leading words: work surface · living · archive · entry point</p>
         <div class="meta">
-          <span class="tag">2 个 reference</span>
-          <span class="tag">7 条验收项</span>
+          <span class="tag">3 个 reference</span>
+          <span class="tag">0 条验收项</span>
         </div>
       </article><article class="panel skill-card">
         <h3><a href="find-skills.html">find-skills</a></h3>

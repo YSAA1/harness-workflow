@@ -161,3 +161,9 @@
   - `node scripts/generate-skill-flow-html.mjs` -> PASS，Generated 13 HTML files，与 HEAD 无 diff。
 - 恢复面同步：`.harness/work_index.md` 新增 `008` complete 行；`.harness/state.md` 重写为 SSY-1 收尾状态。
 - 未提交运行时文件（CLAUDE.md Multica block、`.claude/`、`.multica/`、`.agent_context/`、`description.md`）。
+
+## 2026-08-12 — Workflow lane slim
+
+- Spec: `docs/specs/2026-08-12--workflow-lane-slim.md`
+- Research: `docs/research/2026-08-12--workflow-lane-slim-research.md`
+- Evidence: check-plugin / check-claude / check-cursor / generate-skill-flow-html PASS

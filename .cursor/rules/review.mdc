@@ -1,5 +1,5 @@
 ---
-description: Use review when meaningful changes are stable and need a correctness, scope, docs, entropy, and evidence check before ready.
+description: Use review when meaningful changes are stable and need adversarial structure check plus fresh-evidence ready judgment.
 globs:
 alwaysApply: false
 ---
@@ -10,42 +10,26 @@ Canonical source: `skills/review/SKILL.md`.
 
 ## When To Use
 
-- A slice is implemented and stable enough for structural review.
-- The user asks for review, sanity check, commit readiness, or merge readiness.
-- Diagnose produced a fix and the work should rejoin the main flow.
+- Slice stable after implement/diagnose.
+- User asks review, verify, final checks, or ready proof.
 
 ## Inputs
 
-- `skills/review/SKILL.md` and `skills/review/references/adversarial-reviewer-prompt.md`.
-- `git status --short`, diff stat, actual changed files, untracked files, accepted Spec or user request, Executable Plan, selected recovery surface, source, tests, docs, README, and current evidence.
+- `skills/review/SKILL.md` and its references when mid/high-risk.
+- Diff facts, Spec/Plan, success criteria, recovery, project check commands.
 
 ## Procedure
 
-1. Restate active slice, files reviewed, and completion claim.
-2. For meaningful diffs, attempt an isolated reviewer before fallback: read-only subagent, `codex exec review`, `codex exec` reviewer packet, then packet fallback.
-3. Record ordered reviewer attempts, final reviewer mechanism, fallback summary, and failure summaries.
-4. Build adversarial hypotheses before verdict, then seek defender evidence for each.
-5. Check Spec coverage: goals met and non-goals not crossed.
-6. Check evidence freshness and missing validation without declaring ready.
-7. Check correctness and design risk around boundaries, errors, data, compatibility, and trust.
-8. Check docs, generated artifacts, and recovery surface for drift.
-9. Check entropy: debug leftovers, TODOs, unused code, unapproved dependencies, duplicate state.
-10. When an Executable Plan exists, also check phase acceptance criteria.
-11. Classify findings as Critical, Important, or Minor.
-12. Conclude Pass, Conditional, or Block and route next. Pass still routes to `verify`.
+1. Restate ready claim.
+2. Mid/high-risk: independent read-only subagent adversarial pass (`subagent` | `packet_fallback` only).
+3. Run fresh checks; map criteria; cold subagent when mid/high-risk.
+4. Ready only if no Critical and required criteria all pass → cleanup.
 
 ## Outputs
 
-- Findings-first review with file, command, or artifact evidence.
-- Isolated reviewer attempt details, ordered reviewer attempts, adversarial hypotheses, defender evidence, and verify handoff cases.
-- Open questions, residual risks, and next skill.
+- REVIEW + VERIFICATION + READY verdict and Next skill.
 
 ## Verification / Done Criteria
 
-- Critical and Important findings have concrete evidence.
-- Meaningful diffs tried isolated review first, or recorded a fallback reason.
-- Review packet covered `git status --short` / untracked files.
-- Adversarial hypotheses and defender evidence are present.
-- Missing fresh evidence is treated as a gap and routed to `verify`.
-- Blocking findings route back to `implement`, `diagnose`, `plan`, or `brainstorm`.
-- When an Executable Plan exists, phase acceptance criteria are checked.
+- Mid/high-risk used subagent or cannot claim ready.
+- Unknown ≠ ready. No code fixes in this skill.

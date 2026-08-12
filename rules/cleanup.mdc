@@ -1,5 +1,5 @@
 ---
-description: Use cleanup when a batch is ready to close, block, abandon, or reconcile project knowledge and generated artifacts.
+description: Use cleanup when a batch is ready to close, block, abandon, or reconcile living docs and a single work surface.
 globs:
 alwaysApply: false
 ---
@@ -10,34 +10,28 @@ Canonical source: `skills/cleanup/SKILL.md`.
 
 ## When To Use
 
-- Verification passed and the slice can close.
-- The user asks to finish, tidy, sync docs, or make state clean.
-- Review found docs, generated artifacts, `AGENTS.md`, README, or recovery surface drift.
+- Review ready passed and the slice can close.
+- User asks to wrap up, sync docs, or clean state.
+- Multiple plans/specs look authoritative (dual truth).
 
 ## Inputs
 
-- `AGENTS.md`, README, docs, generated artifacts, selected recovery surface, current diff, validation evidence, and files created by this batch.
+- `skills/cleanup/SKILL.md`, AGENTS/README/docs, recovery Work Index, plans/specs that still look live, git status.
 
 ## Procedure
 
-1. Enumerate related docs, generated artifacts, recovery artifacts, and dirty files before editing.
-2. Compare code, commands, README, docs, generated artifacts, `AGENTS.md`, and selected recovery surface.
-3. Pick closure state: complete, blocked, abandoned, or reopen.
-4. Apply Knowledge Cleanup with small documentation or artifact fixes only.
-5. Regenerate generated artifacts from their scripts; do not hand-edit generated HTML.
-6. When the plan has commit units, verify milestone commit completeness.
-7. Record residual drift as follow-up with location, risk, and next action.
-8. Summarize related changes and unrelated dirty files left alone.
+1. Name the one work surface (Work Index active primary artifact).
+2. Compare living docs to code.
+3. Archive or status-mark superseded plans/specs; clear or defer entropy.
+4. Small living-doc fixes; regenerate generated artifacts via generators only.
+5. Report closure state and Next.
 
 ## Outputs
 
-- Clean closure report.
-- Updated README/docs/generated artifacts/recovery surface only where drift exists.
-- Deferred follow-ups for unresolved drift.
+- CLEANUP report with work surface, archive/deferred, git summary.
 
 ## Verification / Done Criteria
 
-- Fresh evidence exists or cleanup routes away from completion.
-- `AGENTS.md` remains a thin entry and does not become a session log.
-- Generated artifacts are regenerated, not manually edited.
-- Knowledge Cleanup does not hide unfinished work.
+- One work surface named or blocker recorded.
+- Entry points do not treat replaced plans as current.
+- Uncertain files not silently deleted.

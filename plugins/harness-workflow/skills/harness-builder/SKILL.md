@@ -43,7 +43,7 @@ Default Quick repair. Escalate to Full when the request or evidence needs it.
 5. **Matrix** — Emit `HARNESS RECOMMENDATION MATRIX` (Required / Recommended / Deferred / Rejected) with Evidence, Owner skill, Verification. Done when every proposed change binds to one matrix row and one owner. Policy: `references/recommendation_matrix_policy.md`.
 6. **USER CHECKPOINT** — Stop unless the user already approved the exact patch. If No install recommended, there is no action to approve. Done when Approved slice / Files / Validation / Rollback are explicit, or the empty-plan skip is stated.
 7. **Controller patch** — Apply only approved **this-skill** rows. Prefer canonical sources, then sync mirrors. For helper-owned rows, either the helper already wrote after its checkpoint, or schedule that helper — do not shadow-write. Install surfaces: `references/install_policy.md`. Placement: `references/decision_matrix.md`.
-8. **Verify** — Run the narrowest relevant checks; report fresh evidence. Ready claims still go to `verify`.
+8. **Verify** — Run the narrowest relevant checks; report fresh evidence. Ready claims still go to `review`.
 
 ## Language
 
@@ -91,5 +91,5 @@ Default Quick repair. Escalate to Full when the request or evidence needs it.
 | Instruction-file audit/repair only | `agent-instructions-maintainer` |
 | Recovery surface only | `recovery-surface-builder` |
 | Approved harness change needs active-slice tracking | `plan` |
-| Harness change claims ready | `verify` |
+| Harness change claims ready | `review` |
 | Knowledge / mirror drift after install | `cleanup` |

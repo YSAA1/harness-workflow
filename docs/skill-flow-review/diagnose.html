@@ -190,7 +190,7 @@ pre {
         <div><h3>第 7 步 — 最小修复</h3><p>修复改动尽可能小且单一。不顺手 refactor，不用注释测试、catch-all 或忽略类型错误隐藏失败。</p></div>
       </div><div class="step">
         <div class="num">8</div>
-        <div><h3>第 8 步 — fresh 验证</h3><p>先跑 reproduction 命令，再跑相邻验证。失败则继续诊断；通过后转 review 或 verify。</p></div>
+        <div><h3>第 8 步 — fresh 验证</h3><p>先跑 reproduction 命令，再跑相邻验证。失败则继续诊断；通过后转 review。</p></div>
       </div>
     </div>
   </section>
@@ -208,7 +208,7 @@ pre {
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>根因已找到、修复直接</td><td>implement</td></tr><tr><td>根因影响多文件或范围</td><td>plan</td></tr><tr><td>根因揭示需求边界错</td><td>brainstorm</td></tr><tr><td>修复稳定</td><td>review 或 verify</td></tr><tr><td>根因是已提交里程碑的回归</td><td>记录到 recovery surface + implement 修复 + 重新 verify</td></tr><tr><td>三轮诊断未果</td><td>记录 blocker 并向用户升级</td></tr><tr><td>命令链路本身坏</td><td>harness-builder</td></tr></tbody></table>
+    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>根因已找到、修复直接</td><td>implement</td></tr><tr><td>根因影响多文件或范围</td><td>plan</td></tr><tr><td>根因揭示需求边界错</td><td>brainstorm</td></tr><tr><td>修复稳定</td><td>review</td></tr><tr><td>根因是已提交里程碑的回归</td><td>记录到 recovery surface + implement 修复 + 重新 verify</td></tr><tr><td>三轮诊断未果</td><td>记录 blocker 并向用户升级</td></tr><tr><td>命令链路本身坏</td><td>harness-builder</td></tr></tbody></table>
   </section>
 
   <section class="section grid">

@@ -175,10 +175,10 @@ pre {
         <div><h3>Select surface: 优先 docs plan；issue、feature-list、existing system 只在用户指定或项目惯例明确时使用。不要把 .harness/ 当 Planning Surface。</h3><p></p></div>
       </div><div class="step">
         <div class="num">3</div>
-        <div><h3>Write plan: 写清 Objective、Active slice、Non-goals、Success criteria、Verification path、Verification path status、Required capabilities、Fallback evidence、Final integration claim、checkbox 工作项、Commit units、Known risks / blockers、Next skill。</h3><p></p></div>
+        <div><h3>Write plan: 写清 Objective、Active slice、Non-goals、Success criteria、Verification path、Verification path status、Required capabilities、Fallback evidence、Final integration claim、checkbox 工作项、Commit units、Known risks / blockers、Next skill。文首加 Status: active。</h3><p></p></div>
       </div><div class="step">
         <div class="num">4</div>
-        <div><h3>Sync recovery: tracked work 更新 .harness/work_index.md active row 与 .harness/state.md；证据进 progress.md，决策进 decisions.md。</h3><p></p></div>
+        <div><h3>One work surface: 新 plan 成为权威前，把 Work Index 旧 active 标为 complete / blocked / abandoned；若旧 plan 文件仍像「进行中」，改其 Status 为 done / superseded / abandoned（搬 archive 可留给 cleanup）。然后写入新 active 行并同步 state.md；证据进 progress.md，决策进 decisions.md。</h3><p></p></div>
       </div><div class="step">
         <div class="num">5</div>
         <div><h3>Stop: 除非用户明确要求继续，否则写完计划后停在 plan 边界。</h3><p>如果唯一有意义的 verification path 是 blocked，不要直接路由到 implement，除非同时写明用户接受的 fallback evidence；否则转 harness-builder 修复验证能力。</p></div>
@@ -199,7 +199,7 @@ pre {
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <table><thead><tr><th>Situation</th><th>Recommended next skill</th></tr></thead><tbody><tr><td>Active slice 清楚、验证路径 runnable、需要实现</td><td>implement</td></tr><tr><td>只需要证明当前状态或发布就绪</td><td>verify</td></tr><tr><td>从失败命令开始且 root cause 不明</td><td>diagnose</td></tr><tr><td>工作面、recovery surface、验证入口或能力缺口阻塞</td><td>harness-builder</td></tr></tbody></table>
+    <table><thead><tr><th>Situation</th><th>Recommended next skill</th></tr></thead><tbody><tr><td>Active slice 清楚、验证路径 runnable、需要实现</td><td>implement</td></tr><tr><td>只需要证明当前状态或发布就绪</td><td>review</td></tr><tr><td>从失败命令开始且 root cause 不明</td><td>diagnose</td></tr><tr><td>工作面、recovery surface、验证入口或能力缺口阻塞</td><td>harness-builder</td></tr></tbody></table>
   </section>
 
   <section class="section grid">

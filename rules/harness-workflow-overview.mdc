@@ -6,17 +6,16 @@ alwaysApply: true
 
 # Harness Workflow For Cursor
 
-Cursor support is a rules adapter, not a plugin runtime. Codex and Claude Code can expose skills or plugins; Cursor reads persistent project context from `.cursor/rules` and can also read `AGENTS.md` as a simpler fallback.
+Cursor support is a rules adapter, not a plugin runtime. Host products can expose skills or plugins differently; Cursor reads persistent project context from `.cursor/rules` and can also read `AGENTS.md` as a simpler fallback.
 
-Use these rules to route work into the eight canonical Harness Workflow lanes. The bundled `find-skills` helper supports Capability Recommendation, but it is not a workflow lane:
+Use these rules to route work into the seven canonical Harness Workflow lanes. The bundled `find-skills` helper supports Capability Recommendation, but it is not a workflow lane. `verify` is an alias that routes to `review`:
 
 - `harness-builder`: recommend, build, or repair the project workbench as controller — route thick gaps to helpers, synthesize the recommendation matrix, and patch controller-owned slices (verification, install, anti-entropy).
-- `brainstorm`: turn unclear requirements into an approved Spec.
+- `brainstorm`: turn unclear requirements into an approved Spec via frontier grilling.
 - `plan`: turn an approved Spec or clear request into an Executable Plan.
 - `implement`: make one scoped change with WIP=1 discipline.
 - `diagnose`: reproduce failures, prove the root cause, and make the smallest fix.
-- `review`: inspect scope, correctness, docs, entropy, and evidence before ready claims.
-- `verify`: collect fresh evidence for a concrete ready claim.
+- `review`: adversarial structure check + fresh-evidence ready gate (sole ready lane).
 - `cleanup`: perform Knowledge Cleanup so docs, generated artifacts, and state do not drift.
 - `find-skills`: search reusable skills when a project-specific capability gap is clear.
 
@@ -24,15 +23,15 @@ Use these rules to route work into the eight canonical Harness Workflow lanes. T
 
 - The repository is the durable truth. Do not rely on chat memory for scope, evidence, or decisions.
 - Recovery surface is a semantic contract. It may be none, lightweight, `.harness/` (harness directory), feature-list, or an existing tracker. Runtime recovery lives under `.harness/`; do not create root-level legacy state files.
-- Ready claims require fresh evidence gathered after the relevant changes.
+- Ready claims require fresh evidence gathered after the relevant changes, owned by `review`.
 - Implementation runs WIP=1: one active slice at a time, with non-goals and success criteria visible.
 - Knowledge Cleanup prevents README, AGENTS.md, docs, generated artifacts, and the selected recovery surface from drifting.
 - Capability Recommendation evaluates skills, MCP, hooks, subagents, plugins, commands, CI/headless automation, or external tools by task value. Use `find-skills` for skill discovery, and do not blindly install capabilities.
-- Do not add Cursor MCP, extensions, hooks, user settings, or global config unless the user explicitly asks.
-- Do not claim Cursor installs or reads `.codex-plugin/plugin.json`.
+- Do not add host MCP, extensions, hooks, user settings, or global config unless the user explicitly asks.
+- Do not claim this adapter installs or reads unrelated host plugin manifests.
 
 ## How To Use
 
-Choose the smallest workflow lane that fits the current state. Simple tasks can go directly to implementation and verification. Unclear scope goes to `brainstorm`; unclear workbench or recovery semantics go to `harness-builder`; unexplained failures go to `diagnose`; ready claims go to `verify`; phase closure goes to `cleanup`.
+Choose the smallest workflow lane that fits the current state. Simple tasks can go directly to implementation and review. Unclear scope goes to `brainstorm`; unclear workbench or recovery semantics go to `harness-builder`; unexplained failures go to `diagnose`; ready claims go to `review`; phase closure goes to `cleanup`.
 
 Canonical source: `README.md`, `docs/harness-method-contract.md`, and `skills/*/SKILL.md`.

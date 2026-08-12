@@ -12,6 +12,7 @@
 | 006 | review / verify / cleanup 三 skill 优化 | complete | `docs/plans/2026-07-06--review-verify-cleanup-optimization-plan.md` | 2026-07-06 |
 | 007 | harness-builder 总控瘦身与 Helper routing | complete | `skills/harness-builder/SKILL.md` | 2026-07-09 |
 | 008 | SSY-1 工作流优化收尾：brainstorm Phase A / review+verify / cleanup | complete | （SSY-1 umbrella；见 `.harness/state.md`） | 2026-08-12 |
+| 009 | Workflow lane slim：grill brainstorm + review ready gate | complete | `docs/specs/2026-08-12--workflow-lane-slim.md` | 2026-08-12 |
 
 Status values: `active`, `blocked`, `complete`, `abandoned`
 

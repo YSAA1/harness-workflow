@@ -1,201 +1,113 @@
 ---
 name: cleanup
-description: "用于在完成、阻塞、放弃或交接前对齐 docs、generated artifacts、recovery surface 和知识状态。触发条件：用户说收尾/同步文档/整理状态，或 verify 后需要 closure。不要把 cleanup 当代码重构或行为改动入口；行为变化回 implement/plan。"
+description: "用于完成、阻塞、放弃或交接前的知识收尾：对齐 living docs、生成物、recovery，并理清唯一 work surface。触发条件：收尾/同步文档/整理状态，或 review ready 后 closure。不要当重构或行为改动入口。"
 ---
 
 # Knowledge Cleanup
 
-`cleanup` 是知识和工件的收尾闸门。它对齐 docs、代码、生成物和 selected recovery surface，防止项目知识腐化。它不是重构许可证，也不是单独的暂停/恢复 lane。
+`cleanup` 是收尾闸门。对齐 **living** docs、生成物和 recovery；保证同一时刻只有一个 **work surface**；把假活执行纸 **archive**。不是重构许可证。
+
+Leading words: **work surface** · **living** · **archive** · **entry point**
 
 ## 路由快照
 
-- **Use when**: 一个 batch 需要知识、文档、生成物、恢复面或交接收尾。
-- **Do not use when**: ready claim 还没验证、失败未解释、或需要改行为。
-- **Route to**: 知识对齐后 done；缺行为或测试转 `implement`；不明失败转 `diagnose`；工作面缺口转 `harness-builder`。
+- **Use when**: batch 要关闭/阻塞/放弃/交接；文档或多 plan 抢权威；用户说收尾/整理。
+- **Do not use when**: ready 未证明（`review`）；失败未解释（`diagnose`）；要改行为（`plan`/`implement`）。
+- **Route to**: 对齐则 stop；缺行为 → `implement`；不明失败 → `diagnose`；范围漂 → `plan`；工作面缺口 → `harness-builder`。
 
-## 目的
+## 输入
 
-- 保持 `AGENTS.md` 是薄规则手册，不写 changelog、临时状态或会话叙事。
-- 确保 README、docs、generated artifacts 和验证命令描述当前真实项目。
-- 检查 recovery surface 是否漂移、膨胀或与 git diff 矛盾。
-- 把未解决的 doc drift 和 residual risk 记录成明确 follow-up。
+1. `AGENTS.md`、README、相关 docs、生成物脚本。
+2. Recovery：尤其 `.harness/work_index.md`（唯一 `active`）与 `state.md`；含 `deferred_cleanup`。
+3. `docs/plans/`、`docs/specs/` 中仍像权威的执行纸（见 `references/doc-shelves.md`）。
+4. `git status --short`、`git diff --stat`。
+5. 本 batch 的 temp / scratch。
 
-## 何时使用
+不确定能否删的文件：问或 defer，不静默删。
 
-### 触发信号
+## 流程
 
-- `verify` 已通过，slice 可以关闭。
-- Review 发现文档漂移、知识腐化或低风险 residue。
-- 用户说「收尾」「整理」「同步文档」「把状态弄干净」。
-- 当前 artifacts 不再真实描述代码、命令、证据或 blockers。
-- 需要交接卫生，但不应该保留单独交接 lane。
+每步完成标准写在步骤末尾。
 
-### 不要使用
+### 1. 点名 work surface
 
-- Verification 尚未运行且 ready claim 需要证据：用 `verify`。
-- 有未解释失败：用 `diagnose`。
-- Cleanup 需要行为变化：回 `plan` 或 `implement`。
-- 用户要求继续实现，而不是 closure。
+一句话写出当前唯一 work surface（通常是 Work Index `active` 行的 primary artifact）。若无 `active`、或多个 plan/Spec 都像「正在执行」→ 先 reconcile（改 index / 标 status），再往下。
 
-### 路由规则
+完成：能指出唯一权威路径，或已记录 blocker 并停。
 
-| 状态 | 下一步 |
-| --- | --- |
-| 文档和 artifacts 已对齐 | done |
-| 发现缺失行为或测试 | `implement` |
-| 发现失败或不明根因 | `diagnose` |
-| 发现 plan/scope 漂移 | `plan` |
-| 发现项目级 recovery surface 缺口 | `harness-builder` |
+### 2. 对照真相
 
-## 先读取这些输入
+比代码、README、`AGENTS.md`、相关 living docs、生成物、recovery。找命令漂移、入口指向死纸、skill 广告过期、eligible 未提交。
 
-1. `AGENTS.md`、README、docs 目录和相关 generated artifacts。
-2. selected recovery surface：phase、blocker、next、evidence、risks、deferred cleanup。
-3. `git status --short` and `git diff --stat`。
-4. 生成物来源脚本，例如 flow HTML 只能由 generator 更新。
-5. 本 batch 创建的 temp files、logs、screenshots、local reports。
+完成：drift 列表写出（可空）。
 
-Never delete or rewrite uncertain files. Ask or defer.
+### 3. 货架与 archive
 
-## Knowledge Freshness Check
+对本次相关的过期 Executable Plan / 假活 Spec：标 `done` | `superseded` | `abandoned`，需要时按 `references/doc-shelves.md` **archive**（搬迁 + banner + 从 **entry point** 摘链）。本任务 temp/debug 按 `references/entropy-checklist.md` 清或 defer。
 
-- README commands match real commands.
-- `AGENTS.md` remains a thin entry and points to durable docs or recovery surface.
-- Task status lives in selected recovery surface, not durable instructions.
-- User-visible behavior, config, env vars, ports, scripts, CLI flags, file paths are documented.
-- Generated artifacts are regenerated from scripts, not hand-edited.
-- Removed or renamed skills are not still advertised as active.
-- 当 plan 定义了 commit unit 时：所有 eligible commit unit 是否已提交；recovery surface 的阶段状态是否与 git log 一致；没有"已 verify PASS 但未提交"的遗漏。
+完成：无第二个「当前执行计划」仍挂在入口；跳过项写入 `deferred_cleanup`。
 
-## Low-Risk Entropy Cleanup
+### 4. 小修 + 重生生成物
 
-Allowed when obviously created by this task:
+只做保鲜级修正；生成物只跑生成器。选 closure：`complete` | `blocked` | `abandoned` | `reopen`。
 
-- temp files
-- debug logs
-- local scratch reports
-- unreferenced generated drafts
-- accidental console/debug prints
-- obsolete comments introduced in this batch
-- duplicate task notes already captured in selected recovery surface
+完成：closure 已选；生成物若触及已重生。
 
-不确定是否能清理时读取 `references/entropy-checklist.md`。
+### 5. 报告
 
-## 执行流程
+输出契约 + git 相关/无关改动 + deferred。
 
-### 第 1 步 — Enumerate Docs And Artifacts
-
-修改前列出相关 docs、generated files、recovery artifacts 和 dirty files。不要凭记忆改。
-
-### 第 2 步 — Compare Truth Sources
-
-比较代码、README、docs、generated artifacts、`AGENTS.md` 和 selected recovery surface。找出 drift、膨胀、重复和过期命令。当 plan 有 commit unit 时，比较 plan 的阶段状态、recovery surface 的 milestone 记录和 git log，找出不一致。
-
-### 第 3 步 — Pick Closure State
-
-选择一个状态：
-
-| State | Meaning |
-| --- | --- |
-| `complete` | success criteria met with fresh evidence |
-| `blocked` | cannot proceed without external decision or capability |
-| `abandoned` | tracked attempt intentionally stopped |
-| `reopen` | cleanup found missing work; go back to execution |
-
-### 第 4 步 — Apply Knowledge Cleanup
-
-小幅修正 docs、README、generated artifacts 或 recovery surface。把历史叙事从 `AGENTS.md` 迁出或删除，只保留稳定规则和指针。
-
-### 第 5 步 — Regenerate Generated Artifacts
-
-生成物只能通过生成器更新。不要手改 `docs/skill-flow-review/*.html`。
-
-### 第 6 步 — Record Residual Drift
-
-未解决的 drift 写成明确 follow-up：位置、风险、建议下一步、是否阻塞 ready。
-
-### 第 6.5 步 — Record Deferred Cleanup
-
-本次发现但跳过的低风险 entropy（用途不明文件、不确定是否能清理的 residue、未到清理时机的旧 artifact）写入 selected recovery surface 的 `deferred_cleanup` 字段。格式见 `references/entropy-checklist.md`。
-
-目的：不让"这次不确定，下次再说"变成永久遗忘。下次 cleanup 启动时先读取 `deferred_cleanup`，逐条重新评估是否达到清理条件。
-
-### 第 7 步 — Final Git State Summary
-
-报告 related changes、unrelated dirty files left alone、removed/deferred residue。报告 milestone commits 完成情况。
+完成：报告含 work surface、archived/deferred、Next。
 
 ## 输出契约
 
 ```text
 CLEANUP: complete|blocked|abandoned|reopen
 
+Work surface: <唯一权威路径 | none/blocked>
+Dual truth: none|resolved|blocked
+
 Evidence:
   - <command -> result>
 
-Knowledge cleanup:
-  - README: ok|updated|stale
-  - AGENTS.md: ok|updated|stale
-  - docs: ok|updated|stale
-  - generated artifacts: ok|regenerated|stale
-  - recovery surface: ok|updated|stale
+Knowledge:
+  - README / AGENTS / docs / generated / recovery: ok|updated|stale
 
-Entropy cleanup:
+Archive / entropy:
+  - archived: ...
   - removed: ...
-  - deferred: ...
+  - deferred_cleanup:
+    - item: ...
+      reason: ...
+      reevaluate_when: ...
 
-Deferred cleanup (for next session):
-  - item: <文件或 artifact>
-    reason: <为何跳过>
-    reevaluate_when: <下次清理的触发条件>
+Git:
+  - related: ...
+  - left alone: ...
 
-Git state:
-  - related changes:
-  - unrelated changes left alone:
-
-Next:
-  - <done | implement | diagnose | plan | harness-builder>
+Next: stop | implement | diagnose | plan | harness-builder
 ```
 
-## Recommended next skill
+## 验收
 
-Cleanup is normally the closing lane. Recommend another skill only when the cleanup pass found real unfinished work.
-
-| Situation | Recommended next skill |
-| --- | --- |
-| Artifacts, docs, recovery surface, and git state are clean enough | stop |
-| Deferred follow-up is concrete and planned work is needed | `plan` |
-| A small leftover fix is in scope and safe | `implement` |
-| Cleanup found a failing command or unexplained drift | `diagnose` |
-| Cleanup found a missing recovery surface, capability, hook, MCP, or project rule | `harness-builder` |
-
-## 常见反模式
-
-共享反模式见 `../review/references/cross-cutting-anti-patterns.md`（AGENTS.md 当会话笔记、角色混淆/cleanup 隐藏未完成工作、静默跳过/文档漂移当 minor、不对照 source of truth）。
-
-cleanup 特有反模式：
-
-- **Deleting uncertain files.** 不确定用途的文件先问或 defer，不静默删除。
-- **在 cleanup 中创建新系统。** 不引入 hooks、MCP 或新的状态文件。
-
-## 验收标准
-
-- [ ] Closure state is exactly one of complete, blocked, abandoned, reopen.
-- [ ] Fresh evidence is recorded or lack of evidence routes away from cleanup.
-- [ ] `AGENTS.md`、README、docs、generated artifacts 和 recovery surface 已比较。
-- [ ] Low-risk cleanup is separated from deferred high-risk cleanup.
-- [ ] Deferred items are recorded in selected recovery surface's `deferred_cleanup` with reason and reevaluate condition.
-- [ ] Generated artifacts are regenerated, not hand-edited.
-- [ ] Unrelated dirty files are preserved.
-
-## 工件更新
-
-- README/docs/`AGENTS.md`：只做知识保鲜和薄入口修正。
-- generated artifacts：只通过生成器更新。
-- selected recovery surface：closure state、residual risk、deferred cleanup、handoff hygiene。
+- [ ] 唯一 work surface 已点名或 blocker 已写明
+- [ ] 无入口仍把已替换 plan 当权威
+- [ ] Closure 四态之一；不确定文件未静默删除
+- [ ] 生成物未手改；deferred 有 reevaluate_when
 
 ## 按需读取
 
-- `references/entropy-checklist.md`：safe vs unsafe cleanup examples and deferred cleanup format。
-- `references/handoff-hygiene.md`：pause/close handoff hygiene checklist。
-- `../review/references/cross-cutting-anti-patterns.md`：review/verify/cleanup 共享反模式。
-- `../harness-builder/references/recovery_surface_policy.md`：recovery surface drift repair。
+- `references/doc-shelves.md` — 货架、archive 清单、plan 头
+- `references/entropy-checklist.md` — 可清 vs defer
+- `references/handoff-hygiene.md` — 交接六问
+- `../review/references/cross-cutting-anti-patterns.md`
+
+## Recommended next skill
+
+| Situation | Next |
+| --- | --- |
+| Aligned | stop |
+| Missing behavior | `implement` |
+| Unexplained fail | `diagnose` |
+| Scope drift | `plan` |
+| Workbench gap | `harness-builder` |

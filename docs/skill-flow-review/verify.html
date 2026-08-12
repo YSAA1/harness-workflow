@@ -136,95 +136,65 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>verify</h1>
-  <p>用于给具体 ready/done/merge claim 收集 fresh evidence 并映射到成功标准。触发条件：工作准备声明 ready、用户要求验证/最终检查/smoke/E2E，或 review 后缺当前证据。不要在实现仍变化、失败未解释或成功标准不清时使用；verify 不修复。</p>
+  <p>Alias：验证/ready/smoke/最终检查时执行 review（唯一 ready gate）。不是独立 workflow lane。</p>
   <div class="toolbar">
     <a class="button" href="../../skills/verify/SKILL.md">打开 SKILL.md</a>
     <span class="button">最终验证</span>
-    <span class="button">283 行</span>
+    <span class="button">15 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>把&quot;可以结束&quot;转化为可追溯证据：每条成功标准都必须对应 fresh command、smoke/E2E 或明确的未验证限制。 用结构化 verification record 绑定 claim、路径、最后改动、命令、跳过项、unknown 和 ready verdict。</p>
+    <p>执行 ../review/SKILL.md。本目录不重复证据协议。</p>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>进入条件</h2>
-      <ul><li>review 没有 blocking structural issue，但仍需要最终 fresh evidence。</li><li>一个 slice 准备从 in-progress 进入 done/ready。</li><li>用户说「验证一下」「能结束吗」「跑最终检查」「证明它能用」。</li><li>改动触及 UI、API、auth、persistence、config、build、packaging 或跨组件行为。</li><li>之前证据在后续文件变化后变 stale。</li><li>能力缺口可能阻碍真实验证，例如 Web UI 没有浏览器自动化。</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
     <div class="panel">
       <h2>禁用条件</h2>
-      <ul><li>有未解释的失败命令：用 diagnose。</li><li>实现仍在变化：用 implement。</li><li>Spec 或成功标准不清：用 brainstorm 或 plan。</li><li>任务是单行非行为编辑，用户不需要 tracked evidence。</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
     <div class="panel">
       <h2>先读输入</h2>
-      <ul><li>ready claim：active slice、success criteria、verification path、verification path status、required capabilities、fallback evidence。</li><li>selected recovery surface：最近 implementation/review evidence、risks、capability gaps。</li><li>git status --short：确认最后改动后哪些证据已过期。</li><li>项目验证入口：README、AGENTS.md、package/build/test config。</li><li>当前 slice 涉及的 source/test/docs 路径。</li><li>review 产出的 verify_handoff_cases（若有）— 对抗式验证清单，每个 case 是需要用 fresh evidence 验证的假设失败路径。不静默丢弃。</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
   </section>
 
   <section class="section panel">
     <h2>执行流程</h2>
     <div class="flow">
-      <div class="step">
-        <div class="num">1</div>
-        <div><h3>第 1 步 — Restate The Claim</h3><p>写一句话：&quot;We are verifying that &lt;active slice&gt; is ready because &lt;success criteria&gt;.&quot; 写不出来就回 planning 或 review。</p></div>
-      </div><div class="step">
-        <div class="num">2</div>
-        <div><h3>第 1.5 步 — Consume Review Handoff Cases</h3><p>若上一步 review 产出了 verify_handoff_cases，逐条映射到后续 checks 选择中。每个 handoff case 必须： - 绑定到具体验证命令（如 &quot;run npm test -- --grep 'timeout' 验证边界条件&quot;），或 - 记录为 unknown 并加原因（如 &quot;无法在当前环境构造时序竞争&quot;） 不静默丢弃 review 的 handoff cases。若 review 未产出 handoff cases（无 review 步骤或 review 无此项），跳过本步。</p></div>
-      </div><div class="step">
-        <div class="num">3</div>
-        <div><h3>第 2 步 — Identify Evidence Freshness</h3><p>判断既有证据是否晚于最后相关改动、覆盖目标行为、在当前 cwd/env 运行、结果明确。</p></div>
-      </div><div class="step">
-        <div class="num">4</div>
-        <div><h3>第 3 步 — Select Checks</h3><p>选择能覆盖风险的最小检查集。读取 references/evidence-ladder.md 的&quot;按改动类型选择&quot;表，按当前改动类型定位推荐阶梯组合。相关但跳过的高价值检查必须说明原因。</p></div>
-      </div><div class="step">
-        <div class="num">5</div>
-        <div><h3>第 4 步 — Run Checks</h3><p>按文档命令运行，记录 command、cwd、result、输出摘要、freshness 和跳过原因。检查失败就转 diagnose。保留所有命令的原始输出——不要只保留你的解读，Cold Verification Pass 需要原始输出。</p></div>
-      </div><div class="step">
-        <div class="num">6</div>
-        <div><h3>第 4.5 步 — Cold Verification Pass（隔离验证）</h3><p>对中高风险改动（逻辑/行为/API/安全，非纯文档/格式），尝试将证据交给隔离的验证子进程独立判断。 为什么需要：同一 agent 在同一个 session 中既实现又验证，存在自我确认偏差。Cold verifier 不共享实现者的上下文、推理链或既得结论，只接收 artifact + criteria + 原始命令输出，独立判断证据是否真正证明 ready。 三端 dispatch 机制： | 环境 | Dispatch 方式 | Cold verifier 接收 | | --- | --- | --- | ...</p></div>
-      </div><div class="step">
-        <div class="num">7</div>
-        <div><h3>第 5 步 — Compare Against Success Criteria</h3><p>把每条成功标准映射到 evidence，状态只能是 pass/fail/unknown。unknown 不是 ready。多阶段或多 commit unit 任务还必须覆盖 final_integration_claim。</p></div>
-      </div><div class="step">
-        <div class="num">8</div>
-        <div><h3>第 5.5 步 — Commit Eligibility 评估</h3><p>当 Executable Plan 定义了 commit unit 且当前 slice 属于某个 commit unit 时： - 检查 review 是否已对该 scope 产出 PASS 或 CONDITIONAL（无 Critical） - 若 verify PASS + review PASS/CONDITIONAL → commit eligibility = eligible，建议执行 milestone commit - 若 verify PASS 但 review 未做或有 Critical → ...</p></div>
-      </div><div class="step">
-        <div class="num">9</div>
-        <div><h3>第 6 步 — Update Artifacts</h3><p>按 selected recovery surface 记录 verification entry、skipped checks、capability gaps 和 residual risk。 ### 路由规则 | Condition | Route | | --- | --- | | All required evidence fresh and passing | cleanup（若 commit eligibility=eligible，先执行 milestone commit） | | Command ...</p></div>
-      </div><div class="step">
-        <div class="num">10</div>
-        <div><h3>第 7 步 — Route</h3><p>| Result | Next | | --- | --- | | All required evidence fresh and passing | commit milestone（当 eligible 时）-&gt; cleanup | | Command failed or behavior wrong | diagnose | | Evidence insufficient due to missing capability | harness-builder 或用户决策 | | Spec / success...</p></div>
-      </div>
+
     </div>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text VERIFICATION: PASS|FAIL|INSUFFICIENT Verification record: claim_id: &lt;stable short id&gt; claim: &lt;ready claim&gt; covered_paths: - &lt;path or behavior surface&gt; latest_change_ref: &lt;git diff summary | commit | file timestamp basis&gt; success_criteria: - criterion: &lt;text&gt; evidence: &lt;command/smoke/manual signal&gt; status: pass|fail|unknown commands: - command: &lt;exact command&gt; cwd: &lt;path&gt; result: pass|fail evidence_after_chang...</pre>
+      <pre>未抽取到输出格式</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
-      <ul><li>selected recovery surface：verification entry、capability gaps、skipped checks、residual risks、flaky behavior。</li><li>不修改实现代码；失败转 diagnose。</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
   </section>
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <table><thead><tr><th>Condition</th><th>Route</th></tr></thead><tbody><tr><td>All required evidence fresh and passing</td><td>cleanup（若 commit eligibility=eligible，先执行 milestone commit）</td></tr><tr><td>Command failed or behavior wrong</td><td>diagnose</td></tr><tr><td>Evidence insufficient due to missing capability</td><td>harness-builder 或用户决策</td></tr><tr><td>Spec / success criteria mismatch</td><td>plan</td></tr></tbody></table>
+    <table><thead><tr><th>Situation</th><th>Next</th></tr></thead><tbody><tr><td>Any verify trigger</td><td>review</td></tr></tbody></table>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] Active slice and ready claim are stated.</li><li>[ ] Every success criterion is mapped to fresh evidence or marked unknown.</li><li>[ ] Multi-stage work maps final_integration_claim to evidence.</li><li>[ ] Verification record includes claim_id、covered_paths、latest_change_ref、commands、skipped checks、unknowns 和 ready verdict。</li><li>[ ] Relevant evidence ladder rungs are run or skipped with reasons.</li><li>[ ] Capability gap is absent or recorded with gap/risk/fallback/route format.</li><li>[ ] 中高风险改动已尝试 Cold Verification Pass；若跳过或失败，已记录原因。</li><li>[ ] selected recovery surface records commands, results, timestamp, and limits when required.</li><li>[ ] 当 commit unit 存在时，已评估 commit eligibility。</li><li>[ ] Output routes to the next skill.</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
-      <ul><li><a href="../../skills/verify/references/evidence-ladder.md">Evidence Ladder</a><span class="tag">存在</span></li><li><a href="../../skills/verify/references/capability-recommendations.md">Capability Gap Recording</a><span class="tag">存在</span></li><li><a href="../../skills/verify/references/cold-verifier-prompt.md">Cold Verifier Prompt</a><span class="tag">存在</span></li></ul>
+      <p class="muted">无额外 reference；审阅 SKILL.md 即可。</p>
     </div>
   </section>
 

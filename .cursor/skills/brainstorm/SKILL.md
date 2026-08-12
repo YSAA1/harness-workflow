@@ -1,120 +1,72 @@
 ---
 name: brainstorm
-description: "用于把模糊需求收敛成用户批准过的 Spec。触发条件：目标、边界、方案取舍、成功标准或验证策略还没收敛，或用户说先讨论/先落 Spec。不要在已有完整 Spec、直接小补丁或只需事实回答时使用；Spec 批准后交给 plan。"
+description: "用于把模糊需求收敛成用户批准的 Spec。触发：目标/边界/取舍/成功标准/验证策略未定，或用户说先讨论/grill/先落 Spec。已有完整 Spec 或小补丁时不用；批准后交给 plan。"
 ---
 
-# Spec 构思
+# Spec 构思（Frontier Grill）
 
-把开放想法收敛成用户批准过的 **Spec**，再交给 `plan`。不写生产代码，不写 Executable Plan。
+收敛模糊想法 → 用户批准的 **Spec** → `plan`。不写生产代码，不写 Executable Plan。
 
-Canonical Spec path: `docs/specs/YYYY-MM-DD--<topic>.md`。不要因为仓库存在 `docs/prd/`、root `plan.md`、issue、design docs 或其他任务系统就改写默认位置。只有当前用户明确指定路径，或 `AGENTS.md` 明确声明 canonical Spec surface 时，才允许 override，并在输出中说明 override reason。不要默认写 `.harness/` 运行时状态；recovery surface 只在项目要求时收短摘要。
+Leading words: **frontier** · **design tree** · **shared understanding**
 
-## 语言策略
+Canonical Spec：`docs/specs/YYYY-MM-DD--<topic>.md`（仅用户或 `AGENTS.md` 明示时可 override）。默认不写 `.harness/`。
 
-- 用户可见文本跟随用户语言；中文用户场景下，澄清问题、Coverage 说明、Spec 标题和模板提示默认使用中文。
-- 协议稳定优先：协议 token 如 `BRAINSTORM CLARIFICATION IN PROGRESS`、`BRAINSTORM SPEC READY`、`Spec`、`Gate`、路径、skill 名和状态枚举可保留英文，必要时用中文标签补充解释。
-- 不把“使用中文”硬编码为全局规则；英文用户或其他语言用户按其主要输入语言输出。
-- 输出契约中的 `<... label in user's language>` 是占位说明，实际回复时必须替换成用户语言标签，不要原样输出。
+用户可见语言跟随用户；协议 token（`BRAINSTORM …`、`Spec`、`Gate`、路径）可保留英文。
 
-## 目的
+## 路由
 
-- 防止模糊想法过早进入计划或实现。
-- 在选择方案前先把验证策略说清楚。
-- 通过独立 Spec 留下 goals、non-goals、方案取舍、成功标准和 plan handoff。
+- **Use**: 意图开放、标准或验证不清、要 grill。
+- **Don't**: Spec 已批；单点小补丁；只要事实回答。
+- **Next**: Spec 批准 → `plan`；工作面缺口 → `harness-builder`。
 
-## 路由快照
+## 输入
 
-- **Use when**: 目标、边界、取舍、成功标准或验证路径不清，且需要先收敛 Spec。
-- **Do not use when**: Spec 已批准、任务是单点小改、或用户只要事实回答。
-- **Route to**: Spec 批准后转 `plan`；若发现项目工作面缺口，转 `harness-builder`。
+`references/clarification-loop.md` + coverage/design-grill；既有 Spec/代码/`AGENTS.md`；`git status`；用户材料。
 
-## 何时使用
+## 流程
 
-### 触发信号
+### 1. Frontier grill
 
-- 意图仍开放，方案需要取舍。
-- 成功标准、约束、non-goals 或验证路径不清。
-- 用户说先 brainstorm、先讨论、先落 Spec、需求还没定、不要直接写代码。
+Gate 前不写 Spec。维护设计树与 coverage 账本；每轮只问 **frontier**（前置已定、彼此独立），可多问，每题带推荐答案。Facts 自查/子 agent；Decisions 等人。细节：`clarification-loop.md`。
 
-### 不要使用
+完成：Grill Gate 过 + assumption batch（若有）+ 用户确认 **shared understanding**。
 
-- 已有完整 Spec 且验证清楚：转 `plan`。
-- 任务是单点小补丁：直接做并按需记录 evidence。
-- 用户只要事实回答、翻译或格式整理。
+### 2. Spec
 
-### 路由规则
+按 `references/spec-drafting.md`：验证策略 → 方案比较 → 写 Spec → 自审 → 求批准。未批准不 `plan`。
 
-| 状态 | 下一步 |
-| --- | --- |
-| 需求、边界或验证策略未定 | **本 skill** |
-| Spec 已写但未批准 | 继续本 skill |
-| Spec 已批准 | `plan` |
-| Spec 已批准且工作面/recovery surface 缺失 | `harness-builder` |
-| 单点小改 | 退出 brainstorm |
-
-## 先读取这些输入
-
-1. `references/clarification-loop.md`、`references/clarification-coverage.md` 和 `references/design-grill.md`。
-2. 既有 Spec、PRD、issue、plan、README、`AGENTS.md`、相关代码与测试。
-3. selected recovery surface、`git status --short`、`git log --oneline -10`。
-4. 用户给出的链接、截图、设计稿或外部约束。
-
-## 执行流程
-
-### 第 1 步 — Phase A Grill
-
-Gate 通过前禁止写 Spec。Phase A 是**一场** relentless interview（对齐 `/grill-with-docs`）：Coverage 是进度账本，不是独立填表阶段；每轮选最高优先级未决点，给出 working recommendation，一问 accept/correct/reject，设计敏感点附 stress scenario，术语/ADR 当场落地。维护 Coverage Matrix，等待用户回复。Gate 通过后，对所有 `inferred` 项做 assumption batch 确认。细节见 `clarification-loop.md`。
-
-### 第 2 步 — Phase B Spec Drafting
-
-Phase A Gate 与 assumption batch 完成后，按 `references/spec-drafting.md` 执行：先验证策略 → 比方案 → 写 Spec → 自审 → 请求用户批准。
-
-## 输出契约
-
-```text
-BRAINSTORM CLARIFICATION IN PROGRESS | BRAINSTORM SPEC READY
-
-<Spec path label in user's language> / Spec: <docs/specs/YYYY-MM-DD--topic.md or explicit override | n/a>
-<Coverage label in user's language> / Coverage: <confirmed+waived>/<8>; Gate: <BLOCKED|PASSED>
-<Chosen approach label in user's language> / Chosen approach: <一句话 or n/a>
-<Verification strategy label in user's language> / Verification strategy: <一句话 or pending>
-<Needs user review label in user's language> / Needs user review: <question|approve Spec before plan>
-<Next skill after approval label in user's language> / Next skill after approval: plan
-```
+完成：独立 Spec 路径已给，等待批准。
 
 ## 硬规则
 
-- 一条消息一个问题；整个 Phase A 要多轮。
-- 不把推断当确认；不把沉默当批准。
-- Spec 未批准前，不 `plan`、不写 Executable Plan、不实现。
+- 一条消息一个 frontier round；依赖题拆到后轮。
+- 沉默 ≠ 批准；frontier 空仍须 shared understanding 才能写 Spec。
 
-## 验收标准
+## 输出
 
-- [ ] Phase A Gate 通过；purpose、scope、success criteria、verification strategy 非 `unknown`；非平凡工作满足 grill 深度或已显式豁免
-- [ ] 至少等待过一次用户回复，或用户提供了无 blocking 歧义的完整 brief
-- [ ] 独立 Spec 已写、已自审、已请求用户批准
+```text
+BRAINSTORM CLARIFICATION IN PROGRESS | BRAINSTORM SPEC READY
+Spec: <path|n/a>
+Coverage: <confirmed+waived>/8; Gate: BLOCKED|PASSED
+Frontier: open|empty
+Needs: frontier answers | shared understanding | approve Spec
+Next after approval: plan
+```
 
-## 工件更新
+Frontier 提问形状见 `clarification-loop.md`（`❓` / `➡️`）。
 
-- `docs/specs/YYYY-MM-DD--<topic>.md`：Phase B 的独立 Spec。
-- Do not write Spec to `docs/prd/` unless the current user explicitly names that exact path or `AGENTS.md` declares it as the canonical Spec surface.
-- selected recovery surface：只在项目要求时写短摘要、拒绝方案、风险和验证策略索引。
-- Executable Plan：不在本 skill 中创建；Spec 批准后交给 `plan`。
+## 验收
 
-## Recommended next skill
-
-Handoff details: `references/spec-drafting.md`. Do not invoke the next skill before Spec approval.
-
-| Situation | Next skill |
-| --- | --- |
-| Spec approved | `plan` |
-| Harness or recovery surface gap | `harness-builder` |
+- [ ] Gate 过；purpose/scope/success/verification 非 unknown（或已豁免）
+- [ ] Shared understanding 已确认；Spec 已求批
 
 ## 按需读取
 
-- Phase A Grill：`references/clarification-loop.md`、`references/clarification-coverage.md`、`references/design-grill.md`
-- Phase B：`references/spec-drafting.md`
-- 自审：`references/spec-review-checklist.md`
-- 模板：`templates/spec.md`
-- 下一步：`../plan/SKILL.md`；工作面缺口：`../harness-builder/SKILL.md`
-- 共享语言：`../../CONTEXT.md`（必读；使用其词汇写 Spec；引入新概念词时在 Phase A/B 当场补入 CONTEXT.md）
+- `references/clarification-loop.md` · `clarification-coverage.md` · `design-grill.md` · `spec-drafting.md` · `spec-review-checklist.md` · `templates/spec.md` · `../../CONTEXT.md`
+
+## Recommended next skill
+
+| Situation | Next |
+| --- | --- |
+| Spec approved | `plan` |
+| Workbench gap | `harness-builder` |

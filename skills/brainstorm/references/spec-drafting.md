@@ -1,6 +1,6 @@
-# Spec Drafting (Phase B)
+# Spec Drafting
 
-Enter Phase B only after the Phase A Gate passes and any assumption batch is confirmed.
+Enter Spec drafting only after the Grill Gate passes, any assumption batch is confirmed, and the user confirms shared understanding.
 
 ## Steps
 
@@ -20,7 +20,7 @@ Please review and approve or request changes before I create the implementation 
 Next skill after approval: plan
 ```
 
-## Phase B Output
+## Spec Ready Output
 
 ```text
 BRAINSTORM SPEC READY
@@ -47,17 +47,18 @@ BRAINSTORM SPEC READY
 
 Do not invoke the next skill before Spec approval.
 
-## Phase B Anti-patterns
+## Anti-patterns
 
 - Choosing implementation before verification strategy.
 - Writing an Executable Plan inside the Spec.
 - Skipping rejected options.
 - Hiding capability gaps.
 - Treating "sounds good" as Spec approval.
+- Drafting Spec before shared understanding is confirmed.
 
 ## Done Criteria
 
-- [ ] Phase A Gate passed; blocking dimensions confirmed.
+- [ ] Grill Gate passed; blocking dimensions confirmed; shared understanding confirmed.
 - [ ] 验证策略（Verification strategy）和 2-3 个方案（或 rejected alternatives）已记录。
 - [ ] Independent Spec written at `docs/specs/YYYY-MM-DD--<topic>.md`, unless an explicit override was stated.
 - [ ] Self-review passed with no blocking checklist items.
