@@ -148,3 +148,16 @@
 - Added `references/controller_discipline.md`; tightened helper descriptions; synced README/CONTEXT/method contract/rules/mirrors.
 - Updated eval metric pack emitter + checker for controller semantics; removed obsolete research-route required ids.
 - Evidence: `bash scripts/agent/check.sh` PASS; `node scripts/check-plugin-eval-metric-pack.mjs` PASS.
+
+## 2026-08-12 — SSY-1 工作流优化收尾验证
+
+- SSY-1 umbrella（brainstorm / review+verify / cleanup 三阶段）已完成，本 run 做收尾。
+- 三项优化均已实现且 artifact 齐全：
+  - brainstorm Phase A 统一 Grill（D-002）；`design-grill.md` 单场 interview + stress scenario。
+  - review/verify/cleanup（task 006）：`verify_handoff_cases` 在 verify 显式消费、verify capability 简化 route harness-builder、review 隔离三端通用 + 风险分级 fallback、Cold Verification Pass（`cold-verifier-prompt.md`）、攻击分类法（`attack-taxonomy.md`）、evidence ladder 场景映射、deferred cleanup registry、共享反模式（`cross-cutting-anti-patterns.md`）。
+- 验证：
+  - live workdir `bash scripts/agent/check.sh` -> 唯一 FAIL：运行时 `.claude/skills`（Multica runtime 注入），非项目缺陷。
+  - clean checkout（`git archive HEAD`）：check-plugin / check-claude-code-install / check-cursor-install / install-cursor dry-run / metric pack 全 PASS。
+  - `node scripts/generate-skill-flow-html.mjs` -> PASS，Generated 13 HTML files，与 HEAD 无 diff。
+- 恢复面同步：`.harness/work_index.md` 新增 `008` complete 行；`.harness/state.md` 重写为 SSY-1 收尾状态。
+- 未提交运行时文件（CLAUDE.md Multica block、`.claude/`、`.multica/`、`.agent_context/`、`description.md`）。
