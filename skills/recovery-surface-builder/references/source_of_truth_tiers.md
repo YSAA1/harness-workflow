@@ -1,32 +1,5 @@
-# Source-of-Truth Tiers
-
-Prevent doc drift and multi-task inconsistency by separating **what kind of truth** each artifact holds. Harness Builder must declare tiers in `AGENTS.md`; dynamic task state must never live in Tier 1.
-
-## Tiers
-
-| Tier | Name | Examples | Update cadence | Agent rule |
-| --- | --- | --- | --- | --- |
-| **T1** | Durable entry | `AGENTS.md`, iron laws, verification entry, tier declaration | Rare — harness-builder / cleanup | Read every session; **never** store active slice here |
-| **T2** | Domain language | `CONTEXT.md`, `docs/adr/` | When terms or hard decisions resolve | Glossary only in CONTEXT |
-| **T3** | Task registry | `.harness/work_index.md` (**Required** when recovery ≠ `none`) | Each task start/close | Exactly one `active` unless parallel declared |
-| **T4** | Active work | Spec/Plan under `docs/`, `.harness/state.md` | During active slice | Superseded tasks linked from T3 |
-| **T5** | Evidence | test output, CI, commit log, `.harness/progress.md` | Continuous | Fresh evidence beats stale prose |
-| **T6** | Generated | skill-flow HTML, codegen | Regenerator only | Never hand-edit |
-
-## Conflict Resolution
-
-1. T5 fresh evidence → 2. T4 active work → 3. T3 Work Index → 4. T2 domain → 5. T1 entry → 6. T6 generated
-
-Never treat an old plan path in `AGENTS.md` as current work if T3 points elsewhere.
-
-## AGENTS.md Rules
-
-**Belongs in T1:** map, iron laws, verification, tier table, pointer to `.harness/work_index.md`
-
-**Must not be in T1:** current task title, active slice, links to one task's Spec/Plan as global entry
-
-## Harness Builder Checklist
-
-- [ ] Tiers in `AGENTS.md`
-- [ ] `.harness/recovery_policy.md` + `.harness/work_index.md` when recovery ≠ `none`
-- [ ] Old task pointers removed from `AGENTS.md`
+# Sources of truth
+区分指令权限、目标合同和事实证据。系统/开发者/用户指令与宿主权限按运行时规则生效；项目规格描述目标行为，代码/日志说明实际行为。
+新证据可以纠正过期状态，但不能授权动作、覆盖更高优先级指令或把现有 bug 改写成正确验收。
+入口文件导航；domain/ADR 记录长期决定；每轨道 index/plan 保存当前目标；真实命令和工件支撑完成声明；生成物从源重新生成。
+冲突时报告哪个事实过期、哪个合同尚未满足，修复相关状态。不使用 evidence > AGENTS 作为通用指令优先级。

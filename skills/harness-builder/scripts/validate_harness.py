@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import argparse
 import sys
 from pathlib import Path
 
@@ -18,10 +19,15 @@ from validate_harness_target import check_target_repo_shape
 
 
 def main() -> int:
-    if len(sys.argv) == 3 and sys.argv[1] == "--target":
+    if "--target" in sys.argv:
+        parser = argparse.ArgumentParser()
+        parser.add_argument("--target", required=True)
+        parser.add_argument("--backend", choices=["none", "lightweight", "harness", "feature-list", "existing"])
+        args = parser.parse_args()
         issues: list[str] = []
-        check_target_repo_shape(Path(sys.argv[2]), issues)
-        print(json.dumps({"ok": not issues, "issues": issues}, indent=2, ensure_ascii=False))
+        warnings: list[str] = []
+        check_target_repo_shape(Path(args.target), issues, args.backend, warnings)
+        print(json.dumps({"ok": not issues, "issues": issues, "warnings": warnings}, indent=2, ensure_ascii=False))
         return 0 if not issues else 1
 
     root = Path.cwd()

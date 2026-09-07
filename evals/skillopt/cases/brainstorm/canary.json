@@ -1,87 +1,48 @@
 {
   "skill": "brainstorm",
   "suite": "canary",
-  "description": "Deterministic canary checks for SkillOpt candidate brainstorm skill documents.",
+  "description": "Structural discovery and specific obsolete-rule regression checks only. Not a behavioral score; old phrase-presence scores are not comparable.",
   "cases": [
     {
-      "id": "brainstorm-frontmatter",
+      "id": "brainstorm-discovery",
       "split": "canary",
-      "prompt": "Verify the candidate remains discoverable as the brainstorm skill.",
-      "expected_behavior": "The candidate keeps YAML frontmatter and the frontmatter name remains brainstorm.",
+      "prompt": "Load the skill metadata.",
+      "expected_behavior": "Skill retains its declared identity and description.",
       "checks": [
         {
-          "id": "frontmatter-name",
+          "id": "identity",
           "type": "frontmatter_name",
           "value": "brainstorm",
-          "weight": 1,
-          "hard": true
+          "hard": true,
+          "weight": 1
         },
         {
-          "id": "description-present",
+          "id": "description",
           "type": "contains_all",
-          "tokens": ["description:", "Spec"],
-          "weight": 1,
-          "hard": true
+          "tokens": [
+            "description:"
+          ],
+          "hard": true,
+          "weight": 1
         }
       ]
     },
     {
-      "id": "clarification-before-spec",
-      "split": "train",
-      "prompt": "A vague request needs clarification. Verify the skill does not draft a Spec before the gate passes.",
-      "expected_behavior": "The skill preserves Phase A clarification and forbids Spec drafting before the gate.",
+      "id": "brainstorm-obsolete-gates",
+      "split": "canary",
+      "prompt": "Check known obsolete rule text is not reintroduced.",
+      "expected_behavior": "No old mandatory gate phrases; behavioral review is separate.",
       "checks": [
         {
-          "id": "clarification-gate",
-          "type": "contains_all",
+          "id": "obsolete-text",
+          "type": "not_contains_any",
           "tokens": [
-            "Phase A Clarification",
             "Gate 通过前禁止写 Spec",
             "每轮只问一个最高优先级问题",
-            "assumption batch"
+            "至少 2 轮"
           ],
-          "weight": 4,
-          "hard": true
-        }
-      ]
-    },
-    {
-      "id": "canonical-spec-surface",
-      "split": "val",
-      "prompt": "The repo has old PRD files. Verify brainstorm still writes Specs to the canonical surface unless explicitly overridden.",
-      "expected_behavior": "The skill keeps docs/specs as default and avoids docs/prd unless explicitly authorized.",
-      "checks": [
-        {
-          "id": "spec-path-rules",
-          "type": "contains_all",
-          "tokens": [
-            "Canonical Spec path",
-            "docs/specs/YYYY-MM-DD--<topic>.md",
-            "docs/prd/",
-            "override reason"
-          ],
-          "weight": 4,
-          "hard": true
-        }
-      ]
-    },
-    {
-      "id": "language-policy",
-      "split": "test",
-      "prompt": "Chinese user asks for brainstorming. Verify visible output follows user language while protocol tokens remain stable.",
-      "expected_behavior": "Chinese visible labels are used while stable protocol tokens remain unchanged.",
-      "checks": [
-        {
-          "id": "language-boundary",
-          "type": "contains_all",
-          "tokens": [
-            "语言策略",
-            "用户可见文本跟随用户语言",
-            "BRAINSTORM CLARIFICATION IN PROGRESS",
-            "BRAINSTORM SPEC READY"
-          ],
-          "weight": 4,
-          "hard": true
+          "hard": true,
+          "weight": 1
         }
       ]
     }

@@ -1,31 +1,5 @@
-# 验证强度选择
-
-用于 `implement`。目标是按风险选验证，而不是机械追求固定覆盖率。
-
-## 决策表
-
-| 风险面 | 最低验证 | 升级信号 |
-| --- | --- | --- |
-| 纯函数 / 数据转换 | focused unit | 边界多、历史 bug 多 |
-| 配置 / CLI / build | syntax + documented command | 命令影响 CI 或用户安装 |
-| API / service / database | integration | schema、transaction、缓存、权限 |
-| UI 单组件 | component/unit + smoke | 状态复杂、异步、可访问性 |
-| 用户旅程 | smoke / E2E | 多页面、多步骤、支付、登录 |
-| auth / secrets / trust boundary | targeted tests + review/security | 任何外部输入或权限变化 |
-| 重构 | 前后行为对照 | 多模块、公共 API、框架升级 |
-
-## RED-GREEN-REFACTOR 使用规则
-
-- bugfix 优先写 reproduction test。
-- 新功能优先写能表达行为的最小测试。
-- 写不出自动测试时，写可复现命令或 smoke steps。
-- refactor 必须在绿灯后做，做完再跑相同验证。
-
-## 降级要求
-
-如果不能跑应有验证，必须记录：
-
-- 缺什么能力。
-- 为什么现在不能跑。
-- 当前替代证据是什么。
-- 后续推荐能力是什么。
+# Verification intensity
+按受影响行为及失败后果选择验证，不按文件数量、固定覆盖率或 skill 名。
+低风险文档/配置：差异、路径、解析和适用入口；bugfix：能捕捉原症状的复现/回归；接口/数据/权限变更：相关合同、集成及负向边界；用户旅程：适用 smoke/E2E。
+不强制文档先写失败测试；高风险也不盲目套用全语言 build/typecheck 组合。
+复用仍适用的实际证据；相关变更、失败、环境变化或未覆盖风险才补跑。必要检查无法运行时报告缺口与已验证范围，不降低原验收。

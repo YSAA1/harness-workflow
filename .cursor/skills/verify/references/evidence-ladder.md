@@ -1,3 +1,3 @@
-# Moved
+# Compatibility reference
 
-Canonical copy: `../review/references/evidence-ladder.md`.
+See [review reference](../../review/references/evidence-ladder.md). This alias adds no separate verification stage.

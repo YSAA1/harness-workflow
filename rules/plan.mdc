@@ -1,45 +1,9 @@
 ---
-description: Use plan when an approved Spec or clear non-trivial request must become an Executable Plan.
+description: Use plan only for its canonical skill scope
 globs:
 alwaysApply: false
 ---
 
-# Plan
+# plan
 
-Canonical source: `skills/plan/SKILL.md`.
-
-## When To Use
-
-- An approved Spec needs implementation sequencing.
-- A clear request is non-trivial, multi-step, multi-file, or needs durable recovery.
-- Current planning surface is stale, lacks active slice, or cannot answer next actions.
-
-## Inputs
-
-- Approved Spec, PRD, issue, or explicit small-task request.
-- Existing planning surface, recovery surface, README, `AGENTS.md`, related code, tests, and validation commands.
-- Current dirty state and recent commits.
-
-## Procedure
-
-1. Gate on readiness: goals, non-goals, success criteria, and verification path must be clear.
-2. Choose the planning surface: default to `docs/plans/YYYY-MM-DD--<topic>-plan.md`; sync runtime state to `.harness/` when tracked; use issue, feature-list, or existing tracker only when explicitly declared.
-3. Write an Executable Plan with objective, active slice, non-goals, success criteria, verification path, phases, next item, commit units, risks, blockers, and handoff.
-4. Each phase must include acceptance_criteria, verification_commands, and success_definition.
-5. When multi-phase, define commit units with pre-commit conditions (review no Critical + verify PASS).
-6. Ensure exactly one current item is next or in progress.
-7. Stop at the planning boundary unless the user asked to continue.
-
-## Outputs
-
-- Executable Plan in the selected planning surface.
-- Default artifact path: `docs/plans/YYYY-MM-DD--<topic>-plan.md`.
-- Do not write plans to `docs/prd/`, issues, root `plan.md`, or ad-hoc docs unless the current user explicitly names that exact path or `AGENTS.md` declares it as the canonical Plan surface.
-- Clear next skill: usually `implement`, `diagnose`, or `harness-builder`.
-
-## Verification / Done Criteria
-
-- The plan is specific enough for another agent to resume without chat history.
-- It preserves WIP=1 and does not create a second recovery surface by default.
-- Every phase has an action and verification meaning.
-- Each phase has acceptance criteria that are falsifiable.
+Read [canonical skill](../skills/plan/SKILL.md) when its scope matches the task. This adapter adds no separate workflow, approval or verification gate.

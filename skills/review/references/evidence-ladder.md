@@ -1,48 +1,7 @@
-# Evidence Ladder
-
-用于 `review` 的 evidence / ready 段。选择最小但足够强的验证组合。
-
-## 层级
-
-1. static / syntax
-2. build
-3. typecheck
-4. lint
-5. unit
-6. integration
-7. smoke
-8. E2E / browser / external system
-9. manual / operational signal
-
-## 选择规则
-
-- 改文档：链接、路径、命令引用检查即可。
-- 改纯逻辑：focused unit + caller regression。
-- 改构建/配置：build/typecheck/lint 至少一个真实入口。
-- 改 UI：组件测试不够时补 smoke/E2E。
-- 改跨边界：integration 或真实运行路径。
-- 改 trust boundary：review + targeted tests + 更强运行证据。
-
-## 按改动类型选择
-
-常见改动类型 → 推荐阶梯组合。最低阶梯是必须跑的；推荐阶梯是高价值补充。
-
-| 改动类型 | 最低阶梯 | 推荐阶梯 | 说明 |
-| --- | --- | --- | --- |
-| 文档/注释 | 1 (syntax) | — | 链接、路径、命令引用检查即可 |
-| 纯逻辑修复 | 5 (unit) | 6 (integration) | 至少跑相关单元测试；涉及跨模块调用时补集成测试 |
-| 配置/构建变更 | 2 (build) + 3 (typecheck) | 4 (lint) | 确保 build 不破；lint 检查配置格式 |
-| UI 改动 | 7 (smoke) | 8 (E2E/browser) | 至少截图或手动确认渲染；有浏览器自动化时跑 E2E |
-| API/跨边界 | 6 (integration) | 8 (E2E) | 跨进程/网络调用必须有集成验证；关键路径补端到端 |
-| 数据结构变更 | 5 (unit) + 6 (integration) | 8 (E2E) | schema/migration 变更需要单元+集成双重覆盖 |
-| 安全相关 | 5 (unit) + 8 (E2E) | 9 (manual) | trust boundary 变更必须有强运行证据 |
-| 依赖升级 | 3 (typecheck) + 5 (unit) | 6 (integration) | 确保类型兼容 + 现有测试全过 |
-
-## 跳过规则
-
-跳过高价值层级时必须写：
-
-- 为什么不跑。
-- 风险是什么。
-- 当前替代证据是什么。
-- 后续需要什么能力。
+# Evidence ladder
+验证围绕具体声明。结构可解析、源码合同、单元/集成检查、真实运行、行为回放分别证明不同层次，不能互相冒充。
+文档：核对路径、命令语义和差异；配置：解析及相关实际入口；行为修改：覆盖受影响路径及关键负向边界；跨模块或用户旅程：补相关集成/端到端验证。
+没有跨语言通用的 build + typecheck + unit + E2E 必跑组合。选能区分成功/失败的检查，遵循项目明确的验收合同。
+fresh evidence 指适用于当前相关代码、环境、配置和输入的真实输出。保存适当来源，后续无关修改或提交不自动使证据失效。
+仅当相关改动、环境变化、原失败或未覆盖风险出现时补跑；切换 skill 不要求重复测试。
+必需验收标 pass / fail / unknown；缺环境时可交付已验证部分，但不能宣称完整 ready，也不能未经同意降低验收标准。

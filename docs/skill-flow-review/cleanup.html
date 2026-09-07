@@ -136,17 +136,17 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>cleanup</h1>
-  <p>用于完成、阻塞、放弃或交接前的知识收尾：对齐 living docs、生成物、recovery，并理清唯一 work surface。触发条件：收尾/同步文档/整理状态，或 review ready 后 closure。不要当重构或行为改动入口。</p>
+  <p>整理本次任务影响的文档、生成物、临时文件和恢复状态，支持完成、阻塞或交接。检查无漂移可零修改结束，不扩展为全仓清理。</p>
   <div class="toolbar">
     <a class="button" href="../../skills/cleanup/SKILL.md">打开 SKILL.md</a>
     <span class="button">Knowledge Cleanup</span>
-    <span class="button">114 行</span>
+    <span class="button">31 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>cleanup 是收尾闸门。对齐 living docs、生成物和 recovery；保证同一时刻只有一个 work surface；把假活执行纸 archive。不是重构许可证。 Leading words: work surface · living · archive · entry point</p>
+    <p>使本次任务的记录与实际结果一致。完成、阻塞、放弃和交接都可整理，不要求先获得 ready 才能记录未完成工作。</p>
   </section>
 
   <section class="section grid">
@@ -174,7 +174,7 @@ pre {
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text CLEANUP: complete|blocked|abandoned|reopen Work surface: &lt;唯一权威路径 | none/blocked&gt; Dual truth: none|resolved|blocked Evidence: - &lt;command -&gt; result&gt; Knowledge: - README / AGENTS / docs / generated / recovery: ok|updated|stale Archive / entropy: - archived: ... - removed: ... - deferred_cleanup: - item: ... reason: ... reevaluate_when: ... Git: - related: ... - left alone: ... Next: stop | implement | diagnose |...</pre>
+      <pre>未抽取到输出格式</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
@@ -184,7 +184,7 @@ pre {
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <table><thead><tr><th>Situation</th><th>Next</th></tr></thead><tbody><tr><td>Aligned</td><td>stop</td></tr><tr><td>Missing behavior</td><td>implement</td></tr><tr><td>Unexplained fail</td><td>diagnose</td></tr><tr><td>Scope drift</td><td>plan</td></tr><tr><td>Workbench gap</td><td>harness-builder</td></tr></tbody></table>
+    <p class="muted">该 skill 没有显式路由表；以执行流程的下一步为准。</p>
   </section>
 
   <section class="section grid">
@@ -194,7 +194,7 @@ pre {
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
-      <ul><li><a href="../../skills/cleanup/references/doc-shelves.md">Doc shelves（work surface / archive）</a><span class="tag">存在</span></li><li><a href="../../skills/cleanup/references/entropy-checklist.md">熵增清理清单</a><span class="tag">存在</span></li><li><a href="../../skills/cleanup/references/handoff-hygiene.md">Handoff Hygiene</a><span class="tag">存在</span></li></ul>
+      <ul><li><a href="../../skills/cleanup/references/doc-shelves.md">Document shelves</a><span class="tag">存在</span></li><li><a href="../../skills/cleanup/references/entropy-checklist.md">Cleanup scope</a><span class="tag">存在</span></li><li><a href="../../skills/cleanup/references/handoff-hygiene.md">Handoff</a><span class="tag">存在</span></li></ul>
     </div>
   </section>
 

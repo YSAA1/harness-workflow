@@ -34,19 +34,19 @@
     {
       "id": "minimal-harness-no-overload",
       "prompt": "Prepare this repo for AI agents with the smallest useful harness.",
-      "expected_output": "Should collect repo evidence, route instruction audit and recovery choice to helpers, define fast verification as controller-owned, emit USER CHECKPOINT, and not default to hooks/MCP/subagents/skills/external research workflow.",
+      "expected_output": "Inspect the actual gap, reuse existing entry/recovery/checks, make the authorized minimal repair without another exact-patch confirmation. Do not install unrelated hooks/MCP/subagent configuration.",
       "files": []
     },
     {
       "id": "agents-thin-active-state",
       "prompt": "Existing AGENTS.md contains current active task notes. Repair the harness.",
-      "expected_output": "Should route to agent-instructions-maintainer + recovery-surface-builder: keep AGENTS.md stable and thin, migrate dynamic state to the selected recovery surface, record source-of-truth priority, and avoid duplicating state across AGENTS.md and the recovery surface.",
+      "expected_output": "Keep durable rules thin, move state only when necessary into the existing backend, and preserve independent task tracks. Evidence does not override instructions.",
       "files": []
     },
     {
       "id": "automation-recommendation-only",
       "prompt": "Analyze which MCP servers, hooks, skills, or subagents would help this repo.",
-      "expected_output": "Should route to capability-recommender (read-only), use repo signals and targeted external capability search only when current facts matter, cover MCP, skills, hooks, subagents, plugins, and commands/CI/headless automation with actionable candidates or clear defer reasons, include approval_needed, fallback, verification_probe, and priority/classification, and not write files or proceed to installation without USER CHECKPOINT via harness-builder.",
+      "expected_output": "Stay read-only; inspect existing tools and recommend only relevant gaps, permitting zero candidates. Do not install from an analysis request.",
       "files": []
     },
     {

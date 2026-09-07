@@ -1,82 +1,39 @@
 ---
 name: recovery-surface-builder
-description: "Use when the need is recovery surface only: work index, active slice, state, progress, decisions, risks, evidence, verification commands, or session catch-up. For cross-surface workbench bootstrap or repair, use harness-builder."
+description: "创建或修复跨会话恢复入口，或从既有状态恢复任务。优先现有 tracker/plan；短任务无需新文件，单纯读取状态不默认触发写入。"
 ---
 
 # Recovery Surface Builder
 
-This helper designs, creates, or repairs a project's recovery surface: the durable place an agent can read after `/clear`, interruption, or handoff to know what is active, what changed, what was decided, and what evidence exists.
+这是恢复状态的 Helper Skill。让后续会话找到任务目标、当前轨道、下一步、证据和未解决问题，避免重复探索。
 
-It is a **Helper Skill** owned by `harness-builder` routing for recovery-class gaps. It also adopts the useful idea from planning-with-files: persistent working memory must be read before decisions and updated after actions. Harness-workflow keeps that idea backend-neutral and does not default every project to root `task_plan.md`, `findings.md`, and `progress.md`.
+## Backend
 
-## Scope
+| Backend | 使用方式 |
+| --- | --- |
+| none | 短任务无需持久状态 |
+| lightweight | git diff 加可选简短计划即可 |
+| harness | 项目需要独立恢复记录时使用 `.harness/` |
+| feature-list | 复用已有功能清单或 issue board |
+| existing | 复用现有 plan、tracker 或恢复文档 |
 
-Use this for choosing a recovery backend, creating `.harness/`, repairing an existing recovery surface, documenting active slice and verification commands, and session catch-up after interruption.
+backend-neutral：none 不要求字段文件；其他方案只需在已有入口找到必要信息，不为满足目录模板制造副本。每个任务/轨道有一个权威入口，独立轨道可同时 active。
 
-Do not use this for broad capability recommendations, full instruction-file maintenance, task implementation, or research gating. This plugin no longer ships external research-governance integration.
+## 流程
 
-## Backend Options
+1. 检查项目已有恢复入口和本次用户目标。旧任务状态不能覆盖当前明确指令；只读 catch-up 先报告，不默认改文件。
+2. 选最小 backend，说明各必要字段的位置。已有正常工作方案保持原状；无 active 行可按当前明确任务建立记录，不自动关闭别的轨道。
+3. 审计请求只给建议；已授权建立/修复则直接编辑相关文件。只有迁移会丢信息、影响其他任务或超出授权时询问。
+4. 记录目标、状态、下一步、有效证据链接、重要决定和 blocker。按阶段、关键决定和交接更新，不按工具调用次数或每次读写更新。
+5. 检查链接和字段可恢复性，说明验证范围。结构通过不等于业务行为验收通过。
 
-| Backend | Use when | Default files |
-| --- | --- | --- |
-| `none` | tiny one-turn task with no durable state needed | none |
-| `lightweight` | ordinary repo maintenance where git diff plus chat is enough | optional plan/spec only |
-| `harness` | multi-step or cross-session work needs durable state | `.harness/work_index.md`, `.harness/state.md`, `.harness/progress.md`, `.harness/decisions.md` |
-| `feature-list` | project already has an issue tracker or feature board | existing issue/plan docs plus recovery field map |
-| `existing` | project already has planning files | keep existing files and map required fields |
+## 按需参考
 
-Never create a parallel recovery surface when one already exists and works.
-
-## Required Field Map
-
-Every chosen backend must answer:
-
-- active slice: what is being worked on now?
-- status: proposed, approved, active, blocked, ready, done, or abandoned
-- next action: what should the next agent do first?
-- evidence log: what commands or observations support the current claim?
-- decisions: what was decided and why?
-- risks/blockers: what could invalidate the current path?
-- verification command: what proves readiness?
-- source of truth: which file owns each field?
-
-## Planning-With-Files Discipline
-
-Adopt these behaviors from planning-with-files when work is non-trivial:
-
-- Read the durable plan/state before deciding next steps.
-- Keep progress as an append-only or timestamped trail where practical.
-- Record findings separately from commands when they affect later decisions.
-- Update the recovery surface after meaningful actions, not only at the end.
-- Leave enough context for a fresh agent to resume without re-discovering the whole repo.
-
-Harness adaptation: do not force root `task_plan.md`, `findings.md`, and `progress.md`. Prefer `.harness/` when harness-workflow owns the state, or map existing issues, specs, plans, ADRs, or docs.
-
-## Build/Repair Flow
-
-1. Inspect project entrypoints and existing state files.
-2. Identify whether the user wants creation, repair, migration, or catch-up.
-3. Propose backend choice and field map.
-4. Stop for USER CHECKPOINT before creating or rewriting durable files, unless the user already approved the exact change.
-5. Create or patch only the selected recovery surface.
-6. Add a thin pointer from durable agent instructions only if needed.
-7. Run the narrowest validation command or a structural self-check.
-8. Report the resume path and next action.
-
-## Minimal `.harness` Layout
-
-```text
-.harness/
-  recovery_policy.md
-  work_index.md
-  state.md
-  progress.md
-  decisions.md
-```
+- backend / 字段：`references/recovery_surface_policy.md`、`references/recovery_policy.md`。
+- 事实与指令边界：`references/source_of_truth_tiers.md`。
+- 状态保鲜：`references/living_docs_discipline.md`、`references/anti_entropy.md`、`references/planning_with_files_adaptation.md`。
+- 验证：`references/verification_policy.md`；`templates/` 只在选择 harness backend 时按需实例化。
 
 ## Recommended next skill
 
-- Use `harness-builder` when recovery is one row in a broader workbench recommendation (controller synthesizes the matrix).
-- Use `agent-instructions-maintainer` when durable instructions must be updated beyond a thin pointer.
-- Use `plan` when an approved spec needs an executable active slice.
-- Use `review` when the recovery surface already claims ready and needs fresh evidence.
+恢复完成后继续原任务；确需计划用 `plan`，复杂审阅用 `review`；窄指令修复用 `agent-instructions-maintainer`。不因恢复记录缺失自动升级为全工作台改造。

@@ -1,11 +1,1 @@
-{
-  "features": [
-    {
-      "id": "example-feature",
-      "behavior": "Describe user-visible or system behavior here.",
-      "verification": "bash scripts/agent/check.sh",
-      "status": "not_started",
-      "notes": ""
-    }
-  ]
-}
+{"features": [{"id": {{ feature_id | tojson }}, "description": {{ feature_description | tojson }}, "status": "pending", "verification_command": {{ verification_command | tojson }}}]}

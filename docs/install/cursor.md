@@ -81,7 +81,7 @@ Use Harness Workflow to plan a scoped implementation for a small README change.
 Expected behavior:
 
 - Agent selects `plan`, or explains why the task is small enough to implement directly.
-- If it implements, it keeps WIP=1.
+- If it implements, it preserves the current task scope while allowing independent tracks.
 - If it claims ready, it asks for or provides fresh evidence.
 - If it closes the work, it mentions Knowledge Cleanup.
 

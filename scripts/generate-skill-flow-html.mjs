@@ -16,7 +16,7 @@ const skillOrder = [
   ["implement", "小步执行"],
   ["diagnose", "失败诊断"],
   ["review", "证据评审"],
-  ["verify", "最终验证"],
+  ["verify", "review 兼容别名"],
   ["cleanup", "Knowledge Cleanup"],
   ["find-skills", "Helper"],
   ["capability-recommender", "Helper"],
@@ -31,19 +31,17 @@ const routeMap = [
   ["brainstorm", "harness-builder"],
   ["plan", "harness-builder"],
   ["plan", "implement"],
-  ["plan", "verify"],
+  ["plan", "review"],
   ["implement", "review"],
   ["implement", "diagnose"],
   ["implement", "plan"],
   ["diagnose", "implement"],
   ["diagnose", "review"],
   ["diagnose", "harness-builder"],
-  ["review", "verify"],
+  ["review", "cleanup"],
   ["review", "diagnose"],
   ["review", "implement"],
-  ["verify", "cleanup"],
-  ["verify", "diagnose"],
-  ["verify", "harness-builder"],
+  ["verify", "review"],
   ["cleanup", "implement"],
   ["cleanup", "harness-builder"],
 ];
@@ -53,7 +51,6 @@ const primaryFlow = [
   "plan",
   "implement",
   "review",
-  "verify",
   "cleanup",
 ];
 
@@ -62,9 +59,9 @@ const branchFlows = [
   ["需求不清", ["brainstorm", "plan"]],
   ["执行失败", ["implement", "diagnose", "implement"]],
   ["评审发现问题", ["review", "implement", "review"]],
-  ["最终验证失败", ["verify", "diagnose", "review"]],
-  ["能力缺口", ["verify", "harness-builder", "verify"]],
-  ["知识漂移", ["review", "verify", "cleanup"]],
+  ["所需验证失败", ["review", "diagnose", "review"]],
+  ["工作台缺口", ["review", "harness-builder", "review"]],
+  ["知识漂移", ["review", "cleanup"]],
 ];
 
 const pageTitle = "Harness Workflow Skill 流程审阅";
@@ -555,7 +552,8 @@ ${shell()}
 </header>
 <main>
   <section class="section panel">
-    <h2>条件主线</h2>
+    <h2>复杂任务的可选路径</h2>
+    <p>按任务需要选择步骤；简单任务可在 implement 自审后完成。此图不要求依次调用所有技能。</p>
     <div class="route">${renderFlow(primaryFlow)}</div>
   </section>
 

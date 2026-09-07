@@ -1,20 +1,5 @@
-# Harness Builder Decision Matrix
-
-Use this matrix to decide where a requirement belongs.
-
-| Requirement | Best artifact | Reason |
-|---|---|---|
-| All agents must always know this | `AGENTS.md` | Always loaded or easy entry point |
-| Only one directory has this rule | local `AGENTS.md` | Keeps root file short |
-| Detailed background | `docs/agent/project_context.md` | Avoids bloating root instructions |
-| Fast proof the repo still works | `scripts/agent/check.sh` | Deterministic feedback |
-| Long-running task status | `.harness/progress.md` | Recoverable state |
-| Session restart context | `.harness/session_handoff.md` | Reduces context loss |
-| Repeated project-specific workflow | `.agents/skills/<name>/SKILL.md` | Progressive disclosure |
-| Must block a dangerous action | hook | Harder boundary than prose |
-| Independent review or codebase exploration | subagent | Isolates context and bias |
-| External docs/issues/tools | MCP | External context/tool access |
-| Why this exists | `.harness/decisions.md` | Auditability |
-| What is installed | `.harness/manifest.yaml` | Inventory and governance |
-
-Add a component only if it prevents a real or likely failure, has a clear trigger/purpose, can be verified/audited, does not duplicate a better component, and will not add more entropy than it removes.
+# Placement decisions
+稳定全项目合同放 AGENTS；局部合同放子目录入口；长说明放现有 docs；任务状态/证据放所选 recovery backend；重复工作流可用 skill。
+验证优先已有目标平台命令，不强制 scripts/agent/check.sh。外部能力先复用已有工具/连接器。
+hook 仅适用于明确、可测试的自动化需求；示例字符串匹配不是权限或安全边界。仅用户要求时安装和验证具体 hook。
+只有能解决真实 gap 且维护成本合理时增加组件。

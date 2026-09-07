@@ -1,47 +1,9 @@
 ---
-description: Build or repair a project-level AI-agent workbench; route thick sub-capabilities to helper skills.
+description: Use harness-builder only for its canonical skill scope
+globs:
 alwaysApply: false
 ---
 
-# Harness Builder Rule
+# harness-builder
 
-Canonical skill: `skills/harness-builder/SKILL.md`.
-
-## When To Use
-
-Use `harness-builder` when the project workbench needs bootstrap, repair, or cross-surface recommendation: entry, recovery, verification, capability policy, install alignment, or anti-entropy.
-
-Do not use it to perform the user's feature, bug fix, or delivery task. It **routes** harness gaps; thick work belongs to helpers.
-
-## Inputs
-
-- Current user request or approved Spec/Executable Plan.
-- Repository evidence: entry docs, manifests, README/install docs, skills/rules, scripts/CI, selected recovery surface.
-- Any known validation command or failure evidence.
-
-## Procedure
-
-1. Evidence → classify gaps (`entry` | `recovery` | `verification` | `capability` | `install` | `generated-mirror` | `anti-entropy`).
-2. **Helper routing** — every thick gap gets an owner:
-   - `capability-recommender` — read-only capability design
-   - `agent-instructions-maintainer` — durable instruction files
-   - `recovery-surface-builder` — recovery backend / state / catch-up
-   - `find-skills` — external skill discovery
-   - this skill — verification entry, install alignment, anti-entropy, thin entry pointer
-3. Synthesize one Harness Recommendation Matrix (`HARNESS RECOMMENDATION MATRIX`) with Owner skill on every row.
-4. USER CHECKPOINT before writes.
-5. Patch only approved controller-owned rows; do not shadow-write helper-owned files.
-
-## Outputs
-
-- `HARNESS EVIDENCE`
-- `HARNESS RECOMMENDATION MATRIX`
-- `USER CHECKPOINT`
-- Approved file list and validation command
-
-## Verification / Done Criteria
-
-- Every thick gap has a helper result or explicit Deferred/Rejected reason.
-- Approved controller slice patched; mirrors synced via canonical path.
-- Narrowest relevant check has fresh evidence.
-- No default MCP, hooks, subagents, or global config without approval.
+Read [canonical skill](../skills/harness-builder/SKILL.md) when its scope matches the task. This adapter adds no separate workflow, approval or verification gate.

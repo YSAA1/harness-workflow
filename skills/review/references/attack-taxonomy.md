@@ -74,16 +74,4 @@ API、类型或接口约定被违反。
 
 ## 使用方式
 
-review 执行 Adversarial Pass 时，先按改动类型定位核心分类，逐一构造攻击假设。不要求每类都覆盖；核心分类至少产生一条假设。
-
-```text
-Adversarial Review:
-  Attack taxonomy applied:
-    - 边界: H1 — 空输入导致 crash（file:line）
-    - 时序: H2 — 并发请求导致状态不一致（file:line）
-    - 身份: skipped (no auth surface touched)
-    - 契约: H3 — 返回值类型在错误路径突变（file:line）
-    - 数据: skipped (no state mutation)
-```
-
-未覆盖的分类写 `skipped (reason)`，不作静默省略。
+按相关风险选择检查，不要求每类至少一个假设或填写无关 skipped 项。发现需说明触发条件、影响及证据；允许无发现。

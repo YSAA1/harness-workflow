@@ -4,23 +4,40 @@
   "type": "object",
   "required": [
     "version",
-    "recommendation_matrix"
+    "project",
+    "harness_workflow"
   ],
   "properties": {
     "version": {
-      "type": [
-        "integer",
-        "string"
-      ]
+      "const": 1
     },
-    "recommendation_matrix": {
-      "type": "object"
+    "project": {
+      "type": "string"
     },
-    "packs": {
-      "type": "object"
-    },
-    "installed": {
-      "type": "object"
+    "harness_workflow": {
+      "type": "object",
+      "required": [
+        "entry",
+        "recovery_surface",
+        "verification_command"
+      ],
+      "properties": {
+        "entry": {
+          "type": "string"
+        },
+        "recovery_surface": {
+          "enum": [
+            "none",
+            "lightweight",
+            "harness",
+            "feature-list",
+            "existing"
+          ]
+        },
+        "verification_command": {
+          "type": "string"
+        }
+      }
     }
   }
 }

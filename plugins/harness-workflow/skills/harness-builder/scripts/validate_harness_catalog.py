@@ -72,26 +72,3 @@ REMOVED_ASSETS = {
         "schemas/coverage_matrix.schema.json should be replaced by recommendation_matrix.schema.json"
     ),
 }
-REQUIRED_SKILL_PHRASES = [
-    "USER CHECKPOINT",
-    "HARNESS RECOMMENDATION MATRIX",
-    "Helper routing",
-    "capability-recommender",
-    "agent-instructions-maintainer",
-    "recovery-surface-builder",
-    "selected recovery surface",
-    "verification",
-]
-MANIFEST_TOKENS = ["harness_goals", "orchestration", "asset_loading", "selected_assets"]
-STATE_TOKENS = ["Active work", "Open user decisions", "Last known good verification", "Known broken checks"]
-CURRENT_SCAN_SIGNALS = [
-    "node_script_tooling",
-    "cursor_plugin_or_adapter",
-    "harness_workflow_plugin",
-    "cursor_preview",
-    "packaged_plugin",
-    "plugin_rules",
-    "automation_signals",
-    "frontend_framework",
-    "github_remote",
-]

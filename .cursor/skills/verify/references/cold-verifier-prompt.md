@@ -1,3 +1,3 @@
-# Moved
+# Compatibility reference
 
-Canonical copy: `../review/references/cold-verifier-prompt.md`.
+See [review reference](../../review/references/cold-verifier-prompt.md). This alias adds no separate verification stage.

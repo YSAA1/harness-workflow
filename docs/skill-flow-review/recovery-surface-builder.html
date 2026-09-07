@@ -136,17 +136,17 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>recovery-surface-builder</h1>
-  <p>Use when the need is recovery surface only: work index, active slice, state, progress, decisions, risks, evidence, verification commands, or session catch-up. For cross-surface workbench bootstrap or repair, use harness-builder.</p>
+  <p>创建或修复跨会话恢复入口，或从既有状态恢复任务。优先现有 tracker/plan；短任务无需新文件，单纯读取状态不默认触发写入。</p>
   <div class="toolbar">
     <a class="button" href="../../skills/recovery-surface-builder/SKILL.md">打开 SKILL.md</a>
     <span class="button">Helper</span>
-    <span class="button">83 行</span>
+    <span class="button">40 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>This helper designs, creates, or repairs a project's recovery surface: the durable place an agent can read after /clear, interruption, or handoff to know what is active, what changed, what was decided, and what evidence exists. It is a Helper Skill owned by harness-builder routing for recovery-class gaps. It also adopts the useful idea from planning-with-fi...</p>
+    <p>这是恢复状态的 Helper Skill。让后续会话找到任务目标、当前轨道、下一步、证据和未解决问题，避免重复探索。</p>
   </section>
 
   <section class="section grid">
@@ -194,7 +194,7 @@ pre {
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
-      <p class="muted">无额外 reference；审阅 SKILL.md 即可。</p>
+      <ul><li><a href="../../skills/recovery-surface-builder/references/recovery_surface_policy.md">Recovery surface policy</a><span class="tag">存在</span></li><li><a href="../../skills/recovery-surface-builder/references/recovery_policy.md">Recovery policy</a><span class="tag">存在</span></li><li><a href="../../skills/recovery-surface-builder/references/source_of_truth_tiers.md">Sources of truth</a><span class="tag">存在</span></li><li><a href="../../skills/recovery-surface-builder/references/living_docs_discipline.md">Living documentation</a><span class="tag">存在</span></li><li><a href="../../skills/recovery-surface-builder/references/anti_entropy.md">Anti-entropy</a><span class="tag">存在</span></li><li><a href="../../skills/recovery-surface-builder/references/planning_with_files_adaptation.md">Persistent working context</a><span class="tag">存在</span></li><li><a href="../../skills/recovery-surface-builder/references/verification_policy.md">Verification entry</a><span class="tag">存在</span></li></ul>
     </div>
   </section>
 

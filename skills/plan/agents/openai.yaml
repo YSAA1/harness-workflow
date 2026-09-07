@@ -1,2 +1,5 @@
+interface:
+  display_name: plan
+  short_description: Plan complex authorized work with observable acceptance
 policy:
   allow_implicit_invocation: false

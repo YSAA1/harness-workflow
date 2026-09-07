@@ -136,17 +136,17 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>agent-instructions-maintainer</h1>
-  <p>Use when durable agent instructions need audit or repair only: AGENTS.md, CLAUDE.md, .claude.md, .claude.local.md, canonical rules/*.mdc, or Cursor rule mirrors. For cross-surface workbench bootstrap or repair, use harness-builder.</p>
+  <p>审计或修订 AGENTS.md、CLAUDE.md 和 Cursor rules，删除过时规则、合并重复内容并验证项目事实。只审计时只读，明确要求修订时直接完成相关修改。</p>
   <div class="toolbar">
     <a class="button" href="../../skills/agent-instructions-maintainer/SKILL.md">打开 SKILL.md</a>
     <span class="button">Helper</span>
-    <span class="button">199 行</span>
+    <span class="button">31 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>Adapted from Anthropic official claude-md-improver. The main discovery, quality assessment, reporting, and targeted update workflow below are copied from the official skill, with harness-workflow notes added for AGENTS.md, CLAUDE.md, and Cursor rules. Audit, evaluate, and improve durable agent instruction files across a codebase to ensure agents have optima...</p>
+    <p>这是维护持久指令的 Helper Skill。保留真实项目合同、非显然陷阱和准确验证入口；删减重复常识、过时规则、无用步骤和会话流水。来源与改编记录见 references/attribution.md。</p>
   </section>
 
   <section class="section grid">
@@ -194,7 +194,7 @@ pre {
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
-      <p class="muted">无额外 reference；审阅 SKILL.md 即可。</p>
+      <ul><li><a href="../../skills/agent-instructions-maintainer/references/attribution.md">Attribution</a><span class="tag">存在</span></li><li><a href="../../skills/agent-instructions-maintainer/references/quality-criteria.md">Instruction quality</a><span class="tag">存在</span></li><li><a href="../../skills/agent-instructions-maintainer/references/update-guidelines.md">Instruction updates</a><span class="tag">存在</span></li><li><a href="../../skills/agent-instructions-maintainer/references/templates.md">Optional instruction outline</a><span class="tag">存在</span></li></ul>
     </div>
   </section>
 

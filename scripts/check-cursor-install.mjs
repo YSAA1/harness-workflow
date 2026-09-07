@@ -134,15 +134,8 @@ for (const workflow of activeWorkflows) {
   if (!body.startsWith("---")) fail(`${rulePath} missing MDC frontmatter`);
   if (!/description:\s*\S/.test(body)) fail(`${rulePath} missing description metadata`);
   if (!/alwaysApply:\s*(true|false)/.test(body)) fail(`${rulePath} missing alwaysApply metadata`);
-  for (const section of [
-    "When To Use",
-    "Inputs",
-    "Procedure",
-    "Outputs",
-    "Verification / Done Criteria",
-    `skills/${workflow}/SKILL.md`,
-  ]) {
-    if (!body.includes(section)) fail(`${rulePath} missing section or canonical pointer: ${section}`);
+  if (!body.includes(`skills/${workflow}/SKILL.md`)) {
+    fail(`${rulePath} missing canonical skill pointer`);
   }
 }
 if (!process.exitCode) pass("Cursor rules cover all active workflows");
@@ -195,7 +188,6 @@ for (const token of [
   "fresh evidence",
   "Knowledge Cleanup",
   "recovery surface",
-  "WIP=1",
   "Capability Recommendation",
   "Harness Recommendation Matrix",
   "rules adapter",

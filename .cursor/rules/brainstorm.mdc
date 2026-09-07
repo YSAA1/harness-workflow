@@ -1,39 +1,9 @@
 ---
-description: Use brainstorm when requirements, boundaries, solution tradeoffs, success criteria, or verification strategy are not yet settled.
+description: Use brainstorm only for its canonical skill scope
 globs:
 alwaysApply: false
 ---
 
-# Brainstorm
+# brainstorm
 
-Canonical source: `skills/brainstorm/SKILL.md`.
-
-## When To Use
-
-- Idea, architecture question, or unclear behavior still needs convergence.
-- Tradeoffs, success criteria, non-goals, or verification path are missing.
-- User asks to discuss first, write a Spec, or avoid coding yet.
-
-## Inputs
-
-- User request and attached materials.
-- Existing specs, PRDs, plans, issues, README, relevant code, tests, and recovery surface.
-- Phase A references: `skills/brainstorm/references/clarification-loop.md`, `clarification-coverage.md`, and `design-grill.md`.
-
-## Procedure
-
-1. **Phase A Grill** — One interview: maintain coverage ledger, ask one recommendation-backed question per turn (stress scenario when design-sensitive), weave domain/ADR, pass Phase A Gate, confirm assumptions. Do not run a survey phase then a separate grill phase.
-2. **Phase B** — Follow `spec-drafting.md`: verification first, compare approaches, write Spec, self-review, stop for approval.
-3. Do not write a Spec before Phase A completes. Do not call `plan` or implement before Spec approval.
-
-## Outputs
-
-- Phase A: `BRAINSTORM CLARIFICATION IN PROGRESS` with coverage matrix and one question.
-- Phase B: approved-ready Spec at `docs/specs/YYYY-MM-DD--<topic>.md` plus `BRAINSTORM SPEC READY`.
-- Do not write Spec to `docs/prd/`, issues, root `plan.md`, or ad-hoc docs unless the current user explicitly names that exact path or `AGENTS.md` declares it as the canonical Spec surface.
-
-## Verification / Done Criteria
-
-- Phase A Gate passed; blocking dimensions confirmed; non-trivial grill depth met or waived.
-- Independent Spec written, self-reviewed, and sent for user approval.
-- No `plan` or implementation before Spec approval.
+Read [canonical skill](../skills/brainstorm/SKILL.md) when its scope matches the task. This adapter adds no separate workflow, approval or verification gate.

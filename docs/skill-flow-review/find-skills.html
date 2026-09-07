@@ -136,27 +136,27 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>find-skills</h1>
-  <p>Use this helper to discover reusable agent skills for a clear task or capability gap. Trigger it when the user asks how to do X, find a skill, or extend agent capabilities. Do not install or adopt a skill just because it is related; project adoption belongs to harness-builder.</p>
+  <p>用户明确寻找可复用技能，或已确认的能力缺口适合通过技能补足时使用。普通如何做、改代码或事实查询不自动触发技能搜索。</p>
   <div class="toolbar">
     <a class="button" href="../../skills/find-skills/SKILL.md">打开 SKILL.md</a>
     <span class="button">Helper</span>
-    <span class="button">162 行</span>
+    <span class="button">22 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>This skill helps you discover and install skills from the open agent skills ecosystem. Inside Harness Workflow, this is an auxiliary skill for Capability Recommendation. Use it to search for reusable skills only after the task gap is clear. Do not install a skill just because it is related; recommend or install it only when it helps the current repo's verif...</p>
+    <p>发现与实际缺口匹配的技能；不因相关、热门或存在榜单就推荐安装。</p>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>进入条件</h2>
-      <ul><li>Use when: a clear task gap might be covered by an existing reusable skill.</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
     <div class="panel">
       <h2>禁用条件</h2>
-      <ul><li>Do not use when: the task gap is unclear, or the question is about hooks, MCP, subagents, CI, or repo governance.</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
     <div class="panel">
       <h2>先读输入</h2>
@@ -184,7 +184,7 @@ pre {
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <table><thead><tr><th>Situation</th><th>Recommended next skill</th></tr></thead><tbody><tr><td>A reusable skill should become part of this project's harness</td><td>harness-builder</td></tr><tr><td>The skill is only needed once and no install is justified</td><td>return to the calling skill</td></tr><tr><td>Search finds no trustworthy candidate</td><td>return to harness-builder or continue with the existing plan</td></tr><tr><td>Installed or adopted skill changes the verification path</td><td>review</td></tr></tbody></table>
+    <p class="muted">该 skill 没有显式路由表；以执行流程的下一步为准。</p>
   </section>
 
   <section class="section grid">

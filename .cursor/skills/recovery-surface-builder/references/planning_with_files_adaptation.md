@@ -1,11 +1,4 @@
-# Planning-With-Files Adaptation
-
-Useful idea to keep: persistent working memory is not optional for complex work. The agent should read it before acting and update it after meaningful progress.
-
-Harness-workflow adaptation:
-
-- Treat file-based planning as a recovery pattern, not a fixed filename requirement.
-- Prefer `.harness/` when harness-workflow owns the state surface.
-- Use existing issue trackers, specs, plans, ADRs, or docs when they already carry the same fields.
-- Avoid root-level `task_plan.md`, `findings.md`, and `progress.md` unless the project already uses that convention or the user requests it.
-- Keep planning artifacts human-readable and simple enough for manual repair.
+# Persistent working context
+借鉴持久记录目标、重要发现和下一步的原则，复用项目现有 backend。
+不按工具次数写盘，不默认创建 task_plan.md/findings.md/progress.md，不因阅读旧记录重新开启已完成任务。
+只在阶段变化、关键决定和交接时更新恢复所需信息。

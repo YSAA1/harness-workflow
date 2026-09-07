@@ -136,85 +136,61 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>diagnose</h1>
-  <p>用于把 build/test/lint/typecheck/CI 或运行时失败诊断成可复现 root cause。触发条件：命令红、行为坏、flaky 或本地/CI 不一致且根因未知。不要在 RED-&gt;GREEN 的已知失败或根因已清楚时使用；修复前必须先复现和验证单一假设。</p>
+  <p>调查根因未知的运行、构建、测试或性能故障。以日志、复现、对照和可证伪假设定位原因；已知局部修复无需完整诊断流程。</p>
   <div class="toolbar">
     <a class="button" href="../../skills/diagnose/SKILL.md">打开 SKILL.md</a>
     <span class="button">失败诊断</span>
-    <span class="button">155 行</span>
+    <span class="button">30 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>- 没有可复现失败，不提修复结论。 - 没有 root cause 证据，不算诊断完成。 - 不在 build/test/lint 已红的状态下推进 implementation。 - 修复必须最小、单一、可验证。 - 三轮 hypothesis 仍找不到根因，升级为 blocker。</p>
+    <p>将用户描述的故障与真实环境对应，区分现象、假设、已证实原因和修复证据。不要用隐藏错误、跳过测试或扩大容错来冒充修复。</p>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>进入条件</h2>
-      <ul><li>implement 中一个明确假设循环仍无法解释失败，或同一命令两次返回不同错误。</li><li>npm test / build / lint / typecheck 等命令红，且错误不能直接对应刚改的几行。</li><li>本地和 CI 结果不一致。</li><li>构建突然慢、卡住、内存爆。</li><li>用户说「为什么报这个错」「再试一下还是不行」「flaky 了」「CI 红了」。</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
     <div class="panel">
       <h2>禁用条件</h2>
-      <ul><li>这是 RED-&gt;GREEN 流程里刚写的测试在红：回 implement。</li><li>这是已知 Spec 变化导致旧测试失效：先回 plan。</li><li>失败根因已经清楚，只差最小修改：回 implement。</li><li>用户在问方案而不是失败原因：转 brainstorm。</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
     <div class="panel">
       <h2>先读输入</h2>
-      <ul><li>失败命令的真实输出：完整 stderr、stack trace、退出码。</li><li>selected recovery surface：最近成功状态、风险、dead ends、capability gaps。</li><li>git status --short 和相关 diff：确认变化面。</li><li>与失败直接相关的源文件、测试、配置。</li><li>README / AGENTS.md：确认命令入口是否真实。</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
   </section>
 
   <section class="section panel">
     <h2>执行流程</h2>
     <div class="flow">
-      <div class="step">
-        <div class="num">1</div>
-        <div><h3>第 1 步 — 捕获事实</h3><p>记录命令、cwd、退出码、失败输出、时间戳、git HEAD 和最近相关命令序列。</p></div>
-      </div><div class="step">
-        <div class="num">2</div>
-        <div><h3>第 2 步 — 稳定复现</h3><p>跑同样命令两次，确认结果一致。若 flaky，先把 flaky 当根因方向诊断。</p></div>
-      </div><div class="step">
-        <div class="num">3</div>
-        <div><h3>第 3 步 — 定位变化面</h3><p>查看最近提交、本地 diff、相关配置和已知能跑通的锚点。当失败出现在已提交里程碑的范围内时，先确认是否该里程碑引入了回归，查看该 commit 的 diff 和对应的 verify 证据是否仍有效。</p></div>
-      </div><div class="step">
-        <div class="num">4</div>
-        <div><h3>第 4 步 — 提出单一 hypothesis</h3><p>每轮只一个可证伪命题，不并发猜多个原因。</p></div>
-      </div><div class="step">
-        <div class="num">5</div>
-        <div><h3>第 5 步 — 用最小检查验证 hypothesis</h3><p>用 focused test、日志、独立脚本或配置对照回答 H1 是否成立。</p></div>
-      </div><div class="step">
-        <div class="num">6</div>
-        <div><h3>第 6 步 — 命名 root cause</h3><p>只有当证据支持某个 hypothesis 时，才写 root cause。被证伪的 hypothesis 也记录到 selected recovery surface，避免下次重走。</p></div>
-      </div><div class="step">
-        <div class="num">7</div>
-        <div><h3>第 7 步 — 最小修复</h3><p>修复改动尽可能小且单一。不顺手 refactor，不用注释测试、catch-all 或忽略类型错误隐藏失败。</p></div>
-      </div><div class="step">
-        <div class="num">8</div>
-        <div><h3>第 8 步 — fresh 验证</h3><p>先跑 reproduction 命令，再跑相邻验证。失败则继续诊断；通过后转 review。</p></div>
-      </div>
+
     </div>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>输出形态</h2>
-      <pre>``text BUILD FIX REPORT Failure command: - &lt;command -&gt; output&gt; Reproduction: - &lt;minimal command&gt; Hypotheses tried: - H1: &lt;statement&gt; -&gt; &lt;falsified|supported&gt; Root cause: &lt;一句话&gt; Evidence: &lt;command + output|trace&gt; Fix: &lt;一句话 + 文件清单&gt; Verification: - &lt;command -&gt; result&gt; Risks / residual: &lt;一句话&gt; Recovery surface updated: yes|no|n/a Next: &lt;implement | review | verify | blocker&gt; ``</pre>
+      <pre>未抽取到输出格式</pre>
     </div>
     <div class="panel">
       <h2>工件更新</h2>
-      <ul><li>selected recovery surface：记录失败事实、hypotheses、root cause、dead ends、修复、验证和残余风险。</li><li>源码/tests/docs：仅做 root cause 所需的最小修复。</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
   </section>
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <table><thead><tr><th>状态</th><th>下一步</th></tr></thead><tbody><tr><td>根因已找到、修复直接</td><td>implement</td></tr><tr><td>根因影响多文件或范围</td><td>plan</td></tr><tr><td>根因揭示需求边界错</td><td>brainstorm</td></tr><tr><td>修复稳定</td><td>review</td></tr><tr><td>根因是已提交里程碑的回归</td><td>记录到 recovery surface + implement 修复 + 重新 verify</td></tr><tr><td>三轮诊断未果</td><td>记录 blocker 并向用户升级</td></tr><tr><td>命令链路本身坏</td><td>harness-builder</td></tr></tbody></table>
+    <p class="muted">该 skill 没有显式路由表；以执行流程的下一步为准。</p>
   </section>
 
   <section class="section grid">
     <div class="panel">
       <h2>验收闸门</h2>
-      <ul><li>[ ] 失败有最小复现命令。</li><li>[ ] hypotheses 序列被记录，被证伪的也保留。</li><li>[ ] root cause 一句话能讲清，且有命令级证据。</li><li>[ ] 修复最小、单一、未越界。</li><li>[ ] reproduction 命令由红转绿，相邻验证未 regress。</li><li>[ ] 下一步 skill 已显式标注。</li></ul>
+      <p class="muted">未抽取到条目</p>
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>

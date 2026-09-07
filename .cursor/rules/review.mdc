@@ -1,35 +1,9 @@
 ---
-description: Use review when meaningful changes are stable and need adversarial structure check plus fresh-evidence ready judgment.
+description: Use review only for its canonical skill scope
 globs:
 alwaysApply: false
 ---
 
-# Review
+# review
 
-Canonical source: `skills/review/SKILL.md`.
-
-## When To Use
-
-- Slice stable after implement/diagnose.
-- User asks review, verify, final checks, or ready proof.
-
-## Inputs
-
-- `skills/review/SKILL.md` and its references when mid/high-risk.
-- Diff facts, Spec/Plan, success criteria, recovery, project check commands.
-
-## Procedure
-
-1. Restate ready claim.
-2. Mid/high-risk: independent read-only subagent adversarial pass (`subagent` | `packet_fallback` only).
-3. Run fresh checks; map criteria; cold subagent when mid/high-risk.
-4. Ready only if no Critical and required criteria all pass → cleanup.
-
-## Outputs
-
-- REVIEW + VERIFICATION + READY verdict and Next skill.
-
-## Verification / Done Criteria
-
-- Mid/high-risk used subagent or cannot claim ready.
-- Unknown ≠ ready. No code fixes in this skill.
+Read [canonical skill](../skills/review/SKILL.md) when its scope matches the task. This adapter adds no separate workflow, approval or verification gate.

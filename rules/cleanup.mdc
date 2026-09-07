@@ -1,37 +1,9 @@
 ---
-description: Use cleanup when a batch is ready to close, block, abandon, or reconcile living docs and a single work surface.
+description: Use cleanup only for its canonical skill scope
 globs:
 alwaysApply: false
 ---
 
-# Cleanup
+# cleanup
 
-Canonical source: `skills/cleanup/SKILL.md`.
-
-## When To Use
-
-- Review ready passed and the slice can close.
-- User asks to wrap up, sync docs, or clean state.
-- Multiple plans/specs look authoritative (dual truth).
-
-## Inputs
-
-- `skills/cleanup/SKILL.md`, AGENTS/README/docs, recovery Work Index, plans/specs that still look live, git status.
-
-## Procedure
-
-1. Name the one work surface (Work Index active primary artifact).
-2. Compare living docs to code.
-3. Archive or status-mark superseded plans/specs; clear or defer entropy.
-4. Small living-doc fixes; regenerate generated artifacts via generators only.
-5. Report closure state and Next.
-
-## Outputs
-
-- CLEANUP report with work surface, archive/deferred, git summary.
-
-## Verification / Done Criteria
-
-- One work surface named or blocker recorded.
-- Entry points do not treat replaced plans as current.
-- Uncertain files not silently deleted.
+Read [canonical skill](../skills/cleanup/SKILL.md) when its scope matches the task. This adapter adds no separate workflow, approval or verification gate.

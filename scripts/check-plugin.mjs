@@ -112,10 +112,22 @@ for (const skill of activeSkills) {
   if (!body.startsWith("---")) fail(`${skill} missing YAML frontmatter`);
   if (!new RegExp(`name:\\s*["']?${skill.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}["']?`, "m").test(body)) fail(`${skill} frontmatter name mismatch`);
   if (!/^description:\s*\S/m.test(body)) fail(`${skill} missing description`);
-  if (!body.includes("## Recommended next skill")) fail(`${skill} missing Recommended next skill section`);
 }
 for (const skill of removedSkills) {
   if (exists(skillPath(skill))) fail(`removed skill still exposed: ${skill}`);
+}
+// A compatibility reference must resolve from its own directory, not the skill root.
+for (const file of listFiles(root, "skills").filter((file) => file.endsWith(".md"))) {
+  const absolute = path.join(root, "skills", file);
+  const body = fs.readFileSync(absolute, "utf8");
+  for (const match of body.matchAll(/\[[^\]\n]*\]\(([^\s)]+)\)/g)) {
+    const target = match[1];
+    if (/^(?:[a-z]+:|#|\/)/i.test(target) || target.includes("{{")) continue;
+    const local = target.split("#")[0];
+    if (local && !fs.existsSync(path.resolve(path.dirname(absolute), local))) {
+      fail(`broken skill reference: skills/${file} -> ${target}`);
+    }
+  }
 }
 if (!failed) pass("active workflow and helper skill set is valid");
 

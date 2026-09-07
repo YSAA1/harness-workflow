@@ -136,17 +136,17 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>verify</h1>
-  <p>Alias：验证/ready/smoke/最终检查时执行 review（唯一 ready gate）。不是独立 workflow lane。</p>
+  <p>review 的兼容别名：用户要求验证、smoke 或完成证据时转到 review，不追加独立验证阶段。</p>
   <div class="toolbar">
     <a class="button" href="../../skills/verify/SKILL.md">打开 SKILL.md</a>
-    <span class="button">最终验证</span>
-    <span class="button">15 行</span>
+    <span class="button">review 兼容别名</span>
+    <span class="button">13 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>执行 ../review/SKILL.md。本目录不重复证据协议。</p>
+    <p>执行 ../review/SKILL.md 的相关证据核对部分；保留用户指定范围。已有适用检查不重复运行，也不强制额外对抗审查。</p>
   </section>
 
   <section class="section grid">
@@ -184,7 +184,7 @@ pre {
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <table><thead><tr><th>Situation</th><th>Next</th></tr></thead><tbody><tr><td>Any verify trigger</td><td>review</td></tr></tbody></table>
+    <p class="muted">该 skill 没有显式路由表；以执行流程的下一步为准。</p>
   </section>
 
   <section class="section grid">

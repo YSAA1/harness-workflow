@@ -1,11 +1,9 @@
 ---
-description: Alias for review — use when a concrete ready claim needs fresh evidence; routes to the merged review ready gate.
+description: Use verify only for its canonical skill scope
 globs:
 alwaysApply: false
 ---
 
-# Verify (Alias)
+# verify
 
-Canonical source: `skills/verify/SKILL.md` → execute `skills/review/SKILL.md`.
-
-`verify` is not an independent workflow lane. Ready claims, final checks, smoke, and evidence mapping run inside `review`.
+Read [canonical skill](../skills/verify/SKILL.md) when its scope matches the task. This adapter adds no separate workflow, approval or verification gate.

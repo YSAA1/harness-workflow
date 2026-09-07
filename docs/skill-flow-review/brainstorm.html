@@ -136,17 +136,17 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>brainstorm</h1>
-  <p>用于把模糊需求收敛成用户批准的 Spec。触发：目标/边界/取舍/成功标准/验证策略未定，或用户说先讨论/grill/先落 Spec。已有完整 Spec 或小补丁时不用；批准后交给 plan。</p>
+  <p>用于澄清影响目标、范围或验收的设计取舍，或用户明确要求讨论、grill、Spec。普通实现选择、事实查询和已明确的小任务不用。</p>
   <div class="toolbar">
     <a class="button" href="../../skills/brainstorm/SKILL.md">打开 SKILL.md</a>
     <span class="button">构思 Spec</span>
-    <span class="button">73 行</span>
+    <span class="button">30 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>收敛模糊想法 → 用户批准的 Spec → plan。不写生产代码，不写 Executable Plan。 Leading words: frontier · design tree · shared understanding Canonical Spec：docs/specs/YYYY-MM-DD--&lt;topic&gt;.md（仅用户或 AGENTS.md 明示时可 override）。默认不写 .harness/。 用户可见语言跟随用户；协议 token（BRAINSTORM …、Spec、Gate、路径）可保留英文。</p>
+    <p>把开放需求变成可执行的设计决定。先利用用户材料、现有规格和代码回答事实问题；只问答案会改变结果的未定取舍。</p>
   </section>
 
   <section class="section grid">
@@ -184,7 +184,7 @@ pre {
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <table><thead><tr><th>Situation</th><th>Next</th></tr></thead><tbody><tr><td>Spec approved</td><td>plan</td></tr><tr><td>Workbench gap</td><td>harness-builder</td></tr></tbody></table>
+    <p class="muted">该 skill 没有显式路由表；以执行流程的下一步为准。</p>
   </section>
 
   <section class="section grid">
@@ -194,7 +194,7 @@ pre {
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
-      <ul><li><a href="../../skills/brainstorm/references/clarification-loop.md">Grill Loop (Frontier)</a><span class="tag">存在</span></li><li><a href="../../skills/brainstorm/references/spec-drafting.md">Spec Drafting</a><span class="tag">存在</span></li></ul>
+      <ul><li><a href="../../skills/brainstorm/references/design-grill.md">Design grill</a><span class="tag">存在</span></li><li><a href="../../skills/brainstorm/references/clarification-loop.md">Clarification loop</a><span class="tag">存在</span></li><li><a href="../../skills/brainstorm/references/clarification-coverage.md">Clarification coverage</a><span class="tag">存在</span></li><li><a href="../../skills/brainstorm/references/spec-drafting.md">Spec drafting</a><span class="tag">存在</span></li><li><a href="../../skills/brainstorm/references/spec-review-checklist.md">Spec review</a><span class="tag">存在</span></li></ul>
     </div>
   </section>
 

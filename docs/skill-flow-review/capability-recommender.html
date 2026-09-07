@@ -136,17 +136,17 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>capability-recommender</h1>
-  <p>Use when the need is read-only capability design only: skills, hooks, MCP servers, subagents, plugins, scripts, or CI/headless automation. For cross-surface workbench bootstrap or repair, use harness-builder.</p>
+  <p>针对已确认的工具或工作流缺口推荐 skills、hooks、MCP、subagents 或插件。仅做只读推荐；已有能力足够时不添加工具，不按技术栈关键词自动推荐安装。</p>
   <div class="toolbar">
     <a class="button" href="../../skills/capability-recommender/SKILL.md">打开 SKILL.md</a>
     <span class="button">Helper</span>
-    <span class="button">305 行</span>
+    <span class="button">27 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>Adapted from Anthropic official claude-automation-recommender. The main workflow, categories, tables, and reference routing below are copied from the official skill, with harness-workflow notes added for Codex, Claude Code, and Cursor. Analyze codebase patterns to recommend tailored agent workbench capabilities across all extensibility options. This skill i...</p>
+    <p>这是只读能力设计 Helper Skill。以具体任务缺口为输入，比较现有工具和最少新增能力，不负责安装。派生来源见 references/attribution.md。</p>
   </section>
 
   <section class="section grid">
@@ -194,7 +194,7 @@ pre {
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
-      <p class="muted">无额外 reference；审阅 SKILL.md 即可。</p>
+      <ul><li><a href="../../skills/capability-recommender/references/attribution.md">Attribution</a><span class="tag">存在</span></li><li><a href="../../skills/capability-recommender/references/skills-reference.md">Skills</a><span class="tag">存在</span></li></ul>
     </div>
   </section>
 

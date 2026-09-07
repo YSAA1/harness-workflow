@@ -7,4 +7,4 @@ This helper is adapted from Anthropic's official Claude plugin examples:
 - Source references: `quality-criteria.md`, `update-guidelines.md`, `templates.md`
 - License: Apache License 2.0
 
-Local modifications are intentionally narrow: renamed the skill, added AGENTS.md and Cursor rule discovery, and added harness-workflow routing notes. The main workflow and reference content are copied from the official version.
+Local modifications: originally renamed and adapted for multiple runtimes; substantially revised on 2026-09-07 to remove repeated approval gates, fixed scoring/catalog requirements, and platform-specific defaults. Source attribution and Apache License 2.0 notices are retained.

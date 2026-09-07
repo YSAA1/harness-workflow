@@ -13,18 +13,6 @@ from scan_project_automation import detect_automation_signals
 from scan_project_report import build_report
 
 
-CURRENT_SIGNAL_TOKENS = [
-    "node_script_tooling",
-    "cursor_plugin_or_adapter",
-    "harness_workflow_plugin",
-    "cursor_preview",
-    "packaged_plugin",
-    "plugin_rules",
-    "automation_signals",
-    "frontend_framework",
-    "github_remote",
-]
-
 
 def main() -> None:
     print(json.dumps(build_report(Path.cwd()), indent=2, ensure_ascii=False))

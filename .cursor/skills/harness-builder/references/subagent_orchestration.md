@@ -1,37 +1,5 @@
-# Subagent Orchestration
-
-Subagents are optional gap reducers—not spawned because they exist.
-
-**Core rule:** subagents read, research, or review. The main agent writes harness files and integrates results.
-
-## Modes
-
-- **Solo** — small repos.
-- **Parallel read-only** — large, legacy, or unfamiliar repos; unclear verification; signaled security/API/ML/research risk.
-- **Review before install** — production-sensitive projects or before installing hooks/MCP/subagents.
-
-For each proposal: gap reduced, input, expected output, why main agent should not do it alone, read-only yes/no.
-
-## Signal mapping
-
-| Repo signal | Candidate | Default use |
-| --- | --- | --- |
-| Large, legacy, or unfamiliar repository | repo explorer | Project map, protected paths, verification entry, source-of-truth scan |
-| Unclear verification or broken checks | verification scout | Command discovery and risk report |
-| Security, auth, secrets, payments | security reviewer | Trust boundaries, unsafe sinks |
-| ML, RL, data, experiment claims | domain reviewer (ml/rl/data) | Leakage, reward, metric, baseline, reproducibility |
-| API contracts, schemas, SDK boundaries | api contract reviewer | Contract drift, compatibility |
-| Harness plan before install | harness plan reviewer | Plan critique before USER CHECKPOINT |
-| Research loops | research critic, failure analyst | Independent critique, failed-path analysis |
-| Large diffs, blast radius | blast radius reviewer | Scope and dependency impact |
-| Test failures | test triager | Isolated failure clustering |
-
-Name by **failure mode**, not job title. Avoid `senior-engineer`, `architect`, `backend-engineer`.
-
-## Classification
-
-- Default `Recommended`, not `Required`.
-- `Required` only when user explicitly requests delegation or the harness objective cannot be reviewed safely by the main agent alone.
-- Do not delegate the immediate blocking implementation step.
-
-Record adopted subagents in `.harness/manifest.yaml` and `.harness/decisions.md`.
+# Subagent orchestration
+独立、边界明确的调查或审阅在有价值且工具可用时可并行。说明任务、输入、输出、权限和整合责任；审查默认只读。
+不按文件数量强制代理，不写死模型家族，不因不可用就否定所有可验证工作。项目明确要求的独立审阅仍需完成或标记缺口。
+一次委派不要求生成持久子代理配置或 manifest；只有用户要求可复用配置时才记录。
+主代理整合结论，保护共享工作树，避免多个代理同时修改同一文件。

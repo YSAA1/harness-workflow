@@ -1,91 +1,39 @@
 ---
 name: review
-description: "用于对稳定 diff 做对抗审查并用 fresh evidence 判定 ready。触发：implement/diagnose 后要结束、用户说 review/verify/最终检查。WIP 或未解释失败时不用；本 skill 是唯一 ready gate。"
+description: "审查 diff、方案或完成声明，检查正确性、风险和验收证据。支持 WIP 的有限范围审阅；简单改动可由 implement 自审，verify 为本技能别名。"
 ---
 
-# 对抗审查与 Ready Gate
+# Review and verification
 
-实现后的唯一公开闸门。两段：**结构对抗** → **fresh evidence / ready**。`verify` 是别名，仍走这里。不修代码。
-
-Leading words: **adversarial** · **subagent** · **fresh evidence** · **ready**
-
-## 路由
-
-- **Use**: 切片稳定；或要证明 ready。
-- **Don't**: WIP → `implement`；命令红且根因不明 → `diagnose`；标准不清 → `brainstorm`/`plan`。
-- **Next**: ready YES → milestone commit（若 eligible）→ `cleanup`；Critical/Important → `implement`；行为失败 → `diagnose`；能力缺口 → `harness-builder`。
-
-低风险、用户不要求 tracked evidence 的单行非行为改动：可轻量自检，不必满配闸门。
-
-## 输入
-
-1. Claim：active slice、success criteria、verification path。
-2. Diff 事实：`git status --short`、相关 diff、untracked、相关源/测/文档。
-3. Spec / Plan / recovery；项目检查入口（README、`AGENTS.md`）。
-4. 中高风险再读：`references/adversarial-reviewer-prompt.md`、`attack-taxonomy.md`、`evidence-ladder.md`、`cold-verifier-prompt.md`。
+把问题发现和完成声明的证据核对放在一次评审中。审阅范围来自用户请求；WIP 可报告 findings，不必先完成实现才能审阅。
 
 ## 流程
 
-### 1. 重述 claim
+1. 明确审阅的 diff/版本、目标行为和所需验收。查看相关源码、测试、文档及已有证据，不以实现者的解释替代检查。
+2. 按具体故障路径检查正确性、合同、边界和回归。重要风险需要深入调查；无需凑 findings 或固定审查轮数。
+3. 当独立检查有价值且运行时允许时，使用有明确范围的只读 subagent；缺少 subagent 本身不是失败。若用户或项目明确要求独立审查，该条件未满足需如实标记。
+4. 将必需标准映射到 pass / fail / unknown。fresh evidence 指证据仍适用于当前相关代码、配置和输入；未受后续变更影响的实际输出可复用，不因换技能或已有 commit 自动失效。
+5. 只补缺失或失效的检查。冷复核按证据歧义和风险使用，不要求再委派一名代理重跑同样测试。
+6. 判定具体完成声明：无未解决的阻断问题且必需标准全 pass 才可 ready。Critical/Important 的正确性、数据、权限或合同问题均需解决；非阻断建议单独列出。
 
-一句话：slice +「ready because \<criteria\>」。写不出 → 回 `plan`/`brainstorm`。
+## 边界
 
-完成：claim 可证伪。
+- 只要求 review 时不修改代码；用户已授权修复时，记录发现后可转 `implement` 修复，再复核受影响部分，无需重新索要授权。
+- WIP、局部检查或缺环境时给出有限范围结果，不将 unknown 算通过。
+- 低风险修改允许轻量自审完成。`verify` 只转到本技能一次，不形成 review → verify → review 循环。
 
-### 2. 结构对抗（subagent）
+## 输出
 
-组 **只含事实** 的 packet（不要实现者辩解）。中高风险：spawn **独立只读 subagent**，用 adversarial prompt。机制只记 `subagent` | `packet_fallback`（后者仅低风险或 subagent 不可用；中高风险无 subagent → 不得 ready）。
-
-完成：findings 分级；handoff cases 列出。
-
-### 3. Fresh evidence
-
-按 `evidence-ladder.md` 跑最小检查；每条 criterion → pass|fail|unknown。消费 handoff cases。中高风险：冷证据交给只读 subagent（`cold-verifier-prompt.md`），只给原始输出。
-
-完成：verification record 填齐；unknown/fail 则 ready=no。
-
-### 4. 判定与路由
-
-Ready = 无 Critical **且** 所需 criterion 全 pass。写 recovery；输出契约。
-
-完成：READY 明确；Next skill 明确。
-
-## 结构尺（扁平）
-
-Spec/non-goals · 正确性/设计风险 · docs · entropy ·（有 Plan 时）阶段 acceptance。
-
-## 输出（精简）
-
-```text
-REVIEW: PASS | CONDITIONAL | BLOCK
-VERIFICATION: PASS|FAIL|INSUFFICIENT
-READY: yes|no
-
-Isolation: subagent|packet_fallback|failed
-Findings: Critical/Important/Minor ...
-Criteria: [criterion -> pass|fail|unknown]
-Cold: confirmed|disputed|insufficient|skipped
-Commit gate: eligible|not eligible|no commit unit
-Next: cleanup | implement | diagnose | harness-builder | plan
-```
-
-完整字段需要时沿用 `references/adversarial-reviewer-prompt.md` 与既有 verification record 习惯即可，不必每项填表。
-
-## 验收
-
-- [ ] 中高风险尝试了独立 subagent，或明确不得 ready
-- [ ] 每条所需 criterion 有 fresh 映射；unknown ≠ ready
-- [ ] 未在本 skill 修代码
+优先输出可行动 findings（严重度、位置、触发条件、影响），然后给验证、剩余缺口和结论。需要追踪时使用 REVIEW / VERIFICATION / READY，并注明审查方式为 self、subagent 或外部审阅及其范围；不强制空表。
 
 ## 按需读取
 
-- `references/adversarial-reviewer-prompt.md` · `attack-taxonomy.md` · `evidence-ladder.md` · `cold-verifier-prompt.md` · `capability-recommendations.md` · `cross-cutting-anti-patterns.md`
+- 深入对抗审查：`references/adversarial-reviewer-prompt.md`、`references/attack-taxonomy.md`。
+- 验收证据：`references/evidence-ladder.md`；证据解释有争议时读 `references/cold-verifier-prompt.md`。
+- 对应风险存在时读 `references/cross-cutting-anti-patterns.md`、`references/premature-completion-patterns.md`；工具缺口见 `references/capability-recommendations.md`。
 
 ## Recommended next skill
 
-| Situation | Next |
-| --- | --- |
-| READY yes | `cleanup` |
-| Structural findings | `implement` |
-| Unexplained fail | `diagnose` |
-| Capability gap | `harness-builder` |
+- 已完成：按项目要求提交；仅有本次文档/恢复整理需求时用 `cleanup`，否则结束。
+- 已授权修复：`implement`；未知根因：`diagnose`。
+- 超出目标的建议作为后续事项，不自动开启新任务或 `harness-builder`。

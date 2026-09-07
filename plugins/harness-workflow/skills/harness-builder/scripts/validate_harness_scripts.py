@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
+import re
 
-from validate_harness_catalog import CURRENT_SCAN_SIGNALS, MANIFEST_TOKENS, STATE_TOKENS
 
 
 def check_python_scripts_compile(root: Path, issues: list[str]) -> None:
@@ -18,10 +19,23 @@ def check_manifest_template(root: Path, issues: list[str]) -> None:
     manifest = root / "templates" / "manifest.yaml.j2"
     if not manifest.exists():
         return
-    text = manifest.read_text(encoding="utf-8", errors="replace")
-    for token in MANIFEST_TOKENS:
-        if token not in text:
-            issues.append(f"manifest template missing field: {token}")
+    try:
+        # Check the static structure without adding a Jinja runtime dependency.
+        source = manifest.read_text(encoding="utf-8")
+        source = re.sub(r"{{\s*(\w+)\s*\|\s*tojson\s*}}", lambda m: json.dumps(m[1]), source)
+        data = json.loads(source)
+        schema = json.loads((root / "schemas/harness_manifest.schema.json").read_text(encoding="utf-8"))
+        for field in schema["required"]:
+            if field not in data:
+                issues.append(f"manifest template missing field: {field}")
+        workflow = data.get("harness_workflow", {})
+        for field in schema["properties"]["harness_workflow"]["required"]:
+            if field not in workflow:
+                issues.append(f"manifest template missing workflow field: {field}")
+        if data.get("version") != schema["properties"]["version"]["const"]:
+            issues.append("manifest template version does not match schema")
+    except (ValueError, KeyError, TypeError, OSError) as exc:
+        issues.append(f"manifest template/schema invalid: {exc}")
 
 
 def check_state_template(root: Path, issues: list[str]) -> None:
@@ -29,23 +43,12 @@ def check_state_template(root: Path, issues: list[str]) -> None:
     if not state.exists():
         return
     text = state.read_text(encoding="utf-8", errors="replace")
-    for token in STATE_TOKENS:
+    for token in ["Objective", "Status", "Next action", "Evidence"]:
         if token not in text:
             issues.append(f"state template missing section: {token}")
-
-
-def check_scan_project_signals(root: Path, issues: list[str]) -> None:
-    scan = root / "scripts" / "scan_project.py"
-    if not scan.exists():
-        return
-    text = scan.read_text(encoding="utf-8", errors="replace")
-    for token in CURRENT_SCAN_SIGNALS:
-        if token not in text:
-            issues.append(f"scan_project.py missing current signal: {token}")
 
 
 def check_script_compilation(root: Path, issues: list[str]) -> None:
     check_python_scripts_compile(root, issues)
     check_manifest_template(root, issues)
     check_state_template(root, issues)
-    check_scan_project_signals(root, issues)

@@ -136,17 +136,17 @@ pre {
 <header>
   <p><a class="button" href="index.html">返回总览</a></p>
   <h1>review</h1>
-  <p>用于对稳定 diff 做对抗审查并用 fresh evidence 判定 ready。触发：implement/diagnose 后要结束、用户说 review/verify/最终检查。WIP 或未解释失败时不用；本 skill 是唯一 ready gate。</p>
+  <p>审查 diff、方案或完成声明，检查正确性、风险和验收证据。支持 WIP 的有限范围审阅；简单改动可由 implement 自审，verify 为本技能别名。</p>
   <div class="toolbar">
     <a class="button" href="../../skills/review/SKILL.md">打开 SKILL.md</a>
     <span class="button">证据评审</span>
-    <span class="button">92 行</span>
+    <span class="button">40 行</span>
   </div>
 </header>
 <main>
   <section class="section panel">
     <h2>核心思想</h2>
-    <p>实现后的唯一公开闸门。两段：结构对抗 → fresh evidence / ready。verify 是别名，仍走这里。不修代码。 Leading words: adversarial · subagent · fresh evidence · ready</p>
+    <p>把问题发现和完成声明的证据核对放在一次评审中。审阅范围来自用户请求；WIP 可报告 findings，不必先完成实现才能审阅。</p>
   </section>
 
   <section class="section grid">
@@ -184,7 +184,7 @@ pre {
 
   <section class="section panel">
     <h2>路由规则</h2>
-    <table><thead><tr><th>Situation</th><th>Next</th></tr></thead><tbody><tr><td>READY yes</td><td>cleanup</td></tr><tr><td>Structural findings</td><td>implement</td></tr><tr><td>Unexplained fail</td><td>diagnose</td></tr><tr><td>Capability gap</td><td>harness-builder</td></tr></tbody></table>
+    <p class="muted">该 skill 没有显式路由表；以执行流程的下一步为准。</p>
   </section>
 
   <section class="section grid">
@@ -194,7 +194,7 @@ pre {
     </div>
     <div class="panel">
       <h2>Progressive Disclosure</h2>
-      <ul><li><a href="../../skills/review/references/adversarial-reviewer-prompt.md">Adversarial Reviewer Prompt</a><span class="tag">存在</span></li></ul>
+      <ul><li><a href="../../skills/review/references/adversarial-reviewer-prompt.md">Adversarial review packet</a><span class="tag">存在</span></li><li><a href="../../skills/review/references/attack-taxonomy.md">Attack Taxonomy</a><span class="tag">存在</span></li><li><a href="../../skills/review/references/evidence-ladder.md">Evidence ladder</a><span class="tag">存在</span></li><li><a href="../../skills/review/references/cold-verifier-prompt.md">Optional cold evidence review</a><span class="tag">存在</span></li><li><a href="../../skills/review/references/cross-cutting-anti-patterns.md">Cross-cutting anti-patterns</a><span class="tag">存在</span></li><li><a href="../../skills/review/references/premature-completion-patterns.md">Premature completion</a><span class="tag">存在</span></li><li><a href="../../skills/review/references/capability-recommendations.md">Verification capability gaps</a><span class="tag">存在</span></li></ul>
     </div>
   </section>
 

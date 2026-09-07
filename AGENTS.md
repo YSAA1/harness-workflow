@@ -50,7 +50,7 @@
 - 这是 plugin 仓库；所有改动必须保持 `.codex-plugin/plugin.json`、`README.md`、`docs/harness-method-contract.md` 和 `skills/*/SKILL.md` 之间语义一致。
 - Active workflow skills 只有 `harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`cleanup`；`verify` 是 `review` 的历史别名 helper；`find-skills`、`capability-recommender`、`agent-instructions-maintainer`、`recovery-surface-builder` 是辅助 skill，不是额外 workflow lane。
 - `AGENTS.md` 只做薄入口（T1）；临时计划、会话摘要、active slice 和当前任务 plan/Spec 路径不要写进这里。
-- 运行时 recovery 统一在 `.harness/`；不要在仓库根创建 `task_plan.md`、`progress.md`、`findings.md`。
+- 本插件仓库使用 `.harness/`；生成到目标项目时按所选 backend 复用恢复入口，不强制迁移已有系统。
 - `harness-builder` 是 canonical 项目 harness skill；"bootstrap" 只能作为历史别名或触发词出现。
 - 每个 `SKILL.md` 必须保留 YAML frontmatter，并让 `name` 与目录名匹配。
 - 没有 fresh verification，不声明插件结构、流程图或方法论覆盖已经可用。
@@ -80,7 +80,7 @@ Selected recovery surface: `harness`（`.harness/` 目录）
 | T5 | 命令输出、CI、git log |
 | T6 | `docs/skill-flow-review/*.html` 等生成物 |
 
-冲突时：fresh evidence (T5) > active work (T4) > Work Index (T3) > domain (T2) > entry (T1)。
+事实冲突按来源和适用性核对；新证据只能纠正过期事实，不能覆盖指令权限、用户目标或项目验收合同。
 
 ## Required Reading By Task Type
 

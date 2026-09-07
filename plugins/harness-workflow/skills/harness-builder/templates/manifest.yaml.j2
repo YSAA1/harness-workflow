@@ -1,19 +1,9 @@
-project: {{project_name}}
-harness_workflow:
-  entry: {{entry_file}}
-  recovery_surface: {{recovery_surface}}
-  verification_command: {{verification_command}}
-  workflow_lanes:
-    - harness-builder
-    - brainstorm
-    - plan
-    - implement
-    - diagnose
-    - review
-    - verify
-    - cleanup
-  helper_skills:
-    - find-skills
-    - capability-recommender
-    - agent-instructions-maintainer
-    - recovery-surface-builder
+{
+  "version": 1,
+  "project": {{ project_name | tojson }},
+  "harness_workflow": {
+    "entry": {{ entry_file | tojson }},
+    "recovery_surface": {{ recovery_surface | tojson }},
+    "verification_command": {{ verification_command | tojson }}
+  }
+}

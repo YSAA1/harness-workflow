@@ -1,6 +1,6 @@
 # Work Index
 
-任务注册表（T3）。`AGENTS.md` 只指向本文件，不指向具体任务 artifact。同一时刻只能有一个 `active` 行。
+任务注册表（T3）。`AGENTS.md` 只指向本文件，不指向具体任务 artifact。每个任务/轨道一个权威入口，独立任务可同时 active。
 
 | ID | 标题 | Status | Primary artifact | Last verified |
 | --- | --- | --- | --- | --- |
@@ -13,11 +13,12 @@
 | 007 | harness-builder 总控瘦身与 Helper routing | complete | `skills/harness-builder/SKILL.md` | 2026-07-09 |
 | 008 | SSY-1 工作流优化收尾：brainstorm Phase A / review+verify / cleanup | complete | （SSY-1 umbrella；见 `.harness/state.md`） | 2026-08-12 |
 | 009 | Workflow lane slim：grill brainstorm + review ready gate | complete | `docs/specs/2026-08-12--workflow-lane-slim.md` | 2026-08-12 |
+| 010 | Astra 全量技能审计与优化 | complete | `docs/reviews/2026-09-07--astra-workflow-audit.md` | 2026-09-07 |
 
 Status values: `active`, `blocked`, `complete`, `abandoned`
 
 ## 维护规则
 
-- 新任务：新增行，将旧 `active` 改为 `complete` / `blocked` / `abandoned`
+- 新任务：新增当前轨道行，不改变其他轨道状态；同轨道换轨时更新旧入口
 - 不要删除历史行
 - 会话启动先读本表，再打开 `active` 行的 primary artifact
