@@ -17,7 +17,7 @@
 
 | 技能 | 用途 |
 | --- | --- |
-| brainstorm | 重要设计取舍与可选 Spec |
+| brainstorm | 重要设计取舍与聚焦 Spec |
 | plan | 执行依赖与必要持久计划 |
 | implement | 范围内修改及按风险验证 |
 | diagnose | 根因未知的故障调查 |

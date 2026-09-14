@@ -42,7 +42,7 @@ Recovery options: none, lightweight, harness, feature-list, existing. Only harne
 | Skill | Responsibility |
 | --- | --- |
 | `agent-instructions-maintainer` | Agent Instructions Maintainer — durable rule audit/repair |
-| `brainstorm` | Material design choices / optional Spec |
+| `brainstorm` | Material design choices / focused Spec |
 | `capability-recommender` | Capability Recommender — read-only capability selection |
 | `cleanup` | Task-scoped Knowledge Cleanup |
 | `diagnose` | Evidence-based unknown-failure investigation |

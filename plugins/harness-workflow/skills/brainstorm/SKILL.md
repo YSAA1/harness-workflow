@@ -1,29 +1,73 @@
 ---
 name: brainstorm
-description: "用于澄清影响目标、范围或验收的设计取舍，或用户明确要求讨论、grill、Spec。普通实现选择、事实查询和已明确的小任务不用。"
+description: "用于把模糊需求收敛成用户批准的 Spec。触发：目标/边界/取舍/成功标准/验证策略未定，或用户说先讨论/grill/先落 Spec。已有完整 Spec 或小补丁时不用；批准后交给 plan。"
 ---
 
-# 需求与 Spec
+# Spec 构思（Frontier Grill）
 
-把开放需求变成可执行的设计决定。先利用用户材料、现有规格和代码回答事实问题；只问答案会改变结果的未定取舍。
+收敛模糊想法 → 用户批准的 **Spec** → `plan`。不写生产代码，不写 Executable Plan。
+
+Leading words: **frontier** · **design tree** · **shared understanding**
+
+Canonical Spec：`docs/specs/YYYY-MM-DD--<topic>.md`（仅用户或 `AGENTS.md` 明示时可 override）。默认不写 `.harness/`。
+
+用户可见语言跟随用户；协议 token（`BRAINSTORM …`、`Spec`、`Gate`、路径）可保留英文。
+
+## 路由
+
+- **Use**: 意图开放、标准或验证不清、要 grill。
+- **Don't**: Spec 已批；单点小补丁；只要事实回答。
+- **Next**: Spec 批准 → `plan`；工作面缺口 → `harness-builder`。
+
+## 输入
+
+`references/clarification-loop.md` + coverage/design-grill；既有 Spec/代码/`AGENTS.md`；`git status`；用户材料。
 
 ## 流程
 
-1. 说明当前理解、关键未知和可验证的成功标准。已有答案不重复询问。
-2. 独立问题可一起问；依赖前一答案的问题留到下一轮。普通选择给出推荐和理由，允许用户修正。
-3. 可以先写标注假设的 draft Spec，让用户审阅具体结果。默认沿用项目规格入口，无惯例时用 `docs/specs/YYYY-MM-DD--<topic>.md`。
-4. 对尚未批准、会改变目标或引入高成本/不可逆操作的取舍，执行依赖步骤前取得明确答复。沉默不是批准。
-5. 用户只要求讨论或计划时交付后结束；用户已授权实现且关键取舍已定时继续，不再单独索要 shared understanding 和 Spec 两次确认。
+### 1. Frontier grill
 
-## 深度与产物
+Gate 前不写 Spec。沿用已有明确需求、决策与授权；只问会改变方案的未决 **frontier**（前置已定、彼此独立），不设最少轮数。Facts 自查/子 agent；必要 Decisions 等人。细节：`clarification-loop.md`。
 
-- 小问题可在对话中收敛，不强制建 Spec、设计树或覆盖率表。
-- 明确要求 grill 或复杂设计时读 `references/design-grill.md`、`references/clarification-loop.md`；覆盖维度见 `references/clarification-coverage.md`，仅用于发现遗漏，不要求凑满八项。
-- 写 Spec 时按需用 `references/spec-drafting.md`、`references/spec-review-checklist.md` 和 `templates/spec.md` / `templates/spec.zh-CN.md`。
-- 报告决定、未定项、Spec 路径（若有）和下一步；不要求固定口号、图标或计分格式。
+完成：Grill Gate 过 + assumption batch（若有）+ 用户确认 **shared understanding**。
+
+### 2. Spec
+
+按 `references/spec-drafting.md`：验证策略 → 方案比较 → 写 Spec → 自审 → 求批准。未批准不 `plan`。
+
+完成：独立 Spec 路径已给，等待批准。
+
+## 硬规则
+
+- 一条消息一个 frontier round；依赖题拆到后轮。
+- 沉默 ≠ 批准；已有完整 brief 和明确起草授权可满足 shared understanding，不重复索要相同确认。
+
+## 输出
+
+```text
+BRAINSTORM CLARIFICATION IN PROGRESS | BRAINSTORM SPEC READY
+Spec: <path|n/a>
+Coverage: <confirmed+waived>/8; Gate: BLOCKED|PASSED
+Frontier: open|empty
+Needs: frontier answers | shared understanding | approve Spec
+Next after approval: plan
+```
+
+Frontier 提问形状见 `clarification-loop.md`（`❓` / `➡️`）。
+
+## 验收
+
+- [ ] Gate 过；purpose/scope/success/verification 非 unknown（或已豁免）
+- [ ] Shared understanding 已确认；Spec 已求批
+
+## 按需读取
+
+- `references/clarification-loop.md` · `clarification-coverage.md` · `design-grill.md` · `spec-drafting.md` · `spec-review-checklist.md` · `templates/spec.md`
+- 文中 `CONTEXT.md` 指目标项目根目录的领域词汇表（若存在），不是插件包文件；先按项目 `AGENTS.md` 找实际词汇来源，不存在不强制创建。
 
 ## Recommended next skill
 
-- 需要多阶段执行顺序：`plan`。
-- 已明确且已授权的小任务：`implement`。
-- 只讨论：交付结论后结束。工作台缺口确实阻塞时才用 `harness-builder`。
+| Situation | Next |
+| --- | --- |
+| Spec approved | `plan` |
+| Workbench gap | `harness-builder` |

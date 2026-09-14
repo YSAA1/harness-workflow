@@ -11,7 +11,7 @@ Task-scoped workflows for Codex, Claude Code and Cursor. Use only the structure 
 | Skill | Purpose |
 | --- | --- |
 | `agent-instructions-maintainer` | Agent Instructions Maintainer — durable rule audit/repair |
-| `brainstorm` | Material design choices / optional Spec |
+| `brainstorm` | Material design choices / focused Spec |
 | `capability-recommender` | Capability Recommender — read-only capability selection |
 | `cleanup` | Task-scoped Knowledge Cleanup |
 | `diagnose` | Evidence-based unknown-failure investigation |
