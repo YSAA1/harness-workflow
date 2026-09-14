@@ -50,7 +50,7 @@ Successful recognition means Codex can see:
 
 - marketplace: `harness-workflow`
 - plugin: `harness-workflow`
-- workflow skills: `harness-builder`, `brainstorm`, `plan`, `implement`, `diagnose`, `review`, `verify`, `cleanup`
+- workflow skills: `harness-builder`, `brainstorm`, `plan`, `implement`, `diagnose`, `review`, `ship`, `cleanup`
 - helper skills: `find-skills`, `capability-recommender`, `agent-instructions-maintainer`, `recovery-surface-builder`
 
 You can ask Codex to use the plugin or a bundled skill explicitly:
@@ -60,7 +60,7 @@ Use the harness-workflow plugin to review this project harness.
 ```
 
 ```text
-Use harness-workflow:verify to prove the ready claim with fresh evidence.
+Use harness-workflow:review to prove the ready claim with fresh evidence.
 ```
 
 When app-server protocol tooling is available, the recognition surface to inspect is:

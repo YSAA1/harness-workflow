@@ -14,10 +14,10 @@ const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "u
 const packageRead = (relativePath) => fs.readFileSync(path.join(packagedRoot, relativePath), "utf8");
 const readJson = (relativePath) => JSON.parse(read(relativePath));
 const skillPath = (skill) => `skills/${skill}/SKILL.md`;
-const workflowSkills = ["harness-builder", "brainstorm", "plan", "implement", "diagnose", "review", "cleanup"];
-const helperSkills = ["find-skills", "capability-recommender", "agent-instructions-maintainer", "recovery-surface-builder", "verify"];
+const workflowSkills = ["harness-builder", "brainstorm", "plan", "implement", "diagnose", "review", "ship", "cleanup"];
+const helperSkills = ["find-skills", "capability-recommender", "agent-instructions-maintainer", "recovery-surface-builder"];
 const activeSkills = [...workflowSkills, ...helperSkills];
-const removedSkills = ["bootstrap", "state-contract", "resume", "save-session"];
+const removedSkills = ["bootstrap", "state-contract", "resume", "save-session", "verify"];
 const researchAssets = [
   "docs/integrations/autoresearch.md",
   "skills/harness-builder/references/research_route_policy.md",

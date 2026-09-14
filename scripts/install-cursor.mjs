@@ -12,7 +12,7 @@ const activeSkills = [
   "implement",
   "diagnose",
   "review",
-  "verify",
+  "ship",
   "cleanup",
   "find-skills",
   "capability-recommender",

@@ -5,9 +5,10 @@
 - Active slice: the current scope within one task/track, not a global ban on parallel work.
 - Recovery surface: none, lightweight, harness, feature-list or existing; use one authoritative entry per track.
 - Fresh evidence: actual observations applicable to current relevant code, configuration and inputs, reusable until those change.
-- Review: substantive review plus evidence judgment. Verify is a compatibility alias, not a second lane.
-- Knowledge Cleanup: task-scoped document/artifact reconciliation, including blocked handoffs.
-- Helper Skill: capability-recommender (Capability Recommender), agent-instructions-maintainer (Agent Instructions Maintainer), recovery-surface-builder (Recovery Surface Builder), find-skills and verify.
+- Review: substantive review plus evidence judgment. Verify is a trigger alias, not a second lane.
+- Ship: orchestration that chains implement, review and cleanup for one authorized task; it is not an extra gate.
+- Knowledge Cleanup: task-scoped document, code and artifact reconciliation, including blocked handoffs.
+- Helper Skill: capability-recommender (Capability Recommender), agent-instructions-maintainer (Agent Instructions Maintainer), recovery-surface-builder (Recovery Surface Builder) and find-skills.
 - Harness Recommendation Matrix: optional table for cross-surface gaps; recommendation priority is not action authorization.
 
 Stable behavior: docs/harness-method-contract.md. Historical plans and evaluation results describe their recorded version, not current instructions.

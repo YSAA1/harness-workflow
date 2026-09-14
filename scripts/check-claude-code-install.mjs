@@ -11,11 +11,12 @@ const workflowSkills = [
   "implement",
   "diagnose",
   "review",
+  "ship",
   "cleanup",
 ];
-const helperSkills = ["find-skills", "capability-recommender", "agent-instructions-maintainer", "recovery-surface-builder", "verify"];
+const helperSkills = ["find-skills", "capability-recommender", "agent-instructions-maintainer", "recovery-surface-builder"];
 const activeSkills = [...workflowSkills, ...helperSkills];
-const removedSkills = ["bootstrap", "state-contract", "resume", "save-session"];
+const removedSkills = ["bootstrap", "state-contract", "resume", "save-session", "verify"];
 
 let failed = false;
 const fail = (message) => {

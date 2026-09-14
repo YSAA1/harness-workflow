@@ -7,7 +7,8 @@
 ## 本次优化后的约定
 
 - 明确授权执行时，计划后继续；只要审计或建议时保持只读。只问影响结果的重要选择。
-- `review` 合并审查与证据判断；`verify` 仅作别名，不重复运行一套测试。
+- `review` 合并审查与证据判断；`verify` 仅是它的触发词别名，不重复运行一套测试。
+- `ship` 将 implement、review、cleanup 串成一次已授权任务的端到端交付，不额外加闸门。
 - 复用仍适用的真实证据，相关代码、环境或输入改变后再补查。必要验收未知时不宣称完成。
 - 每条任务/轨道一个权威入口，允许多个独立任务 active；已有 tracker 不必新增 `.harness/`。
 - 仅整理本次影响的文档，保留复现与验收证据；没有漂移可以零修改结束。
@@ -22,7 +23,7 @@
 | implement | 范围内修改及按风险验证 |
 | diagnose | 根因未知的故障调查 |
 | review | 审阅、风险与验收证据 |
-| verify | review 的兼容别名 |
+| ship | 串联 implement、review、cleanup 的端到端交付 |
 | cleanup | 本任务知识收尾，包括阻塞交接 |
 | harness-builder | 跨入口、恢复、验证和配置缺口整合 |
 | find-skills | 明确技能缺口的定向发现 |
@@ -43,5 +44,4 @@ node scripts/install-cursor.mjs --target . --dry-run
 python -B skills/harness-builder/tests/test_scripts.py
 ```
 
-修改技能后运行 `node scripts/generate-skill-flow-html.mjs`。
 完整方法见 [C1–C10](docs/harness-method-contract.md)，变更理由见 [全量审核](docs/reviews/2026-09-07--astra-workflow-audit.md)。结构检查不替代模型行为效果评测，历史计划不再定义现行流程。

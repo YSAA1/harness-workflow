@@ -21,13 +21,14 @@ Task-scoped workflows for Codex, Claude Code and Cursor. Use only the structure 
 | `plan` | Execution dependencies / optional durable plan |
 | `recovery-surface-builder` | Recovery Surface Builder — existing or selected backend |
 | `review` | Review and evidence judgment |
-| `verify` | Compatibility alias to review |
+| `ship` | End-to-end delivery chaining implement, review and cleanup |
 
 ## Working behavior
 
 - Already-authorized implementation continues after planning; advice-only requests stay read-only.
 - Ask about material choices, not routine implementation decisions. Drafts can make a decision reviewable before asking.
-- `review` combines findings and evidence; `verify` is an alias. Applicable checks are reused, not rerun merely at stage boundaries.
+- `review` combines findings and evidence; `verify` is only a trigger alias for it. Applicable checks are reused, not rerun merely at stage boundaries.
+- `ship` chains implement, review and cleanup for one authorized end-to-end delivery; it adds no extra gate.
 - Independent review is risk-driven; project-required independent approval still applies. Missing required evidence remains unknown.
 - Keep one authoritative entry per task/track. Existing trackers do not need a duplicate .harness directory.
 - Update only affected docs; keep evidence and unrelated changes. No-drift cleanup can make zero edits.
@@ -46,10 +47,9 @@ Run `node scripts/install-cursor.mjs --target <project> --dry-run` before an aut
 
 ## Development and verification
 
-Edit canonical `skills/` and `rules/`, synchronize the packaged plugin and Cursor mirrors, then regenerate flow pages when the skill source changes.
+Edit canonical `skills/` and `rules/`, then synchronize the packaged plugin and Cursor mirrors.
 
 ```text
-node scripts/generate-skill-flow-html.mjs
 node scripts/check-plugin.mjs
 node scripts/check-claude-code-install.mjs
 node scripts/check-cursor-install.mjs

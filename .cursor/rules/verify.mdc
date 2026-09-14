@@ -1,9 +1,0 @@
----
-description: Use verify only for its canonical skill scope
-globs:
-alwaysApply: false
----
-
-# verify
-
-Read [canonical skill](../skills/verify/SKILL.md) when its scope matches the task. This adapter adds no separate workflow, approval or verification gate.

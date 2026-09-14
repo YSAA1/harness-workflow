@@ -1,5 +1,0 @@
-interface:
-  display_name: verify
-  short_description: Compatibility alias for focused verification through review
-policy:
-  allow_implicit_invocation: false

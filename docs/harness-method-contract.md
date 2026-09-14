@@ -20,7 +20,7 @@ One authoritative entry per task/track. Independent tasks can run concurrently; 
 Plans capture actionable work, acceptance and dependencies; use the existing tracker format or Markdown checkboxes. Simple work needs no formal plan. Continue already authorized implementation after planning; stop when the user requested only a plan.
 
 ## C6 Relevant Evidence
-`review` combines substantive review and fresh evidence judgment; `verify` is its compatibility alias. Low-risk work can finish after implement self-review and relevant checks.
+`review` combines substantive review and fresh evidence judgment; `verify` is its trigger alias. Low-risk work can finish after implement self-review and relevant checks.
 Evidence stays valid until related code, configuration, environment or input changes. Do not rerun because the skill changed or a commit occurred. Required criteria map to pass/fail/unknown; unknown or unresolved blocking findings prevent the corresponding ready claim.
 Use independent read-only review when useful and available, or required by project/user. Tool unavailability alone is not proof of poor quality; disclose any unmet independence requirement.
 
@@ -52,4 +52,4 @@ Recovery options: none, lightweight, harness, feature-list, existing. Only harne
 | `plan` | Execution dependencies / optional durable plan |
 | `recovery-surface-builder` | Recovery Surface Builder — existing or selected backend |
 | `review` | Review and evidence judgment |
-| `verify` | Compatibility alias to review |
+| `ship` | Orchestrates implement → review → cleanup for authorized delivery |

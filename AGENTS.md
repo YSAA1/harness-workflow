@@ -24,13 +24,11 @@
 - `docs/adr/`: 架构决策记录。
 - `docs/tutorials/`: 使用教程和指南。
 - `docs/integrations/`: 可选外部工作流集成说明（如 SkillOpt）。
-- `docs/skill-flow-review/`: 由脚本生成的 skill 流程审阅 HTML。
 - `.github/workflows/ci.yml`: GitHub Actions，运行三端安装/结构检查和 Cursor dry-run。
 - `scripts/check-plugin.mjs`: 插件结构和方法论覆盖的快速验证脚本。
 - `scripts/check-claude-code-install.mjs`: Claude Code 安装面验证脚本。
 - `scripts/check-cursor-install.mjs`: Cursor rules、skills 和 adapter 验证脚本。
 - `scripts/install-cursor.mjs`: 将 rules 和 skills 复制到目标项目 `.cursor/` 的 project adapter。
-- `scripts/generate-skill-flow-html.mjs`: 从各个 `SKILL.md` 生成流程审阅 HTML。
 - `scripts/agent/check.sh`: agent-facing 快速验证入口，串联默认结构检查。
 - `skills/*/SKILL.md`: 每个 active workflow skill 的主入口和执行协议。
 - `skills/*/references/`: 按需读取的细节政策、检查表和参考资料。
@@ -40,7 +38,6 @@
 
 - 快速验证：`node scripts/check-plugin.mjs`
 - Agent 快速验证：`bash scripts/agent/check.sh`
-- 重新生成 skill flow HTML：`node scripts/generate-skill-flow-html.mjs`
 - 三端结构验证：`node scripts/check-plugin.mjs && node scripts/check-claude-code-install.mjs && node scripts/check-cursor-install.mjs`
 - Cursor adapter dry-run：`node scripts/install-cursor.mjs --target . --dry-run`
 - 当前没有 package install 或测试框架配置；不要虚构 `npm test`、`npm install` 或不存在的 agent 脚本。
@@ -48,7 +45,7 @@
 ## 项目铁律
 
 - 这是 plugin 仓库；所有改动必须保持 `.codex-plugin/plugin.json`、`README.md`、`docs/harness-method-contract.md` 和 `skills/*/SKILL.md` 之间语义一致。
-- Active workflow skills 只有 `harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`cleanup`；`verify` 是 `review` 的历史别名 helper；`find-skills`、`capability-recommender`、`agent-instructions-maintainer`、`recovery-surface-builder` 是辅助 skill，不是额外 workflow lane。
+- Active workflow skills 只有 `harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`ship`、`cleanup`；`verify` 只是 `review` 的历史触发词别名，不再是独立 skill；`find-skills`、`capability-recommender`、`agent-instructions-maintainer`、`recovery-surface-builder` 是辅助 skill，不是额外 workflow lane。
 - `AGENTS.md` 只做薄入口（T1）；临时计划、会话摘要、active slice 和当前任务 plan/Spec 路径不要写进这里。
 - 本插件仓库使用 `.harness/`；生成到目标项目时按所选 backend 复用恢复入口，不强制迁移已有系统。
 - `harness-builder` 是 canonical 项目 harness skill；"bootstrap" 只能作为历史别名或触发词出现。
@@ -78,7 +75,6 @@ Selected recovery surface: `harness`（`.harness/` 目录）
 | T3 | `.harness/work_index.md` |
 | T4 | 当前 Spec / Plan（`docs/specs/`、`docs/plans/`）、`.harness/state.md` |
 | T5 | 命令输出、CI、git log |
-| T6 | `docs/skill-flow-review/*.html` 等生成物 |
 
 事实冲突按来源和适用性核对；新证据只能纠正过期事实，不能覆盖指令权限、用户目标或项目验收合同。
 
@@ -87,8 +83,7 @@ Selected recovery surface: `harness`（`.harness/` 目录）
 - 修改 skill 行为：先读对应 `skills/<skill>/SKILL.md`，再按需读同目录 `references/`。
 - 修改 harness builder：先读 `skills/harness-builder/SKILL.md`（总控 / Helper routing），再按需读 `references/recommendation_matrix_policy.md`、`install_policy.md`、`decision_matrix.md`。
 - 修改 recovery surface 语义：读 `skills/recovery-surface-builder/SKILL.md` 与 `skills/recovery-surface-builder/references/recovery_surface_policy.md`。
-- 修改验证、ready 或 evidence 规则：读 `skills/review/SKILL.md` 和 `docs/harness-method-contract.md`（`skills/verify/SKILL.md` 仅为 alias）。
-- 修改生成的 HTML：优先改 `scripts/generate-skill-flow-html.mjs`，再重新生成 `docs/skill-flow-review/*.html`。
+- 修改验证、ready 或 evidence 规则：读 `skills/review/SKILL.md` 和 `docs/harness-method-contract.md`。
 - 修改 manifest 或能力声明：同步检查 `.codex-plugin/`、`.claude-plugin/`、`.cursor-plugin/`、`README.md`、`docs/install/` 和对应 `scripts/check-*.mjs`。
 
 ## Protected Paths
@@ -108,12 +103,6 @@ node scripts/check-cursor-install.mjs
 node scripts/install-cursor.mjs --target . --dry-run
 ```
 
-如果修改了 skill flow 生成逻辑或任何 `SKILL.md` 的结构，还要运行：
-
-```bash
-node scripts/generate-skill-flow-html.mjs
-node scripts/check-plugin.mjs
-```
 
 在 Windows PowerShell 中运行命令时，若用户 profile 因 execution policy 报错但目标命令成功，要把 profile 报错作为环境噪声说明，不把它当成项目验证失败。
 

@@ -1,0 +1,9 @@
+---
+description: Use ship only for its canonical skill scope
+globs:
+alwaysApply: false
+---
+
+# ship
+
+Read [canonical skill](../skills/ship/SKILL.md) when its scope matches the task. This adapter adds no separate workflow, approval or verification gate.

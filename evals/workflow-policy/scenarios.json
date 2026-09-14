@@ -6,7 +6,7 @@
       "id": "small-edit",
       "skill": "implement",
       "prompt": "修正文档的一条命令，目标明确。",
-      "expected": "直接修改并核对命令/路径，可完成；不建 Spec、不要求失败测试或第二轮 verify。"
+      "expected": "直接修改并核对命令/路径，可完成；不建 Spec、不要求失败测试或第二轮 review。"
     },
     {
       "id": "authorized-plan",

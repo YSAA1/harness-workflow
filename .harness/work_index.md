@@ -15,6 +15,7 @@
 | 009 | Workflow lane slim：grill brainstorm + review ready gate | complete | `docs/specs/2026-08-12--workflow-lane-slim.md` | 2026-08-12 |
 | 010 | Astra 全量技能审计与优化 | complete | `docs/reviews/2026-09-07--astra-workflow-audit.md` | 2026-09-07 |
 | 011 | 恢复 grill 版 brainstorm（草稿语义合并远端精简） | complete | `skills/brainstorm/SKILL.md` | 2026-09-14 |
+| 012 | 仓库精简 + verify 并入 review + cleanup 扩代码 + 新增 ship | complete | `skills/ship/SKILL.md` | 2026-09-14 |
 
 Status values: `active`, `blocked`, `complete`, `abandoned`
 

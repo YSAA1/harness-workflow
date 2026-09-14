@@ -48,7 +48,7 @@ Successful recognition means Claude Code can see the installed plugin and namesp
 /harness-workflow:implement
 /harness-workflow:diagnose
 /harness-workflow:review
-/harness-workflow:verify
+/harness-workflow:ship
 /harness-workflow:cleanup
 /harness-workflow:find-skills
 /harness-workflow:capability-recommender
@@ -94,7 +94,7 @@ cp -r skills/plan ~/.claude/skills/
 cp -r skills/implement ~/.claude/skills/
 cp -r skills/diagnose ~/.claude/skills/
 cp -r skills/review ~/.claude/skills/
-cp -r skills/verify ~/.claude/skills/
+cp -r skills/ship ~/.claude/skills/
 cp -r skills/cleanup ~/.claude/skills/
 cp -r skills/find-skills ~/.claude/skills/
 cp -r skills/capability-recommender ~/.claude/skills/
@@ -112,7 +112,7 @@ Copy-Item -Recurse -Force skills\plan "$env:USERPROFILE\.claude\skills\"
 Copy-Item -Recurse -Force skills\implement "$env:USERPROFILE\.claude\skills\"
 Copy-Item -Recurse -Force skills\diagnose "$env:USERPROFILE\.claude\skills\"
 Copy-Item -Recurse -Force skills\review "$env:USERPROFILE\.claude\skills\"
-Copy-Item -Recurse -Force skills\verify "$env:USERPROFILE\.claude\skills\"
+Copy-Item -Recurse -Force skills\ship "$env:USERPROFILE\.claude\skills\"
 Copy-Item -Recurse -Force skills\cleanup "$env:USERPROFILE\.claude\skills\"
 Copy-Item -Recurse -Force skills\find-skills "$env:USERPROFILE\.claude\skills\"
 Copy-Item -Recurse -Force skills\capability-recommender "$env:USERPROFILE\.claude\skills\"
@@ -174,7 +174,7 @@ For personal skills fallback, delete only these directories from `~/.claude/skil
 - `implement`
 - `diagnose`
 - `review`
-- `verify`
+- `ship`
 - `cleanup`
 - `find-skills`
 - `capability-recommender`

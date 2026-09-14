@@ -357,9 +357,9 @@ const groups = {
   },
   fresh_evidence_gate: {
     id: "fresh_evidence_gate",
-    label: "verify owns ready proof",
+    label: "review owns ready proof",
     file: "methodContract",
-    tokens: ["Ready claim 必须由 `verify`", "fresh evidence", "unknown 不能算 ready"],
+    tokens: ["`review` combines substantive review and fresh evidence judgment", "fresh evidence", "unknown or unresolved blocking findings prevent the corresponding ready claim"],
   },
   artifact_freshness_contract: {
     id: "artifact_freshness_contract",

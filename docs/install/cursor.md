@@ -20,7 +20,7 @@ When a Cursor marketplace entry is available, install it from Cursor chat:
 Successful recognition means Cursor can see:
 
 - plugin: `harness-workflow`
-- bundled workflow skills: `harness-builder`, `brainstorm`, `plan`, `implement`, `diagnose`, `review`, `verify`, `cleanup`
+- bundled workflow skills: `harness-builder`, `brainstorm`, `plan`, `implement`, `diagnose`, `review`, `ship`, `cleanup`
 - bundled helper skills: `find-skills`, `capability-recommender`, `agent-instructions-maintainer`, `recovery-surface-builder`
 - rules that carry the Harness Workflow operating model
 

@@ -12,7 +12,6 @@ SCRIPT_COMMANDS = {
     "scripts/check-claude-code-install.mjs": "node scripts/check-claude-code-install.mjs",
     "scripts/check-cursor-install.mjs": "node scripts/check-cursor-install.mjs",
     "scripts/install-cursor.mjs": "node scripts/install-cursor.mjs --target . --dry-run",
-    "scripts/generate-skill-flow-html.mjs": "node scripts/generate-skill-flow-html.mjs",
 }
 
 
