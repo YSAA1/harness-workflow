@@ -2,7 +2,7 @@
 
 ## 项目概览
 
-本项目是 `harness-workflow` agent workflow plugin，把 Learn Harness Engineering 的方法落成一组可执行 workflow skills，并提供 Codex、Claude Code 和 Cursor 三套适配面。核心目标是让 agent 工作具备项目入口、状态协议、验证闸门、恢复路径和收尾纪律。
+本项目是 `harness-workflow` agent workflow plugin，把 Learn Harness Engineering 的方法落成一组可执行 workflow skills，并提供 Codex、Claude Code 和 Cursor 三套插件适配面，以及 Grok Build、ZCode、Kimi Code 等更多 CLI 的 skills 安装面。核心目标是让 agent 工作具备项目入口、状态协议、验证闸门、恢复路径和收尾纪律。
 
 ## 项目地图
 
@@ -17,7 +17,7 @@
 - `README.md`: 用户入口，说明 workflow 分层、使用场景和验证命令。
 - `CONTEXT.md`: 术语和边界澄清。
 - `docs/harness-method-contract.md`: Harness Method Contract，解释 C1-C10 稳定方法论。
-- `docs/install/`: Codex、Claude Code、Cursor 安装和识别说明。
+- `docs/install/`: Codex、Claude Code、Cursor、Grok Build、ZCode、Kimi Code 安装和识别说明。
 - `docs/specs/`: `brainstorm` 默认 Spec 产物目录，允许多份独立 Spec。
 - `docs/plans/`: `plan` 默认 Executable Plan 产物目录，允许多份独立计划和恢复记录。
 - `docs/prd/`: 历史 PRD / 旧本地需求文档；不要作为新 Spec 或 Plan 的默认写入面。

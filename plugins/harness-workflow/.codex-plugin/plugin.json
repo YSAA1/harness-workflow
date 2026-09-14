@@ -1,6 +1,6 @@
 {
   "name": "harness-workflow",
-  "version": "0.4.0+codex.20260914000000",
+  "version": "0.4.1+codex.20260914120000",
   "description": "Practical Codex workflow skills for Harness Builder, Spec, Executable Plan, scoped implementation, fresh verification, review, Knowledge Cleanup, helper skills, and helper skill discovery.",
   "author": {
     "name": "harness-workflow maintainers"
