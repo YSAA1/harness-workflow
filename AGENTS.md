@@ -12,12 +12,9 @@
 - `CONTEXT.md`: 术语和边界澄清。
 - `docs/harness-method-contract.md`: Harness Method Contract，解释 C1-C10 稳定方法论。
 - `docs/install.md`: 统一安装指南（skills.sh、Claude Code 插件路径、Grok/ZCode/Kimi 手动拷贝）。
-- `docs/specs/`: `brainstorm` 默认 Spec 产物目录，允许多份独立 Spec。
-- `docs/plans/`: `plan` 默认 Executable Plan 产物目录，允许多份独立计划和恢复记录。
-- `docs/prd/`: 历史 PRD / 旧本地需求文档；不要作为新 Spec 或 Plan 的默认写入面。
+- `docs/specs/`: `brainstorm` 默认 Spec 产物目录，允许多份独立 Spec（目录按需重建）。
+- `docs/plans/`: `plan` 默认 Executable Plan 产物目录，允许多份独立计划和恢复记录（目录按需重建）。
 - `docs/adr/`: 架构决策记录。
-- `docs/tutorials/`: 使用教程和指南。
-- `docs/integrations/`: 可选外部工作流集成说明（如 SkillOpt）。
 - `.github/workflows/ci.yml`: GitHub Actions，运行结构检查与 Claude 插件可选校验。
 - `scripts/check-plugin.mjs`: 仓库结构与安装面一致性的快速验证脚本。
 - `scripts/agent/check.sh`: agent-facing 快速验证入口，串联默认结构检查。

@@ -130,7 +130,7 @@ if (!exists("docs/install.md")) {
 }
 
 // Stale-token scan covers every tracked live .md; historical evidence dirs are exempt.
-const historicalPrefixes = [".harness/", "docs/plans/", "docs/prd/", "docs/specs/", "docs/reviews/", "docs/research/", "docs/skillopt/", "docs/plugin-eval/", "docs/skill-audit/"];
+const historicalPrefixes = [".harness/"];
 let trackedFiles = [];
 try {
   trackedFiles = execSync("git ls-files", { cwd: root, encoding: "utf8" }).split("\n").filter(Boolean);

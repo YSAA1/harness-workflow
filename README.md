@@ -82,7 +82,7 @@ Harness audit:      harness-builder -> review -> cleanup
 - Keep one authoritative entry per task/track. Existing trackers do not need a duplicate `.harness` directory.
 - Update only affected docs; keep evidence and unrelated changes. No-drift cleanup can make zero edits.
 
-The stable C1–C10 contract is in [Harness Method Contract](docs/harness-method-contract.md). The [2026-09-07 audit](docs/reviews/2026-09-07--astra-workflow-audit.md) records the rationale and verification limits.
+The stable C1–C10 contract is in [Harness Method Contract](docs/harness-method-contract.md).
 
 ## Development and verification
 
@@ -94,7 +94,7 @@ bash scripts/agent/check.sh
 python -B skills/harness-builder/tests/test_scripts.py
 ```
 
-These checks establish packaging and specific validator behavior, not a benchmark of model task quality. No default MCP or hooks are installed. Historical plans/evaluations remain versioned evidence, not current workflow requirements. See THIRD_PARTY_NOTICES.md for attribution.
+These checks establish packaging and specific validator behavior, not a benchmark of model task quality. No default MCP or hooks are installed. See THIRD_PARTY_NOTICES.md for attribution.
 
 ## Documentation
 
@@ -103,7 +103,6 @@ These checks establish packaging and specific validator behavior, not a benchmar
 | [Harness Method Contract](docs/harness-method-contract.md) | The stable C1–C10 method |
 | [CONTEXT](CONTEXT.md) | Domain terms and boundaries |
 | [Install guide](docs/install.md) | skills.sh install, Claude Code plugin path, manual copy |
-| [Tutorials](docs/tutorials/) | Usage walkthroughs |
 
 ## License
 

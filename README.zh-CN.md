@@ -82,7 +82,7 @@ harness 审计：  harness-builder -> review -> cleanup
 - 每条任务/轨道一个权威入口，允许多个独立任务 active；已有 tracker 不必新增 `.harness/`。
 - 仅整理本次影响的文档与代码遗留，保留复现与验收证据；没有漂移可以零修改结束。
 
-完整方法见 [C1–C10 方法合同](docs/harness-method-contract.md)，变更理由见 [全量审核](docs/reviews/2026-09-07--astra-workflow-audit.md)。
+完整方法见 [C1–C10 方法合同](docs/harness-method-contract.md)。
 
 ## 开发与验证
 
@@ -94,7 +94,7 @@ bash scripts/agent/check.sh
 python -B skills/harness-builder/tests/test_scripts.py
 ```
 
-结构检查不替代模型行为效果评测；不安装默认 MCP 或 hooks；历史计划仅作版本化证据。第三方归属见 THIRD_PARTY_NOTICES.md。
+结构检查不替代模型行为效果评测；不安装默认 MCP 或 hooks。第三方归属见 THIRD_PARTY_NOTICES.md。
 
 ## 文档
 
@@ -103,7 +103,6 @@ python -B skills/harness-builder/tests/test_scripts.py
 | [方法合同](docs/harness-method-contract.md) | 稳定的 C1–C10 方法 |
 | [CONTEXT](CONTEXT.md) | 领域术语与边界 |
 | [安装指南](docs/install.md) | skills.sh 安装、Claude Code 插件路径、手动拷贝 |
-| [教程](docs/tutorials/) | 使用 walkthrough |
 
 ## 许可
 
