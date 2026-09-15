@@ -41,7 +41,6 @@ Recovery options: none, lightweight, harness, feature-list, existing. Only harne
 
 | Skill | Responsibility |
 | --- | --- |
-| `agent-instructions-maintainer` | Agent Instructions Maintainer — durable rule audit/repair |
 | `brainstorm` | Material design choices / focused Spec |
 | `capability-recommender` | Capability Recommender — read-only capability selection |
 | `cleanup` | Task-scoped Knowledge Cleanup |
@@ -50,6 +49,6 @@ Recovery options: none, lightweight, harness, feature-list, existing. Only harne
 | `harness-builder` | Cross-surface workbench coordination |
 | `implement` | Scoped changes and proportional verification |
 | `plan` | Execution dependencies / optional durable plan |
-| `recovery-surface-builder` | Recovery Surface Builder — existing or selected backend |
 | `review` | Review and evidence judgment |
 | `ship` | Orchestrates implement → review → cleanup for authorized delivery |
+| `writing-for-agents` | Writing for Agents — write & maintain skills, durable instructions, recovery/state surfaces |

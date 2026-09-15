@@ -23,4 +23,4 @@ description: "针对已确认的工具或工作流缺口推荐 skills、hooks、
 
 - 只读推荐已完成：结束。
 - 已授权的安装/整合：对应安装工具或 `harness-builder`。
-- 指令问题：`agent-instructions-maintainer`；恢复记录问题：`recovery-surface-builder`。
+- 指令或恢复面问题：`writing-for-agents`。

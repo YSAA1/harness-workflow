@@ -59,8 +59,7 @@ Claude Code 也可以走托管插件：
 | harness-builder | 跨入口、恢复、验证和配置缺口整合 |
 | find-skills | 明确技能缺口的定向发现 |
 | capability-recommender | 只读能力选型 |
-| agent-instructions-maintainer | 持久指令审计、删减和修订 |
-| recovery-surface-builder | 创建/修复最小恢复入口 |
+| writing-for-agents | 写并维护 agent 消费的面：skills、持久指令、恢复/状态面 |
 
 典型路径：
 

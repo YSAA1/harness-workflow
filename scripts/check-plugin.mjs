@@ -11,7 +11,7 @@ const exists = (relativePath) => fs.existsSync(path.join(root, relativePath));
 const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "utf8");
 const readJson = (relativePath) => JSON.parse(read(relativePath));
 const workflowSkills = ["harness-builder", "brainstorm", "plan", "implement", "diagnose", "review", "ship", "cleanup"];
-const helperSkills = ["find-skills", "capability-recommender", "agent-instructions-maintainer", "recovery-surface-builder"];
+const helperSkills = ["find-skills", "capability-recommender", "writing-for-agents"];
 const activeSkills = [...workflowSkills, ...helperSkills];
 const removedSkills = ["bootstrap", "state-contract", "resume", "save-session", "verify"];
 const staleSurfaces = [".codex-plugin", ".cursor-plugin", ".cursor", "rules", "plugins", ".agents/plugins", "docs/install"];
@@ -50,7 +50,7 @@ const dirs = fs.readdirSync(path.join(root, "skills"), { withFileTypes: true })
 if (JSON.stringify(dirs) !== JSON.stringify([...activeSkills].sort())) {
   fail(`skill set mismatch, found: ${dirs.join(", ")}`);
 } else {
-  pass("skill set is exactly the 8 workflow lanes plus 4 helpers");
+  pass(`skill set is exactly the 8 workflow lanes plus ${helperSkills.length} helpers`);
 }
 
 const escapeRegExp = (text) => text.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
@@ -111,7 +111,7 @@ const publicDocs = [
   "docs/harness-method-contract.md",
   "skills/harness-builder/SKILL.md",
 ].map((file) => (exists(file) ? read(file) : "")).join("\n");
-for (const token of ["capability-recommender", "agent-instructions-maintainer", "recovery-surface-builder", "Helper Skill", "Capability Recommender", "Agent Instructions Maintainer", "Recovery Surface Builder", "C1", "C10", "fresh evidence", "Knowledge Cleanup"]) {
+for (const token of ["capability-recommender", "writing-for-agents", "Helper Skill", "Capability Recommender", "Writing for Agents", "C1", "C10", "fresh evidence", "Knowledge Cleanup"]) {
   if (!publicDocs.includes(token)) fail(`public docs missing helper/boundary token: ${token}`);
 }
 if (!failed) pass("public docs expose helper split and method tokens");

@@ -31,7 +31,7 @@
 ## 项目铁律
 
 - 这是 skills 仓库；安装面以 skills.sh 为主、Claude Code 插件为辅；所有改动必须保持 `README.md`（含 zh-CN）、`docs/install.md`、`.claude-plugin/`、`docs/harness-method-contract.md` 和 `skills/*/SKILL.md` 之间语义一致。
-- Active workflow skills 只有 `harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`ship`、`cleanup`；`verify` 只是 `review` 的历史触发词别名，不再是独立 skill；`find-skills`、`capability-recommender`、`agent-instructions-maintainer`、`recovery-surface-builder` 是辅助 skill，不是额外 workflow lane。
+- Active workflow skills 只有 `harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`ship`、`cleanup`；`verify` 只是 `review` 的历史触发词别名，不再是独立 skill；`find-skills`、`capability-recommender`、`writing-for-agents` 是辅助 skill，不是额外 workflow lane。
 - `AGENTS.md` 只做薄入口（T1）；临时计划、会话摘要、active slice 和当前任务 plan/Spec 路径不要写进这里。
 - 本插件仓库使用 `.harness/`；生成到目标项目时按所选 backend 复用恢复入口，不强制迁移已有系统。
 - `harness-builder` 是 canonical 项目 harness skill；"bootstrap" 只能作为历史别名或触发词出现。
@@ -68,7 +68,7 @@ Selected recovery surface: `harness`（`.harness/` 目录）
 
 - 修改 skill 行为：先读对应 `skills/<skill>/SKILL.md`，再按需读同目录 `references/`。
 - 修改 harness builder：先读 `skills/harness-builder/SKILL.md`（总控 / Helper routing），再按需读 `references/recommendation_matrix_policy.md`、`install_policy.md`、`decision_matrix.md`。
-- 修改 recovery surface 语义：读 `skills/recovery-surface-builder/SKILL.md` 与 `skills/recovery-surface-builder/references/recovery_surface_policy.md`。
+- 修改 recovery surface 语义：读 `skills/writing-for-agents/SKILL.md` 与 `skills/writing-for-agents/references/recovery_surface_policy.md`。
 - 修改验证、ready 或 evidence 规则：读 `skills/review/SKILL.md` 和 `docs/harness-method-contract.md`。
 - 修改安装面、manifest 或能力声明：同步检查 `.claude-plugin/`、`README.md`/`README.zh-CN.md`、`docs/install.md` 和 `scripts/check-plugin.mjs`。
 

@@ -31,7 +31,7 @@ Claude Code 也可以走官方 marketplace 托管插件（只读、自动更新�
 git clone https://github.com/YSAA1/harness-workflow.git
 cd harness-workflow
 mkdir -p ~/.agents/skills
-for s in harness-builder brainstorm plan implement diagnose review ship cleanup find-skills capability-recommender agent-instructions-maintainer recovery-surface-builder; do
+for s in harness-builder brainstorm plan implement diagnose review ship cleanup find-skills capability-recommender writing-for-agents; do
   cp -r "skills/$s" ~/.agents/skills/
 done
 ```
@@ -46,7 +46,7 @@ done
 
 ## 安装后识别验证
 
-1. 问 agent「列出当前可用的 workflow skills」，应出现 8 个车道技能与 4 个 helper。
+1. 问 agent「列出当前可用的 workflow skills」，应出现 8 个车道技能与 3 个 helper。
 2. 测试提示语：`Use Harness Workflow to plan a scoped implementation.`
 3. 需要跨会话恢复面时，在目标项目里让 `harness-builder` 按需初始化 `.harness/`，不默认创建。
 
@@ -64,5 +64,4 @@ done
 | `cleanup` | 任务收尾整理：文档、代码遗留、恢复状态 |
 | `find-skills` | 明确技能缺口的定向发现（含第三方技能安全审计） |
 | `capability-recommender` | 只读能力选型推荐 |
-| `agent-instructions-maintainer` | AGENTS.md / CLAUDE.md / Cursor rules 审计与修订 |
-| `recovery-surface-builder` | 跨会话恢复入口的创建与修复 |
+| `writing-for-agents` | 写并维护 agent 消费的面：skills、持久指令、恢复/状态面 |

@@ -1,3 +1,3 @@
 # Recovery policy reference
 
-See [canonical policy](../../recovery-surface-builder/references/recovery_policy.md). Read only when this topic is relevant; do not duplicate or override that policy.
+See [canonical policy](../../writing-for-agents/references/recovery_policy.md). Read only when this topic is relevant; do not duplicate or override that policy.

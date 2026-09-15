@@ -20,8 +20,7 @@ description: "修复或建立跨入口、恢复、验证和能力配置的项目
 
 | 缺口 | Helper Skill |
 | --- | --- |
-| AGENTS / CLAUDE / Cursor 持久指令 | `agent-instructions-maintainer`（Agent Instructions Maintainer） |
-| 恢复 backend、状态、证据入口 | `recovery-surface-builder`（Recovery Surface Builder） |
+| 持久指令与恢复/状态面（AGENTS / CLAUDE / Cursor rules、work index、plan、state） | `writing-for-agents`（Writing for Agents） |
 | 能力选型 | `capability-recommender`（Capability Recommender，只读） |
 | 明确需要寻找技能 | `find-skills` |
 

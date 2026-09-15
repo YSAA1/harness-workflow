@@ -59,8 +59,7 @@ Agents not listed on skills.sh (Grok Build, ZCode, Kimi Code) read the same open
 | `harness-builder` | Cross-surface workbench coordination |
 | `find-skills` | Targeted reusable skill discovery |
 | `capability-recommender` | Capability Recommender — read-only capability selection |
-| `agent-instructions-maintainer` | Agent Instructions Maintainer — durable rule audit/repair |
-| `recovery-surface-builder` | Recovery Surface Builder — existing or selected backend |
+| `writing-for-agents` | Writing for Agents — write & maintain skills, durable instructions, recovery/state surfaces |
 
 Typical flows:
 

@@ -5,4 +5,4 @@
 - 重复验证：检查仍适用时复用，不因换技能或 commit 重跑。
 - 权威漂移：每个轨道保留一个执行入口，独立轨道不是冲突。
 - 过度整理：仅修本任务造成的 drift，不删除未知归属或验收所需文件。
-- 指令维护：窄 AGENTS/CLAUDE/rules 修复用 agent-instructions-maintainer，必要时同步已有恢复入口，不默认全工作台改造。
+- 指令维护：窄 AGENTS/CLAUDE/rules 或恢复面修复用 writing-for-agents，必要时同步已有恢复入口，不默认全工作台改造。

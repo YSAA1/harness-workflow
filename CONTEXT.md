@@ -8,7 +8,7 @@
 - Review: substantive review plus evidence judgment. Verify is a trigger alias, not a second lane.
 - Ship: orchestration that chains implement, review and cleanup for one authorized task; it is not an extra gate.
 - Knowledge Cleanup: task-scoped document, code and artifact reconciliation, including blocked handoffs.
-- Helper Skill: capability-recommender (Capability Recommender), agent-instructions-maintainer (Agent Instructions Maintainer), recovery-surface-builder (Recovery Surface Builder) and find-skills.
+- Helper Skill: capability-recommender (Capability Recommender), writing-for-agents (Writing for Agents) and find-skills.
 - Harness Recommendation Matrix: optional table for cross-surface gaps; recommendation priority is not action authorization.
 
 Stable behavior: docs/harness-method-contract.md. Historical plans and evaluation results describe their recorded version, not current instructions.
