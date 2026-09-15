@@ -115,9 +115,8 @@ node scripts/check-skillopt-eval.mjs docs/skillopt/runs/latest/summary.json
 node scripts/run-skillopt-eval.mjs --skill implement --skill-file skills/implement/SKILL.md --suite canary
 node scripts/check-skillopt-eval.mjs docs/skillopt/runs/latest/summary.json
 node scripts/check-plugin.mjs
-node scripts/check-claude-code-install.mjs
-node scripts/check-cursor-install.mjs
-node scripts/install-cursor.mjs --target . --dry-run
+bash scripts/agent/check.sh
+python -B skills/harness-builder/tests/test_scripts.py
 ```
 
 Passing these checks does not make the candidate correct and failure does not automatically block a repository PR. Use them as review evidence for a SkillOpt experiment branch. Future online trajectory suites should also keep a holdout split. SkillOpt may optimize against train and validation cases, but final review must check holdout cases that were not used to tune the skill.

@@ -361,6 +361,7 @@ claude plugin install harness-workflow@harness-workflow
 ```bash
 node scripts/check-plugin.mjs
 bash scripts/agent/check.sh
+python -B skills/harness-builder/tests/test_scripts.py
 ```
 
 ## 图片发布表

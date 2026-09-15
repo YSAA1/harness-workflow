@@ -88,7 +88,6 @@ Selected recovery surface: `harness`（`.harness/` 目录）
 node scripts/check-plugin.mjs
 ```
 
-
 在 Windows PowerShell 中运行命令时，若用户 profile 因 execution policy 报错但目标命令成功，要把 profile 报错作为环境噪声说明，不把它当成项目验证失败。
 
 ## Definition of Done

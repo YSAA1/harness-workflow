@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
+import { execSync } from "node:child_process";
 
 const root = process.cwd();
 let failed = false;
@@ -52,13 +53,15 @@ if (JSON.stringify(dirs) !== JSON.stringify([...activeSkills].sort())) {
   pass("skill set is exactly the 8 workflow lanes plus 4 helpers");
 }
 
+const escapeRegExp = (text) => text.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
 for (const skill of activeSkills) {
   const file = `skills/${skill}/SKILL.md`;
   if (!exists(file)) { fail(`missing skill ${skill}`); continue; }
   const body = read(file);
-  if (!body.startsWith("---")) fail(`${skill} missing YAML frontmatter`);
-  if (!new RegExp(`name:\\s*["']?${skill.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}["']?`, "m").test(body)) fail(`${skill} frontmatter name mismatch`);
-  const description = body.match(/^description:\s*(.+)$/m)?.[1] ?? "";
+  const frontmatter = body.match(/^---\n([\s\S]*?)\n---/);
+  if (!frontmatter) { fail(`${skill} missing YAML frontmatter`); continue; }
+  if (!new RegExp(`^name:\\s*["']?${escapeRegExp(skill)}["']?\\s*$`, "m").test(frontmatter[1])) fail(`${skill} frontmatter name mismatch`);
+  const description = frontmatter[1].match(/^description:\s*(.+)$/m)?.[1] ?? "";
   if (description.replace(/^["']|["']$/g, "").length < 10) fail(`${skill} missing usable description`);
 }
 for (const skill of removedSkills) {
@@ -95,6 +98,7 @@ try {
   if (!/^\d+\.\d+\.\d+$/.test(plugin.version)) fail(`claude plugin version must be plain semver: ${plugin.version}`);
   const market = readJson(".claude-plugin/marketplace.json");
   if (market.plugins?.[0]?.source !== "./") fail("marketplace plugin source must be ./ (repo root)");
+  if (market.plugins?.[0]?.name !== plugin.name) fail("marketplace plugin name must match plugin.json name");
   if (!failed) pass("Claude Code plugin manifest and marketplace parse");
 } catch (error) {
   fail(`Claude Code plugin manifest check failed: ${error.message}`);
@@ -125,16 +129,35 @@ if (!exists("docs/install.md")) {
   if (!failed) pass("install doc covers skills.sh command and full skill list");
 }
 
-for (const file of ["README.md", "README.zh-CN.md", "AGENTS.md", "docs/install.md"]) {
-  if (!exists(file)) { fail(`missing public file: ${file}`); continue; }
+// Stale-token scan covers every tracked live .md; historical evidence dirs are exempt.
+const historicalPrefixes = [".harness/", "docs/plans/", "docs/prd/", "docs/specs/", "docs/reviews/", "docs/research/", "docs/skillopt/", "docs/plugin-eval/", "docs/skill-audit/"];
+let trackedFiles = [];
+try {
+  trackedFiles = execSync("git ls-files", { cwd: root, encoding: "utf8" }).split("\n").filter(Boolean);
+} catch {
+  trackedFiles = [];
+}
+const liveMarkdown = (trackedFiles.length ? trackedFiles : listFiles(".")).filter(
+  (file) => file.endsWith(".md")
+    && !historicalPrefixes.some((prefix) => file.startsWith(prefix))
+    && !file.split("/")[0].startsWith("."),
+);
+for (const file of liveMarkdown) {
+  if (!exists(file)) continue;
   const body = read(file);
   for (const token of staleTokens) {
     if (body.includes(token)) fail(`${file} still contains stale token: ${token}`);
   }
 }
-for (const token of ["npx skills", "YSAA1/harness-workflow", "docs/install.md", "node scripts/check-plugin.mjs"]) {
-  if (!read("README.md").includes(token)) fail(`README.md missing token: ${token}`);
-  if (!read("README.zh-CN.md").includes(token)) fail(`README.zh-CN.md missing token: ${token}`);
+if (!failed) pass(`no stale install tokens across ${liveMarkdown.length} live markdown files`);
+
+for (const file of ["README.md", "README.zh-CN.md"]) {
+  if (!exists(file)) { fail(`missing public file: ${file}`); continue; }
+  const body = read(file);
+  if (body.includes("|`n") || body.includes("`n|")) fail(`${file} contains escaped newline residue inside Markdown tables`);
+  for (const token of ["npx skills", "YSAA1/harness-workflow", "docs/install.md", "node scripts/check-plugin.mjs"]) {
+    if (!body.includes(token)) fail(`${file} missing token: ${token}`);
+  }
 }
 if (!failed) pass("READMEs point at the skills.sh install surface");
 

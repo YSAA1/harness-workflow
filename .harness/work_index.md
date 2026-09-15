@@ -27,4 +27,5 @@ Status values: `active`, `blocked`, `complete`, `abandoned`
 
 - 新任务：新增当前轨道行，不改变其他轨道状态；同轨道换轨时更新旧入口
 - 不要删除历史行
+- 历史行的 primary artifact 可能已被后续重构合并或删除（如 `docs/install/*` 已并入 `docs/install.md`）；保留原路径作为时间点记录
 - 会话启动先读本表，再打开 `active` 行的 primary artifact
