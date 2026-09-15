@@ -12,6 +12,11 @@ Enter Spec drafting only after the Grill Gate passes, any assumption batch is co
 6. **Optional durable summary** — only if the selected recovery surface requires it: Spec path, goals/non-goals, constraints, verification strategy, capability gaps, rejected options, residual risks. Do not default to `.harness/` runtime writes or paste the full Spec into state logs.
 7. **User review gate** — stop and ask for approval before `plan` or implementation.
 
+## Thin Spec（短路径）
+
+目标、边界与验收已由既有材料或用户直接给出时，Spec 只记录增量：新决策、与既有合同的差异、验证策略。不复述已知上下文，不制造 PRD 式铺陈。
+改动可用一句话描述且无验证争议时，直接建议跳过 Spec/plan 转 `implement`，并在输出中说明跳过理由；用户仍要 Spec 时走完整路径。
+
 ## Review Gate Message
 
 ```text
