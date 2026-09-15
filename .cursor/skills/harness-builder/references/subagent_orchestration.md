@@ -4,3 +4,4 @@
 一次委派不要求生成持久子代理配置或 manifest；只有用户要求可复用配置时才记录。
 主代理整合结论，保护共享工作树，避免多个代理同时修改同一文件。
 subagent 并行适合调研、审阅类只读任务；紧耦合编辑类并行用 git worktree 隔离工作目录，不用多个 agent 共写同一棵树。
+持久并行泳道可用 cli-delegate 的 `--worktree-name`（run/resume 续接同一 lane）；未安装时退化为普通 git worktree。
