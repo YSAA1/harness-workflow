@@ -19,6 +19,7 @@
 | 013 | 新增 Grok/ZCode/Kimi 安装文档 + README 重写 + LICENSE | complete | `docs/install/kimi.md` | 2026-09-14 |
 | 014 | 插件整合优化前置调研（harness 开发技巧 2025-2026） | complete | `docs/research/2026-09-15--agent-harness-landscape-research.md` | 2026-09-15 |
 | 015 | skill 协议补强批A/批B（证据纪律、薄路径、安全审计、并行指引） | complete | （本 batch；见 `.harness/state.md`） | 2026-09-15 |
+| 016 | 重构安装面：skills.sh 多端可选安装 + cli-delegate 软指针 | complete | `docs/install.md` | 2026-09-15 |
 
 Status values: `active`, `blocked`, `complete`, `abandoned`
 

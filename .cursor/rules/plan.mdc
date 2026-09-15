@@ -1,9 +1,0 @@
----
-description: Use plan only for its canonical skill scope
-globs:
-alwaysApply: false
----
-
-# plan
-
-Read [canonical skill](../skills/plan/SKILL.md) when its scope matches the task. This adapter adds no separate workflow, approval or verification gate.

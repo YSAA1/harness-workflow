@@ -1,5 +1,0 @@
-interface:
-  display_name: harness-builder
-  short_description: Repair only the missing parts of the agent workbench
-policy:
-  allow_implicit_invocation: false

@@ -1,9 +1,0 @@
----
-description: Use implement only for its canonical skill scope
-globs:
-alwaysApply: false
----
-
-# implement
-
-Read [canonical skill](../skills/implement/SKILL.md) when its scope matches the task. This adapter adds no separate workflow, approval or verification gate.

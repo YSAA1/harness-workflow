@@ -1,9 +1,0 @@
----
-description: Use diagnose only for its canonical skill scope
-globs:
-alwaysApply: false
----
-
-# diagnose
-
-Read [canonical skill](../skills/diagnose/SKILL.md) when its scope matches the task. This adapter adds no separate workflow, approval or verification gate.

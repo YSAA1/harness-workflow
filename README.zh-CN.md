@@ -6,13 +6,10 @@
 
 [![CI](https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml/badge.svg)](https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Plugin](https://img.shields.io/badge/plugin-v0.4.1-blue)](.codex-plugin/plugin.json)
 
 [English](README.md) · [简体中文](README.zh-CN.md) · [项目仓库](https://github.com/YSAA1/harness-workflow)
 
-![Harness Workflow](docs/assets/readme/harness-workflow-icon.png)
-
-支持 **Codex · Claude Code · Cursor · Grok Build · ZCode · Kimi Code** 以及任何读取开放 `SKILL.md` 技能格式的 agent。
+**一条命令装进 20+ agent** —— 兼容任何读取开放 `SKILL.md` 技能格式的 agent。
 
 </div>
 
@@ -29,49 +26,24 @@ agent 的失败多数在流程而非智力：跨会话丢上下文、未验证�
 
 ## 安装
 
-### Codex
-
-```text
-codex plugin marketplace add YSAA1/harness-workflow
-codex plugin add harness-workflow@harness-workflow
-```
-
-详见 [Codex 安装](docs/install/codex.md)。
-
-### Claude Code
-
-以用户级插件从本地检出安装，或把单个技能拷入 `~/.claude/skills/`。详见 [Claude Code 安装](docs/install/claude-code.md)。
-
-### Cursor
-
-Cursor 插件面是项目本地的：适配器安装 `.cursor/rules/` 与 `.cursor/skills/`，不安装 Codex 插件，也不使用旧式 `.cursorrules`。
-
-```text
-node scripts/install-cursor.mjs --target <project> --dry-run
-```
-
-详见 [Cursor 安装](docs/install/cursor.md)。
-
-### Grok Build / ZCode / Kimi Code
-
-三者都读取开放的 `SKILL.md` 格式，一份共享拷贝即可服务全部 CLI：
+一条命令，交互选择目标 agent 与要装的技能（基于 [skills.sh](https://skills.sh)）：
 
 ```bash
-git clone https://github.com/YSAA1/harness-workflow.git
-cd harness-workflow
-mkdir -p ~/.agents/skills
-for s in harness-builder brainstorm plan implement diagnose review ship cleanup find-skills capability-recommender agent-instructions-maintainer recovery-surface-builder; do
-  cp -r "skills/$s" ~/.agents/skills/
-done
+npx skills@latest add YSAA1/harness-workflow
 ```
 
-各端细节（用户级目录、项目级选项、验证提示语）：
+- 支持 20+ agent：Claude Code、Cursor、Codex、GitHub Copilot、Gemini CLI、OpenCode、Goose、Windsurf、Cline、AMP、Roo、Trae、VS Code、Zed 等。
+- 整套装或只挑几个技能（例如只装 `review` + `cleanup`）；项目级、用户级均可。
+- 更新用 `npx skills update`，不做任何背后的自动变更。
 
-- [Grok Build](docs/install/grok.md) —— `~/.grok/skills/` 或共享 `~/.agents/skills/`
-- [ZCode](docs/install/zcode.md) —— `~/.zcode/skills/` 或共享 `~/.agents/skills/`
-- [Kimi Code](docs/install/kimi.md) —— `~/.kimi/skills/`、项目 `.kimi/skills/` 或共享 `~/.agents/skills/`
+Claude Code 也可以走托管插件：
 
-`git pull` 后重新拷贝即更新；删除对应技能目录即卸载。
+```text
+/plugin marketplace add YSAA1/harness-workflow
+/plugin install harness-workflow@harness-workflow
+```
+
+未列入 skills.sh 的 CLI（Grok Build、ZCode、Kimi Code）读取同一开放格式：把 `skills/<name>` 拷入 `~/.agents/skills/` 或对应 CLI 的技能目录。完整指南见[安装指南](docs/install.md)。
 
 ## 工作流
 
@@ -113,13 +85,11 @@ harness 审计：  harness-builder -> review -> cleanup
 
 ## 开发与验证
 
-编辑 `skills/` 与 `rules/` 源码后，同步打包插件和 Cursor 镜像再验证：
+编辑 `skills/` 源码后运行结构验证：
 
 ```text
 node scripts/check-plugin.mjs
-node scripts/check-claude-code-install.mjs
-node scripts/check-cursor-install.mjs
-node scripts/install-cursor.mjs --target . --dry-run
+bash scripts/agent/check.sh
 python -B skills/harness-builder/tests/test_scripts.py
 ```
 
@@ -131,7 +101,7 @@ python -B skills/harness-builder/tests/test_scripts.py
 | --- | --- |
 | [方法合同](docs/harness-method-contract.md) | 稳定的 C1–C10 方法 |
 | [CONTEXT](CONTEXT.md) | 领域术语与边界 |
-| 安装指南 | [Codex](docs/install/codex.md) · [Claude Code](docs/install/claude-code.md) · [Cursor](docs/install/cursor.md) · [Grok Build](docs/install/grok.md) · [ZCode](docs/install/zcode.md) · [Kimi Code](docs/install/kimi.md) |
+| [安装指南](docs/install.md) | skills.sh 安装、Claude Code 插件路径、手动拷贝 |
 | [教程](docs/tutorials/) | 使用 walkthrough |
 
 ## 许可

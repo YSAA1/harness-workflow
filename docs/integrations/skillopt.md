@@ -98,10 +98,7 @@ Candidate patches may inspect:
 Candidate patches must not directly edit:
 
 - `AGENTS.md`
-- `.codex-plugin/**`
 - `.claude-plugin/**`
-- `.cursor-plugin/**`
-- `plugins/**`
 - user-level config, hooks, MCP config, or secrets
 
 ## Optional deterministic comparison

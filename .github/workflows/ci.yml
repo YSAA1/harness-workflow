@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   checks:
-    name: Plugin checks
+    name: Structure checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,11 +23,8 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Check Codex plugin
+      - name: Check repo structure and install surface
         run: node scripts/check-plugin.mjs
-
-      - name: Check Claude Code plugin
-        run: node scripts/check-claude-code-install.mjs
 
       - name: Validate Claude Code plugin when CLI is available
         run: |
@@ -37,15 +34,11 @@ jobs:
             echo "claude CLI not installed; skipped plugin validator"
           fi
 
-      - name: Check Cursor adapter
-        run: node scripts/check-cursor-install.mjs
-
-      - name: Dry-run Cursor project install
-        run: node scripts/install-cursor.mjs --target . --dry-run
-
       - name: Check README assets
         run: |
-          test -f docs/assets/readme/harness-workflow-icon.png
           test -f docs/assets/readme/harness-workflow-figure.png
           test -f docs/assets/readme/harness-fit-figure.png
-          test -f .cursor/skills/find-skills/SKILL.md
+          test -f skills/find-skills/SKILL.md
+
+      - name: Run harness-builder script tests
+        run: python3 -B skills/harness-builder/tests/test_scripts.py

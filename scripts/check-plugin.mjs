@@ -2,31 +2,27 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const cwd = process.cwd();
-const root = fs.existsSync(path.join(cwd, ".codex-plugin", "plugin.json")) ? cwd : path.resolve(cwd, "plugins/harness-workflow");
-const packagedRoot = path.join(root, "plugins", "harness-workflow");
+const root = process.cwd();
 let failed = false;
 const fail = (message) => { failed = true; console.error(`FAIL: ${message}`); };
 const pass = (message) => console.log(`PASS: ${message}`);
 const exists = (relativePath) => fs.existsSync(path.join(root, relativePath));
-const packageExists = (relativePath) => fs.existsSync(path.join(packagedRoot, relativePath));
 const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "utf8");
-const packageRead = (relativePath) => fs.readFileSync(path.join(packagedRoot, relativePath), "utf8");
 const readJson = (relativePath) => JSON.parse(read(relativePath));
-const skillPath = (skill) => `skills/${skill}/SKILL.md`;
 const workflowSkills = ["harness-builder", "brainstorm", "plan", "implement", "diagnose", "review", "ship", "cleanup"];
 const helperSkills = ["find-skills", "capability-recommender", "agent-instructions-maintainer", "recovery-surface-builder"];
 const activeSkills = [...workflowSkills, ...helperSkills];
 const removedSkills = ["bootstrap", "state-contract", "resume", "save-session", "verify"];
-const researchAssets = [
-  "docs/integrations/autoresearch.md",
-  "skills/harness-builder/references/research_route_policy.md",
-  "skills/harness-builder/templates/research_route",
-  "skills/harness-builder/templates/hooks/research_branch_push_guard.py.j2",
-  "skills/harness-builder/templates/hooks/research_iteration_logger.py.j2",
+const staleSurfaces = [".codex-plugin", ".cursor-plugin", ".cursor", "rules", "plugins", ".agents/plugins", "docs/install"];
+const staleTokens = [
+  "codex plugin marketplace add",
+  "install-cursor.mjs",
+  "check-cursor-install.mjs",
+  "check-claude-code-install.mjs",
+  "docs/install/codex.md",
 ];
-const listFiles = (baseRoot, relativeDir) => {
-  const absoluteDir = path.join(baseRoot, relativeDir);
+const listFiles = (relativeDir) => {
+  const absoluteDir = path.join(root, relativeDir);
   if (!fs.existsSync(absoluteDir)) return [];
   const out = [];
   const walk = (absoluteCurrent, relativeCurrent) => {
@@ -41,83 +37,37 @@ const listFiles = (baseRoot, relativeDir) => {
   return out.sort();
 };
 
-if (!fs.existsSync(root)) {
-  fail("plugin root is missing");
+if (!exists("skills") || !exists("AGENTS.md")) {
+  fail("repo root is missing skills/ or AGENTS.md");
   process.exit(1);
 }
 
-try {
-  const manifest = readJson(".codex-plugin/plugin.json");
-  if (manifest.name !== "harness-workflow") fail("manifest name must be harness-workflow");
-  if (manifest.skills !== "./skills/") fail("manifest skills path must be ./skills/");
-  const capabilities = manifest.interface?.capabilities ?? [];
-  if (JSON.stringify(capabilities) !== JSON.stringify(["Read", "Write"])) fail("manifest capabilities must be exactly Read and Write");
-  for (const prompt of manifest.interface?.defaultPrompt ?? []) {
-    if (prompt.length > 128) fail(`manifest defaultPrompt is too long: ${prompt}`);
-  }
-  pass("Codex manifest parses and points at skills");
-} catch (error) {
-  fail(`manifest JSON is invalid: ${error.message}`);
-}
-
-try {
-  const codex = readJson(".codex-plugin/plugin.json");
-  const claude = readJson(".claude-plugin/plugin.json");
-  const cursor = readJson(".cursor-plugin/plugin.json");
-  if (codex.version !== claude.version || codex.version !== cursor.version) fail("public surface versions drifted");
-  else pass(`public surface versions match: ${codex.version}`);
-} catch (error) {
-  fail(`public surface version check failed: ${error.message}`);
-}
-
-for (const file of [".agents/plugins/marketplace.json", ".claude-plugin/marketplace.json", ".cursor-plugin/marketplace.json"]) {
-  if (!exists(file)) fail(`missing marketplace manifest: ${file}`);
-  else {
-    try { JSON.parse(read(file)); pass(`${file} parses`); }
-    catch (error) { fail(`${file} JSON is invalid: ${error.message}`); }
-  }
-}
-
-if (!fs.existsSync(packagedRoot)) {
-  fail("missing packaged plugin root: plugins/harness-workflow");
+const dirs = fs.readdirSync(path.join(root, "skills"), { withFileTypes: true })
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => entry.name)
+  .sort();
+if (JSON.stringify(dirs) !== JSON.stringify([...activeSkills].sort())) {
+  fail(`skill set mismatch, found: ${dirs.join(", ")}`);
 } else {
-  for (const file of [
-    ".codex-plugin/plugin.json",
-    ".claude-plugin/plugin.json",
-    ".claude-plugin/marketplace.json",
-    ".cursor-plugin/plugin.json",
-    ".cursor-plugin/marketplace.json",
-  ]) {
-    if (!packageExists(file)) fail(`packaged plugin missing ${file}`);
-    else if (packageRead(file) !== read(file)) fail(`packaged plugin drifted from root file: ${file}`);
-  }
-  const rootSkillFiles = listFiles(root, "skills");
-  const packagedSkillFiles = listFiles(packagedRoot, "skills");
-  if (JSON.stringify(rootSkillFiles) !== JSON.stringify(packagedSkillFiles)) fail("packaged plugin skills have a different recursive file list from root skills");
-  for (const file of rootSkillFiles) {
-    const relativePath = `skills/${file}`;
-    if (packageExists(relativePath) && packageRead(relativePath) !== read(relativePath)) fail(`packaged plugin skill file drifted: ${relativePath}`);
-  }
-  if (!failed) pass("packaged plugin mirrors root manifests and skills");
+  pass("skill set is exactly the 8 workflow lanes plus 4 helpers");
 }
-
-if (exists(".mcp.json")) fail("plugin must not include default MCP config");
-if (exists("hooks/hooks.json")) fail("plugin must not include default hooks");
-if (exists(".codex/config.toml")) fail("plugin must not include user or project Codex config");
-if (!failed) pass("no default MCP/hooks/Codex config");
 
 for (const skill of activeSkills) {
-  if (!exists(skillPath(skill))) { fail(`missing skill ${skill}`); continue; }
-  const body = read(skillPath(skill));
+  const file = `skills/${skill}/SKILL.md`;
+  if (!exists(file)) { fail(`missing skill ${skill}`); continue; }
+  const body = read(file);
   if (!body.startsWith("---")) fail(`${skill} missing YAML frontmatter`);
   if (!new RegExp(`name:\\s*["']?${skill.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}["']?`, "m").test(body)) fail(`${skill} frontmatter name mismatch`);
-  if (!/^description:\s*\S/m.test(body)) fail(`${skill} missing description`);
+  const description = body.match(/^description:\s*(.+)$/m)?.[1] ?? "";
+  if (description.replace(/^["']|["']$/g, "").length < 10) fail(`${skill} missing usable description`);
 }
 for (const skill of removedSkills) {
-  if (exists(skillPath(skill))) fail(`removed skill still exposed: ${skill}`);
+  if (exists(`skills/${skill}/SKILL.md`)) fail(`removed skill still exposed: ${skill}`);
 }
-// A compatibility reference must resolve from its own directory, not the skill root.
-for (const file of listFiles(root, "skills").filter((file) => file.endsWith(".md"))) {
+if (!failed) pass("SKILL.md frontmatter, names and descriptions are valid");
+
+// Relative markdown links inside skills must resolve from their own file.
+for (const file of listFiles("skills").filter((file) => file.endsWith(".md"))) {
   const absolute = path.join(root, "skills", file);
   const body = fs.readFileSync(absolute, "utf8");
   for (const match of body.matchAll(/\[[^\]\n]*\]\(([^\s)]+)\)/g)) {
@@ -129,17 +79,28 @@ for (const file of listFiles(root, "skills").filter((file) => file.endsWith(".md
     }
   }
 }
-if (!failed) pass("active workflow and helper skill set is valid");
 
-for (const asset of researchAssets) {
-  if (exists(asset)) fail(`removed research asset still exists: ${asset}`);
-  if (packageExists(asset)) fail(`removed research asset still exists in packaged plugin: ${asset}`);
+for (const surface of staleSurfaces) {
+  if (exists(surface)) fail(`stale install surface still exists: ${surface}`);
+}
+if (!failed) pass("no stale three-platform plugin surfaces or mirrors");
+
+if (exists(".mcp.json")) fail("repo must not include default MCP config");
+if (exists("hooks/hooks.json")) fail("repo must not include default hooks");
+if (!failed) pass("no default MCP or hooks config");
+
+try {
+  const plugin = readJson(".claude-plugin/plugin.json");
+  if (plugin.name !== "harness-workflow") fail("claude plugin name must be harness-workflow");
+  if (!/^\d+\.\d+\.\d+$/.test(plugin.version)) fail(`claude plugin version must be plain semver: ${plugin.version}`);
+  const market = readJson(".claude-plugin/marketplace.json");
+  if (market.plugins?.[0]?.source !== "./") fail("marketplace plugin source must be ./ (repo root)");
+  if (!failed) pass("Claude Code plugin manifest and marketplace parse");
+} catch (error) {
+  fail(`Claude Code plugin manifest check failed: ${error.message}`);
 }
 
 const publicDocs = [
-  ".codex-plugin/plugin.json",
-  ".claude-plugin/plugin.json",
-  ".cursor-plugin/plugin.json",
   "README.md",
   "README.zh-CN.md",
   "CONTEXT.md",
@@ -149,26 +110,36 @@ const publicDocs = [
 for (const token of ["capability-recommender", "agent-instructions-maintainer", "recovery-surface-builder", "Helper Skill", "Capability Recommender", "Agent Instructions Maintainer", "Recovery Surface Builder", "C1", "C10", "fresh evidence", "Knowledge Cleanup"]) {
   if (!publicDocs.includes(token)) fail(`public docs missing helper/boundary token: ${token}`);
 }
-for (const token of ["autoresearch", "research_route", "Research Reset Policy", "Evidence Loop"]) {
-  if (publicDocs.includes(token)) fail(`public docs still contain removed research token: ${token}`);
-}
-if (!failed) pass("public docs expose helper split and omit removed research gate tokens");
+if (!failed) pass("public docs expose helper split and method tokens");
 
-const readme = read("README.md");
-for (const file of ["README.md", "README.zh-CN.md"]) {
+if (!exists("docs/install.md")) {
+  fail("missing docs/install.md");
+} else {
+  const installDoc = read("docs/install.md");
+  for (const token of ["npx skills", "YSAA1/harness-workflow"]) {
+    if (!installDoc.includes(token)) fail(`docs/install.md missing token: ${token}`);
+  }
+  for (const skill of activeSkills) {
+    if (!installDoc.includes(skill)) fail(`docs/install.md missing skill: ${skill}`);
+  }
+  if (!failed) pass("install doc covers skills.sh command and full skill list");
+}
+
+for (const file of ["README.md", "README.zh-CN.md", "AGENTS.md", "docs/install.md"]) {
+  if (!exists(file)) { fail(`missing public file: ${file}`); continue; }
   const body = read(file);
-  if (body.includes("|`n") || body.includes("`n|")) fail(`${file} contains escaped newline residue inside Markdown tables`);
+  for (const token of staleTokens) {
+    if (body.includes(token)) fail(`${file} still contains stale token: ${token}`);
+  }
 }
-for (const token of ["YSAA1/harness-workflow", "docs/install/codex.md", "codex plugin marketplace add", "node scripts/check-plugin.mjs", "capability-recommender", "agent-instructions-maintainer", "recovery-surface-builder"]) {
-  if (!readme.includes(token)) fail(`README missing token: ${token}`);
+for (const token of ["npx skills", "YSAA1/harness-workflow", "docs/install.md", "node scripts/check-plugin.mjs"]) {
+  if (!read("README.md").includes(token)) fail(`README.md missing token: ${token}`);
+  if (!read("README.zh-CN.md").includes(token)) fail(`README.zh-CN.md missing token: ${token}`);
 }
-const installDocs = ["docs/install/codex.md", "docs/install/claude-code.md", "docs/install/cursor.md"].map((file) => exists(file) ? read(file) : "").join("\n");
-for (const skill of activeSkills) {
-  if (!installDocs.includes(skill)) fail(`install docs missing skill: ${skill}`);
-}
+if (!failed) pass("READMEs point at the skills.sh install surface");
 
 const templates = ["skills/brainstorm/templates/spec.md", "skills/brainstorm/templates/spec.zh-CN.md"];
 for (const file of templates) if (!exists(file)) fail(`missing template ${file}`);
 
 if (failed) process.exit(1);
-pass("harness-workflow plugin check passed");
+pass("harness-workflow structure check passed");

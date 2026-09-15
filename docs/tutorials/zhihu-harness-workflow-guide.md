@@ -25,13 +25,13 @@
 | 验证 | 准备说 ready，必须拿 fresh evidence | 证据映射 |
 | 收尾 | 文档、生成物、状态、残留文件要对齐 | 干净可恢复的项目状态 |
 
-这个项目当前支持三类使用面：
+这个项目的安装面是一条命令多端可选（skills.sh），Claude Code 另有托管插件路径：
 
 | 环境 | 入口 |
 | --- | --- |
-| Codex | `.codex-plugin/plugin.json` 指向 `skills/` |
-| Claude Code | `.claude-plugin/` 提供插件识别面 |
-| Cursor | `scripts/install-cursor.mjs` 把 rules 和 skills 装到目标项目 |
+| 20+ agent（skills.sh） | `npx skills@latest add YSAA1/harness-workflow`，交互选择 agent 与技能 |
+| Claude Code 插件 | `.claude-plugin/` 提供插件识别面 |
+| Grok Build / ZCode / Kimi Code | 手动拷贝 `skills/<name>` 到 `~/.agents/skills/` 等 |
 
 ## 为什么我觉得它有必要
 
@@ -343,40 +343,24 @@ $cleanup
 
 ## 安装和验证
 
-Codex:
+所有支持 skills.sh 的 agent（Claude Code、Cursor、Codex、Copilot 等 20+）：
 
 ```bash
-codex plugin marketplace add YSAA1/harness-workflow
+npx skills@latest add YSAA1/harness-workflow
 ```
 
-Claude Code:
+Claude Code 托管插件：
 
 ```bash
 claude plugin marketplace add YSAA1/harness-workflow
 claude plugin install harness-workflow@harness-workflow
 ```
 
-Cursor 项目内使用：
-
-```bash
-node scripts/install-cursor.mjs --target .
-node scripts/check-cursor-install.mjs
-```
-
-维护这个插件仓库时，当前推荐验证命令是：
+维护这个仓库时，当前推荐验证命令是：
 
 ```bash
 node scripts/check-plugin.mjs
-node scripts/check-claude-code-install.mjs
-node scripts/check-cursor-install.mjs
-node scripts/install-cursor.mjs --target . --dry-run
-```
-
-如果改了 skill flow 生成逻辑，或者改了 `SKILL.md` 结构，还要跑：
-
-```bash
-node scripts/generate-skill-flow-html.mjs
-node scripts/check-plugin.mjs
+bash scripts/agent/check.sh
 ```
 
 ## 图片发布表

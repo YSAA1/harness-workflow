@@ -1,5 +1,0 @@
-interface:
-  display_name: brainstorm
-  short_description: Clarify material decisions and draft a scoped design
-policy:
-  allow_implicit_invocation: false

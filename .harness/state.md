@@ -1,9 +1,9 @@
 # Current task
 
-Objective: 按调研结论补强 12 个 skill 的执行协议（批A/批B），并推进 cli-delegate 集成与 git stack / 高吞吐 PR 工作流调研讨论。
-Worktree: 本仓 master，基于 e924488。
-Status: 批A/批B 已落地并提交；批C（安装面/软闸门）与 cli-delegate 集成待用户决策。
-Primary artifact: docs/research/2026-09-15--agent-harness-landscape-research.md
-Evidence: 四项结构验证全 PASS（check-plugin / check-claude-code / check-cursor-install / install-cursor dry-run），三层镜像（root / plugins / .cursor）一致。
-Next: 用户确认 cli-delegate 集成方式（软指针 vs 收编为第 13 个 skill）与 stacked PR 工作流采用范围后执行批C。
-Limits: 11.md 与 description.md 为用户未跟踪文件，未纳入任何提交；skills-ref 软闸门与 skills.sh 安装文档未做。
+Objective: 重构安装面，完全对齐 mattpocock/skills 的安装方式（skills.sh 一条命令多端可选安装），并落地已批准的 cli-delegate 软指针与 review 检查增补。
+Worktree: 本仓 master。
+Status: complete
+Primary artifact: docs/install.md
+Evidence: check-plugin.mjs 与 scripts/agent/check.sh 全 PASS（skill 集合、frontmatter、无陈旧安装面、.claude-plugin 解析、README/install 文档覆盖）；harness-builder 6 项 Python 测试 OK；全仓活文件无旧安装面残留引用（历史 plans/specs/prd/reviews/progress 按版本化证据惯例保留）。
+Next: 推送远端后用 `npx skills@latest add YSAA1/harness-workflow` 实测交互安装；批C 剩余项（skills-ref 软闸门、work_index 行数上限）仍未做。
+Limits: 未实测 skills.sh 对本仓库的交互安装（依赖远端推送，未推送）；`.harness/progress.md` 历史记录保留旧命令名；未跟踪的 11.md、description.md 为用户文件，未纳入提交。

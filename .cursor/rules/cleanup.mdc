@@ -1,9 +1,0 @@
----
-description: Use cleanup only for its canonical skill scope
-globs:
-alwaysApply: false
----
-
-# cleanup
-
-Read [canonical skill](../skills/cleanup/SKILL.md) when its scope matches the task. This adapter adds no separate workflow, approval or verification gate.
