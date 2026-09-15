@@ -2,3 +2,5 @@ __pycache__/
 *.py[cod]
 .env
 .zcode/
+11.md
+description.md
