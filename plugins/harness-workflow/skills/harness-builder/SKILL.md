@@ -10,7 +10,7 @@ description: "修复或建立跨入口、恢复、验证和能力配置的项目
 ## 流程
 
 1. 阅读与用户目标相关的入口、配置、脚本、恢复记录和实际错误。确认 canonical source、目标运行时及已有能力。
-2. 仅对真实缺口选方案；简单修复可直接说明文件和检查，跨领域改造用一张 HARNESS RECOMMENDATION MATRIX 汇总缺口、证据、处理方式、负责人和验证。Required / Recommended / Deferred / Rejected 是建议等级，不是安装授权。
+2. 仅对真实缺口选方案，并识别可拆除的过期组件；简单修复可直接说明文件和检查，跨领域改造用一张 HARNESS RECOMMENDATION MATRIX 汇总缺口、证据、处理方式、负责人和验证。Required / Recommended / Deferred / Rejected 是建议等级，不是安装授权。
 3. helper 路由见下表。独立、边界明确的只读调查可并行；简单一行修改无需为每类文件完整启动另一套工作流，跨 helper 传递已有目标和授权。
 4. USER CHECKPOINT 仅用于实际缺少的授权或关键取舍。仅审计/推荐时只读；明确要求建立、修复或优化时完成范围内可逆编辑和必要验证，不要求用户批准每个精确 patch。新增外部操作或扩大配置范围需另行授权。
 5. 修改 canonical source，按现有适配器同步包与镜像，验证真实目标。不要默认安装 hooks、MCP、子代理配置或所有模板。

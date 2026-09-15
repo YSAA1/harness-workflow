@@ -1,9 +1,9 @@
 # Current task
 
-Objective: 全量审计并优化 Harness Workflow 的 12 个技能及来源/适配面。
-Worktree: C:/Users/shash/Desktop/harness-workflow-astra-audit；codex/astra-workflow-audit，基于 1b0ea87。
-Status: complete
-Primary artifact: docs/reviews/2026-09-07--astra-workflow-audit.md
-Evidence: 三端结构检查、12 技能官方格式检查、插件官方验证、6 个 Python 回归、模板渲染和两路独立复核通过；本地插件 0.3.1+codex.20260907012458 已启用，132 文件安装哈希一致。
-Next: 在新任务中观察实际行为；本次未运行在线模型效果基准。
-Limits: 原桌面源码未提交修改保留；市场已指向此本地目录；未推送远端。5 个显式调用策略保持不变。
+Objective: 按调研结论补强 12 个 skill 的执行协议（批A/批B），并推进 cli-delegate 集成与 git stack / 高吞吐 PR 工作流调研讨论。
+Worktree: 本仓 master，基于 e924488。
+Status: 批A/批B 已落地并提交；批C（安装面/软闸门）与 cli-delegate 集成待用户决策。
+Primary artifact: docs/research/2026-09-15--agent-harness-landscape-research.md
+Evidence: 四项结构验证全 PASS（check-plugin / check-claude-code / check-cursor-install / install-cursor dry-run），三层镜像（root / plugins / .cursor）一致。
+Next: 用户确认 cli-delegate 集成方式（软指针 vs 收编为第 13 个 skill）与 stacked PR 工作流采用范围后执行批C。
+Limits: 11.md 与 description.md 为用户未跟踪文件，未纳入任何提交；skills-ref 软闸门与 skills.sh 安装文档未做。
