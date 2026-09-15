@@ -1,6 +1,6 @@
 # Skill mechanics
 
-> Upstream: [mattpocock/skills](https://github.com/mattpocock/skills) `SKILL-MECHANICS.md`（MIT），verbatim；对主 reference 的回链改指 `writing-core.md`。
+> Upstream: [mattpocock/skills](https://github.com/mattpocock/skills) `SKILL-MECHANICS.md`（MIT），pinned at revision `f054def`（2026-07-31 快照），verbatim；对主 reference 的回链改指 `writing-core.md`。
 
 The skill-specific branch of [`writing-core.md`](writing-core.md): what changes when the document is a skill — frontmatter, the invocation choice, and router skills. Everything else about writing it is the universal reference in [`writing-core.md`](writing-core.md).
 

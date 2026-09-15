@@ -9,6 +9,7 @@
 - Ship: orchestration that chains implement, review and cleanup for one authorized task; it is not an extra gate.
 - Knowledge Cleanup: task-scoped document, code and artifact reconciliation, including blocked handoffs.
 - Helper Skill: capability-recommender (Capability Recommender), writing-for-agents (Writing for Agents) and find-skills.
+- Discipline Skill: tdd — red-green loop at pre-agreed seams, driven by implement; not a workflow lane.
 - Harness Recommendation Matrix: optional table for cross-surface gaps; recommendation priority is not action authorization.
 
 Stable behavior: docs/harness-method-contract.md. Historical plans and evaluation results describe their recorded version, not current instructions.

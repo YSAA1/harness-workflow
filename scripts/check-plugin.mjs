@@ -14,7 +14,7 @@ const workflowSkills = ["harness-builder", "brainstorm", "plan", "implement", "d
 const helperSkills = ["find-skills", "capability-recommender", "writing-for-agents"];
 const disciplineSkills = ["tdd"];
 const activeSkills = [...workflowSkills, ...helperSkills, ...disciplineSkills];
-const removedSkills = ["bootstrap", "state-contract", "resume", "save-session", "verify"];
+const removedSkills = ["bootstrap", "state-contract", "resume", "save-session", "verify", "agent-instructions-maintainer", "recovery-surface-builder"];
 const staleSurfaces = [".codex-plugin", ".cursor-plugin", ".cursor", "rules", "plugins", ".agents/plugins", "docs/install"];
 const staleTokens = [
   "codex plugin marketplace add",
@@ -22,6 +22,8 @@ const staleTokens = [
   "check-cursor-install.mjs",
   "check-claude-code-install.mjs",
   "docs/install/codex.md",
+  "agent-instructions-maintainer",
+  "recovery-surface-builder",
 ];
 const listFiles = (relativeDir) => {
   const absoluteDir = path.join(root, relativeDir);
@@ -51,7 +53,7 @@ const dirs = fs.readdirSync(path.join(root, "skills"), { withFileTypes: true })
 if (JSON.stringify(dirs) !== JSON.stringify([...activeSkills].sort())) {
   fail(`skill set mismatch, found: ${dirs.join(", ")}`);
 } else {
-  pass(`skill set is exactly the 8 workflow lanes plus ${helperSkills.length} helpers`);
+  pass(`skill set is exactly the 8 workflow lanes plus ${helperSkills.length} helpers and ${disciplineSkills.length} discipline skill(s)`);
 }
 
 const escapeRegExp = (text) => text.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");

@@ -1,6 +1,6 @@
 # Writing for agents — core reference
 
-> Upstream: [mattpocock/skills](https://github.com/mattpocock/skills) `writing-for-agents`（MIT）。English body kept verbatim; only the mechanics pointer is retargeted to `skill-mechanics.md`.
+> Upstream: [mattpocock/skills](https://github.com/mattpocock/skills) `writing-for-agents`（MIT），pinned at revision `f054def`（2026-07-31 快照；上游其后仅做过 em-dash 标点清理 `3216582`）。English body verbatim from that revision; the mechanics pointer is retargeted to `skill-mechanics.md`, and one clarifying word added（"what follows" → "what follows it"）.
 
 Reference for writing any document an agent consumes — a skill, an `AGENTS.md` / `CLAUDE.md`, a doc reached by a pointer. The packaging differs; the writing does not: the same levers make each one predictable — the agent taking the same _process_ every run, not producing the same output.
 

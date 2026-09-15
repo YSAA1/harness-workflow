@@ -15,7 +15,7 @@
 - `docs/specs/`: `brainstorm` 默认 Spec 产物目录，允许多份独立 Spec（目录按需重建）。
 - `docs/plans/`: `plan` 默认 Executable Plan 产物目录，允许多份独立计划和恢复记录（目录按需重建）。
 - `docs/adr/`: 架构决策记录。
-- `.github/workflows/ci.yml`: GitHub Actions，运行结构检查与 Claude 插件可选校验。
+- `.github/workflows/ci.yml`: GitHub Actions，运行结构检查、README 资产检查、Claude 插件可选校验与 harness-builder 脚本测试。
 - `scripts/check-plugin.mjs`: 仓库结构与安装面一致性的快速验证脚本。
 - `scripts/agent/check.sh`: agent-facing 快速验证入口，串联默认结构检查。
 - `skills/*/SKILL.md`: 每个 active workflow skill 的主入口和执行协议。
@@ -26,6 +26,7 @@
 
 - 快速验证：`node scripts/check-plugin.mjs`
 - Agent 快速验证：`bash scripts/agent/check.sh`
+- Skill 脚本测试：`python3 -B skills/harness-builder/tests/test_scripts.py`
 - 当前没有 package install 或测试框架配置；不要虚构 `npm test`、`npm install` 或不存在的 agent 脚本。
 
 ## 项目铁律

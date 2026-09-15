@@ -19,7 +19,7 @@ description: "为 agent 消费的文档提供写作与维护纪律。触发：�
 ## 维护恢复/状态面
 
 1. 检查项目已有恢复入口和本次目标；旧任务状态不覆盖当前指令，只读 catch-up 先报告，不默认写文件。
-2. 按 `references/recovery_surface_policy.md` 选最小 backend（none / lightweight / harness / feature-list / existing）；每个任务/轨道一个权威入口，独立轨道可同时 active。
+2. 按 `references/recovery_surface_policy.md` 选最小 backend（none / lightweight / harness / feature-list / existing）；每个任务/轨道一个权威入口，独立轨道可同时 active。选 harness backend 时，落地文件模板在 `../harness-builder/templates/`（work_index/state/progress/decisions/recovery_policy），按需实例化。
 3. 记录目标、状态、下一步、证据链接、重要决定和 blocker；按阶段、关键决定和交接更新，不按工具调用次数更新（见 `references/planning_with_files_adaptation.md`）。
 4. 结构可恢复性检查通过不等于业务验收通过；迁移只在授权且收益明确时做，保留追溯和链接。
 
