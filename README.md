@@ -51,7 +51,7 @@ Agents not listed on skills.sh (Grok Build, ZCode, Kimi Code) read the same open
 | --- | --- |
 | `brainstorm` | Material design choices / focused Spec |
 | `plan` | Execution dependencies / optional durable plan |
-| `implement` | Scoped changes and proportional verification |
+| `implement` | Scoped changes, test-driven at agreed seams, proportional verification |
 | `diagnose` | Evidence-based unknown-failure investigation |
 | `review` | Review and evidence judgment (`verify` is a trigger alias) |
 | `ship` | End-to-end delivery chaining implement, review and cleanup |
@@ -59,6 +59,7 @@ Agents not listed on skills.sh (Grok Build, ZCode, Kimi Code) read the same open
 | `harness-builder` | Cross-surface workbench coordination |
 | `find-skills` | Targeted reusable skill discovery |
 | `capability-recommender` | Capability Recommender — read-only capability selection |
+| `tdd` | Red-green discipline at pre-agreed seams, driven by `implement` |
 | `writing-for-agents` | Writing for Agents — write & maintain skills, durable instructions, recovery/state surfaces |
 
 Typical flows:

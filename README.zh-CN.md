@@ -51,7 +51,7 @@ Claude Code 也可以走托管插件：
 | --- | --- |
 | brainstorm | 重要设计取舍与聚焦 Spec |
 | plan | 执行依赖与必要持久计划 |
-| implement | 范围内修改及按风险验证 |
+| implement | 范围内修改，行为改动在商定 seams 测试驱动，按风险验证 |
 | diagnose | 根因未知的故障调查 |
 | review | 审阅、风险与验收证据（`verify` 是它的触发词别名） |
 | ship | 串联 implement、review、cleanup 的端到端交付 |
@@ -59,6 +59,7 @@ Claude Code 也可以走托管插件：
 | harness-builder | 跨入口、恢复、验证和配置缺口整合 |
 | find-skills | 明确技能缺口的定向发现 |
 | capability-recommender | 只读能力选型 |
+| tdd | 先红后绿的测试纪律，由 implement 在商定 seams 驱动 |
 | writing-for-agents | 写并维护 agent 消费的面：skills、持久指令、恢复/状态面 |
 
 典型路径：

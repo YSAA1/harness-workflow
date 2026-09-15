@@ -47,8 +47,9 @@ Recovery options: none, lightweight, harness, feature-list, existing. Only harne
 | `diagnose` | Evidence-based unknown-failure investigation |
 | `find-skills` | Targeted reusable skill discovery |
 | `harness-builder` | Cross-surface workbench coordination |
-| `implement` | Scoped changes and proportional verification |
+| `implement` | Scoped changes, test-driven at agreed seams, proportional verification |
 | `plan` | Execution dependencies / optional durable plan |
 | `review` | Review and evidence judgment |
 | `ship` | Orchestrates implement → review → cleanup for authorized delivery |
+| `tdd` | Red-green discipline at pre-agreed seams, driven by `implement` |
 | `writing-for-agents` | Writing for Agents — write & maintain skills, durable instructions, recovery/state surfaces |

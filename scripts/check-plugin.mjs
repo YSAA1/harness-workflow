@@ -12,7 +12,8 @@ const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "u
 const readJson = (relativePath) => JSON.parse(read(relativePath));
 const workflowSkills = ["harness-builder", "brainstorm", "plan", "implement", "diagnose", "review", "ship", "cleanup"];
 const helperSkills = ["find-skills", "capability-recommender", "writing-for-agents"];
-const activeSkills = [...workflowSkills, ...helperSkills];
+const disciplineSkills = ["tdd"];
+const activeSkills = [...workflowSkills, ...helperSkills, ...disciplineSkills];
 const removedSkills = ["bootstrap", "state-contract", "resume", "save-session", "verify"];
 const staleSurfaces = [".codex-plugin", ".cursor-plugin", ".cursor", "rules", "plugins", ".agents/plugins", "docs/install"];
 const staleTokens = [
