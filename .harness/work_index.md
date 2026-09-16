@@ -22,6 +22,7 @@
 | 016 | 重构安装面：skills.sh 多端可选安装 + cli-delegate 软指针 | complete | `docs/install.md` | 2026-09-15 |
 | 017 | 清理死功能与历史证据 + 三合一 writing-for-agents + implement TDD 化 | complete | `skills/writing-for-agents/SKILL.md` | 2026-09-15 |
 | 018 | 恢复面重设计：plan 建档 + 三文件收敛 + lessons + 模板瘦身 | complete | `.harness/lessons.md` | 2026-09-15 |
+| 019 | 新增 remove-deadcode-py 工具 skill 并接入 cleanup 路由 | active | `skills/remove-deadcode-py/SKILL.md` | 2026-09-16 |
 
 Status values: `active`, `blocked`, `complete`, `abandoned`
 

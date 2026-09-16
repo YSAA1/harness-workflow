@@ -61,6 +61,7 @@ Claude Code 也可以走托管插件：
 | capability-recommender | 只读能力选型 |
 | tdd | 先红后绿的测试纪律，由 implement 在商定 seams 驱动 |
 | writing-for-agents | 写并维护 agent 消费的面：skills、持久指令、恢复/状态面 |
+| remove-deadcode-py | 按需全仓 Python 死代码清除（vulture/Ruff 检测 + 证据定罪 + 分批原子删除） |
 
 典型路径：
 
@@ -70,6 +71,7 @@ Claude Code 也可以走托管插件：
 不清晰的功能：  brainstorm -> plan -> harness-builder -> implement -> review -> cleanup
 命令坏了：      diagnose -> 证据与建议（授权修复 -> implement）
 harness 审计：  harness-builder -> review -> cleanup
+存量死代码：    remove-deadcode-py（全仓，显式触发；任务内遗留归 cleanup）
 ```
 
 ## 工作约定

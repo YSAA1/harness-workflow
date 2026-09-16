@@ -49,6 +49,7 @@ Recovery options: none, lightweight, harness, feature-list, existing. Only harne
 | `harness-builder` | Cross-surface workbench coordination |
 | `implement` | Scoped changes, test-driven at agreed seams, proportional verification |
 | `plan` | Execution dependencies / optional durable plan |
+| `remove-deadcode-py` | On-demand repo-wide Python dead-code removal (tool skill) |
 | `review` | Review and evidence judgment |
 | `ship` | Orchestrates implement → review → cleanup for authorized delivery |
 | `tdd` | Red-green discipline at pre-agreed seams, driven by `implement` |

@@ -61,6 +61,7 @@ Agents not listed on skills.sh (Grok Build, ZCode, Kimi Code) read the same open
 | `capability-recommender` | Capability Recommender — read-only capability selection |
 | `tdd` | Red-green discipline at pre-agreed seams, driven by `implement` |
 | `writing-for-agents` | Writing for Agents — write & maintain skills, durable instructions, recovery/state surfaces |
+| `remove-deadcode-py` | On-demand repo-wide Python dead-code removal (tool detection + evidence conviction + batched atomic deletion) |
 
 Typical flows:
 
@@ -70,6 +71,7 @@ Authorized task:    ship (= implement -> review -> cleanup)
 Unclear feature:    brainstorm -> plan -> harness-builder -> implement -> review -> cleanup
 Broken command:     diagnose -> evidence + recommendation (authorized fix -> implement)
 Harness audit:      harness-builder -> review -> cleanup
+Legacy dead code:   remove-deadcode-py (repo-wide, explicit trigger; task-scoped leftovers belong to cleanup)
 ```
 
 ## Working behavior

@@ -17,3 +17,9 @@ See `licenses/Apache-2.0-Anthropic-Claude-Plugins.txt`.
 - `skills/tdd` and the test-driven rules in `skills/implement` distilled from `mattpocock/skills` `tdd`/`implement` (seams, red-green loop, tests and mocking guidance).
 
 The source project is licensed under the MIT License: https://github.com/mattpocock/skills
+
+## code-yeongyu/oh-my-openagent
+
+- `skills/remove-deadcode-py` 的协议思路（证据定罪、动态访问守卫、分批原子删除）受 `oh-my-openagent` 的 `remove-deadcode` skill 启发。
+- 未包含任何上游文本或代码；所借鉴的方法本身亦是行业通用实践（见 vulture/knip 官方文档）。
+- The source project uses the Sustainable Use License (non-open-source): https://github.com/code-yeongyu/oh-my-openagent — inspiration only, no content incorporated.

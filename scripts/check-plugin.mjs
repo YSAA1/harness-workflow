@@ -13,7 +13,8 @@ const readJson = (relativePath) => JSON.parse(read(relativePath));
 const workflowSkills = ["harness-builder", "brainstorm", "plan", "implement", "diagnose", "review", "ship", "cleanup"];
 const helperSkills = ["find-skills", "capability-recommender", "writing-for-agents"];
 const disciplineSkills = ["tdd"];
-const activeSkills = [...workflowSkills, ...helperSkills, ...disciplineSkills];
+const toolSkills = ["remove-deadcode-py"];
+const activeSkills = [...workflowSkills, ...helperSkills, ...disciplineSkills, ...toolSkills];
 const removedSkills = ["bootstrap", "state-contract", "resume", "save-session", "verify", "agent-instructions-maintainer", "recovery-surface-builder"];
 const staleSurfaces = [".codex-plugin", ".cursor-plugin", ".cursor", "rules", "plugins", ".agents/plugins", "docs/install"];
 const staleTokens = [
@@ -53,7 +54,7 @@ const dirs = fs.readdirSync(path.join(root, "skills"), { withFileTypes: true })
 if (JSON.stringify(dirs) !== JSON.stringify([...activeSkills].sort())) {
   fail(`skill set mismatch, found: ${dirs.join(", ")}`);
 } else {
-  pass(`skill set is exactly the 8 workflow lanes plus ${helperSkills.length} helpers and ${disciplineSkills.length} discipline skill(s)`);
+  pass(`skill set is exactly the 8 workflow lanes plus ${helperSkills.length} helpers, ${disciplineSkills.length} discipline skill(s) and ${toolSkills.length} tool skill(s)`);
 }
 
 const escapeRegExp = (text) => text.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");

@@ -10,6 +10,7 @@
 - Knowledge Cleanup: task-scoped document, code and artifact reconciliation, including blocked handoffs.
 - Helper Skill: capability-recommender (Capability Recommender), writing-for-agents (Writing for Agents) and find-skills.
 - Discipline Skill: tdd — red-green loop at pre-agreed seams, driven by implement; not a workflow lane.
+- Tool Skill: remove-deadcode-py — on-demand repo-wide Python dead-code removal (tool-detected, evidence-convicted, batched atomic deletion), routed from cleanup or explicitly invoked; not a workflow lane and not a task closeout.
 - Harness Recommendation Matrix: optional table for cross-surface gaps; recommendation priority is not action authorization.
 
 Stable behavior: docs/harness-method-contract.md. Historical plans and evaluation results describe their recorded version, not current instructions.

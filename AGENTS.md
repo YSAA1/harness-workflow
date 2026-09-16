@@ -32,7 +32,7 @@
 ## 项目铁律
 
 - 这是 skills 仓库；安装面以 skills.sh 为主、Claude Code 插件为辅；所有改动必须保持 `README.md`（含 zh-CN）、`docs/install.md`、`.claude-plugin/`、`docs/harness-method-contract.md` 和 `skills/*/SKILL.md` 之间语义一致。
-- Active workflow skills 只有 `harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`ship`、`cleanup`；`verify` 只是 `review` 的历史触发词别名，不再是独立 skill；`find-skills`、`capability-recommender`、`writing-for-agents` 是辅助 skill，不是额外 workflow lane；`tdd` 是被 `implement` 驱动的纪律 skill。
+- Active workflow skills 只有 `harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`ship`、`cleanup`；`verify` 只是 `review` 的历史触发词别名，不再是独立 skill；`find-skills`、`capability-recommender`、`writing-for-agents` 是辅助 skill，不是额外 workflow lane；`tdd` 是被 `implement` 驱动的纪律 skill；`remove-deadcode-py` 是按需全仓 Python 死代码清理的工具 skill，由 `cleanup` 路由或显式触发，不做任务收尾。
 - `AGENTS.md` 只做薄入口（T1）；临时计划、会话摘要、active slice 和当前任务 plan/Spec 路径不要写进这里。
 - 本插件仓库使用 `.harness/`；生成到目标项目时按所选 backend 复用恢复入口，不强制迁移已有系统。
 - `harness-builder` 是 canonical 项目 harness skill；"bootstrap" 只能作为历史别名或触发词出现。
