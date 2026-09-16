@@ -6,7 +6,7 @@ HOT_DOC_MAX_LINES = 300
 HOT_SCRIPT_MAX_LINES = 120
 HOT_RECOVERY_DOCS = [
     ".harness/state.md",
-    ".harness/session_handoff.md",
+    ".harness/lessons.md",
 ]
 HOT_AGENT_SCRIPTS = [
     "scripts/agent/status.sh",

@@ -6,7 +6,7 @@ set -euo pipefail
 # Keep this command short. Do not run long training or deployment here.
 #
 # Fragile-pattern禁令 (see references/verification_policy.md):
-# - 不要 grep -F 硬编码 run_id / timestamp 字面值进 README/state/progress/plan。
+# - 不要 grep -F 硬编码 run_id / timestamp 字面值进 README/state/plan。
 # - 不要 assert "N passed, M warnings" 这种测试计数字面值。
 # - 不要 assert 实验数值字面值 (e.g. author_800k=5.968893)。
 # - 不要 grep -F recovery surface 字段值 (active_slice / Primary artifact / Work Index row) 回 check.sh。

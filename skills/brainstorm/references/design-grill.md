@@ -27,7 +27,7 @@ For each frontier round:
 5. Include a **concrete stress scenario** on design-sensitive questions unless the branch is pure terminology.
 6. Update matching coverage ledger rows in the same round.
 7. 术语已明确且任务包含文档化时，更新目标项目既有词汇表（仅术语）；否则在回复中记录。
-8. If an ADR is warranted, offer to create it under `docs/adr/` immediately — do not batch ADR offers.
+8. If an ADR is warranted, offer to create it under `docs/adr/` immediately — do not batch ADR offers. ADR 仅限不可逆架构决策；过程与环境坑记入项目恢复面的 lessons。
 
 ## Branch Order
 

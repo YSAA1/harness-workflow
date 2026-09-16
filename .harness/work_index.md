@@ -21,6 +21,7 @@
 | 015 | skill 协议补强批A/批B（证据纪律、薄路径、安全审计、并行指引） | complete | （本 batch；见 `.harness/state.md`） | 2026-09-15 |
 | 016 | 重构安装面：skills.sh 多端可选安装 + cli-delegate 软指针 | complete | `docs/install.md` | 2026-09-15 |
 | 017 | 清理死功能与历史证据 + 三合一 writing-for-agents + implement TDD 化 | complete | `skills/writing-for-agents/SKILL.md` | 2026-09-15 |
+| 018 | 恢复面重设计：plan 建档 + 三文件收敛 + lessons + 模板瘦身 | complete | `.harness/lessons.md` | 2026-09-15 |
 
 Status values: `active`, `blocked`, `complete`, `abandoned`
 

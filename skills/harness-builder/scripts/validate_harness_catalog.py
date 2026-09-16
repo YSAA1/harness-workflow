@@ -28,22 +28,11 @@ CORE_TEMPLATES = [
     "templates/check.sh.j2",
     "templates/manifest.yaml.j2",
     "templates/state.md.j2",
-    "templates/decisions.md.j2",
+    "templates/lessons.md.j2",
     "templates/verification.md.j2",
 ]
-CONDITIONAL_TEMPLATES = [
-    "templates/project_context.md.j2",
-    "templates/workflow.md.j2",
-    "templates/progress.md.j2",
-    "templates/session_handoff.md.j2",
-    "templates/features.json.j2",
-    "templates/risk_register.md.j2",
-    "templates/reports/verification_report.md.j2",
-    "templates/commit_convention.md.j2",
-]
-OPTIONAL_TEMPLATE_GLOBS = [
-    "templates/hooks/*.j2",
-]
+CONDITIONAL_TEMPLATES: list[str] = []
+OPTIONAL_TEMPLATE_GLOBS: list[str] = []
 FORBIDDEN_REFERENCES = [
     "capability_signal_policy.md",
     "capability_starter_catalog.md",
