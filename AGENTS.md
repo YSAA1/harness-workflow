@@ -7,7 +7,7 @@
 ## 项目地图
 
 - `.claude-plugin/`: Claude Code plugin manifest 和 marketplace catalog（source 指向仓库根）。
-- `.harness/`: 运行时 recovery（Recovery Policy、Work Index、state、progress、decisions）。
+- `.harness/`: 运行时 recovery 三文件（work_index、state、lessons）。
 - `README.md` / `README.zh-CN.md`: 用户入口，说明安装（skills.sh 多端可选）、workflow 分层、使用场景和验证命令。
 - `CONTEXT.md`: 术语和边界澄清。
 - `docs/harness-method-contract.md`: Harness Method Contract，解释 C1-C10 稳定方法论。
@@ -42,16 +42,18 @@
 
 ## 恢复面（Recovery surface）
 
-Selected recovery surface: `harness`（`.harness/` 目录）
+Selected recovery surface: `harness`（`.harness/` = work_index + state + lessons 三文件）
 
 会话入口 — 按顺序读取：
 
 1. 本文件（`AGENTS.md`）— T1 durable rules only
-2. `.harness/recovery_policy.md`
+2. `.harness/lessons.md` — 项目已踩过的坑与非显然经验，动手前先读
 3. `.harness/work_index.md` → 打开 `active` 行的 primary artifact
 4. `.harness/state.md`
 
-不要在 `AGENTS.md` 里写当前任务名或某个 plan/Spec 路径。新任务只更新 Work Index。
+不要在 `AGENTS.md` 里写当前任务名或某个 plan/Spec 路径。新任务由 `plan` 建立最小恢复面并只更新 Work Index。
+按阶段变化、关键决定和交接更新恢复面，只修当前任务相关记录；实际证据放 state 的 Evidence 行、链接工件或 git。
+架构级不可逆决策走 `docs/adr/`（brainstorm 会提议）；过程与环境坑记入 lessons，失效即删。
 
 ## 真相源优先级（Source-of-truth priority）
 
