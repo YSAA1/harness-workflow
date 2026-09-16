@@ -1,11 +1,13 @@
 ---
 name: writing-for-agents
-description: "为 agent 消费的文档提供写作与维护纪律。触发：创建或修改 skills、AGENTS.md/CLAUDE.md/Cursor rules 等持久指令，审计修剪指令面，或建立/修复恢复与状态面（work index、plan、state、progress）。"
+description: "维护 agent 跨会话读取的文件：AGENTS.md/CLAUDE.md/Cursor rules 等持久指令的审计与修订、.harness 恢复面（work_index/state/lessons）的修复与迁移、skills 本身的写作纪律。触发：用户要求更新、审计或修复这些文件，或修改 skill 行为。"
 ---
 
 # Writing for Agents
 
 写并维护 agent 消费的任何面：skills、`AGENTS.md` / `CLAUDE.md` / Cursor rules、指针到达的文档、恢复/状态面。包装不同，写作纪律不变——让 agent 每次运行走同样的过程，而不是产出同样的结果。
+
+日常任务流（brainstorm/plan/ship）不经过本 skill：`plan` 负责建档，本 skill 负责修档案系统。
 
 核心写作纪律（context pointers、两种负载、信息层级、完成判据、leading words、pruning）见 `references/writing-core.md`；写 skill 的 invocation 选择与 router 规则见 `references/skill-mechanics.md`。修改本 skill 族任何文档前先读对应 reference。
 
@@ -19,8 +21,8 @@ description: "为 agent 消费的文档提供写作与维护纪律。触发：�
 ## 维护恢复/状态面
 
 1. 检查项目已有恢复入口和本次目标；旧任务状态不覆盖当前指令，只读 catch-up 先报告，不默认写文件。
-2. 按 `references/recovery_surface_policy.md` 选最小 backend（none / lightweight / harness / feature-list / existing）；每个任务/轨道一个权威入口，独立轨道可同时 active。选 harness backend 时，落地文件模板在 `../harness-builder/templates/`（work_index/state/progress/decisions/recovery_policy），按需实例化。
-3. 记录目标、状态、下一步、证据链接、重要决定和 blocker；按阶段、关键决定和交接更新，不按工具调用次数更新（见 `references/planning_with_files_adaptation.md`）。
+2. 按 `references/recovery_surface_policy.md` 选最小 backend（none / lightweight / harness / feature-list / existing）；每个任务/轨道一个权威入口，独立轨道可同时 active。新任务的 harness 最小面（work_index + state）由 `plan` 内联建立；补充文件模板在 `../harness-builder/templates/`（work_index/state/lessons），按需实例化。
+3. 记录目标、状态、下一步、证据链接和 blocker；按阶段、关键决定和交接更新，不按工具调用次数更新（见 `references/planning_with_files_adaptation.md`）。lessons 读写：开工先读（若存在）；cleanup 收尾与 diagnose 根因确认后落笔；每条带触发条件，失效即删，不设历史归档。
 4. 结构可恢复性检查通过不等于业务验收通过；迁移只在授权且收益明确时做，保留追溯和链接。
 
 ## Recommended next skill

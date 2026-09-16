@@ -2,5 +2,5 @@
 启动时读当前任务相关入口和恢复状态，再查必要 git/运行事实。状态缺失时以明确用户请求建立当前范围，无需为无 active 行停工。
 按任务/轨道定位权威记录，保留其他 active 任务。不要按全仓 WIP=1 关闭别的任务。
 状态在阶段进展、重大决定、阻塞或交接时更新；证据保存实际命令与结果引用，不要求每次工具操作写盘。
-只有选择 harness backend 才使用 .harness 的 recovery_policy/work_index 等默认模板；其他 backend 复用既有字段位置。
+只有选择 harness backend 才使用 .harness 的 work_index/state/lessons 结构（新任务最小面由 `plan` 内联建立）；其他 backend 复用既有字段位置。
 旧日志可以纠正旧状态，不能覆盖用户当前目标或权限边界。
