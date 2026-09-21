@@ -91,6 +91,8 @@ cleanup 的任务作用域（"不扩展为全仓清理"）是正确边界；缺�
 - `AGENTS.md`（退休契约主落点）：恢复面节补写侧纪律（状态翻转触发、退休四步、可达性判据、lint 是闸门）；铁律行登记 sweep 为工具 skill。
 - `skills/plan/SKILL.md`、`skills/ship/SKILL.md`、`skills/cleanup/SKILL.md`（补充落点）：收尾步骤接入退休契约；cleanup 的 Recommended next skill 加 sweep 路由。
 - `skills/writing-for-agents/references/recovery_surface_policy.md`：补恢复面生命周期合同（谁建、谁更新、谁退休）与 lessons 写法纪律（原子、按概念组织、持续修订）；不做继承条数 lint。
+- 分发机制（主通道）：目标项目经 `harness-builder` 生成的 `AGENTS.md` 模板获得写侧纪律（翻行即退休四步、可达性活判据、删除前置、一致性闸门）；模板保持薄，纪律文本自洽、不引用目标项目不存在的脚本。
+- 分发机制（轻量通道）：`plan` 建档时在目标项目 `AGENTS.md` 挂的指针行携带最小写侧纪律（翻行即退休一句话＋活判据指向）；方法仓 `AGENTS.md` 的写侧纪律只是 dogfood，不是分发面。
 - `skills/sweep/SKILL.md`（新增，含 YAML frontmatter，中文协议，同仓惯例）。
 - 全枚举面同步：`README.md`、`README.zh-CN.md`、`CONTEXT.md`、`docs/install.md`、`docs/harness-method-contract.md`、`.claude-plugin/plugin.json`（version bump）、`scripts/check-plugin.mjs` 的 skill 计数；不改 THIRD_PARTY_NOTICES（无外部文本借鉴）。
 - `.harness/work_index.md` 新增本任务 active 行（由 plan 建立）。

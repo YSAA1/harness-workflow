@@ -55,6 +55,13 @@ Selected recovery surface: `harness`（`.harness/` = work_index + state + lesson
 按阶段变化、关键决定和交接更新恢复面，只修当前任务相关记录；实际证据放 state 的 Evidence 行、链接工件或 git。
 架构级不可逆决策走 `docs/adr/`（brainstorm 会提议）；过程与环境坑记入 lessons，失效即删。
 
+写侧纪律：
+
+- 翻行即退休：谁把 work_index 行翻出 active（complete/abandoned/blocked/换轨），谁在同一 commit 内走完四步——翻行 → lessons 继承 → 删本轨道已完成 plan/Spec 文档（git 历史即归档）→ state 同步翻转 Status。
+- 删文档前置＝改动已 commit 进主树且 lessons 继承完成；只删唯一入边来自本退休轨道的文档，多入边翻指针不删；ADR 不删，补 superseded-by。
+- 文档活判据＝可达性：活 ⟺ 被 `.harness/` 状态文件出链或持久入口（AGENTS.md、根 README）引用；不可达即孤儿。
+- `node scripts/check-plugin.mjs` 的恢复面一致性检查是闸门，状态矛盾或 plans/specs 孤儿即红。
+
 ## 真相源优先级（Source-of-truth priority）
 
 | Tier | 内容 |

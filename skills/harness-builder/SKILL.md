@@ -13,7 +13,7 @@ description: "修复或建立跨入口、恢复、验证和能力配置的项目
 2. 仅对真实缺口选方案，并识别可拆除的过期组件；简单修复可直接说明文件和检查，跨领域改造用一张 HARNESS RECOMMENDATION MATRIX 汇总缺口、证据、处理方式、负责人和验证。Required / Recommended / Deferred / Rejected 是建议等级，不是安装授权。
 3. helper 路由见下表。独立、边界明确的只读调查可并行；简单一行修改无需为每类文件完整启动另一套工作流，跨 helper 传递已有目标和授权。
 4. USER CHECKPOINT 仅用于实际缺少的授权或关键取舍。仅审计/推荐时只读；明确要求建立、修复或优化时完成范围内可逆编辑和必要验证，不要求用户批准每个精确 patch。新增外部操作或扩大配置范围需另行授权。
-5. 修改 canonical source；安装面受影响时同步 `.claude-plugin/` manifest 与 `README.md`、`docs/install.md`，验证真实目标。不要默认安装 hooks、MCP、子代理配置或所有模板。
+5. 修改 canonical source；安装面受影响时同步 `.claude-plugin/` manifest 与 `README.md`、`docs/install.md`，验证真实目标。不要默认安装 hooks、MCP、子代理配置或所有模板。生成或修复目标项目 harness 时，写侧纪律（翻行即退休四步、可达性活判据、删除前置、一致性闸门）必须随 `AGENTS.md` 进入目标项目；纪律文本自洽，不引用目标项目不存在的东西（如本仓脚本）。
 6. 相关检查通过且风险低时可以完成；复杂合同修改按 `review` 进一步审阅。若用户同时授权后续产品工作，继续该工作；仅工作台推荐不授权执行产品任务。
 
 ## Helper Skill routing

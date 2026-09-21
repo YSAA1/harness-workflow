@@ -19,6 +19,9 @@ Missing required evidence limits completion claims; do not substitute a structur
 Session entry, in order: this file → `.harness/lessons.md` (project pitfalls and non-obvious experience, read before starting work) → `.harness/work_index.md` (open the `active` row's primary artifact) → `.harness/state.md`.
 New tasks register one row in the work index; update state on phase change, key decisions and handoff.
 Evidence lives in state, linked artifacts or git. Lessons capture process/environment pitfalls; delete entries when stale.
+Write-side discipline: whoever flips a row out of `active` retires it in the same commit — flip the row → distill non-obvious lessons from finished docs → delete that track's completed plan/Spec docs (git history is the archive) → sync `state.md` Status.
+Delete only after the change is committed and lessons are inherited, and only docs whose sole inbound reference is this retiring track; multi-referenced docs get a pointer flip, not deletion.
+A doc stays alive only while reachable from `.harness/` state files or a durable entry (this file, root README); agreement of rows, state and docs is the commit-time gate.
 
 ## Working agreements
 
