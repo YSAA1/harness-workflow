@@ -24,6 +24,7 @@
 | 018 | 恢复面重设计：plan 建档 + 三文件收敛 + lessons + 模板瘦身 | complete | `.harness/lessons.md` | 2026-09-15 |
 | 019 | 新增 remove-deadcode-py 工具 skill 并接入 cleanup 路由 | complete | `skills/remove-deadcode-py/SKILL.md` | 2026-09-21 |
 | 020 | 恢复面闭环落地：退休契约+lint+sweep | complete | `docs/specs/2026-09-18--recovery-surface-loop.md` | 2026-09-21 |
+| 021 | 新增 autoresearch 研究循环总控 skill（授权档位+对抗 lens） | active | `skills/autoresearch/SKILL.md` | 2026-09-21 |
 
 Status values: `active`, `blocked`, `complete`, `abandoned`
 

@@ -1,6 +1,6 @@
 # Harness Method Contract
 
-This contract defines C1–C10 for the eight workflow entrypoints plus helper, discipline and tool skills. They are tools chosen by task need, not a mandatory pipeline.
+This contract defines C1–C10 for the nine workflow entrypoints plus helper, discipline and tool skills. They are tools chosen by task need, not a mandatory pipeline.
 
 ## C1 Harness As System
 Improve the actual repository context, verification and recovery gaps. A capable agent does not need generic reasoning instructions or every tool installed.
@@ -41,6 +41,7 @@ Recovery options: none, lightweight, harness, feature-list, existing. Only harne
 
 | Skill | Responsibility |
 | --- | --- |
+| `autoresearch` | Bounded research-loop orchestration: hypothesis rounds with adversarial verification and evidence-gated re-open |
 | `brainstorm` | Material design choices / focused Spec |
 | `capability-recommender` | Capability Recommender — read-only capability selection |
 | `cleanup` | Task-scoped Knowledge Cleanup |

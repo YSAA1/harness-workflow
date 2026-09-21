@@ -10,7 +10,7 @@ const pass = (message) => console.log(`PASS: ${message}`);
 const exists = (relativePath) => fs.existsSync(path.join(root, relativePath));
 const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "utf8");
 const readJson = (relativePath) => JSON.parse(read(relativePath));
-const workflowSkills = ["harness-builder", "brainstorm", "plan", "implement", "diagnose", "review", "ship", "cleanup"];
+const workflowSkills = ["harness-builder", "brainstorm", "plan", "implement", "diagnose", "review", "ship", "cleanup", "autoresearch"];
 const helperSkills = ["find-skills", "capability-recommender", "writing-for-agents"];
 const disciplineSkills = ["tdd"];
 const toolSkills = ["remove-deadcode-py", "sweep"];
@@ -54,7 +54,7 @@ const dirs = fs.readdirSync(path.join(root, "skills"), { withFileTypes: true })
 if (JSON.stringify(dirs) !== JSON.stringify([...activeSkills].sort())) {
   fail(`skill set mismatch, found: ${dirs.join(", ")}`);
 } else {
-  pass(`skill set is exactly the 8 workflow lanes plus ${helperSkills.length} helpers, ${disciplineSkills.length} discipline skill(s) and ${toolSkills.length} tool skill(s)`);
+  pass(`skill set is exactly the 9 workflow lanes plus ${helperSkills.length} helpers, ${disciplineSkills.length} discipline skill(s) and ${toolSkills.length} tool skill(s)`);
 }
 
 const escapeRegExp = (text) => text.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");

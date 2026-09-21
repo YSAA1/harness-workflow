@@ -56,6 +56,7 @@ Agents not listed on skills.sh (Grok Build, ZCode, Kimi Code) read the same open
 | `review` | Review and evidence judgment (`verify` is a trigger alias) |
 | `ship` | End-to-end delivery chaining implement, review and cleanup |
 | `cleanup` | Task-scoped Knowledge Cleanup |
+| `autoresearch` | Bounded research loop — discuss, implement, adversarial verification, distil, evidence-gated re-open |
 | `harness-builder` | Cross-surface workbench coordination |
 | `find-skills` | Targeted reusable skill discovery |
 | `capability-recommender` | Capability Recommender — read-only capability selection |
@@ -74,6 +75,7 @@ Broken command:     diagnose -> evidence + recommendation (authorized fix -> imp
 Harness audit:      harness-builder -> review -> cleanup
 Legacy dead code:   remove-deadcode-py (repo-wide, explicit trigger; task-scoped leftovers belong to cleanup)
 Repo-wide audit:    sweep (explicit trigger; runs an inline checklist, no CI gate required in the target project)
+Open question:      autoresearch (rounds of hypothesis, verification and adversarial check)
 ```
 
 ## Working behavior
