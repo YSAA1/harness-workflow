@@ -7,7 +7,7 @@
 | 001 | brainstorm / harness-builder 文档纪律与 `.harness/` 统一 | complete | （本 batch；见 `.harness/state.md`） | 2026-06-24 |
 | 002 | harness-builder check.sh 协议加固（防 fragile 断言） | complete | （本 batch；见 `.harness/state.md`） | 2026-06-29 |
 | 003 | 中文默认 + 可打勾计划文件 | complete | `docs/plans/2026-06-29--checkbox-chinese-plan-docs-plan.md` | 2026-06-29 |
-| 004 | plan skill 主文件瘦身 | blocked | `skills/plan/SKILL.md` | 2026-06-29 |
+| 004 | plan skill 主文件瘦身 | complete | `skills/plan/SKILL.md` | 2026-09-21 |
 | 005 | harness-builder skill 拆分与 Research Route 移除 | complete | `docs/plans/2026-07-06--harness-builder-skill-split-plan.md` | 2026-07-06 |
 | 006 | review / verify / cleanup 三 skill 优化 | complete | `docs/plans/2026-07-06--review-verify-cleanup-optimization-plan.md` | 2026-07-06 |
 | 007 | harness-builder 总控瘦身与 Helper routing | complete | `skills/harness-builder/SKILL.md` | 2026-07-09 |
@@ -22,7 +22,8 @@
 | 016 | 重构安装面：skills.sh 多端可选安装 + cli-delegate 软指针 | complete | `docs/install.md` | 2026-09-15 |
 | 017 | 清理死功能与历史证据 + 三合一 writing-for-agents + implement TDD 化 | complete | `skills/writing-for-agents/SKILL.md` | 2026-09-15 |
 | 018 | 恢复面重设计：plan 建档 + 三文件收敛 + lessons + 模板瘦身 | complete | `.harness/lessons.md` | 2026-09-15 |
-| 019 | 新增 remove-deadcode-py 工具 skill 并接入 cleanup 路由 | active | `skills/remove-deadcode-py/SKILL.md` | 2026-09-16 |
+| 019 | 新增 remove-deadcode-py 工具 skill 并接入 cleanup 路由 | complete | `skills/remove-deadcode-py/SKILL.md` | 2026-09-21 |
+| 020 | 恢复面闭环落地：退休契约+lint+sweep | active | `docs/specs/2026-09-18--recovery-surface-loop.md` | 2026-09-21 |
 
 Status values: `active`, `blocked`, `complete`, `abandoned`
 
