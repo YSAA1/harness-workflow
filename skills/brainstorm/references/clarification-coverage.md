@@ -1,6 +1,6 @@
 # Clarification Coverage
 
-Use this during `brainstorm` as the **progress ledger** for the frontier grill loop. Maintain the matrix in chat every round. Do not write a Spec while any blocking dimension remains unresolved.
+Use this during `brainstorm` as the **progress ledger** for the frontier grill loop. Keep it as internal notes with a one-line summary per round; show the full matrix only when the user asks for progress. Do not write a Spec while any blocking dimension is unresolved.
 
 Coverage does **not** run as a separate survey phase before Design Grill. Filling a ledger row and grilling design branches happen in the same interview — see `clarification-loop.md` and `design-grill.md`.
 
@@ -24,99 +24,47 @@ Track these eight dimensions. Map each to the eventual Spec sections.
 | Status | Meaning | Allowed before Spec draft? |
 | --- | --- | --- |
 | `unknown` | Not answered; only a guess or open question | No |
-| `inferred` | Filled from repo, docs, or reasonable inference; user has not confirmed | No, until assumption batch is confirmed or corrected |
+| `inferred` | Factual inference from repo/docs with a recorded source; user has not confirmed. Preferences and trade-offs are never `inferred` — they go to the frontier | No, until the factual assumption batch is confirmed |
 | `confirmed` | User explicitly confirmed, or material already states it unambiguously | Yes |
 | `waived` | User explicitly says this dimension does not need further discussion for this slice | Yes |
 
 ## Blocking Dimensions
 
-These cannot remain `unknown` or unconfirmed `inferred` at the Grill Gate:
+These must be `confirmed` or `waived` at the Grill Gate — `inferred` does not pass:
 
 - Purpose
 - Scope
 - Success criteria
 - Verification strategy
 
-Behavior may stay `inferred` only when the slice is trivial and the inferred behavior is already demonstrated in repo evidence; still confirm in the assumption batch.
+Behavior facts demonstrated by repo evidence may be `inferred` with source; behavior trade-offs on non-trivial work must enter the frontier and cannot pass the gate as `inferred`.
 
 ## Grill Gate
 
-Clarification is complete only when the full gate in `clarification-loop.md` passes. Ledger-facing summary:
-
-1. Every dimension is `confirmed` or `waived`, or `inferred` with no blocking dimension left `unknown`.
-2. Purpose, scope, success criteria, and verification strategy are not `unknown`.
-3. Any remaining `inferred` items were presented in an assumption batch and the user confirmed or corrected them.
-4. `clarification-loop.md` 中按风险选择的设计检查已完成；不设最少问询轮数。
-5. At least one of:
-   - the user replied at least once after the initial framing, or
-   - the user provided a comprehensive brief that already covers all dimensions with no blocking ambiguity.
-6. Frontier is empty and shared understanding is confirmed before Spec drafting.
-7. 仅必要未决问题需要等待；已有完整 brief、明确决策与起草授权时继续，无需重复确认。
-
-Do not treat "all eight rows labeled" as sufficient on non-trivial work — design branches and stress scenarios are part of the same gate.
-
-## Coverage Matrix Template
-
-Copy the default template for English/non-Chinese users and update it every frontier round. For Chinese users, use the localized example below instead. Preserve stable status values and gate tokens.
-
-```text
-Clarification Coverage
-| Dimension | Status | Source / note |
-| --- | --- | --- |
-| Purpose | unknown | |
-| Scope | unknown | |
-| Users / callers | unknown | |
-| Behavior | unknown | |
-| Constraints | unknown | |
-| Success criteria | unknown | |
-| Verification strategy | unknown | |
-| Capability gaps | unknown | |
-
-Gate: BLOCKED
-Frontier: <N open questions this round>
-```
-
-When the gate passes, set `Gate: PASSED` and move to the assumption batch if needed, then shared understanding + Spec drafting.
+The gate lives in `clarification-loop.md` (single source). Ledger-facing consequences: blocking dimensions must be `confirmed` or `waived`; remaining factual `inferred` items go to the assumption batch; an empty frontier means every Branch Order branch is answered, explicitly waived, or repo-provable with source. Do not treat "all eight rows labeled" as sufficient on non-trivial work.
 
 ## Assumption Batch
 
-Before Spec drafting, if any dimension is still `inferred`, present a numbered assumption list:
+Before Spec drafting, present any remaining **factual** inferences — repo/docs-provable facts with sources, nothing else. Goal, boundaries, success criteria, verification strategy, and behavior trade-offs are preferences: they must be answered as frontier questions and never parked here.
 
 ```text
-Before I draft the Spec, please confirm or correct:
-1. Goal: ...
-2. Non-goals: ...
-3. Success criteria: ...
-4. Verification: ...
-5. Other inferred items: ...
+Before I draft the Spec, please confirm or correct these factual inferences:
+1. <fact> — source: <repo path / doc>
+2. <fact> — source: <repo path / doc>
 ```
 
-For trivial slices, the batch may also record an explicit waiver of further design-branch or stress-scenario depth.
-
-Wait for user confirmation or corrections. Update the matrix to `confirmed` or revise and re-ask only the affected items.
+Wait for user confirmation or corrections. Update the matrix to `confirmed` or revise and re-ask only the affected items. For trivial slices, the batch may also record an explicit user waiver of further design-branch or stress-scenario depth.
 
 ## Round Output
 
-Frontier questions lead the round; the coverage matrix trails as a footnote — it is a progress ledger, not the deliverable.
+The round shape has a single source: `SKILL.md` 输出 — numbered frontier questions first, one-line Coverage summary after. This file carries no second template. 中文用户同一结构，标签可中文化，状态值与 Gate token 保留英文。
 
-Default English/non-Chinese output:
+## Progress Ledger (on request)
+
+When the user asks for progress, show the matrix as a footnote after the frontier questions:
 
 ```text
-BRAINSTORM CLARIFICATION IN PROGRESS
-
-Coverage: <confirmed+waived>/<8> confirmed or waived; <N> inferred pending assumption batch
-Gate: BLOCKED | PASSED (assumption batch pending) | PASSED
-Frontier: open | empty
-
-❓ **Q1** - **<title>**: <body>
-➡️ <recommended answer>
-
-❓ **Q2** - **<title>**: <body>
-➡️ <recommended answer>
-
-Waiting for: numbered answers to this frontier round
-
-Coverage ledger (progress, not deliverable):
+Coverage
 | Dimension | Status | Source / note |
 | --- | --- | --- |
 | Purpose | ... | ... |
@@ -128,5 +76,3 @@ Coverage ledger (progress, not deliverable):
 | Verification strategy | ... | ... |
 | Capability gaps | ... | ... |
 ```
-
-中文用户：同一结构——frontier 问题打头，Coverage 矩阵降为脚注；标签可中文化，提问仍用 `❓` / `➡️`。

@@ -17,19 +17,19 @@ Canonical Spec：`docs/specs/YYYY-MM-DD--<topic>.md`（仅用户或 `AGENTS.md` 
 
 - **Use**: 意图开放、标准或验证不清、要 grill。
 - **Don't**: Spec 已批；单点小补丁；只要事实回答。
-- **Next**: Spec 批准 → `plan`；工作面缺口 → `harness-builder`。
+- **Next**: Spec 批准 → `plan`；工作面缺口 →（Spec 批准后或用户明示）`harness-builder`。
 
 ## 输入
 
-`references/clarification-loop.md` + coverage/design-grill；既有 Spec/代码/`AGENTS.md`；`git status`；用户材料。
+步骤 1 必读：`references/clarification-loop.md` + `clarification-coverage.md` + `design-grill.md`；既有 Spec/代码/`AGENTS.md`；`git status`；用户材料。
 
 ## 流程
 
 ### 1. Frontier grill
 
-Gate 前不写 Spec。这是**一场 relentless interview**：维护设计树与 coverage 账本——Coverage 是进度账本，不是独立填表阶段。每轮只问会改变方案的未决 **frontier**（前置已定、彼此独立），可多问，每题带推荐答案；沿用已有明确需求、决策与授权，不设最少轮数。Facts 自查/子 agent；必要 Decisions 等人；偏好与取舍型决策不得 inferred 兜底，必须进 frontier。frontier 判空前按 Branch Order（`design-grill.md`）扫过设计分支、说明每支为何无需问——空 frontier 是扫出来的，不是推断掏空的。细节：`clarification-loop.md`。
+Gate 前不写 Spec。这是**一场 relentless interview**：每轮把全部未决 **frontier** 决策（会改变方案、前置已定、彼此独立）一次性编号提出，每题带 `➡️` 推荐答案，设计敏感题附一条具体压力场景（分支顺序见 `design-grill.md`）。事实缺口先自查仓库/文档；偏好、取舍、验证力度、范围边界不得 inferred 兜底，必须进 frontier。判空判据：每个设计分支要么用户已答或显式豁免，要么是仓库可证事实（记来源）——常识默认、业界惯例、可延后不构成免问。沿用已有明确需求、决策与授权，不设最少轮数。细节：`clarification-loop.md`。
 
-完成：Grill Gate 过 + assumption batch（若有）+ 用户确认 **shared understanding**。
+完成：Grill Gate 过 + assumption batch（若有，仅事实推断）+ shared understanding 已覆盖（完整 brief 与起草授权，或单次确认）。
 
 ### 2. Spec
 
@@ -39,30 +39,44 @@ Gate 前不写 Spec。这是**一场 relentless interview**：维护设计树与
 
 ## 硬规则
 
-- 一条消息一个 frontier round；依赖题拆到后轮。
-- 沉默 ≠ 批准；已有完整 brief 和明确起草授权可满足 shared understanding，不重复索要相同确认。
+- 存在未决偏好/取舍时，用户可见的第一条消息必须是编号 frontier 问题；禁止只发 Coverage 计分板或 assumption batch 代替提问。
+- 一条消息一个 frontier round；依赖题拆到后轮，独立题同轮发出。
+- 沉默 ≠ 批准；shared understanding 由完整 brief 与明确起草授权覆盖，否则单问一次，不重复索要相同确认。
 
 ## 输出
 
+回合模板唯一源在此：frontier 问题打头，Coverage 压成一行（账本是进度笔记，不是交付物）。
+
 ```text
-BRAINSTORM CLARIFICATION IN PROGRESS | BRAINSTORM SPEC READY
-Spec: <path|n/a>
-Coverage: <confirmed+waived>/8; Gate: BLOCKED|PASSED
-Frontier: open|empty
-Needs: frontier answers | shared understanding | approve Spec
+BRAINSTORM CLARIFICATION IN PROGRESS
+❓ Q1 - <title>: <body; options if useful>
+➡️ <recommended answer>
+❓ Q2 - <title>: <body>
+➡️ <recommended answer>
+Coverage: <confirmed+waived>/8; Gate: BLOCKED; Frontier: open
+Needs: frontier answers | shared understanding
+```
+
+Gate 过后切换为：
+
+```text
+BRAINSTORM SPEC READY
+Spec: <path>; Gate: PASSED; Frontier: empty
+Needs: approve Spec
 Next after approval: plan
 ```
 
-Frontier 提问形状见 `clarification-loop.md`（`❓` / `➡️`）。
+中文用户同一结构，标签可中文化，`❓` / `➡️` 与状态 token 保留。
 
 ## 验收
 
-- [ ] Gate 过；purpose/scope/success/verification 非 unknown（或已豁免）
-- [ ] Shared understanding 已确认；Spec 已求批
+- [ ] Gate 过；purpose/scope/success/verification 为 confirmed 或 waived，不以 inferred 过闸
+- [ ] 存在未决取舍时 Frontier 为 open 且本轮有编号问题
+- [ ] Shared understanding 已覆盖；Spec 已求批
 
 ## 按需读取
 
-- `references/clarification-loop.md` · `clarification-coverage.md` · `design-grill.md` · `spec-drafting.md` · `spec-review-checklist.md` · `templates/spec.md`
+- 步骤 2 起：`references/spec-drafting.md` · `spec-review-checklist.md` · `templates/spec.md`
 - 文中 `CONTEXT.md` 指目标项目根目录的领域词汇表（若存在），不是插件包文件；先按项目 `AGENTS.md` 找实际词汇来源，不存在不强制创建。
 
 ## Recommended next skill
@@ -70,4 +84,4 @@ Frontier 提问形状见 `clarification-loop.md`（`❓` / `➡️`）。
 | Situation | Next |
 | --- | --- |
 | Spec approved | `plan` |
-| Workbench gap | `harness-builder` |
+| Workbench gap（批准后或用户明示） | `harness-builder` |

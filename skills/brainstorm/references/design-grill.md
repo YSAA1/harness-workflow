@@ -21,17 +21,17 @@ Framing gaps (Purpose / Scope still `unknown`) still go first per `clarification
 For each frontier round:
 
 1. Prefer unresolved **design branches** that block the most downstream decisions (see Branch Order), limited to questions whose prerequisites are settled.
-2. If a question can be answered from codebase or docs, explore first (or dispatch a sub-agent) and mark `inferred` / `resolved` with evidence.
+2. If a question can be answered from codebase or docs, explore first (or dispatch a sub-agent) and record the finding in the matching coverage row — `inferred` with source, or `confirmed` when the repo demonstrates it.
 3. Form a working recommendation before asking each frontier question.
 4. Ask the whole frontier in one message; number questions; each item is accept/correct/reject (or choose among 2–3 concrete options) with a recommended answer.
 5. Include a **concrete stress scenario** on design-sensitive questions unless the branch is pure terminology.
 6. Update matching coverage ledger rows in the same round.
 7. 术语已明确且任务包含文档化时，更新目标项目既有词汇表（仅术语）；否则在回复中记录。
-8. If an ADR is warranted, offer to create it under `docs/adr/` immediately — do not batch ADR offers. ADR 仅限不可逆架构决策；过程与环境坑记入项目恢复面的 lessons。
+8. If an ADR is warranted, offer to create it under `docs/adr/` immediately — do not batch ADR offers. ADR 仅限不可逆架构决策；过程与环境坑记入项目恢复面的 lessons（无恢复面则不写，也不暗示新建）。
 
 ## Branch Order
 
-Walk branches in this order, skipping branches already `resolved` or `waived`:
+Walk branches in this order, skipping branches already settled — coverage row `confirmed` or `waived`, or carrying a sourced factual note:
 
 1. **Actors and boundaries** — who does what, where system boundaries sit
 2. **Happy path** — primary flow end-to-end
@@ -42,7 +42,7 @@ Walk branches in this order, skipping branches already `resolved` or `waived`:
 7. **Verification hooks** — how each branch would be proven or falsified
 8. **Rejected alternatives** — paths intentionally not taken and why
 
-If an answer resolves multiple branches, mark all of them `resolved` before choosing the next frontier.
+If one answer settles multiple branches, note it in each matching coverage row's Source/note before choosing the next frontier — no second status vocabulary.
 
 ## Question Shape
 
