@@ -4,13 +4,13 @@
     "name": "harness-workflow maintainers"
   },
   "metadata": {
-    "description": "Workflow skills for project harness setup, planning, implementation, diagnosis, review, verification, Knowledge Cleanup, helper skills, and helper skill discovery."
+    "description": "Workflow skills for project harness setup, planning, implementation, diagnosis, review, verification, Knowledge Cleanup, helper skills, helper skill discovery, on-demand Python dead-code removal, and on-demand repo-wide reconciliation."
   },
   "plugins": [
     {
       "name": "harness-workflow",
       "source": "./",
-      "description": "Workflow skills for project harness setup, planning, implementation, diagnosis, review, verification, Knowledge Cleanup, helper skills, and helper skill discovery.",
+      "description": "Workflow skills for project harness setup, planning, implementation, diagnosis, review, verification, Knowledge Cleanup, helper skills, helper skill discovery, on-demand Python dead-code removal, and on-demand repo-wide reconciliation.",
       "category": "productivity",
       "tags": [
         "workflow",

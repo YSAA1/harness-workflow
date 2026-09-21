@@ -12,20 +12,20 @@ description: "按需全仓对账（非任务收尾）：恢复面探测 → 内�
 ## 流程
 
 1. **探测恢复面（实测，不假设）**：清点 `.harness/` 实际文件集（常见三文件，也可能有 decisions/progress 等异构形态）。有 → 根集合＝全部状态文件出链 + 持久入口（AGENTS.md、根 README、docs/README 类）。无 `.harness/` 或项目用 tracker/existing backend → 降级为只扫任务产物孤儿与 untracked 遗留物，显式声明"恢复面缺失"，不虚构状态判据（第三方项目可能从没建过恢复面）。state 不可解析时跳过状态矛盾检查并声明，不推孤儿结论。
-2. **对账清单（与 `scripts/check-plugin.mjs` 恢复面 lint 同判据的手动版，目标项目照跑）**：
+2. **对账清单（与 harness-workflow 方法仓恢复面 lint 同判据的手动版，目标项目无脚本照跑）**：
    - 状态矛盾：state 的 Status 与 work_index 对应行是否一致；state 所指轨道是否已登记。
    - 存在性：active/blocked 行 primary artifact 是否存在（文件系统或 `git worktree list` 注册树内，任一命中即算存在）。
    - 可达性：任务产物（plans/specs/reports）逐个 `grep -F` basename 于根集合全部文件，零提及＝孤儿候选；basename 匹配防裸文件名假阳。
-   - untracked：`git status --porcelain` 列出，`git check-ignore -v` 剔除已忽略项，按目录/主题分组。
+   - untracked（sweep 独有，lint 不查）：`git status --porcelain` 列出，`git check-ignore -v` 剔除已忽略项，按目录/主题分组。
 3. **六档分类**：
    - **① 任务产物孤儿**：tracked 三重证据定罪——根集合零提及 + `git log --follow` 溯源 + 同目录交叉引用；spec/plan 成对产物（共享 slug）成组裁决，防删 spec 留 plan；reports 类"零引用 + README 声明非权威"可直接列罪。
    - **② 僵尸 blocked**：不止字面 blocked，paused/待用户确认/blocked-by-policy 等价形态都入档，列冻结起点与时长。
-   - **③ 半翻行**：active 行与后续更新行的时间线/资源冲突（如旧行占用的 GPU/目录已被新任务占用）即可列入，无需联网核验。
+   - **③ 半翻行**：行状态与实际进度/时间线冲突即可列入，无需联网核验。两种形态：active/blocked 行被后续任务取代未翻（如旧行占用的 GPU/目录已被新任务占用）；行已翻 complete 但退休四步未走完——出链的 plan/Spec 衍生文档仍留在 docs/ 下（complete 死指针是已退休正常态，artifact 为活文件也不算）。
    - **④ untracked 遗留物**：一律不删，只列证据 + 二选一出口（补 commit 或补 .gitignore）；有 tracked 先例的目录（如 artifacts/）默认 commit 候选；内含注册 worktree 的目录单列高危——须先 `git worktree remove` 才能谈处置，绝不直接 ignore/删。
    - **⑤ 归档目录**（docs/archive/ 类）：仅清点标记，内容一律 needs-review 待人裁，不入可删档。
    - **⑥ 恢复面文件超本分**：state 超快照、decisions/lessons 双记账 → 蒸馏进 lessons 后截断/合并；族谱类条目压成一张 lineage 表；同一规则多份副本只留 lessons 一份。
 4. **处置**：机械项（翻状态、删已定罪孤儿）自动修；模糊项（abandoned vs paused、未了事项去向）列证据请用户裁决，不裁决不删除（保守停）。
-5. **退休四步**（同 AGENTS.md 写侧纪律，同一 commit 内完成）：翻行 → lessons 继承（先蒸馏）→ 删本轨道已完成 plan/Spec 文档（前置＝已 commit 主树且 lessons 继承完成；入度守卫＝只删唯一入边来自本退休轨道的文档，多入边翻指针不删；ADR 不删，补 superseded-by）→ state 同步翻转 Status。
+5. **退休四步**（同 AGENTS.md 写侧纪律，同一 commit 内完成；③发现的历史 complete-未退休残留同样补走）：翻行 → lessons 继承（先蒸馏）→ 删本轨道已完成 plan/Spec 文档（前置＝已 commit 主树且 lessons 继承完成；入度守卫＝只删唯一入边来自本退休轨道的文档，多入边翻指针不删；ADR 不删，补 superseded-by）→ state 同步翻转 Status。
 6. **汇报**：无漂移可零修改结束。
 
 ## 假阳守卫（实测教训）

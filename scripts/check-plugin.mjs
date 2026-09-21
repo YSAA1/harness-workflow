@@ -103,6 +103,9 @@ try {
   const market = readJson(".claude-plugin/marketplace.json");
   if (market.plugins?.[0]?.source !== "./") fail("marketplace plugin source must be ./ (repo root)");
   if (market.plugins?.[0]?.name !== plugin.name) fail("marketplace plugin name must match plugin.json name");
+  if (market.plugins?.[0]?.description !== plugin.description || market.metadata?.description !== plugin.description) {
+    fail("marketplace descriptions (metadata and plugin entry) must match plugin.json description");
+  }
   if (!failed) pass("Claude Code plugin manifest and marketplace parse");
 } catch (error) {
   fail(`Claude Code plugin manifest check failed: ${error.message}`);
@@ -191,6 +194,31 @@ for (const file of templates) if (!exists(file)) fail(`missing template ${file}`
     }
     if (!registered) fail(`recovery surface drift: state.md primary artifact ${stateArtifact} is not registered in any work_index row`);
   }
+  // Active/blocked rows must point at an existing primary artifact: on the filesystem
+  // or inside any registered worktree (registered-tree presence counts as existence).
+  if (indexBody) {
+    let worktreeRoots = [];
+    try {
+      worktreeRoots = execSync("git worktree list --porcelain", { cwd: root, encoding: "utf8" })
+        .split("\n")
+        .filter((line) => line.startsWith("worktree "))
+        .map((line) => line.slice("worktree ".length));
+    } catch {
+      worktreeRoots = [];
+    }
+    for (const line of indexBody.split("\n")) {
+      const cells = line.split("|").map((cell) => cell.trim());
+      if (cells.length < 6 || !/^\d+$/.test(cells[1])) continue;
+      const rowStatus = cells[3];
+      if (rowStatus !== "active" && rowStatus !== "blocked") continue;
+      const artifact = stripTicks(cells[4]);
+      if (!artifact || artifact.startsWith("（")) continue;
+      const present = exists(artifact) || worktreeRoots.some((wt) => fs.existsSync(path.join(wt, artifact)));
+      if (!present) {
+        fail(`recovery surface contradiction: work_index row ${cells[1]} is ${rowStatus} but primary artifact ${artifact} exists neither in the tree nor in a registered worktree`);
+      }
+    }
+  }
   const rootCorpus = [...listFiles(".harness").map((file) => `.harness/${file}`), "AGENTS.md", "README.md", "README.zh-CN.md"]
     .filter((file) => exists(file))
     .map((file) => read(file))
@@ -204,7 +232,7 @@ for (const file of templates) if (!exists(file)) fail(`missing template ${file}`
       }
     }
   }
-  if (!failed) pass("recovery surface is consistent: state.md matches its registered work_index row and docs/plans, docs/specs have no orphans");
+  if (!failed) pass("recovery surface is consistent: state.md matches its registered work_index row, active/blocked primary artifacts exist, and docs/plans, docs/specs have no orphans");
 }
 
 if (failed) process.exit(1);

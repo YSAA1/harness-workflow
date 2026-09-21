@@ -69,7 +69,7 @@ cleanup 的任务作用域（"不扩展为全仓清理"）是正确边界；缺�
 
 - 触发：显式（sweep / 盘点 / 大扫除 / 项目对账）或 cleanup 发现跨文档漂移、用户要求全量时路由。
 - 首步探测：实测 `.harness/` 实际文件集（覆盖四文件等异构形态），按实际文件集取根集合；state 不可解析时跳过状态矛盾检查并显式声明，不推孤儿结论。
-- 流程：跑对账清单（与 lint 同判据的 agent 手动版）→ 分类（complete-未退休 / superseded / 僵尸 blocked / 孤儿 tracked / 孤儿 untracked scratch / 恢复面文件超本分）→ 机械项自动修（翻状态），模糊项列证据请用户裁决 → 执行退休（harvest lessons → 删 → 翻行）→ 汇报（已退休 / needs-review / 保留 / 下一轮候选，同 remove-deadcode 汇报格式）。
+- 流程：跑对账清单（与 lint 同判据的 agent 手动版）→ 六档分类（以 `skills/sweep/SKILL.md` 为准：①任务产物孤儿＝孤儿 tracked；②僵尸 blocked；③半翻行＝superseded 与 complete-未退休〔行状态与实际进度/时间线冲突〕；④untracked 遗留物＝孤儿 untracked scratch；⑤归档目录仅标记〔域边界条款升档〕；⑥恢复面文件超本分）→ 机械项自动修（翻状态），模糊项列证据请用户裁决 → 执行退休（harvest lessons → 删 → 翻行）→ 汇报（已退休 / needs-review / 保留 / 下一轮候选，同 remove-deadcode 汇报格式）。
 - scratch 分档：tracked 文件走 remove-deadcode 同款定罪纪律（全仓零引用 + git 溯源 + 动态/文档引用守卫，定罪域限任务产物 plans/specs/reports，年龄仅证据维度之一），定罪成立可删；untracked 文件一律只列证据建议、不删，处置出口＝补 commit 或补 .gitignore 二选一。
 - 域边界：research/runbooks/archive 无引用仅汇报、不入定罪流；既有归档目录（docs/archive/ 类）内容一律归 needs-review，不入可删档。
 - 第六档「恢复面文件超本分」：state 超快照、decisions/lessons 双记账 → 蒸馏进 lessons 后截断/合并（接住目标项目存量）。
