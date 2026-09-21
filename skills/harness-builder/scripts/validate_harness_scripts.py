@@ -43,7 +43,7 @@ def check_state_template(root: Path, issues: list[str]) -> None:
     if not state.exists():
         return
     text = state.read_text(encoding="utf-8", errors="replace")
-    for token in ["Objective", "Status", "Next action", "Evidence"]:
+    for token in ["Objective", "Status", "Primary artifact", "Evidence", "Next", "Limits"]:
         if token not in text:
             issues.append(f"state template missing section: {token}")
 

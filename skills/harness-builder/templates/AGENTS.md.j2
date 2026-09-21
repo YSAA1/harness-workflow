@@ -21,7 +21,8 @@ New tasks register one row in the work index; update state on phase change, key 
 Evidence lives in state, linked artifacts or git. Lessons capture process/environment pitfalls; delete entries when stale.
 Write-side discipline: whoever flips a row out of `active` retires it in the same commit — flip the row → distill non-obvious lessons from finished docs → delete that track's completed plan/Spec docs (git history is the archive) → sync `state.md` Status.
 Delete only after the change is committed and lessons are inherited, and only docs whose sole inbound reference is this retiring track; multi-referenced docs get a pointer flip, not deletion.
-A doc stays alive only while reachable from `.harness/` state files or a durable entry (this file, root README); agreement of rows, state and docs is the commit-time gate.
+ADRs are never deleted; a superseded ADR gets a superseded-by pointer instead.
+A doc stays alive only while reachable from `.harness/` state files or a durable entry (this file, root README). Keep rows, state and docs in agreement as commit-time discipline — this project has no automated gate enforcing it; the on-demand `sweep` skill (when installed) is the equivalent reconciliation pass.
 
 ## Working agreements
 

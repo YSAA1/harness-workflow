@@ -13,7 +13,7 @@ description: "用于多阶段、依赖复杂或需要跨会话恢复的任务，
 2. 优先更新项目现有 planning surface；无惯例且确需持久计划时用 `docs/plans/YYYY-MM-DD--<topic>-plan.md`。短任务可使用对话计划；改动可用一句话描述且无跨文件依赖时，不落盘计划文件。
 3. 写目标、范围、可执行工作项、验证方式、重要依赖或风险。多阶段任务写最终整体验收标准（`final_integration_claim`），不以每步通过替代整体成功。
 4. Markdown 工作项使用 checkbox；issue 或现有 tracker 保留其原生状态。按轨道标注当前项和依赖，独立工作可并行。
-5. 恢复面：项目已有恢复面（`.harness/`、tracker 等）→ 按需同步本轨道入口，仅在同一轨道明确换轨时替换旧计划状态，不关闭其他轨道。项目无恢复面且本任务确需跨会话恢复 → 建立最小面，并在项目 `AGENTS.md` 挂一行指针（读取顺序：lessons（若有）→ work_index active 行 → state）；指针行同时携带最小写侧纪律：翻行即退休一句话（行翻出 active 时同一 commit 走完翻行→lessons 继承→删已完成文档→state 同步）＋活判据指向（文档活 ⟺ 被恢复面状态文件或持久入口引用）：
+5. 恢复面：项目已有恢复面（`.harness/`、tracker 等）→ 按需同步本轨道入口，仅在同一轨道明确换轨时替换旧计划状态，不关闭其他轨道。项目无恢复面且本任务确需跨会话恢复 → 建立最小面，并在项目 `AGENTS.md` 挂一行指针（读取顺序：lessons（若有）→ work_index active 行 → state）；指针行同时携带最小写侧纪律：翻行即退休一句话（行翻出 active 时同一 commit 走完翻行→lessons 继承→删已完成文档（只删唯一引用自本轨道者，多入边翻指针不删）→state 同步）＋活判据指向（文档活 ⟺ 被恢复面状态文件或持久入口引用）：
    - `.harness/work_index.md`：表头 ID/标题/Status/Primary artifact/Last verified + 本任务 active 行（primary artifact 指向本计划文件）；维护规则：不删历史行、同轨道换轨更新旧入口、翻行即退休。
    - `.harness/state.md`：Objective / Status / Primary artifact / Evidence / Next / Limits 六字段。
    短任务仍用对话计划，零文件；复用项目既有 tracker 优先，不强制 `.harness/`。多会话真并行用 git worktree（各自 branch），恢复面不跨 worktree 共写，合并时由所属轨道对账。

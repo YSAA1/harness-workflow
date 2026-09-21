@@ -11,7 +11,7 @@ description: "按需全仓对账（非任务收尾）：恢复面探测 → 内�
 
 ## 流程
 
-1. **探测恢复面（实测，不假设）**：清点 `.harness/` 实际文件集（常见三文件，也可能有 decisions/progress 等异构形态）。有 → 根集合＝全部状态文件出链 + 持久入口（AGENTS.md、根 README、docs/README 类）。无 `.harness/` 或项目用 tracker/existing backend → 降级为只扫任务产物孤儿与 untracked 遗留物，显式声明"恢复面缺失"，不虚构状态判据（第三方项目可能从没建过恢复面）。state 不可解析时跳过状态矛盾检查并声明，不推孤儿结论。
+1. **探测恢复面（实测，不假设）**：清点 `.harness/` 实际文件集（常见三文件，也可能有 decisions/progress 等异构形态）。有 → 根集合＝全部状态文件出链 + 持久入口（AGENTS.md、根 README、docs/README 类）。无 `.harness/` 或项目用 tracker/existing backend → 降级为只扫任务产物孤儿与 untracked 遗留物，显式声明“`.harness` 状态面缺失”（tracker/existing 的恢复面即其 tracker 本身，并非缺失），不虚构状态判据（第三方项目可能从没建过 `.harness`）。state 不可解析时跳过状态矛盾检查并声明，不推孤儿结论。
 2. **对账清单（与 harness-workflow 方法仓恢复面 lint 同判据的手动版，目标项目无脚本照跑）**：
    - 状态矛盾：state 的 Status 与 work_index 对应行是否一致；state 所指轨道是否已登记。
    - 存在性：active/blocked 行 primary artifact 是否存在（文件系统或 `git worktree list` 注册树内，任一命中即算存在）。

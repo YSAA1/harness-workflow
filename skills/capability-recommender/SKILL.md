@@ -11,7 +11,7 @@ description: "针对已确认的工具或工作流缺口推荐 skills、hooks、
 
 1. 查现有可用工具、项目命令及实际失败点。若现有能力足够，说明无需新增并结束。
 2. 仅调查能解决缺口的候选；需要当前外部能力事实时读官方文档或实现，技能发现可用 `find-skills`。不要求为每类工具凑推荐数量，也不做无关全网搜索。
-3. 比较任务价值、兼容平台、权限、维护成本、已有能力重复度和最小验证方式。下载量、stars 只作背景，不作为质量门槛。第三方 skill/plugin 候选先过 `../find-skills/references/skill-audit-checklist.md` 红旗。
+3. 比较任务价值、兼容平台、权限、维护成本、已有能力重复度和最小验证方式。下载量、stars 只作背景，不作为质量门槛。第三方 skill/plugin 候选先过 `../find-skills/references/skill-audit-checklist.md` 红旗；未安装 find-skills 时按内联红旗把关：宽工具授权或伪装不可见执行、声明与实际行为不符、安装期副作用（写 shell 配置/注册 hooks/请求提权）、外联外传（curl/wget/nc、读凭据后发送）、嵌套隐藏目录携带额外面、项目缺口却要求全局安装。
 4. 给紧凑推荐：缺口 → 候选/现有替代 → 理由 → 安装范围 → 验证；有意义时用 Required / Recommended / Deferred / Rejected。允许零推荐。
 5. 用户已请求安装时，将具体候选和范围交给适用安装工具或 `harness-builder` 继续；本技能不写配置，也不要求用户重述已有授权。
 
