@@ -169,7 +169,7 @@ const templates = ["skills/brainstorm/templates/spec.md", "skills/brainstorm/tem
 for (const file of templates) if (!exists(file)) fail(`missing template ${file}`);
 
 // Recovery-surface consistency: state.md vs its work_index row (matched by primary artifact),
-// plus docs/plans & docs/specs reachability from the root set (.harness/ files + AGENTS.md + README.md).
+// plus docs/plans & docs/specs reachability from the root set (.harness/ files + AGENTS.md + READMEs).
 {
   const stripTicks = (text) => text.trim().replace(/^`+|`+$/g, "").trim();
   const stateBody = exists(".harness/state.md") ? read(".harness/state.md") : "";
@@ -177,29 +177,34 @@ for (const file of templates) if (!exists(file)) fail(`missing template ${file}`
   const stateArtifact = stripTicks(stateBody.match(/^Primary artifact:\s*(.+)$/m)?.[1] ?? "");
   const indexBody = exists(".harness/work_index.md") ? read(".harness/work_index.md") : "";
   if (stateStatus && stateArtifact && indexBody) {
+    let registered = false;
     for (const line of indexBody.split("\n")) {
       const cells = line.split("|").map((cell) => cell.trim());
       if (cells.length < 6 || !/^\d+$/.test(cells[1]) || stripTicks(cells[4]) !== stateArtifact) continue;
+      registered = true;
       const rowStatus = cells[3];
-      const consistent = rowStatus === stateStatus
-        || ((stateStatus === "complete" || stateStatus === "abandoned") && rowStatus !== "active");
+      const retired = (status) => status === "complete" || status === "abandoned";
+      const consistent = rowStatus === stateStatus || (retired(stateStatus) && retired(rowStatus));
       if (!consistent) {
         fail(`recovery surface contradiction: state.md Status=${stateStatus} but work_index row ${cells[1]} is ${rowStatus} (${stateArtifact})`);
       }
     }
+    if (!registered) fail(`recovery surface drift: state.md primary artifact ${stateArtifact} is not registered in any work_index row`);
   }
-  const rootCorpus = [...listFiles(".harness").map((file) => `.harness/${file}`), "AGENTS.md", "README.md"]
+  const rootCorpus = [...listFiles(".harness").map((file) => `.harness/${file}`), "AGENTS.md", "README.md", "README.zh-CN.md"]
     .filter((file) => exists(file))
     .map((file) => read(file))
     .join("\n");
+  // Reachability is plain substring matching: a basename occurrence anywhere in the root set counts as
+  // a reference (bare filename references must not be flagged as orphans), which also covers exact paths.
   for (const dir of ["docs/plans", "docs/specs"]) {
     for (const file of listFiles(dir)) {
-      if (!rootCorpus.includes(`${dir}/${file}`) && !rootCorpus.includes(file)) {
-        fail(`recovery surface orphan: ${dir}/${file} is referenced (exact path or basename) by no .harness/ state file, AGENTS.md or README.md`);
+      if (!rootCorpus.includes(file)) {
+        fail(`recovery surface orphan: ${dir}/${file} is referenced (exact path or basename) by no .harness/ state file, AGENTS.md or README`);
       }
     }
   }
-  if (!failed) pass("recovery surface is consistent: state.md matches its work_index row and docs/plans, docs/specs have no orphans");
+  if (!failed) pass("recovery surface is consistent: state.md matches its registered work_index row and docs/plans, docs/specs have no orphans");
 }
 
 if (failed) process.exit(1);
