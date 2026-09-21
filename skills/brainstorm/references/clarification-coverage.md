@@ -97,7 +97,7 @@ Wait for user confirmation or corrections. Update the matrix to `confirmed` or r
 
 ## Round Output
 
-
+Frontier questions lead the round; the coverage matrix trails as a footnote — it is a progress ledger, not the deliverable.
 
 Default English/non-Chinese output:
 
@@ -108,7 +108,15 @@ Coverage: <confirmed+waived>/<8> confirmed or waived; <N> inferred pending assum
 Gate: BLOCKED | PASSED (assumption batch pending) | PASSED
 Frontier: open | empty
 
-Clarification Coverage
+❓ **Q1** - **<title>**: <body>
+➡️ <recommended answer>
+
+❓ **Q2** - **<title>**: <body>
+➡️ <recommended answer>
+
+Waiting for: numbered answers to this frontier round
+
+Coverage ledger (progress, not deliverable):
 | Dimension | Status | Source / note |
 | --- | --- | --- |
 | Purpose | ... | ... |
@@ -119,14 +127,6 @@ Clarification Coverage
 | Success criteria | ... | ... |
 | Verification strategy | ... | ... |
 | Capability gaps | ... | ... |
-
-❓ **Q1** - **<title>**: <body>
-➡️ <recommended answer>
-
-❓ **Q2** - **<title>**: <body>
-➡️ <recommended answer>
-
-Waiting for: numbered answers to this frontier round
 ```
 
-中文用户：同一结构，标签可中文化；提问仍用 `❓` / `➡️`。
+中文用户：同一结构——frontier 问题打头，Coverage 矩阵降为脚注；标签可中文化，提问仍用 `❓` / `➡️`。

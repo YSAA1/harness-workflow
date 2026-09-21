@@ -27,7 +27,7 @@ Canonical Spec：`docs/specs/YYYY-MM-DD--<topic>.md`（仅用户或 `AGENTS.md` 
 
 ### 1. Frontier grill
 
-Gate 前不写 Spec。沿用已有明确需求、决策与授权；只问会改变方案的未决 **frontier**（前置已定、彼此独立），不设最少轮数。Facts 自查/子 agent；必要 Decisions 等人。细节：`clarification-loop.md`。
+Gate 前不写 Spec。这是**一场 relentless interview**：维护设计树与 coverage 账本——Coverage 是进度账本，不是独立填表阶段。每轮只问会改变方案的未决 **frontier**（前置已定、彼此独立），可多问，每题带推荐答案；沿用已有明确需求、决策与授权，不设最少轮数。Facts 自查/子 agent；必要 Decisions 等人；偏好与取舍型决策不得 inferred 兜底，必须进 frontier。frontier 判空前按 Branch Order（`design-grill.md`）扫过设计分支、说明每支为何无需问——空 frontier 是扫出来的，不是推断掏空的。细节：`clarification-loop.md`。
 
 完成：Grill Gate 过 + assumption batch（若有）+ 用户确认 **shared understanding**。
 

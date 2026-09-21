@@ -18,7 +18,7 @@ Repeat until the Grill Gate passes:
 
 1. Read the latest user message, repo evidence, existing specs/plans, and the target project's `CONTEXT.md` if present (resolve from project instructions, never from the plugin package).
 2. Update the Clarification Coverage ledger (`clarification-coverage.md`).
-3. If a gap can be closed by exploring the codebase or docs, explore first (or dispatch a sub-agent) and mark that item `inferred` or `confirmed` with source evidence instead of asking. Do not block the whole round on background lookups — only questions that depend on unsettled facts wait.
+3. If a gap can be closed by exploring the codebase or docs, explore first (or dispatch a sub-agent) and mark that item `inferred` or `confirmed` with source evidence instead of asking. This closes **factual** gaps only — user preferences and trade-off decisions must enter the frontier, and the assumption batch collects factual inferences only. Do not block the whole round on background lookups — only questions that depend on unsettled facts wait.
 4. Recompute the **frontier**: every open decision whose prerequisites are already settled. Do **not** put two questions in the same round if one answer should change the other.
 5. For each frontier question, form a working recommendation before asking. Use craft in `design-grill.md`. Design-sensitive items include a concrete stress scenario.
 6. Ask the **whole frontier in one message**. Number questions. Prefer this shape per question:
