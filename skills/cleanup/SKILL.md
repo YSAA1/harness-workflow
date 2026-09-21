@@ -29,4 +29,5 @@ description: "整理本次任务影响的文档、代码、生成物、临时文
 - 整理完成：结束。
 - 仍有已授权行为修改：`implement`；未知失败：`diagnose`。
 - 用户显式要求全仓 Python 死代码清理：`remove-deadcode-py`；其他生态直接用对应工具（JS/TS knip、Go `deadcode`、Rust cargo-machete）。
+- 用户显式要求全仓对账/盘点/大扫除，或发现跨文档漂移、用户要求全量整理：`sweep`。
 - 新增工作超出任务：记录后续事项，不自动执行。

@@ -62,6 +62,7 @@ Agents not listed on skills.sh (Grok Build, ZCode, Kimi Code) read the same open
 | `tdd` | Red-green discipline at pre-agreed seams, driven by `implement` |
 | `writing-for-agents` | Writing for Agents — write & maintain skills, durable instructions, recovery/state surfaces |
 | `remove-deadcode-py` | On-demand repo-wide Python dead-code removal (tool detection + evidence conviction + batched atomic deletion) |
+| `sweep` | On-demand repo-wide reconciliation (six-bucket audit + evidence conviction + user adjudication) |
 
 Typical flows:
 
@@ -72,6 +73,7 @@ Unclear feature:    brainstorm -> plan -> harness-builder -> implement -> review
 Broken command:     diagnose -> evidence + recommendation (authorized fix -> implement)
 Harness audit:      harness-builder -> review -> cleanup
 Legacy dead code:   remove-deadcode-py (repo-wide, explicit trigger; task-scoped leftovers belong to cleanup)
+Repo-wide audit:    sweep (explicit trigger; runs an inline checklist, no CI gate required in the target project)
 ```
 
 ## Working behavior

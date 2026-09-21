@@ -31,7 +31,7 @@ Claude Code 也可以走官方 marketplace 托管插件（只读、自动更新�
 git clone https://github.com/YSAA1/harness-workflow.git
 cd harness-workflow
 mkdir -p ~/.agents/skills
-for s in harness-builder brainstorm plan implement diagnose review ship cleanup find-skills capability-recommender writing-for-agents tdd remove-deadcode-py; do
+for s in harness-builder brainstorm plan implement diagnose review ship cleanup find-skills capability-recommender writing-for-agents tdd remove-deadcode-py sweep; do
   cp -r "skills/$s" ~/.agents/skills/
 done
 ```
@@ -46,7 +46,7 @@ done
 
 ## 安装后识别验证
 
-1. 问 agent「列出当前可用的 workflow skills」，应出现 8 个车道技能、3 个辅助、1 个纪律 skill（tdd）与 1 个工具 skill（remove-deadcode-py）。
+1. 问 agent「列出当前可用的 workflow skills」，应出现 8 个车道技能、3 个辅助、1 个纪律 skill（tdd）与 2 个工具 skill（remove-deadcode-py、sweep）。
 2. 测试提示语：`Use Harness Workflow to plan a scoped implementation.`
 3. 需要跨会话恢复面时，在目标项目里让 `harness-builder` 按需初始化 `.harness/`，不默认创建。
 
@@ -67,3 +67,4 @@ done
 | `writing-for-agents` | 写并维护 agent 消费的面：skills、持久指令、恢复/状态面 |
 | `tdd` | 先红后绿的测试纪律，由 implement 在商定 seams 驱动 |
 | `remove-deadcode-py` | 按需全仓 Python 死代码清除（工具检测 + 证据定罪 + 分批原子删除） |
+| `sweep` | 按需全仓对账：六档分类盘点 + 证据定罪 + 用户裁决（工具 skill） |

@@ -1,6 +1,6 @@
 # Harness Method Contract
 
-This contract defines C1–C10 for the seven workflow entrypoints and five helpers. They are tools chosen by task need, not a mandatory pipeline.
+This contract defines C1–C10 for the eight workflow entrypoints plus helper, discipline and tool skills. They are tools chosen by task need, not a mandatory pipeline.
 
 ## C1 Harness As System
 Improve the actual repository context, verification and recovery gaps. A capable agent does not need generic reasoning instructions or every tool installed.
@@ -52,5 +52,6 @@ Recovery options: none, lightweight, harness, feature-list, existing. Only harne
 | `remove-deadcode-py` | On-demand repo-wide Python dead-code removal (tool skill) |
 | `review` | Review and evidence judgment |
 | `ship` | Orchestrates implement → review → cleanup for authorized delivery |
+| `sweep` | On-demand repo-wide reconciliation (tool skill) |
 | `tdd` | Red-green discipline at pre-agreed seams, driven by `implement` |
 | `writing-for-agents` | Writing for Agents — write & maintain skills, durable instructions, recovery/state surfaces |
