@@ -16,9 +16,12 @@
 ## 验证与评审
 
 - 自己写检查脚本自己过 = generator/evaluator 未分离：跨面/合同级改动必派独立只读 subagent 复核（2026-09-15 两次实证：skillopt 残留命令、stale 扫描白名单过窄恰好互相掩盖）。
+- 状态一致性检查要双向枚举：登记矛盾（行 active vs state complete）与未登记（行在而 state 缺）都是漂移，单向检查留盲区（2026-09-21 lint 补 state 未登记检查）。
 - 验证脚本会退化成"历史快照断言机"（600+ 行硬编码 run_id/测试计数/字段镜像）：断言动态属性，不镜像状态字面值（2026-06-25 check.sh 协议加固的由来）。
 - reviewer subagent 300s 超时不等于结论失效：packet fallback 自审并如实标注审查方式降级（2026-06-29）。
 
 ## 恢复面设计
 
 - 多文件恢复面在单人流里会沉积：最小集 = work_index + state；recovery_policy 并入 AGENTS.md，progress/decisions 由 state Evidence 行、work_index 行与 git 历史替代（2026-09-15 收敛；先例是 2026-06-24 D-001 统一 `.harness/`）。
+- 文档生命周期治理三层各司其职：退休契约 push（锚定状态翻转事件）+ 一致性 lint verify（hard fail）+ sweep pull（低频对账兜底）；全仓清理塞进 cleanup 会破坏任务原子性，归档目录是第二块墓地（2026-09-21 任务 020 落地；反面教材＝批 017 一次性手工大扫除留成片死指针）。
+- 实现演进必须回写 user-approved Spec 对应条款：只改实现不回写，合同文本落后成假证据（2026-09-21 sweep 三档纳入 complete-未退休并回写 Spec 六档措辞）。
