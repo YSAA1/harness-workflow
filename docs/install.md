@@ -62,7 +62,7 @@ done
 | `review` | 审阅与验收证据判定（`verify` 是触发别名） |
 | `ship` | implement → review → cleanup 的端到端交付编排 |
 | `cleanup` | 任务收尾整理：文档、代码遗留、恢复状态 |
-| `autoresearch` | 研究循环总控：假设-验证多轮编排（讨论→实施→对抗验证→蒸馏→证据门），授权档位可调 |
+| `autoresearch` | 研究循环总控：假设轮次 + 直接取证 + 对抗验证 + 排除法重开 + 诚实终态，预算与授权档位可调 |
 | `find-skills` | 明确技能缺口的定向发现（含第三方技能安全审计） |
 | `capability-recommender` | 只读能力选型推荐 |
 | `writing-for-agents` | 写并维护 agent 消费的面：skills、持久指令、恢复/状态面 |

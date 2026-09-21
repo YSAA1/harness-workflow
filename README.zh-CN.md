@@ -56,7 +56,7 @@ Claude Code 也可以走托管插件：
 | review | 审阅、风险与验收证据（`verify` 是它的触发词别名） |
 | ship | 串联 implement、review、cleanup 的端到端交付 |
 | cleanup | 本任务知识收尾（文档 + 代码遗留），包括阻塞交接 |
-| autoresearch | 研究循环总控：讨论-实施-对抗验证-蒸馏继承的有界多轮循环，授权档位可调 |
+| autoresearch | 研究循环总控：假设轮次 + 直接取证 + 对抗验证 + 排除法重开 + 诚实终态，预算与授权档位可调 |
 | harness-builder | 跨入口、恢复、验证和配置缺口整合 |
 | find-skills | 明确技能缺口的定向发现 |
 | capability-recommender | 只读能力选型 |
@@ -75,7 +75,7 @@ Claude Code 也可以走托管插件：
 harness 审计：  harness-builder -> review -> cleanup
 存量死代码：    remove-deadcode-py（全仓，显式触发；任务内遗留归 cleanup）
 全仓对账：      sweep（显式触发；内联清单执行，目标项目无需 CI 闸门）
-开放问题：      autoresearch（多轮假设-验证-对抗循环，证据门收敛）
+开放问题：      autoresearch（假设轮次、对抗审查、诚实终态）
 ```
 
 ## 工作约定

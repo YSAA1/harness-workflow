@@ -41,7 +41,7 @@ Recovery options: none, lightweight, harness, feature-list, existing. Only harne
 
 | Skill | Responsibility |
 | --- | --- |
-| `autoresearch` | Bounded research-loop orchestration: hypothesis rounds with adversarial verification and evidence-gated re-open |
+| `autoresearch` | Bounded research-loop orchestration: hypothesis rounds, adversarial verification, exclusion-driven re-open, honest terminal states |
 | `brainstorm` | Material design choices / focused Spec |
 | `capability-recommender` | Capability Recommender — read-only capability selection |
 | `cleanup` | Task-scoped Knowledge Cleanup |
