@@ -25,7 +25,7 @@ description: "审查 diff、方案或完成声明，检查正确性、风险和�
 
 ## 输出
 
-优先输出可行动 findings（严重度、位置、触发条件、影响），然后给验证、剩余缺口和结论。需要追踪时使用 REVIEW / VERIFICATION / READY，并注明审查方式为 self、subagent 或外部审阅及其范围；不强制空表。REVIEW / VERIFICATION / READY 是会话 token，不替代持久层——跨会话待处置发现按流程 7 持久化。
+findings 分两节分列，不合并不重排：「正确性与风险」（可行动发现：严重度、位置、触发条件、影响）与「验收证据」（必需标准 pass/fail/unknown 映射）；然后给剩余缺口和结论。repo 未文档化验收标准时，正确性轴仍按通用缺陷类别（边界、合同、回归、数据/权限）审，不以「无标准」跳过。需要追踪时使用 REVIEW / VERIFICATION / READY，并注明审查方式为 self、subagent 或外部审阅及其范围；不强制空表。REVIEW / VERIFICATION / READY 是会话 token，不替代持久层——跨会话待处置发现按流程 7 持久化。
 
 ## 按需读取
 
