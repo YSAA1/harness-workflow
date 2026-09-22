@@ -13,6 +13,8 @@
 - Discipline Skill: tdd — red-green loop at pre-agreed seams, driven by implement; not a workflow lane.
 - Tool Skill: remove-deadcode-py — on-demand repo-wide Python dead-code removal (tool-detected, evidence-convicted, batched atomic deletion), routed from cleanup or explicitly invoked; not a workflow lane and not a task closeout.
 - Tool Skill: sweep — on-demand repo-wide reconciliation (recovery-surface probe, six-bucket audit, mechanical fixes plus evidence-listed user adjudication, retirement four steps), routed from cleanup or explicitly invoked; not a workflow lane and not a task closeout.
+- Tool Skill: research — lightweight single-shot research (background legwork over primary sources, self-registered findings under docs/research/), explicitly invoked; not a workflow lane and not a task closeout.
+- Tool Skill: handoff — session handoff compacting the current conversation for the next agent (prefers track state when a recovery surface exists), explicitly invoked; not a workflow lane and not a task closeout.
 - Harness Recommendation Matrix: optional table for cross-surface gaps; recommendation priority is not action authorization.
 
 Stable behavior: docs/harness-method-contract.md. Historical plans and evaluation results describe their recorded version, not current instructions.

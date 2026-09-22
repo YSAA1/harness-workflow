@@ -1,0 +1,5 @@
+interface:
+  display_name: handoff
+  short_description: Compact the current conversation into a handoff for the next agent
+policy:
+  allow_implicit_invocation: false

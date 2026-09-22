@@ -32,7 +32,7 @@
 ## 项目铁律
 
 - 这是 skills 仓库；安装面以 skills.sh 为主、Claude Code 插件为辅；所有改动必须保持 `README.md`（含 zh-CN）、`docs/install.md`、`.claude-plugin/`、`docs/harness-method-contract.md` 和 `skills/*/SKILL.md` 之间语义一致。
-- Active workflow skills 只有 `harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`ship`、`cleanup`、`autoresearch`；`verify` 只是 `review` 的历史触发词别名，不再是独立 skill；`autoresearch` 是研究循环编排总控（同 `ship` 只编排底层阶段，自带轮次授权档位与预算规则，研究日志为保留交付物）；`find-skills`、`capability-recommender`、`writing-for-agents` 是辅助 skill，不是额外 workflow lane；`tdd` 是被 `implement` 驱动的纪律 skill；`remove-deadcode-py` 是按需全仓 Python 死代码清理的工具 skill，`sweep` 是按需全仓对账的工具 skill，均由 `cleanup` 路由或显式触发，不做任务收尾。
+- Active workflow skills 只有 `harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`ship`、`cleanup`、`autoresearch`；`verify` 只是 `review` 的历史触发词别名，不再是独立 skill；`autoresearch` 是研究循环编排总控（同 `ship` 只编排底层阶段，自带轮次授权档位与预算规则，研究日志为保留交付物）；`find-skills`、`capability-recommender`、`writing-for-agents` 是辅助 skill，不是额外 workflow lane；`tdd` 是被 `implement` 驱动的纪律 skill；工具 skill 四个：`remove-deadcode-py`（按需全仓 Python 死代码清理）、`sweep`（按需全仓对账）由 `cleanup` 路由或显式触发，`research`（轻量单发调研：后台跑腿、一手来源、产物自登记落 `docs/research/`）、`handoff`（会话交接：压缩当前会话给下一个 agent，有恢复面优先写 state）显式触发；四个工具 skill 均不做任务收尾。
 - `AGENTS.md` 只做薄入口（T1）；临时计划、会话摘要、active slice 和当前任务 plan/Spec 路径不要写进这里。
 - 本插件仓库使用 `.harness/`；生成到目标项目时按所选 backend 复用恢复入口，不强制迁移已有系统。
 - `harness-builder` 是 canonical 项目 harness skill；"bootstrap" 只能作为历史别名或触发词出现。

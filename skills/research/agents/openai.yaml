@@ -1,0 +1,5 @@
+interface:
+  display_name: research
+  short_description: Lightweight single-shot research with background legwork and primary sources
+policy:
+  allow_implicit_invocation: true

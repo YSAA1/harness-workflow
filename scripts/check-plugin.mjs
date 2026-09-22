@@ -13,7 +13,7 @@ const readJson = (relativePath) => JSON.parse(read(relativePath));
 const workflowSkills = ["harness-builder", "brainstorm", "plan", "implement", "diagnose", "review", "ship", "cleanup", "autoresearch"];
 const helperSkills = ["find-skills", "capability-recommender", "writing-for-agents"];
 const disciplineSkills = ["tdd"];
-const toolSkills = ["remove-deadcode-py", "sweep"];
+const toolSkills = ["remove-deadcode-py", "sweep", "research", "handoff"];
 const activeSkills = [...workflowSkills, ...helperSkills, ...disciplineSkills, ...toolSkills];
 const removedSkills = ["bootstrap", "state-contract", "resume", "save-session", "verify", "agent-instructions-maintainer", "recovery-surface-builder"];
 const staleSurfaces = [".codex-plugin", ".cursor-plugin", ".cursor", "rules", "plugins", ".agents/plugins", "docs/install"];

@@ -48,9 +48,11 @@ Recovery options: none, lightweight, harness, feature-list, existing. Only harne
 | `diagnose` | Evidence-based unknown-failure investigation |
 | `find-skills` | Targeted reusable skill discovery |
 | `harness-builder` | Cross-surface workbench coordination |
+| `handoff` | Session handoff — compact the conversation for the next agent (tool skill) |
 | `implement` | Scoped changes, test-driven at agreed seams, proportional verification |
 | `plan` | Execution dependencies / optional durable plan |
 | `remove-deadcode-py` | On-demand repo-wide Python dead-code removal (tool skill) |
+| `research` | Lightweight single-shot research — background legwork, primary sources (tool skill) |
 | `review` | Review and evidence judgment |
 | `ship` | Orchestrates implement → review → cleanup for authorized delivery |
 | `sweep` | On-demand repo-wide reconciliation (tool skill) |

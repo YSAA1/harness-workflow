@@ -1,8 +1,8 @@
 # Current task
 
-Objective: 按 Matt skills 对比报告（workflow dwfrun-47cb68e6）落实全部闭环与好用性修复：四步最重要动作 + 五批剩余施工（借鉴四条、删除清单、L3-L9）+ 独立 review 验收。
-Status: complete
-Primary artifact: （对话计划：四步施工，见 state.md）
-Evidence: 十一个施工 commit（06f5459→986ea16→81ad54f→9862684→10e48e9→03db5ae→596fa56→dbcd757→0e7f66e→64c83a9→df2355d）：四步动作、L3-L9 全闭合、借鉴 P1-P4、删除清单、版本 0.9.0。独立只读子代理两轮审查：15 条需求全 pass，唯一 Important（版本未 bump）与五条 Minor 已修复并复核，终判 ready；确定性检查 check-plugin 全 PASS（含新 state 字段白名单，负面测试塞 Worktree 即红）+ harness-builder 脚本测试 6/6 OK。退休四步：翻行 complete、lessons 继承两条（同名槽位静默顶位、新产物类别守卫三件套）、本轨道无 plan/Spec 文档待删、state 同步。
-Next: 无（任务 022 已退休，快照保留至新任务替换）。
-Limits: 全部为纸面推演+文本施工，未在真实项目首跑校准——新协议（预登记行、轻量入口、收尾硬边、字段白名单）需真实首跑后回校；0.9.0 全部施工已推送 origin；11 个变更技能已同步 ~/.agents/skills（diff -r 逐字节校验通过，.claude 侧符号链接自动生效）。
+Objective: 收编 Matt 的 research 与 handoff 为本仓工具 skill（中文适配+产物契约与恢复面/sweep 衔接），并澄清 harness-builder 与 writing-for-agents 的触发语义（作者本人都不知道何时用=第三方更不知道）。
+Status: active
+Primary artifact: （对话计划：收编两 skill，见 state.md）
+Evidence: 上游底本 raw mattpocock/skills productivity/handoff + engineering/research 已核对；适配落点：research 产物 docs/research/ 自登记（与 autoresearch 无恢复面日志同目录，sweep 自足交付物守卫覆盖）、handoff 有恢复面优先写 state/无恢复面落临时目录不进仓库；五面同步=AGENTS 铁律、check-plugin toolSkills、README 双语表、install.md 清单与计数、CONTEXT/method-contract 技能表 + plugin 0.10.0。
+Next: 验证 check-plugin + harness-builder 测试后中文 commit；随后退休翻行（lessons 候选：无新增——收编坑已由 022 lessons 覆盖）。
+Limits: 收编后本机 ~/.agents/skills/research 将被中文版顶掉（Matt 原版使命终结，属预期）；handoff 槽位重填；push 与本机同步待用户确认。

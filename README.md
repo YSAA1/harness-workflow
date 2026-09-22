@@ -58,13 +58,15 @@ Agents not listed on skills.sh (Grok Build, ZCode, Kimi Code) read the same open
 | `ship` | End-to-end delivery chaining implement, review and cleanup |
 | `cleanup` | Task-scoped Knowledge Cleanup |
 | `autoresearch` | Bounded research loop — hypothesis rounds, direct evidence gathering, adversarial verification, exclusion-driven re-open, honest terminal states |
-| `harness-builder` | Cross-surface workbench coordination |
+| `harness-builder` | Build/fix a project's workbench — entry pointers, recovery surface, verification gates (first-time setup or real gaps; daily tasks bypass it) |
 | `find-skills` | Targeted reusable skill discovery |
 | `capability-recommender` | Capability Recommender — read-only capability selection |
 | `tdd` | Red-green discipline at pre-agreed seams, driven by `implement` |
-| `writing-for-agents` | Writing for Agents — write & maintain skills, durable instructions, recovery/state surfaces |
+| `writing-for-agents` | Writing for Agents — edit the text agents read: skills, durable instructions, recovery/state surfaces (workbench setup itself is `harness-builder`) |
 | `remove-deadcode-py` | On-demand repo-wide Python dead-code removal (tool detection + evidence conviction + batched atomic deletion) |
 | `sweep` | On-demand repo-wide reconciliation (six-bucket audit + evidence conviction + user adjudication) |
+| `research` | Lightweight single-shot research — background legwork, primary sources, findings filed with citations |
+| `handoff` | Session handoff — compact the conversation for the next agent (prefers track state when a recovery surface exists) |
 
 Typical flows:
 

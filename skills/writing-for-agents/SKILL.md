@@ -1,6 +1,6 @@
 ---
 name: writing-for-agents
-description: "维护 agent 跨会话读取的文件：AGENTS.md/CLAUDE.md/Cursor rules 等持久指令的审计与修订、.harness 恢复面（work_index/state/lessons）的修复与迁移、skills 本身的写作纪律。触发：用户要求更新、审计或修复这些文件，或修改 skill 行为。"
+description: "改「给 agent 读的文字」：skills 本身的写作与修订、AGENTS.md/CLAUDE.md/Cursor rules 等持久指令的审计修订、.harness 恢复面（work_index/state/lessons）的修复与迁移。触发：用户要求写/改 skill、更新或审计持久指令、修复迁移恢复面；分工——在目标项目搭工作台用 harness-builder，本 skill 只管文字与协议。"
 ---
 
 # Writing for Agents

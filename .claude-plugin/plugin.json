@@ -1,7 +1,7 @@
 {
   "name": "harness-workflow",
   "description": "Workflow skills for project harness setup, planning, implementation, diagnosis, review, verification, Knowledge Cleanup, helper skills, helper skill discovery, on-demand Python dead-code removal, on-demand repo-wide reconciliation, and bounded research-loop orchestration.",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "author": {
     "name": "harness-workflow maintainers"
   }

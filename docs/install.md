@@ -39,7 +39,7 @@ Claude Code 也可以走官方 marketplace 托管插件（只读、自动更新�
 git clone https://github.com/YSAA1/harness-workflow.git
 cd harness-workflow
 mkdir -p ~/.agents/skills
-for s in harness-builder brainstorm plan implement diagnose review ship cleanup autoresearch find-skills capability-recommender writing-for-agents tdd remove-deadcode-py sweep; do
+for s in harness-builder brainstorm plan implement diagnose review ship cleanup autoresearch find-skills capability-recommender writing-for-agents tdd remove-deadcode-py sweep research handoff; do
   cp -r "skills/$s" ~/.agents/skills/
 done
 ```
@@ -54,7 +54,7 @@ done
 
 ## 安装后识别验证
 
-1. 问 agent「列出当前可用的 workflow skills」，应出现 9 个车道技能、3 个辅助、1 个纪律 skill（tdd）与 2 个工具 skill（remove-deadcode-py、sweep）。
+1. 问 agent「列出当前可用的 workflow skills」，应出现 9 个车道技能、3 个辅助、1 个纪律 skill（tdd）与 4 个工具 skill（remove-deadcode-py、sweep、research、handoff）。
 2. 测试提示语：`Use Harness Workflow to plan a scoped implementation.`（中文等价说法：「用 Harness Workflow 给一个范围明确的实现做计划」。）
 3. 恢复面不需要预先决定——两层分工见下节。
 
@@ -69,7 +69,7 @@ done
 
 | 技能 | 用途 |
 | --- | --- |
-| `harness-builder` | 跨入口、恢复、验证和配置的项目工作台总控 |
+| `harness-builder` | 在目标项目搭/修工作台：入口指针、恢复面初始化、验证闸门（首次接入或真缺口才用，日常任务不经过） |
 | `brainstorm` | 模糊需求收敛为用户批准的 Spec（frontier grill） |
 | `plan` | 多阶段任务的可执行计划与恢复入口 |
 | `implement` | 范围明确的修改，行为改动在商定 seams 测试驱动 |
@@ -80,7 +80,9 @@ done
 | `autoresearch` | 研究循环总控：假设轮次 + 直接取证 + 对抗验证 + 排除法重开 + 诚实终态，预算与授权档位可调 |
 | `find-skills` | 明确技能缺口的定向发现（含第三方技能安全审计） |
 | `capability-recommender` | 只读能力选型推荐 |
-| `writing-for-agents` | 写并维护 agent 消费的面：skills、持久指令、恢复/状态面 |
+| `writing-for-agents` | 改「给 agent 读的文字」：写/改 skill、审计修订持久指令、修复迁移恢复面（搭工作台本身用 harness-builder） |
 | `tdd` | 先红后绿的测试纪律，由 implement 在商定 seams 驱动 |
 | `remove-deadcode-py` | 按需全仓 Python 死代码清除（工具检测 + 证据定罪 + 分批原子删除） |
 | `sweep` | 按需全仓对账：六档分类盘点 + 证据定罪 + 用户裁决（工具 skill） |
+| `research` | 轻量单发调研：后台跑腿读一手来源，结论带出处落 `docs/research/`（工具 skill） |
+| `handoff` | 会话交接：压缩当前会话给下一个 agent；有恢复面优先写 state（工具 skill） |

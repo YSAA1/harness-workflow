@@ -58,13 +58,15 @@ Claude Code 也可以走托管插件：
 | ship | 串联 implement、review、cleanup 的端到端交付 |
 | cleanup | 本任务知识收尾（文档 + 代码遗留），包括阻塞交接 |
 | autoresearch | 研究循环总控：假设轮次 + 直接取证 + 对抗验证 + 排除法重开 + 诚实终态，预算与授权档位可调 |
-| harness-builder | 跨入口、恢复、验证和配置缺口整合 |
+| harness-builder | 在目标项目搭/修工作台：入口指针、恢复面、验证闸门（首次接入或真缺口才用；日常任务不经过） |
 | find-skills | 明确技能缺口的定向发现 |
 | capability-recommender | 只读能力选型 |
 | tdd | 先红后绿的测试纪律，由 implement 在商定 seams 驱动 |
-| writing-for-agents | 写并维护 agent 消费的面：skills、持久指令、恢复/状态面 |
+| writing-for-agents | 改「给 agent 读的文字」：写/改 skill、审计修订持久指令、修复迁移恢复面（搭工作台本身用 harness-builder） |
 | remove-deadcode-py | 按需全仓 Python 死代码清除（vulture/Ruff 检测 + 证据定罪 + 分批原子删除） |
 | sweep | 按需全仓对账（六档盘点 + 证据定罪 + 用户裁决） |
+| research | 轻量单发调研：后台跑腿、一手来源、结论带出处落 `docs/research/`（工具 skill） |
+| handoff | 会话交接：压缩当前会话给下一个 agent，有恢复面优先写 state（工具 skill） |
 
 典型路径：
 
