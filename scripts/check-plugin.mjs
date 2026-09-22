@@ -178,6 +178,17 @@ for (const file of templates) if (!exists(file)) fail(`missing template ${file}`
   const stateBody = exists(".harness/state.md") ? read(".harness/state.md") : "";
   const stateStatus = stateBody.match(/^Status:\s*(\S+)/m)?.[1] ?? "";
   const stateArtifact = stripTicks(stateBody.match(/^Primary artifact:\s*(.+)$/m)?.[1] ?? "");
+  // Field whitelist: any labeled line in state.md (with optional "- " list prefix) must be one of
+  // the six protocol fields; a stray extra field (e.g. "Worktree:") is protocol drift and fails.
+  if (stateBody) {
+    const allowedFields = new Set(["Objective", "Status", "Primary artifact", "Evidence", "Next", "Limits"]);
+    for (const line of stateBody.split("\n")) {
+      const labeled = line.match(/^(?:- )?([A-Z][A-Za-z ]*?):/);
+      if (labeled && !allowedFields.has(labeled[1].trim())) {
+        fail(`recovery surface drift: state.md field "${labeled[1].trim()}" is outside the six-field protocol (Objective/Status/Primary artifact/Evidence/Next/Limits)`);
+      }
+    }
+  }
   const indexBody = exists(".harness/work_index.md") ? read(".harness/work_index.md") : "";
   if (stateStatus && stateArtifact && indexBody) {
     let registered = false;
@@ -232,7 +243,7 @@ for (const file of templates) if (!exists(file)) fail(`missing template ${file}`
       }
     }
   }
-  if (!failed) pass("recovery surface is consistent: state.md matches its registered work_index row, active/blocked primary artifacts exist, and docs/plans, docs/specs have no orphans");
+  if (!failed) pass("recovery surface is consistent: state.md matches its registered work_index row, state.md fields stay within the six-field protocol, active/blocked primary artifacts exist, and docs/plans, docs/specs have no orphans");
 }
 
 if (failed) process.exit(1);
