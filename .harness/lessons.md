@@ -9,6 +9,7 @@
 - Claude/Codex/Grok 都会同时读自身 skills 目录与共享 `~/.agents/skills`：技能只装共享面一份，Claude 侧用符号链接，避免双份加载与版本漂移（2026-09-15）。
 - Grok 内置 bundled 技能与本插件 `implement`/`review` 同名：在 Grok 里用全名（如 "use the harness-workflow implement skill"）消歧（2026-09-15）。
 - 跨 CLI 委派审查的 schema 按最严格方言写：Codex `--output-schema` 要求所有对象层级 `additionalProperties:false` 且禁 `$schema` 键，Grok/Claude 无此要求——一份 schema 多端用时直接按 Codex 标准写（2026-09-21）。
+- 多套技能套件同名槽位会静默互相顶位（本机 implement/tdd/writing-for-agents 曾被 harness 版覆盖、Matt 原版丢失，.claude 侧另有镜像副本与 to-issues/to-prd 断链残骸）：并装前按槽位逐一核对归属，装后问 agent『/implement 的 SKILL.md 什么协议』验明正身；卸载一族时共享目录、镜像目录与断链一并清（2026-09-22 实测 26+21+2 处）。
 
 ## 提交纪律
 
@@ -33,3 +34,4 @@
 - 多文件恢复面在单人流里会沉积：最小集 = work_index + state；recovery_policy 并入 AGENTS.md，progress/decisions 由 state Evidence 行、work_index 行与 git 历史替代（2026-09-15 收敛；先例是 2026-06-24 D-001 统一 `.harness/`）。
 - 文档生命周期治理三层各司其职：退休契约 push（锚定状态翻转事件）+ 一致性 lint verify（hard fail）+ sweep pull（低频对账兜底）；全仓清理塞进 cleanup 会破坏任务原子性，归档目录是第二块墓地（2026-09-21 任务 020 落地；反面教材＝批 017 一次性手工大扫除留成片死指针）。
 - 实现演进必须回写 user-approved Spec 对应条款：只改实现不回写，合同文本落后成假证据（2026-09-21 sweep 三档纳入 complete-未退休并回写 Spec 六档措辞）。
+- 新增任务产物类别必须同步守卫三件套：登记方式（Track/归属头自登记或状态面出链）、lint 覆盖（进不进孤儿检查目录要显式决定）、sweep 裁决规则（自动删还是人裁）——三件不同时定即产生无守卫暴露面；docs/reviews 进 lint 而 docs/research 不进均为显式设计而非遗漏（2026-09-22 对比施工 L8+sweep 守卫落地实证）。
