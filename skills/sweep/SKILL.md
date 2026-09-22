@@ -18,7 +18,7 @@ description: "按需全仓对账（非任务收尾）：恢复面探测 → 内�
    - 可达性：任务产物（plans/specs/reports）逐个 `grep -F` basename 于根集合全部文件，零提及＝孤儿候选；basename 匹配防裸文件名假阳。
    - untracked（sweep 独有，lint 不查）：`git status --porcelain` 列出，`git check-ignore -v` 剔除已忽略项，按目录/主题分组。
 3. **六档分类**：
-   - **① 任务产物孤儿**：tracked 三重证据定罪——根集合零提及 + `git log --follow` 溯源 + 同目录交叉引用；spec/plan 成对产物（共享 slug）成组裁决，防删 spec 留 plan；reports 类"零引用 + README 声明非权威"可直接列罪。
+   - **① 任务产物孤儿**：tracked 三重证据定罪——根集合零提及 + `git log --follow` 溯源 + 同目录交叉引用；spec/plan 成对产物（共享 slug）成组裁决，防删 spec 留 plan；reports 类"零引用 + README 声明非权威"可直接列罪。自足交付物守卫：研究日志（头带 Track 自登记、终态已写）与 review 报告（落 `docs/reviews/`、头带归属声明）是自带户口的交付物——零引用不直接列罪，走三重定罪后降 needs-review 人裁，不自动删。
    - **② 僵尸 blocked**：不止字面 blocked，paused/待用户确认/blocked-by-policy 等价形态都入档，列冻结起点与时长。
    - **③ 半翻行**：行状态与实际进度/时间线冲突即可列入，无需联网核验。两种形态：active/blocked 行被后续任务取代未翻（如旧行占用的 GPU/目录已被新任务占用）；行已翻 complete 但退休四步未走完——出链的 plan/Spec 衍生文档仍留在 docs/ 下（complete 死指针是已退休正常态，artifact 为活文件也不算）。
    - **④ untracked 遗留物**：一律不删，只列证据 + 二选一出口（补 commit 或补 .gitignore）；有 tracked 先例的目录（如 artifacts/）默认 commit 候选；内含注册 worktree 的目录单列高危——须先 `git worktree remove` 才能谈处置，绝不直接 ignore/删。

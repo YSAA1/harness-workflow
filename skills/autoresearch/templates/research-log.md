@@ -1,6 +1,6 @@
 # Research Log - <topic>
 
-> Track: work_index #<ID>（无恢复面则本文件即轨道）| 授权档位: default | 预算: 3 轮 × 每轮 1 次实验 | 状态: in-progress
+> Track: work_index #<ID>（无恢复面则本文件即轨道，默认路径 docs/research/YYYY-MM-DD--<topic>.md）| 授权档位: default | 预算: 3 轮 × 每轮 1 次实验 | 状态: in-progress
 
 ## 背景与范围（固定，全程不变）
 
