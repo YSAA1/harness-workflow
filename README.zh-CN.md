@@ -35,6 +35,7 @@ npx skills@latest add YSAA1/harness-workflow
 - 支持 20+ agent：Claude Code、Cursor、Codex、GitHub Copilot、Gemini CLI、OpenCode、Goose、Windsurf、Cline、AMP、Roo、Trae、VS Code、Zed 等。
 - 整套装或只挑几个技能（例如只装 `review` + `cleanup`）；项目级、用户级均可。
 - 更新用 `npx skills update`，不做任何背后的自动变更。
+- 注意：`implement`、`tdd`、`writing-for-agents` 与其他流行套件（如 mattpocock/skills）同名，装进同一 agent 的技能目录会互相顶位——详见[安装指南](docs/install.md)的混装警示。
 
 Claude Code 也可以走托管插件：
 

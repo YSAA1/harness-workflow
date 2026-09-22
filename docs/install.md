@@ -14,6 +14,14 @@ npx skills@latest add YSAA1/harness-workflow
 - 更新：`npx skills update`；不做任何背后的自动变更。
 - 卸载：删除对应 agent skills 目录下的技能文件夹。
 
+## 混装警示：与其他技能套件的同名冲突
+
+`implement`、`tdd`、`writing-for-agents` 在其他流行技能套件中也存在（例如 mattpocock/skills 的 engineering 系列有同名 `implement`、`tdd`，productivity 系列有同名 `writing-for-agents`）。装进同一 agent 的同一技能目录时，同名技能会互相顶位（后装覆盖先装，或按加载顺序取其一），触发词最终指向哪一套语义不可预测；个别套件还带 `disable-model-invocation`，只能手敲命令，敲到的却可能是另一套。
+
+自查：安装后列出该技能目录，或问 agent「`/implement` 的 SKILL.md 用什么语言、什么协议」，确认在位的是你想要的那套。
+
+建议：同一 agent 槽位同名技能只装一家；确要两套并用，用不同 agent、或项目级/用户级分层安装隔开。
+
 ## Claude Code 插件路径（可选）
 
 Claude Code 也可以走官方 marketplace 托管插件（只读、自动更新）：
@@ -47,8 +55,15 @@ done
 ## 安装后识别验证
 
 1. 问 agent「列出当前可用的 workflow skills」，应出现 9 个车道技能、3 个辅助、1 个纪律 skill（tdd）与 2 个工具 skill（remove-deadcode-py、sweep）。
-2. 测试提示语：`Use Harness Workflow to plan a scoped implementation.`
-3. 需要跨会话恢复面时，在目标项目里让 `harness-builder` 按需初始化 `.harness/`，不默认创建。
+2. 测试提示语：`Use Harness Workflow to plan a scoped implementation.`（中文等价说法：「用 Harness Workflow 给一个范围明确的实现做计划」。）
+3. 恢复面不需要预先决定——两层分工见下节。
+
+## 恢复面：什么时候建（两层分工）
+
+新项目不用预先决定要不要建档，两层各管各的：
+
+- **任务层（默认自动）**：单任务确需跨会话恢复时，`plan` 自动建立最小面（work_index + state）；已有恢复面的项目里，`brainstorm` 也会在讨论阶段预登记本轨道行。不确定就什么都不做，需要时它们自己会建。
+- **项目层（按需手动）**：想把整个项目工作台一次配齐（agent 入口、恢复面、验证闸门、配置）时，才让 `harness-builder` 按需初始化 `.harness/` 等，不默认创建；日常单项任务用不上它。
 
 ## 技能清单
 

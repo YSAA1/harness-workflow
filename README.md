@@ -35,6 +35,7 @@ npx skills@latest add YSAA1/harness-workflow
 - 20+ supported agents: Claude Code, Cursor, Codex, GitHub Copilot, Gemini CLI, OpenCode, Goose, Windsurf, Cline, AMP, Roo, Trae, VS Code, Zed…
 - Install the whole workflow or just a few skills (e.g. only `review` + `cleanup`), project-level or global.
 - Update later with `npx skills update`. Nothing changes behind your back.
+- Heads-up: `implement`, `tdd` and `writing-for-agents` share names with other popular suites (e.g. mattpocock/skills); installing both into the same agent's skills directory makes them clobber each other — see the collision note in [Install](docs/install.md).
 
 Claude Code users can alternatively install the managed plugin:
 
