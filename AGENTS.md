@@ -51,13 +51,13 @@ Selected recovery surface: `harness`（`.harness/` = work_index + state + lesson
 3. `.harness/work_index.md` → 打开 `active` 行的 primary artifact
 4. `.harness/state.md`
 
-不要在 `AGENTS.md` 里写当前任务名或某个 plan/Spec 路径。新任务由 `plan` 建立最小恢复面并只更新 Work Index。
+不要在 `AGENTS.md` 里写当前任务名或某个 plan/Spec 路径。新任务由 `plan` 建立最小恢复面并只更新 Work Index；已有恢复面项目里 `brainstorm` 自第一轮 frontier 起可预登记本轨道行，Spec 落盘即指向 Spec（细节见其 SKILL.md）。
 按阶段变化、关键决定和交接更新恢复面，只修当前任务相关记录；实际证据放 state 的 Evidence 行、链接工件或 git。
 架构级不可逆决策走 `docs/adr/`（brainstorm 会提议）；过程与环境坑记入 lessons，失效即删。
 
 写侧纪律：
 
-- 翻行即退休：谁把 work_index 行翻出 active（complete/abandoned/blocked/换轨），谁在同一 commit 内走完四步——翻行 → lessons 继承 → 删本轨道已完成 plan/Spec 文档（git 历史即归档）→ state 同步翻转 Status。
+- 翻行即退休：谁把 work_index 行翻出 active（complete/abandoned/blocked/换轨），谁在同一 commit 内走完四步——翻行 → lessons 继承 → 删本轨道 plan/Spec 文档，含未批准与放弃件（git 历史即归档）→ state 同步翻转 Status。
 - 删文档前置＝改动已 commit 进主树且 lessons 继承完成；只删唯一入边来自本退休轨道的文档，多入边翻指针不删；ADR 不删，补 superseded-by。
 - 文档活判据＝可达性：活 ⟺ 被 `.harness/` 状态文件出链或持久入口（AGENTS.md、根 README）引用；不可达即孤儿。
 - `node scripts/check-plugin.mjs` 的恢复面一致性检查是闸门，状态矛盾或 plans/specs 孤儿即红。

@@ -9,7 +9,7 @@ description: "用于把模糊需求收敛成用户批准的 Spec。触发：目�
 
 Leading words: **frontier** · **design tree** · **shared understanding**
 
-Canonical Spec：`docs/specs/YYYY-MM-DD--<topic>.md`（仅用户或 `AGENTS.md` 明示时可 override）。默认不写 `.harness/`。
+Canonical Spec：`docs/specs/YYYY-MM-DD--<topic>.md`（仅用户或 `AGENTS.md` 明示时可 override）。默认不写 `.harness/`；唯一例外：项目已有 `.harness/` 恢复面时执行「落盘即登记」（见流程步骤 1–2）。
 
 用户可见语言跟随用户；协议 token（`BRAINSTORM …`、`Spec`、`Gate`、路径）可保留英文。
 
@@ -31,9 +31,11 @@ Gate 前不写 Spec。这是**一场 relentless interview**：每轮把全部未
 
 完成：Grill Gate 过 + assumption batch（若有，仅事实推断）+ shared understanding 已覆盖（完整 brief 与起草授权，或单次确认）。
 
+恢复面接续（仅项目已有 `.harness/` 时）：第一轮 frontier 发出后，为本轨道在 work_index 登记行——Status `active`、Primary artifact 填 `（Spec 未落盘：<预定 Spec 路径>）`；每轮 grill 结束顺手把该行 Last verified 格更新为「日期 · 已定 n/m · 未决题号」。断会话后新会话按行内进度续问，不从头重问；无恢复面项目跳过本段，维持零文件。
+
 ### 2. Spec
 
-按 `references/spec-drafting.md`：验证策略 → 方案比较 → 写 Spec → 自审 → 求批准。未批准不 `plan`。
+按 `references/spec-drafting.md`：验证策略 → 方案比较 → 写 Spec → 自审 → 求批准。未批准不 `plan`。Spec 落盘的同一动作里，把本轨道 work_index 行的 Primary artifact 翻转为实际 Spec 路径（grill 阶段未登记者此时补登记；无恢复面项目不登记，批准后由 `plan` 接管建档）。未批准 Spec 因该行出链而非孤儿。
 
 完成：独立 Spec 路径已给，等待批准。
 
@@ -73,6 +75,7 @@ Next after approval: plan
 - [ ] Gate 过；purpose/scope/success/verification 为 confirmed 或 waived，不以 inferred 过闸
 - [ ] 存在未决取舍时 Frontier 为 open 且本轮有编号问题
 - [ ] Shared understanding 已覆盖；Spec 已求批
+- [ ] 有恢复面项目：Spec 落盘时本轨道 work_index 行已指向该 Spec（项目确无恢复面则免）
 
 ## 按需读取
 
@@ -84,4 +87,5 @@ Next after approval: plan
 | Situation | Next |
 | --- | --- |
 | Spec approved | `plan` |
+| Spec rejected / 讨论放弃（含 grill 中止） | 同 commit 翻行 `abandoned` 走退休四步（删未批准 Spec；无恢复面或 grill 中止时无件可删）→ 结束 |
 | Workbench gap（批准后或用户明示） | `harness-builder` |

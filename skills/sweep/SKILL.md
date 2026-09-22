@@ -25,7 +25,7 @@ description: "按需全仓对账（非任务收尾）：恢复面探测 → 内�
    - **⑤ 归档目录**（docs/archive/ 类）：仅清点标记，内容一律 needs-review 待人裁，不入可删档。
    - **⑥ 恢复面文件超本分**：state 超快照、decisions/lessons 双记账 → 蒸馏进 lessons 后截断/合并；族谱类条目压成一张 lineage 表；同一规则多份副本只留 lessons 一份。
 4. **处置**：机械项（翻状态、删已定罪孤儿）自动修；模糊项（abandoned vs paused、未了事项去向）列证据请用户裁决，不裁决不删除（保守停）。
-5. **退休四步**（同 AGENTS.md 写侧纪律，同一 commit 内完成；③发现的历史 complete-未退休残留同样补走）：翻行 → lessons 继承（先蒸馏）→ 删本轨道已完成 plan/Spec 文档（前置＝已 commit 主树且 lessons 继承完成；入度守卫＝只删唯一入边来自本退休轨道的文档，多入边翻指针不删；ADR 不删，补 superseded-by）→ state 同步翻转 Status。
+5. **退休四步**（同 AGENTS.md 写侧纪律，同一 commit 内完成；③发现的历史 complete-未退休残留同样补走）：翻行 → lessons 继承（先蒸馏）→ 删本轨道 plan/Spec 文档，含未批准与放弃件（前置＝已 commit 主树且 lessons 继承完成；入度守卫＝只删唯一入边来自本退休轨道的文档，多入边翻指针不删；ADR 不删，补 superseded-by）→ state 同步翻转 Status。
 6. **汇报**：无漂移可零修改结束。
 
 ## 假阳守卫（实测教训）

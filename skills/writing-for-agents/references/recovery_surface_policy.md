@@ -8,9 +8,9 @@ none 不创建文件；lightweight 可依赖 git 和短计划；harness 可用 .
 
 ## 生命周期合同
 
-- 谁建：新任务由 `plan` 建立恢复面（或复用既有 tracker），一行一轨道；项目无恢复面时在 `AGENTS.md` 挂指针并携带最小写侧纪律（翻行即退休一句话＋可达性活判据指向）。
+- 谁建：新任务由 `plan` 建立恢复面（或复用既有 tracker），一行一轨道；`brainstorm` 在已有恢复面项目自第一轮 frontier 起预登记本轨道行（Spec 落盘即指向 Spec），只登记不建面；项目无恢复面时在 `AGENTS.md` 挂指针并携带最小写侧纪律（翻行即退休一句话＋可达性活判据指向）。
 - 谁更新：所属轨道的 agent 按阶段变化、关键决定和交接更新本轨道记录，不写其他轨道文件；证据放 state、链接工件或 git。
-- 谁退休：翻行即退休——谁把行翻出 active（complete/abandoned/blocked/换轨），谁在同一 commit 内走完四步：翻行 → lessons 继承 → 删本轨道已完成 plan/Spec 文档 → state 同步翻转 Status。删除前置＝改动已 commit 进主树且 lessons 继承完成；入度守卫＝只删唯一入边来自本退休轨道的文档，多入边翻指针不删；ADR 不删，退休时补 superseded-by。
+- 谁退休：翻行即退休——谁把行翻出 active（complete/abandoned/blocked/换轨），谁在同一 commit 内走完四步：翻行 → lessons 继承 → 删本轨道 plan/Spec 文档（含未批准与放弃件）→ state 同步翻转 Status。删除前置＝改动已 commit 进主树且 lessons 继承完成；入度守卫＝只删唯一入边来自本退休轨道的文档，多入边翻指针不删；ADR 不删，退休时补 superseded-by。
 - 文档活判据＝可达性：活 ⟺ 被 `.harness/` 状态文件出链或持久入口（AGENTS.md、根 README）引用；不可达即孤儿，退休或全局对账时处置。
 
 ## lessons 写法纪律
