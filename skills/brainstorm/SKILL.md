@@ -16,6 +16,7 @@ Canonical Spec：`docs/specs/YYYY-MM-DD--<topic>.md`（仅用户或 `AGENTS.md` 
 ## 路由
 
 - **Use**: 意图开放、标准或验证不清、要 grill。
+- **轻量入口**: 已想清且单会话可完成的短需求——Gate 四要素照快评（可一轮问完或全 waived），Spec 走 Thin Spec（`references/spec-drafting.md` Thin Spec 节）；不因入口在 brainstorm 就默认全框架访谈。
 - **Don't**: Spec 已批；单点小补丁；只要事实回答。
 - **Next**: Spec 批准 → `plan`；工作面缺口 →（Spec 批准后或用户明示）`harness-builder`。
 
