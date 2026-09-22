@@ -48,7 +48,7 @@ Selected recovery surface: `harness`（`.harness/` = work_index + state + lesson
 
 1. 本文件（`AGENTS.md`）— T1 durable rules only
 2. `.harness/lessons.md` — 项目已踩过的坑与非显然经验，动手前先读
-3. `.harness/work_index.md` → 打开 `active` 行的 primary artifact
+3. `.harness/work_index.md` → 打开 `active` 行的 primary artifact（多 active 行时只打开本会话推进的轨道：按用户指名或 state 当前轨道选定，不逐个打开）
 4. `.harness/state.md`
 
 不要在 `AGENTS.md` 里写当前任务名或某个 plan/Spec 路径。新任务由 `plan` 建立最小恢复面并只更新 Work Index；已有恢复面项目里 `brainstorm` 自第一轮 frontier 起可预登记本轨道行，Spec 落盘即指向 Spec（细节见其 SKILL.md）。
