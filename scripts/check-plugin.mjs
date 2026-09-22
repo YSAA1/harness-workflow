@@ -236,14 +236,14 @@ for (const file of templates) if (!exists(file)) fail(`missing template ${file}`
     .join("\n");
   // Reachability is plain substring matching: a basename occurrence anywhere in the root set counts as
   // a reference (bare filename references must not be flagged as orphans), which also covers exact paths.
-  for (const dir of ["docs/plans", "docs/specs"]) {
+  for (const dir of ["docs/plans", "docs/specs", "docs/reviews"]) {
     for (const file of listFiles(dir)) {
       if (!rootCorpus.includes(file)) {
         fail(`recovery surface orphan: ${dir}/${file} is referenced (exact path or basename) by no .harness/ state file, AGENTS.md or README`);
       }
     }
   }
-  if (!failed) pass("recovery surface is consistent: state.md matches its registered work_index row, state.md fields stay within the six-field protocol, active/blocked primary artifacts exist, and docs/plans, docs/specs have no orphans");
+  if (!failed) pass("recovery surface is consistent: state.md matches its registered work_index row, state.md fields stay within the six-field protocol, active/blocked primary artifacts exist, and docs/plans, docs/specs, docs/reviews have no orphans");
 }
 
 if (failed) process.exit(1);

@@ -23,12 +23,12 @@ description: "用于多阶段、依赖复杂或需要跨会话恢复的任务，
 
 - 验证受阻时记录缺口、可用证据及不能作出的声明；继续不依赖缺口的工作。不要把工具暂缺自动变成重新搭建工作台的任务。
 - 不用替代检查冒充原验收；改变约定验收标准需用户同意。
-- commit unit 可用于有意义的里程碑，不是每个计划的必填项。提交需满足项目约定和相关验证；`verify` 是 `review` 的别名，不是第二轮检查。
+- commit unit 可用于有意义的里程碑，不是每个计划的必填项。提交需满足项目约定和相关验证；项目无提交约定时的收尾兜底以 `implement` 完成条件为准（默认落一个 commit）。`verify` 是 `review` 的别名，不是第二轮检查。
 - 不强制为每项重复填写 acceptance_criteria、verification_commands、success_definition；行动和成功条件清楚即可。
 
 ## Recommended next skill
 
-- 计划放弃或被否：同 commit 翻行 `abandoned` 走退休四步（删本轨道 plan 文档，含未批准/放弃件）→ 结束。
+- 计划放弃或被否：同 commit 翻行 `abandoned` 走退休四步（删本轨道 plan/Spec 文档，含未批准与放弃件）→ 结束。
 - 已授权且需要改动：`implement`；根因未知：`diagnose`。
 - 用户要求审阅或改动需要深入检查：`review`。
 - 仅在真实工作台缺口需要修复时：`harness-builder`；仅计划请求：结束。
