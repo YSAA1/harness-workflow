@@ -34,11 +34,5 @@ jobs:
             echo "claude CLI not installed; skipped plugin validator"
           fi
 
-      - name: Check README assets
-        run: |
-          test -f docs/assets/readme/harness-workflow-figure.png
-          test -f docs/assets/readme/harness-fit-figure.png
-          test -f skills/find-skills/SKILL.md
-
       - name: Run harness-builder script tests
         run: python3 -B skills/harness-builder/tests/test_scripts.py

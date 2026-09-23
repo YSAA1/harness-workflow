@@ -5,85 +5,42 @@
 **Task-scoped workflow skills for coding agents — entry, state, verification, recovery and cleanup discipline.**
 
 [![CI](https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml/badge.svg)](https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml)
+[![Version](https://img.shields.io/badge/version-0.11.0-blue)](https://github.com/YSAA1/harness-workflow/commits/master)
+[![Skills](https://img.shields.io/badge/skills-17-blue)](#-skill-map)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-[English](README.md) · [简体中文](README.zh-CN.md) · [YSAA1/harness-workflow](https://github.com/YSAA1/harness-workflow)
+[English](README.md) · [简体中文](README.zh-CN.md) · [Repository](https://github.com/YSAA1/harness-workflow)
 
 **Installs to 20+ agents with one command** — and works with any agent that reads the open `SKILL.md` skills format.
 
 </div>
 
-## Why
-
-Agents fail on process, not intelligence: lost context between sessions, unverified "done" claims, orphaned docs, no recovery path. Harness Workflow turns the [Learn Harness Engineering](docs/harness-method-contract.md) method (C1–C10) into a small set of executable skills:
-
-- **Use only what the task needs** — simple work finishes after focused self-review; complex work adds planning, independent review and durable recovery.
-- **Fresh evidence over memory** — ready claims map to actual command output; stale evidence is reused only while relevant code, config and inputs are unchanged.
-- **Recovery as a design choice** — one authoritative entry per task/track; `.harness/` only when the work needs it.
-- **Cleanup is part of the work** — docs, code leftovers and recovery state are reconciled before handoff, not as optional polish.
-
-![Workflow fit](docs/assets/readme/harness-workflow-figure.png)
-
-## Install
-
-One command — pick your agents, pick your skills (powered by [skills.sh](https://skills.sh)):
+## ⚡ Quick start
 
 ```bash
+# English tree
+npx skills@latest add https://github.com/YSAA1/harness-workflow/tree/master/skills-en
+
+# Chinese tree (default)
 npx skills@latest add YSAA1/harness-workflow
 ```
 
-- 20+ supported agents: Claude Code, Cursor, Codex, GitHub Copilot, Gemini CLI, OpenCode, Goose, Windsurf, Cline, AMP, Roo, Trae, VS Code, Zed…
-- Install the whole workflow or just a few skills (e.g. only `review` + `cleanup`), project-level or global.
-- Update later with `npx skills update`. Nothing changes behind your back.
-- Heads-up: `implement`, `tdd` and `writing-for-agents` share names with other popular suites (e.g. mattpocock/skills); installing both into the same agent's skills directory makes them clobber each other — see the collision note in [Install](docs/install.md).
+Verify after install: tell the agent "Use Harness Workflow to plan a scoped implementation", or ask it to list its workflow skills — you should see 9 lanes + 3 helpers + 1 discipline + 4 tools, 17 in total. Language selection, the Claude Code plugin path and manual install live in the [install guide](docs/install.md).
 
-Claude Code users can alternatively install the managed plugin:
+## ✨ Why
 
-```text
-/plugin marketplace add YSAA1/harness-workflow
-/plugin install harness-workflow@harness-workflow
-```
+Agents fail on process, not intelligence: lost context between sessions, unverified "done" claims, orphaned docs, no recovery path. Harness Workflow turns the [Learn Harness Engineering](docs/harness-method-contract.md) method (C1–C10) into 17 executable skills:
 
-Agents not listed on skills.sh (Grok Build, ZCode, Kimi Code) read the same open `SKILL.md` format — copy `skills/<name>` into `~/.agents/skills/` or the CLI's own skills directory. Full guide: [Install](docs/install.md).
-
-## The workflow
-
-| Skill | Purpose |
+| Principle | Meaning |
 | --- | --- |
-| `brainstorm` | Material design choices / focused Spec |
-| `plan` | Execution dependencies / optional durable plan |
-| `implement` | Scoped changes, test-driven at agreed seams, proportional verification |
-| `diagnose` | Evidence-based unknown-failure investigation |
-| `review` | Review and evidence judgment (`verify` is a trigger alias) |
-| `ship` | End-to-end delivery chaining implement, review and cleanup |
-| `cleanup` | Task-scoped Knowledge Cleanup |
-| `autoresearch` | Bounded research loop — hypothesis rounds, direct evidence gathering, adversarial verification, exclusion-driven re-open, honest terminal states |
-| `harness-builder` | Build/fix a project's workbench — entry pointers, recovery surface, verification gates (first-time setup or real gaps; daily tasks bypass it) |
-| `find-skills` | Targeted reusable skill discovery |
-| `capability-recommender` | Capability Recommender — read-only capability selection |
-| `tdd` | Red-green discipline at pre-agreed seams, driven by `implement` |
-| `writing-for-agents` | Writing for Agents — edit the text agents read: skills, durable instructions, recovery/state surfaces (workbench setup itself is `harness-builder`) |
-| `remove-deadcode-py` | On-demand repo-wide Python dead-code removal (tool detection + evidence conviction + batched atomic deletion) |
-| `sweep` | On-demand repo-wide reconciliation (six-bucket audit + evidence conviction + user adjudication) |
-| `research` | Lightweight single-shot research — background legwork, primary sources, findings filed with citations |
-| `handoff` | Session handoff — compact the conversation for the next agent (prefers track state when a recovery surface exists) |
+| 🔎 **Use only what the task needs** | Simple work finishes after focused self-review; complex work adds planning, independent review and durable recovery |
+| 🧪 **Fresh evidence over memory** | Ready claims map to actual command output; evidence is reused only while relevant code, config and inputs are unchanged |
+| 🔄 **Recovery as a design choice** | One authoritative entry per task/track; `.harness/` only when the work needs it |
+| 🧹 **Cleanup is part of the work** | Docs, code leftovers and recovery state are reconciled before handoff, not as optional polish |
 
-Typical flows:
+## 🧭 Skill map
 
-```text
-Tiny edit:          implement -> targeted checks + self-review -> done
-Authorized task:    ship (= implement -> review -> cleanup)
-Unclear feature:    brainstorm -> plan -> harness-builder -> implement -> review -> cleanup
-Broken command:     diagnose -> evidence + recommendation (authorized fix -> implement)
-Harness audit:      harness-builder -> review -> cleanup
-Legacy dead code:   remove-deadcode-py (repo-wide, explicit trigger; task-scoped leftovers belong to cleanup)
-Repo-wide audit:    sweep (explicit trigger; runs an inline checklist, no CI gate required in the target project)
-Open question:      autoresearch (hypothesis rounds, adversarial check, honest terminal states)
-```
-
-## Skill map: what each skill does, how to call it, who calls whom
-
-### Call graph
+What each skill does, how to call it, and who calls whom — one graph, one table:
 
 ```mermaid
 graph TD
@@ -111,8 +68,6 @@ graph TD
     handoff["handoff session handover"] -.->|"exposes gaps"| hb["harness-builder workbench"]
 ```
 
-### Per-skill usage and neighbors
-
 | Skill | What it does | How to call it (say to the agent) | Upstream ← / Downstream → |
 | --- | --- | --- | --- |
 | brainstorm | Converge a vague idea into an approved Spec | "I want to build X — let's discuss it first" | → plan; → harness-builder |
@@ -133,40 +88,53 @@ graph TD
 | handoff | Compact the current conversation for the next agent | "Hand off — the next session continues" | → harness-builder (exposed gaps) |
 | writing-for-agents | Edit the text agents read | "Change this rule in skill X" | ← user, explicit |
 
-Language versions: skills ship in two trees — Chinese (`skills/`, default) and English (`skills-en/`, a full mirror; harness-builder's tests/ live only in the Chinese tree). Pick a language at install time: Chinese via `npx skills add YSAA1/harness-workflow`, English via `npx skills add https://github.com/YSAA1/harness-workflow/tree/master/skills-en` — see the [install guide](docs/install.md).
+Language versions: skills ship in two trees — Chinese (`skills/`, default) and English (`skills-en/`, a full mirror; harness-builder's tests/ live only in the Chinese tree). Pick a language at install time — see the [install guide](docs/install.md).
 
-## Working behavior
+## 🔀 Typical flows
+
+```text
+Tiny edit:          implement -> targeted checks + self-review -> done
+Authorized task:    ship (= implement -> review -> cleanup)
+Unclear feature:    brainstorm -> plan -> harness-builder -> implement -> review -> cleanup
+Broken command:     diagnose -> evidence + recommendation (authorized fix -> implement)
+Harness audit:      harness-builder -> review -> cleanup
+Legacy dead code:   remove-deadcode-py (repo-wide, explicit trigger; task-scoped leftovers belong to cleanup)
+Repo-wide audit:    sweep (explicit trigger; runs an inline checklist, no CI gate required in the target project)
+Open question:      autoresearch (hypothesis rounds, adversarial check, honest terminal states)
+```
+
+## 📜 Working behavior
 
 - Already-authorized implementation continues after planning; advice-only requests stay read-only.
 - Ask about material choices, not routine implementation decisions. Drafts can make a decision reviewable before asking.
 - `review` combines findings and fresh evidence; `verify` is only a trigger alias for it. Applicable checks are reused, not rerun merely at stage boundaries.
 - `ship` chains implement, review and cleanup for one authorized end-to-end delivery; it adds no extra gate.
 - Independent review is risk-driven; project-required independent approval still applies. Missing required evidence remains unknown.
-- Keep one authoritative entry per task/track. Existing trackers do not need a duplicate `.harness` directory.
-- Update only affected docs; keep evidence and unrelated changes. No-drift cleanup can make zero edits.
+- One authoritative entry per task/track; multiple independent tracks may stay active. An existing tracker is reused instead of adding `.harness/`.
+- Reconcile only what this task touched; keep reproduction and acceptance evidence. Zero-drift closeouts may end with no changes.
 
-The stable C1–C10 contract is in [Harness Method Contract](docs/harness-method-contract.md).
+The full method lives in the [C1–C10 method contract](docs/harness-method-contract.md).
 
-## Development and verification
+## 🛠 Development and verification
 
-Edit canonical `skills/`, then verify structure:
+After editing the `skills/` sources, run the structure checks:
 
 ```text
 node scripts/check-plugin.mjs
 bash scripts/agent/check.sh
-python -B skills/harness-builder/tests/test_scripts.py
+python3 -B skills/harness-builder/tests/test_scripts.py
 ```
 
-These checks establish packaging and specific validator behavior, not a benchmark of model task quality. No default MCP or hooks are installed. See THIRD_PARTY_NOTICES.md for attribution.
+Structure checks do not replace model-behavior evaluation. No default MCP or hooks are installed. Third-party attributions: THIRD_PARTY_NOTICES.md.
 
-## Documentation
+## 📚 Documentation
 
 | Doc | Contents |
 | --- | --- |
-| [Harness Method Contract](docs/harness-method-contract.md) | The stable C1–C10 method |
+| [Method contract](docs/harness-method-contract.md) | The stable C1–C10 method |
 | [CONTEXT](CONTEXT.md) | Domain terms and boundaries |
-| [Install guide](docs/install.md) | skills.sh install, Claude Code plugin path, manual copy |
+| [Install guide](docs/install.md) | skills.sh install, language selection, Claude Code plugin path, manual copy |
 
-## License
+## 📄 License
 
 MIT — see [LICENSE](LICENSE).

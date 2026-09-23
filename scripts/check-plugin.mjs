@@ -126,10 +126,12 @@ if (exists(".mcp.json")) fail("repo must not include default MCP config");
 if (exists("hooks/hooks.json")) fail("repo must not include default hooks");
 if (!failed) pass("no default MCP or hooks config");
 
+let pluginVersion = "";
 try {
   const plugin = readJson(".claude-plugin/plugin.json");
   if (plugin.name !== "harness-workflow") fail("claude plugin name must be harness-workflow");
   if (!/^\d+\.\d+\.\d+$/.test(plugin.version)) fail(`claude plugin version must be plain semver: ${plugin.version}`);
+  pluginVersion = plugin.version;
   const market = readJson(".claude-plugin/marketplace.json");
   if (market.plugins?.[0]?.source !== "./") fail("marketplace plugin source must be ./ (repo root)");
   if (market.plugins?.[0]?.name !== plugin.name) fail("marketplace plugin name must match plugin.json name");
@@ -195,6 +197,8 @@ for (const file of ["README.md", "README.zh-CN.md"]) {
   for (const token of ["npx skills", "YSAA1/harness-workflow", "docs/install.md", "node scripts/check-plugin.mjs"]) {
     if (!body.includes(token)) fail(`${file} missing token: ${token}`);
   }
+  if (pluginVersion && !body.includes(`version-${pluginVersion}`)) fail(`${file} version badge out of sync: expected version-${pluginVersion}`);
+  if (!body.includes(`skills-${activeSkills.length}`)) fail(`${file} skills-count badge out of sync: expected skills-${activeSkills.length}`);
 }
 if (!failed) pass("READMEs point at the skills.sh install surface");
 
