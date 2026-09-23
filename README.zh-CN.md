@@ -5,7 +5,7 @@
 **给编码 agent 的任务级工作流技能 —— 入口、状态、验证、恢复与收尾纪律。**
 
 [![CI](https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml/badge.svg)](https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-0.11.1-blue)](https://github.com/YSAA1/harness-workflow/commits/master)
+[![Version](https://img.shields.io/badge/version-0.12.0-blue)](https://github.com/YSAA1/harness-workflow/commits/master)
 [![Skills](https://img.shields.io/badge/skills-17-blue)](#-技能地图)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -56,7 +56,7 @@ graph TD
     ship["ship 端到端编排"] --> implement
     ship --> review
     ship --> cleanup
-    autoresearch["autoresearch 研究循环"] --> plan
+    autoresearch["autoresearch 研究-干活循环"] --> plan
     autoresearch --> implement
     autoresearch --> review
     autoresearch --> cleanup
@@ -77,7 +77,7 @@ graph TD
 | review | 审查与验收证据判定 | 「审一下这个 diff」 | ← plan / implement / ship；→ implement（已授权修复） |
 | ship | 端到端编排（implement→review→cleanup） | 「这活授权了，干到底」 | 编排 implement / review / cleanup |
 | cleanup | 任务收尾：文档、遗留、恢复状态 | 「收尾」 | ← ship / implement / autoresearch；路由 remove-deadcode-py / sweep |
-| autoresearch | 研究循环总控（假设轮+对抗+诚实终态） | 「研究这个开放问题」 | 编排 plan / implement / review / cleanup；→ brainstorm（设计取舍） |
+| autoresearch | 研究-干活-审核-蒸馏来回循环，直到完成 | 「研究这个开放问题，查到有结论为止」 | 编排 plan / implement / review / cleanup；→ brainstorm（设计取舍） |
 | harness-builder | 在目标项目搭/修工作台 | 「新项目把工作台搭起来」 | ← 任意（真缺口）；路由 find-skills / capability-recommender / writing-for-agents |
 | find-skills | 定向发现可复用技能 | 「找个能干 X 的技能」 | ← harness-builder / 用户 |
 | capability-recommender | 只读能力选型推荐 | 「我缺什么能力」 | ← harness-builder / 用户 |
@@ -102,7 +102,7 @@ graph TD
 harness 审计：  harness-builder -> review -> cleanup
 存量死代码：    remove-deadcode-py（全仓，显式触发；任务内遗留归 cleanup）
 全仓对账：      sweep（显式触发；内联清单执行，目标项目无需 CI 闸门）
-开放问题：      autoresearch（假设轮次、对抗审查、诚实终态）
+开放问题：      autoresearch（研究→干活→审核→蒸馏，直到完成）
 ```
 
 ## 📜 工作约定

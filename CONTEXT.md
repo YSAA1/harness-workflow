@@ -7,7 +7,7 @@
 - Fresh evidence: actual observations applicable to current relevant code, configuration and inputs, reusable until those change.
 - Review: substantive review plus evidence judgment. Verify is a trigger alias, not a second lane.
 - Ship: orchestration that chains implement, review and cleanup for one authorized task; it is not an extra gate.
-- AutoResearch: bounded research loop — hypothesis rounds with direct evidence gathering, adversarial verification, exclusion-driven re-open, honest terminal states (answered/inconclusive/blocked/budget-exhausted/cancelled); authorization levels and budget are configurable (default: round-one approval of the hypothesis package); the research log is a retained deliverable. It orchestrates underlying skills without duplicating their gates, and adds its own round-authorization and budget rules.
+- AutoResearch: bounded research-work loop — a user-assigned goal with an unknown approach runs as repeated research → hands-on → adversarial review → distill rounds, checked against fixed completion criteria; hands-on experiments (local, reversible) are first-class evidence; exclusion-driven re-open; honest terminal states (answered/inconclusive/blocked/budget-exhausted/cancelled); only spending money, external writes, or irreversible/production impact pause for authorization; the research log is a retained deliverable, and `autoresearch <log>` resumes.
 - Knowledge Cleanup: task-scoped document, code and artifact reconciliation, including blocked handoffs.
 - Helper Skill: capability-recommender (Capability Recommender), writing-for-agents (Writing for Agents) and find-skills.
 - Discipline Skill: tdd — red-green loop at pre-agreed seams, driven by implement; not a workflow lane.

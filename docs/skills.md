@@ -188,24 +188,24 @@ These skills give the agent working rules: **a clear entry (discuss before build
 
 > Protocol: [`skills/cleanup/SKILL.md`](../skills-en/cleanup/SKILL.md)
 
-### autoresearch — research an open question to a conclusion
+### autoresearch — assign a goal, let it research-work-review-distill to completion
 
-**The problem it solves**: "Does option A or B fit us?", "What are this library's real limits?" — questions needing multiple hypothesis-verification rounds to converge. Ordinary research either stops shallow (one article, one conclusion) or runs unbounded ("one more round" forever). This skill bounds research: **progress by elimination, boundary by budget, honest stops**.
+**The problem it solves**: you have a task or question to nail down but no idea what approach to take. An ordinary agent either interrogates you first or builds one version blind and calls it done. This skill takes the assignment and runs it independently: it investigates, runs experiments and changes code with its own hands, adversarially attacks its own conclusions, and checks against the completion criteria — not done means excluding the refuted explanations and continuing, until it is genuinely done, or it honestly tells you where it is stuck.
 
-**What you say**: "Research this open question — run rounds until there's a conclusion".
+**What you say**: "Research this: should push use long polling or WebSocket — until there's a conclusion", "Find out what this performance issue is and verify it" (if the session breaks, say "autoresearch <research-log path>" to resume).
 
-**The flow it walks you through** — each round has four segments:
+**The flow it walks you through**:
 
-1. **Approval package**: a falsifiable hypothesis, its prediction, how to verify it, success criteria, allowed actions and budget — by default the first round's package needs your approval (later rounds auto-proceed; adjustable to every-round approval or full waiver).
-2. **Evidence gathering**: reads docs and runs experiments directly; bulk reading can go to background agents, but conclusions count only after source-checking in the main session.
-3. **Adversarial verification**: the review protocol plus independent attack lenses — even "should we open another round" itself gets reviewed.
-4. **Distillation**: hypothesis → prediction → observation → verdict → conclusion, written into the research log; reusable lessons go to lessons.
+1. **Kickoff scan**: your sentence becomes a one-sentence goal + scope boundaries + completion criteria (what counts as done, fixed for the whole run); a scan of known facts and candidate explanations lands in the log.
+2. **Automatic loop**, four segments per round: **research** (pose one falsifiable hypothesis, write it into the log) → **hands-on** (search primary sources in parallel; when hands-on work is needed, just run the experiment, write the measurement script, change code on a branch to verify) → **review** (attack your own conclusions from an adversarial angle — even "should we open another round" gets reviewed) → **distill** (conclusions and lessons land in the log).
+3. **Completion check**: against the completion criteria — done → terminal state; not done → pass the exclusion three questions (what was excluded? what remains undistinguished? how does the next round distinguish?) and continue.
+4. **Terminal accounting**: five honest stops (answered/inconclusive/blocked/budget-exhausted/cancelled); the conclusion section **leads with the answer + per-claim evidence links** — read that section alone to take the answer away.
 
-**Five honest terminal states**: `answered` (evidence-backed, the only state called research-complete) / `inconclusive` (insufficient evidence, reported as such) / `blocked` / `budget-exhausted` (default budget 3 rounds, adjustable) / `cancelled`. Re-opening requires the elimination three-question test: what did this round exclude (with evidence)? which explanations remain undistinguished? how does the next round distinguish them?
+**When it comes to ask you (only four cases)**: spending money, external writes, irreversible or production-impacting actions, or your own stop — searching, local experiments and branch code changes never interrupt you. To watch the process, say "show me every round".
 
-**What you get**: a research log (`docs/research/date--topic.md`) with every hypothesis, piece of evidence, adversarial verdict and the final state — a retained deliverable that closeout never deletes.
+**What you get**: one research log — the final answer plus every round's hypotheses, evidence and verdicts, fully traceable; a durable deliverable you can resume any time.
 
-**How it cooperates**: one-shot questions are better served by lightweight `research`; conclusions turning into code go to `plan`/`implement`.
+**How it cooperates**: one-shot lookups are better served by lightweight `research`; conclusions turning into formal changes go to `plan`/`implement`.
 
 > Protocol: [`skills/autoresearch/SKILL.md`](../skills-en/autoresearch/SKILL.md)
 

@@ -5,7 +5,7 @@
 **Task-scoped workflow skills for coding agents — entry, state, verification, recovery and cleanup discipline.**
 
 [![CI](https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml/badge.svg)](https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-0.11.1-blue)](https://github.com/YSAA1/harness-workflow/commits/master)
+[![Version](https://img.shields.io/badge/version-0.12.0-blue)](https://github.com/YSAA1/harness-workflow/commits/master)
 [![Skills](https://img.shields.io/badge/skills-17-blue)](#-skill-map)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -56,7 +56,7 @@ graph TD
     ship["ship end-to-end orchestration"] --> implement
     ship --> review
     ship --> cleanup
-    autoresearch["autoresearch research loop"] --> plan
+    autoresearch["autoresearch research-work loop"] --> plan
     autoresearch --> implement
     autoresearch --> review
     autoresearch --> cleanup
@@ -77,7 +77,7 @@ graph TD
 | review | Review and acceptance-evidence judgment | "Review this diff" | ← plan / implement / ship; → implement (authorized fixes) |
 | ship | End-to-end orchestration (implement→review→cleanup) | "This is authorized — take it all the way" | orchestrates implement / review / cleanup |
 | cleanup | Task closeout: docs, leftovers, recovery state | "Wrap this up" | ← ship / implement / autoresearch; routes remove-deadcode-py / sweep |
-| autoresearch | Research-loop orchestrator (hypothesis rounds + adversarial + honest terminal states) | "Research this open question" | orchestrates plan / implement / review / cleanup; → brainstorm (design trade-offs) |
+| autoresearch | Research-work loop: investigate, do, adversarially review, distill until done | "Research this open question until answered" | orchestrates plan / implement / review / cleanup; → brainstorm (design trade-offs) |
 | harness-builder | Build/fix a project's workbench | "Set up the workbench for this new project" | ← any skill (real gaps); routes find-skills / capability-recommender / writing-for-agents |
 | find-skills | Targeted reusable-skill discovery | "Find a skill that can do X" | ← harness-builder / user |
 | capability-recommender | Read-only capability selection | "What capability am I missing?" | ← harness-builder / user |
@@ -102,7 +102,7 @@ Broken command:     diagnose -> evidence + recommendation (authorized fix -> imp
 Harness audit:      harness-builder -> review -> cleanup
 Legacy dead code:   remove-deadcode-py (repo-wide, explicit trigger; task-scoped leftovers belong to cleanup)
 Repo-wide audit:    sweep (explicit trigger; runs an inline checklist, no CI gate required in the target project)
-Open question:      autoresearch (hypothesis rounds, adversarial check, honest terminal states)
+Open question:      autoresearch (research → hands-on → review → distill until done)
 ```
 
 ## 📜 Working behavior
