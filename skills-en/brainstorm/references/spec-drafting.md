@@ -1,0 +1,72 @@
+# Spec Drafting
+
+Enter Spec drafting only after the Grill Gate passes, any assumption batch is confirmed, and the user confirms shared understanding.
+
+## Steps
+
+1. **Verification first** — baseline, automated checks, smoke/E2E, negative cases, fresh-evidence requirements, unverifiable items.
+2. **Compare 2-3 approaches** — positioning, tradeoffs, failure modes, verification impact. Record rejected options even when one approach is clearly best.
+3. **Confirm design segments** — goals/scope, behavior/interfaces, architecture boundaries, verification, non-goals, residual risks. Do not treat silence as approval.
+4. **Write Spec** — use `templates/spec.zh-CN.md` for Chinese users and `templates/spec.md` as the English/default template. For other user languages, translate human-facing headings from the default template while preserving protocol tokens in parentheses when useful. Canonical path is `docs/specs/YYYY-MM-DD--<topic>.md`. Do not write Spec to issue bodies, root `plan.md`, or ad-hoc docs just because they already exist. Override only when the current user explicitly names a path or `AGENTS.md` declares a canonical Spec surface, and record the override reason. Complex tasks should include suggested milestones and per-milestone acceptance hints; simple tasks should say why they are not needed.
+5. **Self-review** — use `spec-review-checklist.md`; fix TBDs, contradictions, unverifiable success criteria, and hidden capability gaps inline.
+6. **Optional durable summary** — only if the selected recovery surface requires it: Spec path, goals/non-goals, constraints, verification strategy, capability gaps, rejected options, residual risks. Do not default to `.harness/` runtime writes or paste the full Spec into state logs; the only sanctioned `.harness/` touch in this flow is the SKILL-level register-on-write (work_index row flip — see `SKILL.md` Flow 2), which adds no other runtime writes.
+7. **User review gate** — stop and ask for approval before `plan` or implementation.
+
+## Thin Spec (short path)
+
+When goals, boundaries, and acceptance are already given by existing material or directly by the user, the Spec records only the delta: new decisions, differences from the existing contract, verification strategy. Do not restate known context or produce PRD-style padding.
+
+When the change can be described in one sentence with no verification dispute, directly suggest skipping Spec/plan in favor of `implement` and state the skip reason in the output; if the user still wants a Spec, take the full path.
+
+## Review Gate Message
+
+```text
+Spec written: <docs/specs/YYYY-MM-DD--topic.md or explicit override>
+Please review and approve or request changes before I create the implementation plan.
+Next skill after approval: plan
+```
+
+## Spec Ready Output
+
+```text
+BRAINSTORM SPEC READY
+
+<Spec path label in user's language> / Spec: <docs/specs/YYYY-MM-DD--topic.md or explicit override>
+<Question solved label in user's language> / Question solved: <one sentence>
+<Chosen approach label in user's language> / Chosen approach: <one sentence>
+<Verification strategy label in user's language> / Verification strategy: <one sentence>
+
+<Needs user review label in user's language> / Needs user review:
+  - Approve -> plan
+  - Request changes -> revise Spec and re-run self-review
+  - Pause -> use the selected recovery surface only if needed
+```
+
+## Handoff
+
+| Situation | Next skill |
+| --- | --- |
+| Spec approved, needs planning | `plan` |
+| Project harness needs repair | `harness-builder` |
+| Missing skills, MCP, hooks, or verification capability | `plan`, then `harness-builder` if execution is affected |
+| User pauses before approval | selected recovery surface only |
+
+Do not invoke the next skill before Spec approval.
+
+## Anti-patterns
+
+- Choosing implementation before verification strategy.
+- Writing an Executable Plan inside the Spec.
+- Skipping rejected options.
+- Hiding capability gaps.
+- Treating "sounds good" as Spec approval.
+- Drafting Spec before shared understanding is confirmed.
+
+## Done Criteria
+
+- [ ] Grill Gate passed; blocking dimensions confirmed; shared understanding confirmed.
+- [ ] Verification strategy and 2-3 approaches (or rejected alternatives) recorded.
+- [ ] Independent Spec written at `docs/specs/YYYY-MM-DD--<topic>.md`, unless an explicit override was stated.
+- [ ] Self-review passed with no blocking checklist items.
+- [ ] Recovery-surface summary added only if required.
+- [ ] User asked to approve Spec; no `plan` or implementation before approval.

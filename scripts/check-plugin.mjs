@@ -71,18 +71,45 @@ for (const skill of activeSkills) {
 for (const skill of removedSkills) {
   if (exists(`skills/${skill}/SKILL.md`)) fail(`removed skill still exposed: ${skill}`);
 }
+
+// English tree mirror: every skills-en skill must be a structurally valid mirror of a zh-tree skill.
+// (Set equality — same names, same count — is enforced once the tree is complete; until then subset.)
+{
+  const enRoot = path.join(root, "skills-en");
+  if (fs.existsSync(enRoot)) {
+    const enDirs = fs.readdirSync(enRoot, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .sort();
+    const zhSet = new Set(dirs);
+    for (const skill of enDirs) {
+      if (!zhSet.has(skill)) fail(`skills-en has skill "${skill}" that does not exist in skills/`);
+      const file = `skills-en/${skill}/SKILL.md`;
+      if (!exists(file)) { fail(`skills-en/${skill} missing SKILL.md`); continue; }
+      const body = read(file);
+      const frontmatter = body.match(/^---\n([\s\S]*?)\n---/);
+      if (!frontmatter) { fail(`skills-en/${skill} missing YAML frontmatter`); continue; }
+      if (!new RegExp(`^name:\\s*["']?${escapeRegExp(skill)}["']?\\s*$`, "m").test(frontmatter[1])) fail(`skills-en/${skill} frontmatter name mismatch`);
+      const description = frontmatter[1].match(/^description:\s*(.+)$/m)?.[1] ?? "";
+      if (description.replace(/^["']|["']$/g, "").length < 10) fail(`skills-en/${skill} missing usable description`);
+    }
+    if (!failed) pass(`skills-en mirror is structurally valid (${enDirs.length} skill(s), subset of skills/)`);
+  }
+}
 if (!failed) pass("SKILL.md frontmatter, names and descriptions are valid");
 
-// Relative markdown links inside skills must resolve from their own file.
-for (const file of listFiles("skills").filter((file) => file.endsWith(".md"))) {
-  const absolute = path.join(root, "skills", file);
-  const body = fs.readFileSync(absolute, "utf8");
-  for (const match of body.matchAll(/\[[^\]\n]*\]\(([^\s)]+)\)/g)) {
-    const target = match[1];
-    if (/^(?:[a-z]+:|#|\/)/i.test(target) || target.includes("{{")) continue;
-    const local = target.split("#")[0];
-    if (local && !fs.existsSync(path.resolve(path.dirname(absolute), local))) {
-      fail(`broken skill reference: skills/${file} -> ${target}`);
+// Relative markdown links inside both skill trees must resolve from their own file.
+for (const tree of ["skills", "skills-en"]) {
+  for (const file of listFiles(tree).filter((file) => file.endsWith(".md"))) {
+    const absolute = path.join(root, tree, file);
+    const body = fs.readFileSync(absolute, "utf8");
+    for (const match of body.matchAll(/\[[^\]\n]*\]\(([^\s)]+)\)/g)) {
+      const target = match[1];
+      if (/^(?:[a-z]+:|#|\/)/i.test(target) || target.includes("{{")) continue;
+      const local = target.split("#")[0];
+      if (local && !fs.existsSync(path.resolve(path.dirname(absolute), local))) {
+        fail(`broken skill reference: ${tree}/${file} -> ${target}`);
+      }
     }
   }
 }

@@ -1,0 +1,5 @@
+interface:
+  display_name: review
+  short_description: Review changes and assess relevant verification evidence
+policy:
+  allow_implicit_invocation: false
