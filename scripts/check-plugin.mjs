@@ -72,11 +72,12 @@ for (const skill of removedSkills) {
   if (exists(`skills/${skill}/SKILL.md`)) fail(`removed skill still exposed: ${skill}`);
 }
 
-// English tree mirror: every skills-en skill must be a structurally valid mirror of a zh-tree skill.
-// (Set equality — same names, same count — is enforced once the tree is complete; until then subset.)
+// English tree mirror: mandatory since 0.11.0 — skills-en/ must exist and mirror skills/ exactly.
 {
   const enRoot = path.join(root, "skills-en");
-  if (fs.existsSync(enRoot)) {
+  if (!fs.existsSync(enRoot)) {
+    fail("skills-en mirror tree is missing (skills/ and skills-en/ must stay in sync)");
+  } else {
     const enDirs = fs.readdirSync(enRoot, { withFileTypes: true })
       .filter((entry) => entry.isDirectory())
       .map((entry) => entry.name)
@@ -93,7 +94,9 @@ for (const skill of removedSkills) {
       const description = frontmatter[1].match(/^description:\s*(.+)$/m)?.[1] ?? "";
       if (description.replace(/^["']|["']$/g, "").length < 10) fail(`skills-en/${skill} missing usable description`);
     }
-    if (!failed) pass(`skills-en mirror is structurally valid (${enDirs.length} skill(s), subset of skills/)`);
+    const missing = dirs.filter((s) => !enDirs.includes(s));
+    if (missing.length > 0) fail(`skills-en is missing skill(s) present in skills/: ${missing.join(", ")}`);
+    if (!failed) pass(`skills-en mirror is complete and structurally valid (${enDirs.length}/${dirs.length} skills)`);
   }
 }
 if (!failed) pass("SKILL.md frontmatter, names and descriptions are valid");

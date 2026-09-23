@@ -32,11 +32,11 @@ No Spec is written before the Gate. This is **one relentless interview**: each r
 
 Done: Grill Gate passed + assumption batch (if any, factual inferences only) + shared understanding covered (a comprehensive brief with drafting authorization, or a single confirmation).
 
-Recovery-surface continuation (only when the project already has `.harness/`): after the first frontier round goes out, register a row for this lane in work_index — Status `active`, Primary artifact filled with "(Spec not yet persisted to disk: <intended Spec path>)"; at the end of each grill round, update that row's Last verified cell in passing to "date · settled n/m · open question numbers". After a session break, the new session continues asking from the progress recorded in the row instead of re-asking from scratch; projects without a recovery surface skip this paragraph and stay zero-file.
+Recovery-surface continuation (only when the project already has `.harness/`): after the first frontier round goes out, register a row for this track in work_index — Status `active`, Primary artifact filled with "(Spec not yet persisted to disk: <intended Spec path>)"; at the end of each grill round, update that row's Last verified cell in passing to "date · settled n/m · open question numbers". After a session break, the new session continues asking from the progress recorded in the row instead of re-asking from scratch; projects without a recovery surface skip this paragraph and stay zero-file.
 
 ### 2. Spec
 
-Follow `references/spec-drafting.md`: verification strategy → approach comparison → write Spec → self-review → request approval. No `plan` before approval. In the same action as persisting the Spec to disk, flip this lane's work_index row's Primary artifact to the actual Spec path (if it was not registered during the grill phase, backfill the registration now; projects without a recovery surface do not register — after approval, `plan` takes over filing). An unapproved Spec is not an orphan because the row links out to it.
+Follow `references/spec-drafting.md`: verification strategy → approach comparison → write Spec → self-review → request approval. No `plan` before approval. In the same action as persisting the Spec to disk, flip this track's work_index row's Primary artifact to the actual Spec path (if it was not registered during the grill phase, backfill the registration now; projects without a recovery surface do not register — after approval, `plan` takes over filing). An unapproved Spec is not an orphan because the row links out to it.
 
 Done: independent Spec path delivered, awaiting approval.
 
@@ -76,7 +76,7 @@ Chinese users get the same structure; labels may be localized to Chinese, with `
 - [ ] Gate passed; purpose/scope/success/verification are confirmed or waived, never passing the gate as inferred
 - [ ] While unresolved trade-offs exist, Frontier is open and this round carries numbered questions
 - [ ] Shared understanding covered; Spec submitted for approval
-- [ ] Projects with a recovery surface: this lane's work_index row points to the Spec when it is persisted to disk (waived if the project truly has no recovery surface)
+- [ ] Projects with a recovery surface: this track's work_index row points to the Spec when it is persisted to disk (waived if the project truly has no recovery surface)
 
 ## Read on demand
 

@@ -22,6 +22,25 @@ npx skills@latest add YSAA1/harness-workflow
 
 建议：同一 agent 槽位同名技能只装一家；确要两套并用，用不同 agent、或项目级/用户级分层安装隔开。
 
+## 选择语言版本（skills/ 中文 · skills-en/ 英文）
+
+技能有两棵语言树：`skills/`（中文，默认）与 `skills-en/`（英文，完整镜像——harness-builder 的 tests/ 仅在中文树；`node scripts/check-plugin.mjs` 保证两树同名同数，整树缺席即红）。
+
+- **skills.sh 路径**（`npx skills add YSAA1/harness-workflow`）安装的是默认中文树——skills.sh 只发现 `skills/` 目录。
+- **需要英文版**：走手动拷贝路径，把源从 `skills/` 换成 `skills-en/`：
+
+```bash
+git clone https://github.com/YSAA1/harness-workflow.git
+cd harness-workflow
+mkdir -p ~/.agents/skills
+for s in harness-builder brainstorm plan implement diagnose review ship cleanup autoresearch find-skills capability-recommender writing-for-agents tdd remove-deadcode-py sweep research handoff; do
+  cp -r "skills-en/$s" ~/.agents/skills/
+done
+```
+
+- 同一 agent 槽位**只装一种语言**：两棵树同名，混装会互相顶位（见上文混装警示）。
+- 两树语义等价；冲突时以中文树为准（en 树是忠实翻译，不是第二套协议）。
+
 ## Claude Code 插件路径（可选）
 
 Claude Code 也可以走官方 marketplace 托管插件（只读、自动更新）：

@@ -81,6 +81,60 @@ Repo-wide audit:    sweep (explicit trigger; runs an inline checklist, no CI gat
 Open question:      autoresearch (hypothesis rounds, adversarial check, honest terminal states)
 ```
 
+## Skill map: what each skill does, how to call it, who calls whom
+
+### Call graph
+
+```mermaid
+graph TD
+    brainstorm["brainstorm converges a Spec"] -->|"Spec approved"| plan["plan execution plan + recovery surface"]
+    plan -->|"authorized changes"| implement["implement scoped changes"]
+    plan -->|"deep check needed"| review["review evidence judgment"]
+    plan -->|"root cause unknown"| diagnose["diagnose root-cause investigation"]
+    implement -->|"deep check needed"| review
+    review -->|"authorized fixes"| implement
+    implement -->|"root cause unknown"| diagnose
+    diagnose -->|"cause found"| implement
+    implement -->|"close out"| cleanup["cleanup task closeout"]
+    ship["ship end-to-end orchestration"] --> implement
+    ship --> review
+    ship --> cleanup
+    autoresearch["autoresearch research loop"] --> plan
+    autoresearch --> implement
+    autoresearch --> review
+    autoresearch --> cleanup
+    implement -.->|"drives"| tdd["tdd red-green discipline"]
+    cleanup -.->|"routes"| rdp["remove-deadcode-py"]
+    cleanup -.->|"routes"| sw["sweep repo-wide audit"]
+    research["research single-shot"] -->|"open question escalates"| autoresearch
+    research -->|"findings turn into work"| plan
+    handoff["handoff session handover"] -.->|"exposes gaps"| hb["harness-builder workbench"]
+```
+
+### Per-skill usage and neighbors
+
+| Skill | What it does | How to call it (say to the agent) | Upstream ← / Downstream → |
+| --- | --- | --- | --- |
+| brainstorm | Converge a vague idea into an approved Spec | "I want to build X — let's discuss it first" | → plan; → harness-builder |
+| plan | Execution plan; minimal recovery surface when needed | "Plan this against the Spec" | ← brainstorm; → implement / review / diagnose |
+| implement | Scoped changes, test-driven for behavior | "Implement this plan" | ← plan / ship / review (fix loop-back); drives tdd; → review / diagnose / cleanup |
+| diagnose | Evidence-based investigation of unknown failures | "Why is this error happening?" | ← implement / review; → implement |
+| review | Review and acceptance-evidence judgment | "Review this diff" | ← plan / implement / ship; → implement (authorized fixes) |
+| ship | End-to-end orchestration (implement→review→cleanup) | "This is authorized — take it all the way" | orchestrates implement / review / cleanup |
+| cleanup | Task closeout: docs, leftovers, recovery state | "Wrap this up" | ← ship / implement / autoresearch; routes remove-deadcode-py / sweep |
+| autoresearch | Research-loop orchestrator (hypothesis rounds + adversarial + honest terminal states) | "Research this open question" | orchestrates plan / implement / review / cleanup; → brainstorm (design trade-offs) |
+| harness-builder | Build/fix a project's workbench | "Set up the workbench for this new project" | ← any skill (real gaps); routes find-skills / capability-recommender / writing-for-agents |
+| find-skills | Targeted reusable-skill discovery | "Find a skill that can do X" | ← harness-builder / user |
+| capability-recommender | Read-only capability selection | "What capability am I missing?" | ← harness-builder / user |
+| tdd | Red-first green-second test discipline | Driven by implement at agreed seams | driven by implement |
+| remove-deadcode-py | On-demand repo-wide Python dead-code removal | "Clean up the dead code repo-wide" | ← cleanup / user |
+| sweep | On-demand repo-wide reconciliation | "Do a full repo audit" | ← cleanup / user |
+| research | Lightweight single-shot research (background legwork + primary sources) | "Look up X for me" | → autoresearch (escalation) / plan / implement |
+| handoff | Compact the current conversation for the next agent | "Hand off — the next session continues" | → harness-builder (exposed gaps) |
+| writing-for-agents | Edit the text agents read | "Change this rule in skill X" | ← user, explicit |
+
+Language versions: skills ship in two trees — Chinese (`skills/`, default) and English (`skills-en/`, a full mirror; harness-builder's tests/ live only in the Chinese tree); pick one at install time — see the [install guide](docs/install.md).
+
 ## Working behavior
 
 - Already-authorized implementation continues after planning; advice-only requests stay read-only.

@@ -1,6 +1,6 @@
 # Research Log - <topic>
 
-> Track: work_index #<ID> (without a recovery surface this file itself is the lane; default path docs/research/YYYY-MM-DD--<topic>.md) | Authorization tier: default | Budget: 3 rounds × 1 experiment per round | Status: in-progress
+> Track: work_index #<ID> (without a recovery surface this file itself is the track; default path docs/research/YYYY-MM-DD--<topic>.md) | Authorization tier: default | Budget: 3 rounds × 1 experiment per round | Status: in-progress
 
 ## Background and scope (fixed, unchanged throughout)
 
@@ -32,4 +32,4 @@
 
 ## Deferred items
 
-<adjacent new questions that point in a different direction than the original question; questions the user explicitly adds start a separate lane>
+<adjacent new questions that point in a different direction than the original question; questions the user explicitly adds start a separate track>

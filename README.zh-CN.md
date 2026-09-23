@@ -81,6 +81,60 @@ harness 审计：  harness-builder -> review -> cleanup
 开放问题：      autoresearch（假设轮次、对抗审查、诚实终态）
 ```
 
+## 技能地图：谁干什么、怎么叫、谁调用谁
+
+### 调用关系图
+
+```mermaid
+graph TD
+    brainstorm["brainstorm 收敛 Spec"] -->|"Spec 批准"| plan["plan 执行计划+恢复面"]
+    plan -->|"已授权改动"| implement["implement 范围修改"]
+    plan -->|"需要深检"| review["review 证据判定"]
+    plan -->|"根因未知"| diagnose["diagnose 根因调查"]
+    implement -->|"需要深入检查"| review
+    review -->|"已授权修复"| implement
+    implement -->|"根因未知"| diagnose
+    diagnose -->|"原因已明"| implement
+    implement -->|"收尾"| cleanup["cleanup 任务收尾"]
+    ship["ship 端到端编排"] --> implement
+    ship --> review
+    ship --> cleanup
+    autoresearch["autoresearch 研究循环"] --> plan
+    autoresearch --> implement
+    autoresearch --> review
+    autoresearch --> cleanup
+    implement -.->|"驱动"| tdd["tdd 红绿纪律"]
+    cleanup -.->|"路由"| rdp["remove-deadcode-py"]
+    cleanup -.->|"路由"| sw["sweep 全仓对账"]
+    research["research 单发调研"] -->|"开放问题升级"| autoresearch
+    research -->|"结论落地"| plan
+    handoff["handoff 会话交接"] -.->|"暴露缺口"| hb["harness-builder 工作台"]
+```
+
+### 逐技能用法与上下游
+
+| 技能 | 干什么 | 怎么用（对 agent 说） | 上游 ← / 下游 → |
+| --- | --- | --- | --- |
+| brainstorm | 把模糊想法收敛成批准的 Spec | 「我想做个 X，先讨论清楚再动手」 | → plan；→ harness-builder |
+| plan | 执行计划，必要时建最小恢复面 | 「按这个 Spec 排个计划」 | ← brainstorm；→ implement / review / diagnose |
+| implement | 范围内修改，行为改动测试驱动 | 「实现这个计划」 | ← plan / ship / review（修复回边）；驱动 tdd；→ review / diagnose / cleanup |
+| diagnose | 根因未知的证据化调查 | 「这个报错为什么发生」 | ← implement / review；→ implement |
+| review | 审查与验收证据判定 | 「审一下这个 diff」 | ← plan / implement / ship；→ implement（已授权修复） |
+| ship | 端到端编排（implement→review→cleanup） | 「这活授权了，干到底」 | 编排 implement / review / cleanup |
+| cleanup | 任务收尾：文档、遗留、恢复状态 | 「收尾」 | ← ship / implement / autoresearch；路由 remove-deadcode-py / sweep |
+| autoresearch | 研究循环总控（假设轮+对抗+诚实终态） | 「研究这个开放问题」 | 编排 plan / implement / review / cleanup；→ brainstorm（设计取舍） |
+| harness-builder | 在目标项目搭/修工作台 | 「新项目把工作台搭起来」 | ← 任意（真缺口）；路由 find-skills / capability-recommender / writing-for-agents |
+| find-skills | 定向发现可复用技能 | 「找个能干 X 的技能」 | ← harness-builder / 用户 |
+| capability-recommender | 只读能力选型推荐 | 「我缺什么能力」 | ← harness-builder / 用户 |
+| tdd | 先红后绿的测试纪律 | 由 implement 在商定 seams 驱动 | 被 implement 驱动 |
+| remove-deadcode-py | 按需全仓 Python 死代码清理 | 「清理全仓死代码」 | ← cleanup / 用户 |
+| sweep | 按需全仓对账 | 「大扫除 / 盘点」 | ← cleanup / 用户 |
+| research | 轻量单发调研（后台跑腿+一手来源） | 「帮我查一下 X」 | → autoresearch（升级）/ plan / implement |
+| handoff | 把当前会话压缩交接给下一个 agent | 「交接，下个会话继续」 | → harness-builder（暴露缺口） |
+| writing-for-agents | 改「给 agent 读的文字」 | 「改一下 XX skill 的这条规则」 | ← 用户显式 |
+
+语言版本：技能有中文（`skills/`，默认）与英文（`skills-en/`，完整镜像；harness-builder 的 tests/ 仅在中文树）两棵树，安装时可选——见[安装指南](docs/install.md)。
+
 ## 工作约定
 
 - 明确授权执行时，计划后继续；只要审计或建议时保持只读。只问影响结果的重要选择。
