@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Fast project verification for agent work.
+#
+# Keep this command short. Do not run long training or deployment here.
+#
+# Fragile-pattern bans:
+# - Do not grep -F hard-coded run_id / timestamp literals into README/state/plan.
+# - Do not assert test-count literals like "N passed, M warnings".
+# - Do not assert experiment-value literals (e.g. author_800k=5.968893).
+# - Do not grep -F recovery surface field values (active_slice / Primary artifact / Work Index row) back into check.sh.
+# - Do not stuff every source/test file into required_files; guard only protected paths and harness entry files.
+# - When recovery surface structural properties need verifying, extract them dynamically with jq/python/awk and assert predicates instead of mirroring literals.
+
+{{ check_commands }}

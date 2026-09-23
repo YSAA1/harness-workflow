@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Harness Recommendation Matrix",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "required": [
+      "status",
+      "reason"
+    ],
+    "properties": {
+      "status": {
+        "enum": [
+          "Required",
+          "Recommended",
+          "Deferred",
+          "Rejected"
+        ]
+      },
+      "artifact": {
+        "type": "string"
+      },
+      "reason": {
+        "type": "string"
+      }
+    }
+  }
+}

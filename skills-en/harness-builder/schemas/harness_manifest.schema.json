@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Harness Manifest",
+  "type": "object",
+  "required": [
+    "version",
+    "project",
+    "harness_workflow"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "project": {
+      "type": "string"
+    },
+    "harness_workflow": {
+      "type": "object",
+      "required": [
+        "entry",
+        "recovery_surface",
+        "verification_command"
+      ],
+      "properties": {
+        "entry": {
+          "type": "string"
+        },
+        "recovery_surface": {
+          "enum": [
+            "none",
+            "lightweight",
+            "harness",
+            "feature-list",
+            "existing"
+          ]
+        },
+        "verification_command": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Harness Phase Acceptance",
+  "type": "object",
+  "required": [
+    "phase",
+    "status",
+    "evidence"
+  ],
+  "properties": {
+    "phase": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "pass",
+        "blocked",
+        "skipped",
+        "deferred"
+      ]
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence": {
+      "type": "string"
+    },
+    "residual_risk": {
+      "type": "string"
+    }
+  }
+}

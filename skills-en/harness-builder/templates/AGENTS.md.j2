@@ -1,0 +1,33 @@
+# {{project_name}}
+
+## Entry
+
+{{entry_file}}
+
+## Project contracts
+
+{{project_contracts}}
+
+## Verification
+
+Use the target runtime and shell: `{{verification_command}}`.
+Run checks appropriate to affected behavior; reuse evidence until related code, environment or inputs change.
+Missing required evidence limits completion claims; do not substitute a structural check for behavior acceptance.
+
+## Recovery
+
+Session entry, in order: this file → `.harness/lessons.md` (project pitfalls and non-obvious experience, read before starting work) → `.harness/work_index.md` (open the `active` row's primary artifact) → `.harness/state.md`.
+New tasks register one row in the work index; update state on phase change, key decisions and handoff.
+Evidence lives in state, linked artifacts or git. Lessons capture process/environment pitfalls; delete entries when stale.
+Write-side discipline: whoever flips a row out of `active` retires it in the same commit — flip the row → distill non-obvious lessons from finished docs → delete that track's completed plan/Spec docs (git history is the archive) → sync `state.md` Status.
+Delete only after the change is committed and lessons are inherited, and only docs whose sole inbound reference is this retiring track; multi-referenced docs get a pointer flip, not deletion.
+ADRs are never deleted; a superseded ADR gets a superseded-by pointer instead.
+A doc stays alive only while reachable from `.harness/` state files or a durable entry (this file, root README). Keep rows, state and docs in agreement as commit-time discipline — this project has no automated gate enforcing it; the on-demand `sweep` skill (when installed) is the equivalent reconciliation pass.
+
+## Working agreements
+
+Preserve unrelated user changes. Follow existing scope and authorization; clarify material ambiguity only.
+Use one authoritative entry per task/track. Independent tracks may proceed concurrently.
+Prefer the existing recovery backend. Current state does not belong in this durable entry.
+Evidence can correct stale status, but cannot override instructions, permissions or project contracts.
+Clean only this task's disposable scratch; retain verification and recovery artifacts.
