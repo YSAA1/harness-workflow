@@ -31,6 +31,19 @@
 
 对照 research 的同构关系：research 是「一句话→跑腿→裁决→落盘」单发；autoresearch 是同一骨架换成「一句话→摸底→多轮（假设→取证→对抗→蒸馏）→终态」，多出来的只有轮次纪律和诚实终态。
 
+## 外部基准调研结论（2026-09-23，网络实测）
+
+四类当前优秀方案的共性模式与对照裁决：
+
+| 业界模式 | 出处 | 本方案裁决 |
+| --- | --- | --- |
+| 一句话入口、全程无仪式（human-in-the-loop 仅配置项） | GPT-Researcher；Kimi-Researcher（平均 23 步推理、数百网页自主探索） | v3 骨架已是；业界共识进一步支撑砍掉批准触点 |
+| planner 生成一组"合起来覆盖任务"的研究问题 → executor 并行取证 → publisher 综合 | GPT-Researcher（planner-executor-publisher 三角色） | 同构映射：摸底节=planner、轮内取证=executor（**吸收：并行扇出，见 D9**）、终态结论节=publisher 轻量版（见 D12） |
+| 多源去偏（20+ 来源，来源越多偏差越小） | GPT-Researcher | **吸收：来源多样性纪律，见 D10** |
+| 可配置 depth/breadth = 预算工业化形态 | GPT-Researcher Deep Research 模式 | D7 内部预算已同构，用户可调已含 |
+| 多视角提问驱动检索（先调研相似主题既有文章发现视角，再由不同 persona 提问） | STORM（Stanford，arXiv:2402.14207） | 同构映射：摸底节的候选解释清单=视角发现；保留我们的形式 |
+| 可验证停止判据优于主观判据；human-in-the-loop 应是风险触发的暂停条件，不是每步仪式 | loop 设计共识（MindStudio / Oracle / Port） | 五终态=我们的可验证停止判据；授权边界停=风险触发式暂停——两项都比业界普遍做法强，保留为差异化优势（业界普遍**没有**诚实终态，问题穷尽即停） |
+
 ## 设计决定
 
 - **D1 入口零仪式**：一句话问题直接开跑（同 research 第 1 步：把需求定成一句可交付的研究问题）；`autoresearch <既有日志路径>` 续跑为一等入口（原「重入先检索 docs/research/」升为显式形态）。
@@ -41,6 +54,10 @@
 - **D6 循环核心全部不动**：四段轮次、五终态、排除法三问（排除了什么/还剩什么没区分/下轮怎么区分）、对抗验证含重开提案必审、研究日志为保留交付物。
 - **D7 预算内化**：默认 3 轮 × 每轮 1 次有成本实验作为协议默认值写死；读文献/检索不计入；预算尽自动进 budget-exhausted，用户可加。
 - **D8 产物形态不变**：落点 `docs/research/YYYY-MM-DD--<topic>.md`、Track 头自登记、sweep 自足交付物守卫——全部沿用现状，无守卫三件套新增成本。
+- **D9 并行扇出**（吸收自 GPT-Researcher executor 并行）：一轮内相互独立的检索/阅读任务并行派发后台执行，主会话只持假设与裁决——串行跑腿只在任务有依赖时使用。
+- **D10 来源多样性**（吸收自 GPT-Researcher 多源去偏）：关键结论至少两个独立一手来源交叉；确实只有单源时必须在日志明示「单源」。平台社交内容（X/Reddit 讨论、播客/视频字幕）是**线索不是定案**——用于发现视角与反例，定案事实回溯一手来源（官方文档、源码、spec、第一方 API）。
+- **D11 取证渠道层**（agent-reach 定位）：通用 web 检索为基线渠道；环境装有平台读取路由类 skill（如 agent-reach：X、Reddit、YouTube/B站字幕、播客转录、GitHub code search 等 15 平台）时，取证面自动扩展到平台原生内容。渠道是环境能力：无则降级为基线渠道，协议不依赖任何特定第三方 skill 存在；使用时遵循该 skill 自身协议（如 agent-reach 的 doctor 体检与后端选择），claim 回核纪律统一不变。
+- **D12 结论节可读性**（publisher 的轻量版）：answered 终态的结论节按「结论先行＋逐条证据链接」书写，读者只读该节即可拿走答案，不需要读轮次过程——不另造独立报告文档。
 
 ## 工作项
 
@@ -49,7 +66,7 @@
 - [ ] W3 `skills-en/autoresearch/` 两文件同步（**与 W1/W2 同一 commit**——双语两树条款级漂移须同 commit 同步）
 - [ ] W4 文档面同步：`CONTEXT.md`（AutoResearch 条目改轻描述）、`README.md`/`README.zh-CN.md`（技能地图 autoresearch 行「怎么用」＝一句触发＋续跑形态）、`docs/install.md`（技能清单行）、`docs/skills.zh-CN.md`/`docs/skills.md`（autoresearch 节按新流程重写，卖点改为「说完一句话就不用管了」）
 - [ ] W5 `.claude-plugin/plugin.json` 升版 0.11.1 → 0.12.0，README 双语徽章同步
-- [ ] W6 独立只读 subagent 审校：zh/en 逐节条款对照＋文档面口径对照＋**防线转移论证复核**（确认砍首轮批准后，D2/D5/D6 三道防线在协议文本中真实成立、无漏洞）
+- [ ] W6 独立只读 subagent 审校：zh/en 逐节条款对照＋文档面口径对照＋**防线转移论证复核**（确认砍首轮批准后，D2/D5/D6 三道防线在协议文本中真实成立、无漏洞）＋渠道条款复核（D9-D11：并行扇出/来源多样性/渠道降级在协议文本可执行、不依赖特定第三方 skill）
 - [ ] W7 全部闸门：`node scripts/check-plugin.mjs`、`bash scripts/agent/check.sh`、`python3 -B skills/harness-builder/tests/test_scripts.py`
 - [ ] W8 恢复面退休四步（翻行 → lessons 继承 → 删本计划文件 → state 同步）＋中文 commit＋push（走 7890 代理）
 
