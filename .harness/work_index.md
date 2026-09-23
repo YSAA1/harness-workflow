@@ -28,6 +28,7 @@
 | 022 | 对比报告施工：闭环断点与好用性修复四步 | complete | （对话计划：四步施工，见 state.md） | 2026-09-22 |
 | 023 | 收编 research/handoff 工具 skill + 触发语义澄清 | complete | （对话计划：收编两 skill，见 state.md） | 2026-09-22 |
 | 024 | README 重写+技能双语化+隐触发调查（brainstorm 收敛中） | complete | `docs/plans/2026-09-23--bilingual-skills-m1m3-plan.md` | 2026-09-23 |
+| 025 | 展示面大扫除 + 17 技能双语通俗详解指南 | complete | `docs/skills.zh-CN.md` | 2026-09-23 |
 
 Status values: `active`, `blocked`, `complete`, `abandoned`
 

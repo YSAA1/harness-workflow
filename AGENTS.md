@@ -12,9 +12,11 @@
 - `CONTEXT.md`: 术语和边界澄清。
 - `docs/harness-method-contract.md`: Harness Method Contract，解释 C1-C10 稳定方法论。
 - `docs/install.md`: 统一安装指南（skills.sh、Claude Code 插件路径、Grok/ZCode/Kimi 手动拷贝）。
+- `docs/skills.md` / `docs/skills.zh-CN.md`: 双语技能详解指南，面向第三方用户的逐技能通俗导读（协议权威仍在 `skills/*/SKILL.md`）。
 - `docs/specs/`: `brainstorm` 默认 Spec 产物目录，允许多份独立 Spec（目录按需重建）。
 - `docs/plans/`: `plan` 默认 Executable Plan 产物目录，允许多份独立计划和恢复记录（目录按需重建）。
-- `docs/adr/`: 架构决策记录。
+- `docs/adr/`: 架构决策记录目录（目录按需重建）。
+- `docs/research/`、`docs/reviews/`: 调研日志与审查报告的默认落点（目录按需重建）。
 - `.github/workflows/ci.yml`: GitHub Actions，运行结构检查、README 资产检查、Claude 插件可选校验与 harness-builder 脚本测试。
 - `scripts/check-plugin.mjs`: 仓库结构与安装面一致性的快速验证脚本。
 - `scripts/agent/check.sh`: agent-facing 快速验证入口，串联默认结构检查。
@@ -31,7 +33,7 @@
 
 ## 项目铁律
 
-- 这是 skills 仓库；安装面以 skills.sh 为主、Claude Code 插件为辅；所有改动必须保持 `README.md`（含 zh-CN）、`docs/install.md`、`.claude-plugin/`、`docs/harness-method-contract.md` 和 `skills/*/SKILL.md` 之间语义一致。
+- 这是 skills 仓库；安装面以 skills.sh 为主、Claude Code 插件为辅；所有改动必须保持 `README.md`（含 zh-CN）、`docs/install.md`、`docs/skills.md`（含 zh-CN）、`.claude-plugin/`、`docs/harness-method-contract.md` 和 `skills/*/SKILL.md` 之间语义一致；`docs/` 顶层只放面向第三方用户的文档，内部任务产物走退休流程不留存（git 历史即归档）。
 - Active workflow skills 只有 `harness-builder`、`brainstorm`、`plan`、`implement`、`diagnose`、`review`、`ship`、`cleanup`、`autoresearch`；`verify` 只是 `review` 的历史触发词别名，不再是独立 skill；`autoresearch` 是研究循环编排总控（同 `ship` 只编排底层阶段，自带轮次授权档位与预算规则，研究日志为保留交付物）；`find-skills`、`capability-recommender`、`writing-for-agents` 是辅助 skill，不是额外 workflow lane；`tdd` 是被 `implement` 驱动的纪律 skill；工具 skill 四个：`remove-deadcode-py`（按需全仓 Python 死代码清理）、`sweep`（按需全仓对账）由 `cleanup` 路由或显式触发，`research`（轻量单发调研：后台跑腿、一手来源、产物自登记落 `docs/research/`）、`handoff`（会话交接：压缩当前会话给下一个 agent，有恢复面优先写 state）显式触发；四个工具 skill 均不做任务收尾。
 - `AGENTS.md` 只做薄入口（T1）；临时计划、会话摘要、active slice 和当前任务 plan/Spec 路径不要写进这里。
 - 本插件仓库使用 `.harness/`；生成到目标项目时按所选 backend 复用恢复入口，不强制迁移已有系统。

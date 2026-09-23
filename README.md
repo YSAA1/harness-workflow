@@ -5,7 +5,7 @@
 **Task-scoped workflow skills for coding agents — entry, state, verification, recovery and cleanup discipline.**
 
 [![CI](https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml/badge.svg)](https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-0.11.0-blue)](https://github.com/YSAA1/harness-workflow/commits/master)
+[![Version](https://img.shields.io/badge/version-0.11.1-blue)](https://github.com/YSAA1/harness-workflow/commits/master)
 [![Skills](https://img.shields.io/badge/skills-17-blue)](#-skill-map)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -90,6 +90,8 @@ graph TD
 
 Language versions: skills ship in two trees — Chinese (`skills/`, default) and English (`skills-en/`, a full mirror; harness-builder's tests/ live only in the Chinese tree). Pick a language at install time — see the [install guide](docs/install.md).
 
+New to the set? The [skill guide](docs/skills.md) walks through all 17 skills in plain language: what problem each one solves, what to say to trigger it, the flow it runs, and what you get at the end.
+
 ## 🔀 Typical flows
 
 ```text
@@ -131,6 +133,7 @@ Structure checks do not replace model-behavior evaluation. No default MCP or hoo
 
 | Doc | Contents |
 | --- | --- |
+| [Skill guide](docs/skills.md) | Plain-language walkthrough of all 17 skills |
 | [Method contract](docs/harness-method-contract.md) | The stable C1–C10 method |
 | [CONTEXT](CONTEXT.md) | Domain terms and boundaries |
 | [Install guide](docs/install.md) | skills.sh install, language selection, Claude Code plugin path, manual copy |

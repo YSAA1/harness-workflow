@@ -5,7 +5,7 @@
 **给编码 agent 的任务级工作流技能 —— 入口、状态、验证、恢复与收尾纪律。**
 
 [![CI](https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml/badge.svg)](https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-0.11.0-blue)](https://github.com/YSAA1/harness-workflow/commits/master)
+[![Version](https://img.shields.io/badge/version-0.11.1-blue)](https://github.com/YSAA1/harness-workflow/commits/master)
 [![Skills](https://img.shields.io/badge/skills-17-blue)](#-技能地图)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -90,6 +90,8 @@ graph TD
 
 语言版本：技能有中文（`skills/`，默认）与英文（`skills-en/`，完整镜像；harness-builder 的 tests/ 仅在中文树）两棵树，安装命令可选语言——见[安装指南](docs/install.md)。
 
+刚接触这套技能？[技能详解指南](docs/skills.zh-CN.md)用大白话逐个讲清 17 个技能：解决什么问题、怎么触发、带你走什么流程、最后拿到什么。
+
 ## 🔀 典型路径
 
 ```text
@@ -131,6 +133,7 @@ python3 -B skills/harness-builder/tests/test_scripts.py
 
 | 文档 | 内容 |
 | --- | --- |
+| [技能详解指南](docs/skills.zh-CN.md) | 17 个技能的通俗逐个导读 |
 | [方法合同](docs/harness-method-contract.md) | 稳定的 C1–C10 方法 |
 | [CONTEXT](CONTEXT.md) | 领域术语与边界 |
 | [安装指南](docs/install.md) | skills.sh 安装、语言选择、Claude Code 插件路径、手动拷贝 |
