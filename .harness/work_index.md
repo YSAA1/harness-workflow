@@ -30,6 +30,7 @@
 | 024 | README 重写+技能双语化+隐触发调查（brainstorm 收敛中） | complete | `docs/plans/2026-09-23--bilingual-skills-m1m3-plan.md` | 2026-09-23 |
 | 025 | 展示面大扫除 + 17 技能双语通俗详解指南 | complete | `docs/skills.zh-CN.md` | 2026-09-23 |
 | 026 | autoresearch 轻循环重构（research 同构多轮版） | complete | `skills/autoresearch/SKILL.md` | 2026-09-23 |
+| 027 | autoresearch 0.12.0 首跑校准（skills.sh 收录缺口研究，inconclusive） | complete | `docs/research/2026-09-23--skills-sh-index-gap.md` | 2026-09-23 |
 
 Status values: `active`, `blocked`, `complete`, `abandoned`
 

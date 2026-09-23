@@ -1,8 +1,8 @@
 # Current task
 
-Objective: autoresearch 0.12.0 重构——研究-干活-审核-蒸馏来回循环（一句话交办、方案未知可、干活一等公民、五诚实终态），两树与文档面同步。
+Objective: autoresearch 0.12.0 发布闭环——重构（任务 026）+ 真实首跑校准（任务 027）。
 Status: complete
 Primary artifact: skills/autoresearch/SKILL.md
-Evidence: 施工 commit 9f358ce（两树 SKILL.md+模板+adversarial-lenses 重构；CONTEXT/AGENTS/contract/README 双语/install/技能指南双语同步；升版 0.12.0 徽章同步）＋本退休 commit。独立审校（只读子代理，审校报告四块）：中英条款逐节一致 PASS、文档面列内文件 PASS、免批三道防线成立、渠道降级可执行 PASS；阻断项 F1-F3（lens 获批包旧词、AGENTS 授权档位、contract hypothesis rounds）与加固项 G1（根锚逐字引用用户原话）、G2（红队补范围对照）、G4（受影响方视角替换错位 lens）全部修复后合入。验证：check-plugin 全 PASS（167 个 markdown 过陈旧 token 扫描）、agent check 通过、harness-builder 测试 6/6。退休四步：翻行 complete、lessons 继承一条（循环类 skill 用户面仪式与任务价值成比例）、删本轨道计划文档（git 历史即归档）、state 同步。
-Next: 首跑校准随即执行（真实小问题按新协议跑一遍）；本机 ~/.agents/skills/autoresearch 安装副本为旧版，发布后需重装同步。
-Limits: 真实首跑校准本 commit 后立即执行；单上下文宿主的自审降级仍削弱对抗独立性（G3，既知设计取舍，协议已诚实标注）。
+Evidence: 任务 026：施工 commit 9f358ce + 退休 commit 29b39c7（两树协议+模板+lens 重构、六面文档同步、0.12.0、独立审校 F1-F3/G1/G2/G4 全修）。任务 027 首跑校准（新协议完整走一遍：立项摸底→研究→干活→审核→蒸馏→终态）：docs/research/2026-09-23--skills-sh-index-gap.md，独立红队 6 发现（C1-C3/I1-I3）全部处置，时间戳探针同时修正原结论与攻击者前提；终态 inconclusive，领先解释=安装事件驱动摄入；lessons 继承一条（新技能发布后需一次 CLI 安装触发收录）。验证：check-plugin 全 PASS、agent check 通过、harness-builder 测试 6/6（026 时点）。
+Next: 待用户授权一次 `npx skills add` 后复查 skills.sh 仓库页（预计 17/17 即裁决收录机制）；本机 ~/.agents/skills/autoresearch 安装副本为旧版，需重装同步。
+Limits: 首跑为单轮研究型问题，干活段的动手实验路径（本地实验/implement 子任务）未经真实触发；单上下文宿主自审降级削弱对抗独立性（G3 既知取舍，本轮用独立子代理未降级）；平台级收录规则未裁决（n=1 限域）。
