@@ -133,7 +133,7 @@ graph TD
 | handoff | Compact the current conversation for the next agent | "Hand off — the next session continues" | → harness-builder (exposed gaps) |
 | writing-for-agents | Edit the text agents read | "Change this rule in skill X" | ← user, explicit |
 
-Language versions: skills ship in two trees — Chinese (`skills/`, default) and English (`skills-en/`, a full mirror; harness-builder's tests/ live only in the Chinese tree); pick one at install time — see the [install guide](docs/install.md).
+Language versions: skills ship in two trees — Chinese (`skills/`, default) and English (`skills-en/`, a full mirror; harness-builder's tests/ live only in the Chinese tree). Pick a language at install time: Chinese via `npx skills add YSAA1/harness-workflow`, English via `npx skills add https://github.com/YSAA1/harness-workflow/tree/master/skills-en` — see the [install guide](docs/install.md).
 
 ## Working behavior
 

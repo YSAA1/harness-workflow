@@ -133,7 +133,7 @@ graph TD
 | handoff | 把当前会话压缩交接给下一个 agent | 「交接，下个会话继续」 | → harness-builder（暴露缺口） |
 | writing-for-agents | 改「给 agent 读的文字」 | 「改一下 XX skill 的这条规则」 | ← 用户显式 |
 
-语言版本：技能有中文（`skills/`，默认）与英文（`skills-en/`，完整镜像；harness-builder 的 tests/ 仅在中文树）两棵树，安装时可选——见[安装指南](docs/install.md)。
+语言版本：技能有中文（`skills/`，默认）与英文（`skills-en/`，完整镜像；harness-builder 的 tests/ 仅在中文树）两棵树，安装命令可选语言——中文 `npx skills add YSAA1/harness-workflow`，英文 `npx skills add https://github.com/YSAA1/harness-workflow/tree/master/skills-en`——详见[安装指南](docs/install.md)。
 
 ## 工作约定
 

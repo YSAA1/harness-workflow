@@ -26,8 +26,21 @@ npx skills@latest add YSAA1/harness-workflow
 
 技能有两棵语言树：`skills/`（中文，默认）与 `skills-en/`（英文，完整镜像——harness-builder 的 tests/ 仅在中文树；`node scripts/check-plugin.mjs` 保证两树同名同数，整树缺席即红）。
 
-- **skills.sh 路径**（`npx skills add YSAA1/harness-workflow`）安装的是默认中文树——skills.sh 只发现 `skills/` 目录。
-- **需要英文版**：走手动拷贝路径，把源从 `skills/` 换成 `skills-en/`：
+- **中文（默认）**：
+
+```bash
+npx skills@latest add YSAA1/harness-workflow
+```
+
+- **英文**：同一仓库的英文树，用 tree URL 指定（skills.sh 的 `owner/repo` 简写不支持子目录；本仓库默认分支是 `master`）：
+
+```bash
+npx skills@latest add https://github.com/YSAA1/harness-workflow/tree/master/skills-en
+```
+
+两条命令都已实测：默认命令列出 17 个中文技能，tree URL 列出 17 个英文技能，互不串树。
+
+- 未列入 skills.sh 的 CLI（Grok Build / ZCode / Kimi Code）手动拷贝，按语言选源（`skills/` 或 `skills-en/`）：
 
 ```bash
 git clone https://github.com/YSAA1/harness-workflow.git
