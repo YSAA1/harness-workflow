@@ -1,8 +1,8 @@
 # Current task
 
-Objective: autoresearch 最终方案（第五版定稿）：GPT-Researcher 执行力（planner/并行扇出/多源/预算）+ 本循环定位「研究→干活→审核→蒸馏」来回循环（干活=动手实验与代码验证为一等公民，不止 deep research 读网页）+ 诚实终态与对抗重开差异化保留；两树与文档面同步。
-Status: active
-Primary artifact: docs/plans/2026-09-23--autoresearch-light-loop-plan.md
-Evidence: 用户三轮设计反馈（2026-09-23 会话）：①否决循环内 grill（中断 goal）；②goal 契约版仍判太重；③指定 research skill 为基准并要求网络调研当前优秀方案。网络调研已完成（GPT-Researcher planner-executor-publisher/多源去偏/depth-breadth、STORM 多视角提问、Kimi-Researcher 端到端 RL、loop 设计共识：可验证停止判据+风险触发式暂停）→ 吸收为 D9 并行扇出/D10 来源多样性/D11 取证渠道层（agent-reach 定位）/D12 结论节可读性；诚实终态与对抗重开确认为差异化优势保留。agent-reach 已读（15 平台读取路由，零配置 6 渠道，doctor 体检选后端）。
-Next: 最终版方案（条款 T1-T13、工作项 W1-W8、干活段边界）已交付待批；批准后按 W1-W8 执行。设计定调：用户认可 GPT-Researcher 模式，确认本循环为研究-干活-审核-蒸馏来回循环（动手实验为一等公民）。
-Limits: 纸面重构不含真实首跑校准（合入后建议立即真问题首跑，新入口已把首跑成本降到一句话）；砍首轮批准的防线转移论证须 W6 专审，首跑若见范围漂移则回补逐轮确认为默认档。
+Objective: autoresearch 0.12.0 重构——研究-干活-审核-蒸馏来回循环（一句话交办、方案未知可、干活一等公民、五诚实终态），两树与文档面同步。
+Status: complete
+Primary artifact: skills/autoresearch/SKILL.md
+Evidence: 施工 commit 9f358ce（两树 SKILL.md+模板+adversarial-lenses 重构；CONTEXT/AGENTS/contract/README 双语/install/技能指南双语同步；升版 0.12.0 徽章同步）＋本退休 commit。独立审校（只读子代理，审校报告四块）：中英条款逐节一致 PASS、文档面列内文件 PASS、免批三道防线成立、渠道降级可执行 PASS；阻断项 F1-F3（lens 获批包旧词、AGENTS 授权档位、contract hypothesis rounds）与加固项 G1（根锚逐字引用用户原话）、G2（红队补范围对照）、G4（受影响方视角替换错位 lens）全部修复后合入。验证：check-plugin 全 PASS（167 个 markdown 过陈旧 token 扫描）、agent check 通过、harness-builder 测试 6/6。退休四步：翻行 complete、lessons 继承一条（循环类 skill 用户面仪式与任务价值成比例）、删本轨道计划文档（git 历史即归档）、state 同步。
+Next: 首跑校准随即执行（真实小问题按新协议跑一遍）；本机 ~/.agents/skills/autoresearch 安装副本为旧版，发布后需重装同步。
+Limits: 真实首跑校准本 commit 后立即执行；单上下文宿主的自审降级仍削弱对抗独立性（G3，既知设计取舍，协议已诚实标注）。
