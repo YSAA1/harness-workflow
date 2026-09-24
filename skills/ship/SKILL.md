@@ -1,18 +1,18 @@
 ---
 name: ship
-description: "对已授权的范围明确任务做端到端交付：依次执行 implement、review、cleanup。范围或验收不清、根因未知时不使用；不新增闸门或重复确认。"
+description: "对已授权的范围明确任务做端到端交付：依次执行 $implement、$review、$cleanup三个skill。范围或验收不清、根因未知时不使用；不新增闸门或重复确认。"
 ---
 
-# 一次交付：implement -> review -> cleanup
+# 一次交付：$implement -> $review -> $cleanup
 
 把已授权任务在一次会话内走完修改、评审和收尾。本 skill 只负责编排顺序与中止条件，各阶段协议以对应 skill 为准。
 
 ## 流程
 
-1. 确认前置条件：范围和验收已清楚、任务已授权走完全程。范围不清转 `brainstorm`/`plan`；失败根因未知转 `diagnose`，解决后再回来继续。
-2. 执行 `implement`：最小修改 + 商定 seams 测试驱动 + 针对性检查。低风险机械改动按其完成契约自审后即可进入收尾。
-3. 实质风险修改（跨模块、权限/数据边界、部署、用户明确要求）继续 `review`：结构审查 + fresh evidence 判定；Critical/Important 发现回到修改并复验受影响部分。
-4. 执行 `cleanup`：文档、代码与遗留物整理，恢复面形成下一会话可接续的状态。任务在本轮关闭时含退休契约：本轨道行翻出 active 的同一 commit 内走完翻行 → lessons 继承 → 删本轨道文档（含未批准/放弃件）→ state 同步。
+1. 确认前置条件：范围和验收已清楚、任务已授权走完全程。范围不清转 $brainstorm/$plan；失败根因未知转 $diagnose，解决后再回来继续。
+2. 执行 $implement：最小修改 + 商定 seams 测试驱动 + 针对性检查。低风险机械改动按其完成契约自审后即可进入收尾。
+3. 实质风险修改（跨模块、权限/数据边界、部署、用户明确要求）继续 $review：结构审查 + fresh evidence 判定；Critical/Important 发现回到修改并复验受影响部分。
+4. 执行 $cleanup：文档、代码与遗留物整理，恢复面形成下一会话可接续的状态。任务在本轮关闭时含退休契约：本轨道行翻出 active 的同一 commit 内走完翻行 → lessons 继承 → 删本轨道文档（含未批准/放弃件）→ state 同步。
 5. 输出交付摘要：改动概览、证据与结论、收尾结果、剩余事项。
 
 ## 顺序纪律
