@@ -31,6 +31,7 @@
 
 - 多轮循环协议的轮内产物直接落轨道日志，不逐轮另开 Spec：逐轮 Spec 会把 brainstorm 的 gate 仪式拖进研究循环，第三方用户第 0 轮就被面试卡住（2026-09-21 Grok 对抗审查实证，autoresearch 改假设入日志）。
 - 输出模板「唯一源」化必须同 commit 删净旧模板并核对字段集不缩水：SKILL.md 声明回合模板唯一源后，design-grill 的 Question Shape 作为僵尸第二源存活、主模板反而缺 Design branch/Stress scenario 字段——生成时模型照抄主模板，设计锚定被无声剥掉，拷问退化成矩阵式泛问（2026-09-24 用户实测定位，SKILL/loop/design-grill 三处共三份模板分叉）。
+- 访谈/循环类 skill 的一级行为载荷必须住主文件正文：brainstorm 两期退化（矩阵填表、一轮泛问）共同根因是拷问纪律住 references 二级而克制规则住 SKILL.md 顶层，弱执行面只见克制不见工艺——Matt grilling 同类纪律全文约 50 行自含于主文件（任务 029 重构参照）；解法＝纪律六机制正文进 SKILL.md、Coverage 八维矩阵删除（Framing/4 收缩）、references 只留 Spec 起草等真正按需件，补集小于精简前的行数才算赢。
 - 循环类 skill 的用户面仪式必须与任务价值成比例：入口先访谈、合同批准被连续三轮否决（grill→goal 契约→轻入口），用户要的是「交办后自动跑」——防线做成不打扰的机制（背景节逐字锚定用户原话＋授权边界＋对抗必审），用户触点只留在授权边界与终态（2026-09-23 任务 026 五版收敛实证，GPT-Researcher 等业界方案同构印证）。
 
 ## 恢复面设计

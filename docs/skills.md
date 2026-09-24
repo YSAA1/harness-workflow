@@ -43,13 +43,13 @@ These skills give the agent working rules: **a clear entry (discuss before build
 
 **The flow it walks you through**:
 
-1. **Frontier grill**: it lists every unresolved material question for you in one numbered batch — each with a recommended answer and the design branch it belongs to (design-sensitive ones add a concrete stress scenario), so you just confirm or amend item by item instead of composing essays. Questions cover goal, scope, trade-offs, success criteria and verification. What is already settled is not re-asked, and "industry convention" never decides for you.
+1. **Frontier grill**: it lists every unresolved material question for you in one numbered batch — each with a recommended answer and the design branch it belongs to (design-sensitive ones add a concrete stress scenario), so you answer by number instead of composing essays. Questions cover goal, scope, trade-offs, success criteria and verification; code and docs it can look up itself, so what it asks you are only the decisions only you can make. What is already settled is not re-asked, and "industry convention" never decides for you.
 2. **Spec drafting**: when the questions hit zero, you first get a one-line eight-branch reconciliation (answered / waived / repo-backed), so any branch skipped over is visible on the spot; then it drafts a Spec for your review. Short needs where you already stated goal, boundaries and done-criteria take the lightweight Thin Spec — one round of questions, not a thesis defense; otherwise the full framework runs, and it never silently assumes "already thought through".
 3. **Await approval**: only your explicit "approved" hands over to `plan`. Silence does not count as approval; it will not proceed on its own.
 
 **What you get**: `docs/specs/date--topic.md`, a requirements document, plus the certainty that the direction is right.
 
-**How it cooperates**: after approval it feeds `plan`; if the discussion exposes a missing workbench (no entry file at all, say), it offers `harness-builder`.
+**How it cooperates**: after approval it feeds `plan`; if the discussion exposes a missing workbench (no entry file at all, say), it offers `harness-builder`. One tip: don't spend the session answering "agreed, agreed, agreed" — what comes out tracks the quality of your answers, so say so when a question misses the mark.
 
 **Tip**: if the need is already fully thought through, or it is a tiny patch, skip brainstorm and get to work — it will say so itself.
 

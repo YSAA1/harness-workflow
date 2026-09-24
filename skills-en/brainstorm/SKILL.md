@@ -15,22 +15,57 @@ User-visible language follows the user; protocol tokens (`BRAINSTORM …`, `Spec
 
 ## Routing
 
-- **Use**: open-ended intent, unclear criteria or verification, grilling wanted.
-- **Lightweight entry**: only when the user's own words/materials already anchor goal, boundaries, and done-criteria (three anchors) and the work fits a single session — say so in the first round with the anchor citations; missing anchors mean the full framework, never a silent "already thought through" verdict, and the user may reroute either way. The four Gate essentials still get the quick assessment (askable in one round or all waived), and the Spec takes the Thin Spec path (the Thin Spec section of `references/spec-drafting.md`); do not default to the full-framework interview just because the entry point is brainstorm.
+- **Use**: open-ended intent, unclear criteria or verification, grilling wanted. Vagueness is not a reason to wait — it is the thing this session eats.
+- **Lightweight entry**: only when the user's own words/materials already anchor goal, boundaries, and done-criteria (three anchors) and the work fits a single session — say so in the first round with the anchor citations; missing anchors mean the full framework, never a silent "already thought through" verdict, and the user may reroute either way. The four framing essentials still get the quick assessment (askable in one round or all waived), and the Spec takes the Thin Spec path (the Thin Spec section of `references/spec-drafting.md`); do not default to the full-framework interview just because the entry point is brainstorm.
 - **Don't**: Spec already approved; single-point small patch; only a factual answer wanted.
 - **Next**: Spec approved → `plan`; workbench gap → (after Spec approval or when the user explicitly says so) `harness-builder`.
 
-## Inputs
+## The Grilling Discipline (the full craft lives in this file — no second source)
 
-Required reading for step 1: `references/clarification-loop.md` + `clarification-coverage.md` + `design-grill.md`; existing Specs/code/`AGENTS.md`; `git status`; user materials.
+One relentless interview, until shared understanding. Six mechanisms carry all of it:
+
+1. **Design tree**: map the requirement as a tree of decisions — every decision branches into the decisions that hang off it.
+2. **Frontier rounds**: the frontier is every open decision whose prerequisites are already settled — what you can ask now without guessing at answers you haven't heard. **One message asks the whole frontier**: numbered questions, each with a `➡️` recommended answer; bodies may run multiple paragraphs and offer 2–3 concrete options, so the user can answer by number ("1 yes, 2 the second option, 3 no, here's why"). While framing (goal/scope) is unsettled, ask framing first, then design branches.
+3. **Branch and stress**: every question carries its `Design branch` (a Branch Order branch name), design-sensitive ones add one concrete stress scenario; pure framing questions may omit both anchor lines. Branch Order: actors/boundaries → happy path → failure/edge → data/state → interfaces → NFR → verification hooks → rejected alternatives.
+4. **Facts are the agent's job, decisions are the user's**: facts the environment can settle (code, docs, tools) you look up yourself or dispatch a sub-agent for — **never ask the user**; lookups do not block — a running exploration is an unsettled prerequisite, so only its downstream questions wait while the rest of the frontier goes out now. Preferences, trade-offs, verification depth, and scope boundaries are **decisions**: put each to the user and wait. An agent that answers its own decisions has broken the skill, not interpreted it liberally.
+5. **Each round reshapes the tree**: after the user's answers land, recompute the frontier before the next round; when one question's answer would change another, the dependent question belongs to a later round. Discovering a mis-paired round or a missed branch later → reopen the affected branch next round; do not pretend it didn't happen.
+6. **Empty means done**: the frontier is empty when every Branch Order branch is answered / explicitly waived / repo-provable (source reachable: the reconciliation line or the Spec), and the four framing essentials (goal/scope/success criteria/verification strategy) are confirmed or waived. **The message declaring emptiness carries the one-line-per-branch reconciliation**; a self-assessed "already thought through" is not an emptiness claim. Common-sense defaults, industry conventions, and deferrability do not exempt a question. No minimum round count; settled decisions are not re-asked. After emptiness, the user must still confirm shared understanding (a comprehensive brief with drafting authorization, or a single confirmation) before Spec drafting; silence ≠ approval.
+
+If the user asks for one question at a time, switch to sequential asking while maintaining the same tree. Challenge terminology conflicts on the spot and propose canonical terms for fuzzy language (update the target project's existing glossary per current task authorization; never auto-create); ADRs are for irreversible architecture decisions only — offer immediately per authorization, do not batch offers.
+
+## Round Output (single source)
+
+```text
+BRAINSTORM CLARIFICATION IN PROGRESS
+❓ Q1 - <title>: <body; may be multiple paragraphs, options welcome>
+Design branch: <Branch Order branch name>
+Stress scenario: <one concrete case; required on design-sensitive items>
+➡️ <recommended answer>
+---
+❓ Q2 - <title>: <body>
+Design branch: <branch>
+➡️ <recommended answer>
+Framing: <confirmed+waived>/4; Gate: BLOCKED; Frontier: open
+Needs: frontier answers | shared understanding
+```
+
+After the Gate passes, switch to (the Branches line is the emptiness reconciliation: waivers and repo-proofs are visible on the spot, sources given on the line or in the Spec):
+
+```text
+BRAINSTORM SPEC READY
+Spec: <path>; Gate: PASSED; Frontier: empty
+Branches: actors✓ · happy✓ · failure waived · data✓ · ifaces✓ · NFR repo-proof · verify✓ · rejected✓
+Needs: approve Spec
+Next after approval: plan
+```
+
+If factual inferences remain before emptiness, present them once as an assumption batch (each with a source) and fold them in after confirmation; preferences and trade-offs never enter the batch.
 
 ## Flow
 
 ### 1. Frontier grill
 
-No Spec is written before the Gate. This is **one relentless interview**: each round raises all open **frontier** decisions (would change the approach, prerequisites settled, mutually independent) at once as numbered questions, each with a `➡️` recommended answer, and design-sensitive questions attach one concrete stress scenario (branch order in `design-grill.md`). Close factual gaps by checking the repo/docs yourself first; preferences, trade-offs, verification depth, and scope boundaries must not be backfilled as `inferred` — they must enter the frontier. Emptiness criterion: every design branch is either already answered by the user or explicitly waived, or is a repo-provable fact (source recorded) — common-sense defaults, industry conventions, and deferrability do not constitute exemption from asking; the message declaring emptiness must carry a one-line-per-branch Branch Order reconciliation (each branch: answered / waived / repo-proven), and an unreconciled claim does not count. Carry over existing explicit requirements, decisions, and authorizations; set no minimum round count. Details: `clarification-loop.md`.
-
-Done: Grill Gate passed + assumption batch (if any, factual inferences only) + shared understanding covered (a comprehensive brief with drafting authorization, or a single confirmation).
+Run the Grilling Discipline until emptiness + confirmed shared understanding. Before starting, read: existing Specs/code/`AGENTS.md`, `git status`, user materials.
 
 Recovery-surface continuation (only when the project already has `.harness/`): after the first frontier round goes out, register a row for this track in work_index — Status `active`, Primary artifact filled with "(Spec not yet persisted to disk: <intended Spec path>)"; at the end of each grill round, update that row's Last verified cell in passing to "date · settled n/m · open question numbers". After a session break, the new session continues asking from the progress recorded in the row instead of re-asking from scratch; projects without a recovery surface skip this paragraph and stay zero-file.
 
@@ -42,39 +77,10 @@ Done: independent Spec path delivered, awaiting approval.
 
 ## Hard Rules
 
-- While unresolved preferences/trade-offs exist, the first user-visible message must be the numbered frontier questions; sending only a Coverage scoreboard or an assumption batch in place of questions is forbidden.
+- While unresolved preferences/trade-offs exist, the first user-visible message must be the numbered frontier questions; sending only a score line or an assumption batch in place of questions is forbidden.
 - One message, one frontier round; dependent questions are split into later rounds, independent questions go out in the same round.
 - Silence ≠ approval; shared understanding is covered by a comprehensive brief and explicit drafting authorization, otherwise ask exactly once — do not repeatedly request the same confirmation.
-- Emptiness requires reconciliation: the message declaring the Gate passed / the frontier empty carries the one-line-per-branch Branch Order reconciliation; a self-assessed "already thought through" or a bare Coverage score is not an emptiness claim.
-
-## Output
-
-The single source of the round template lives here: frontier questions lead, every question carries a Design branch line and design-sensitive ones add a one-line stress scenario (pure framing questions may omit both anchor lines), Coverage compressed into one line (the ledger is progress notes, not a deliverable).
-
-```text
-BRAINSTORM CLARIFICATION IN PROGRESS
-❓ Q1 - <title>: <body; options if useful>
-Design branch: <Branch Order branch name>
-Stress scenario: <one concrete case; required on design-sensitive items>
-➡️ <recommended answer>
-❓ Q2 - <title>: <body>
-Design branch: <branch>
-➡️ <recommended answer>
-Coverage: <confirmed+waived>/8; Gate: BLOCKED; Frontier: open
-Needs: frontier answers | shared understanding
-```
-
-After the Gate passes, switch to (the Branches line is the emptiness reconciliation: waivers and repo-proofs are visible on the spot; repo-proof sources go into the ledger):
-
-```text
-BRAINSTORM SPEC READY
-Spec: <path>; Gate: PASSED; Frontier: empty
-Branches: actors✓ · happy✓ · failure waived · data✓ · ifaces✓ · NFR repo-proof · verify✓ · rejected✓
-Needs: approve Spec
-Next after approval: plan
-```
-
-Chinese users get the same structure; labels may be localized to Chinese, with `❓` / `➡️` and status tokens retained.
+- Emptiness requires reconciliation: the message declaring the Gate passed / the frontier empty carries the one-line-per-branch Branch Order reconciliation; a self-assessed "already thought through" or a bare score line is not an emptiness claim.
 
 ## Acceptance
 

@@ -63,7 +63,7 @@ Do not invoke the next skill before Spec approval.
 
 ## Done Criteria
 
-- [ ] Grill Gate passed; blocking dimensions confirmed; shared understanding confirmed.
+- [ ] Grill Gate passed; framing essentials confirmed or waived; shared understanding confirmed.
 - [ ] 验证策略（Verification strategy）和 2-3 个方案（或 rejected alternatives）已记录。
 - [ ] Independent Spec written at `docs/specs/YYYY-MM-DD--<topic>.md`, unless an explicit override was stated.
 - [ ] Self-review passed with no blocking checklist items.
