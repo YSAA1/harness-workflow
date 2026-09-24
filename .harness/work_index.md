@@ -31,6 +31,7 @@
 | 025 | 展示面大扫除 + 17 技能双语通俗详解指南 | complete | `docs/skills.zh-CN.md` | 2026-09-23 |
 | 026 | autoresearch 轻循环重构（research 同构多轮版） | complete | `skills/autoresearch/SKILL.md` | 2026-09-23 |
 | 027 | autoresearch 0.12.0 首跑校准（skills.sh 收录缺口研究，inconclusive） | complete | `docs/research/2026-09-23--skills-sh-index-gap.md` | 2026-09-23 |
+| 028 | brainstorm 拷问第二期修复（判空对账+轻量入口锚点化+模板消分叉） | complete | `skills/brainstorm/SKILL.md` | 2026-09-24 |
 
 Status values: `active`, `blocked`, `complete`, `abandoned`
 

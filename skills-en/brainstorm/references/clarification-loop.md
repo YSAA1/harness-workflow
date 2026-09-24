@@ -20,13 +20,7 @@ Repeat until the Grill Gate passes:
 2. If a gap is **factual**, close it by exploring the codebase or docs (or a sub-agent) and record it in the coverage ledger as `inferred` with source — or `confirmed` when the repo demonstrates it — instead of asking. This closes factual gaps only: preferences and trade-offs must enter the frontier. Do not block the round on background lookups — only questions that depend on unsettled facts wait.
 3. Recompute the **frontier**: every open decision whose prerequisites are already settled. Do **not** put two questions in the same round if one answer should change the other.
 4. For each frontier question, form a working recommendation before asking. Use craft in `design-grill.md`. Design-sensitive items include a concrete stress scenario.
-5. Ask the **whole frontier in one message**. Number questions. Prefer this shape per question:
-
-```text
-❓ **Q1** - **<title>**: <body; options if useful>
-
-➡️ <recommended answer>
-```
+5. Ask the **whole frontier in one message**. Number questions. Per-question shape follows the Output section of `SKILL.md` (single source): every question carries its `Design branch` line, design-sensitive items add one concrete stress scenario; pure framing questions may omit the anchor lines. This file keeps no second template.
 
 6. Update the coverage ledger (`clarification-coverage.md`) as internal notes; surface one summary line, not the matrix, unless the user asks for progress.
 7. When terminology is settled and the task includes documentation, update the target project's existing glossary; for pure discussion, record it in the reply — do not auto-create `CONTEXT.md` because of the plugin flow. Handle any needed ADRs per the current task's authorization.
@@ -54,7 +48,7 @@ Do **not** fill Behavior/Constraints as a flat survey and later re-ask the same 
 
 | Situation | Depth |
 | --- | --- |
-| Non-trivial feature, migration, architecture, or multi-session work | Ask and test concrete scenarios against unresolved risks; with clear existing requirements, converge directly — no fixed round count |
+| Non-trivial feature, migration, architecture, or multi-session work | Ask and test concrete scenarios against unresolved risks; with clear existing requirements, converge directly (convergence still requires the eight-branch emptiness reconciliation) — no fixed round count |
 | User says grill, stress-test, or "dig deeper" | Continue until branches resolve or user waives |
 | Single-point patch with no design branches | Shallow: ledger can fill quickly; design branches and scenarios may be waived in the assumption batch |
 
@@ -70,6 +64,7 @@ One rule set for the whole interview — facts may be `inferred` (sourced); pref
 4. Every design-sensitive trade-off carries a recommendation the user accepted or corrected — repo evidence alone never replaces user acceptance for preferences.
 5. The frontier is empty under the rule above, and shared understanding is covered by explicit user decisions or a comprehensive brief with drafting authorization — otherwise asked exactly once. Silence is not approval; do not re-ask what is already confirmed.
 6. No unresolved terminology conflict remains between the emerging Spec and `CONTEXT.md`, and no open question could be answered by reading local code or docs.
+7. Emptiness requires reconciliation: the message declaring the Gate passed carries a one-line-per-branch Branch Order reconciliation (each branch: answered / waived / repo-proven; repo-proof sources recorded in the ledger); an unreconciled self-assessed emptiness does not pass the gate.
 
 ## Entering Spec Drafting
 
@@ -82,6 +77,7 @@ Enter Spec drafting only after: Grill Gate passes; factual assumption batch conf
 - Treating matrix completion as design completion on non-trivial work.
 - Re-asking already-settled decisions to satisfy formality, or converging prematurely while blocking questions remain.
 - Asking dependent questions in the same frontier round.
+- Declaring the frontier empty without the one-line-per-branch reconciliation.
 - Dumping an unordered questionnaire with no recommendations.
 - Asking the user for facts that the repo or docs can answer.
 - Acting or writing Spec before shared understanding is confirmed.

@@ -20,13 +20,7 @@ Repeat until the Grill Gate passes:
 2. If a gap is **factual**, close it by exploring the codebase or docs (or a sub-agent) and record it in the coverage ledger as `inferred` with source — or `confirmed` when the repo demonstrates it — instead of asking. This closes factual gaps only: preferences and trade-offs must enter the frontier. Do not block the round on background lookups — only questions that depend on unsettled facts wait.
 3. Recompute the **frontier**: every open decision whose prerequisites are already settled. Do **not** put two questions in the same round if one answer should change the other.
 4. For each frontier question, form a working recommendation before asking. Use craft in `design-grill.md`. Design-sensitive items include a concrete stress scenario.
-5. Ask the **whole frontier in one message**. Number questions. Prefer this shape per question:
-
-```text
-❓ **Q1** - **<title>**: <body; options if useful>
-
-➡️ <recommended answer>
-```
+5. Ask the **whole frontier in one message**. Number questions. Per-question shape follows `SKILL.md` 输出（唯一源）：每题带 `Design branch` 行，设计敏感题另附一条具体压力场景；纯 framing 题可省锚定行。本文件不保留第二模板。
 
 6. Update the coverage ledger (`clarification-coverage.md`) as internal notes; surface one summary line, not the matrix, unless the user asks for progress.
 7. 术语已明确且任务包含文档化时，更新目标项目既有词汇表；纯讨论可在回复中记录，不因插件流程自动创建 `CONTEXT.md`。必要 ADR 按本任务授权处理。
@@ -54,7 +48,7 @@ Do **not** fill Behavior/Constraints as a flat survey and later re-ask the same 
 
 | Situation | Depth |
 | --- | --- |
-| Non-trivial feature, migration, architecture, or multi-session work | 按未决风险提问与检验具体场景；已有清晰需求可直接收敛，不设固定轮数 |
+| Non-trivial feature, migration, architecture, or multi-session work | 按未决风险提问与检验具体场景；已有清晰需求可直接收敛（收敛仍须出具八支判空对账），不设固定轮数 |
 | User says grill, stress-test, or "再深挖" | Continue until branches resolve or user waives |
 | Single-point patch with no design branches | Shallow: ledger can fill quickly; design branches and scenarios may be waived in the assumption batch |
 
@@ -70,6 +64,7 @@ One rule set for the whole interview — facts may be `inferred` (sourced); pref
 4. Every design-sensitive trade-off carries a recommendation the user accepted or corrected — repo evidence alone never replaces user acceptance for preferences.
 5. The frontier is empty under the rule above, and shared understanding is covered by explicit user decisions or a comprehensive brief with drafting authorization — otherwise asked exactly once. Silence is not approval; do not re-ask what is already confirmed.
 6. No unresolved terminology conflict remains between the emerging Spec and `CONTEXT.md`, and no open question could be answered by reading local code or docs.
+7. Frontier 判空须对账：宣告 Gate 过的同条消息附 Branch Order 八支一行对账（每支：已答/豁免/仓库证；仓库证来源记入账本）；未对账的自评判空不过闸。
 
 ## Entering Spec Drafting
 
@@ -82,6 +77,7 @@ Enter Spec drafting only after: Grill Gate passes; factual assumption batch conf
 - Treating matrix completion as design completion on non-trivial work.
 - 为满足形式重复询问已明确的决定，或仍有阻塞问题就过早收敛。
 - Asking dependent questions in the same frontier round.
+- 未附八支一行对账即宣告 frontier 判空。
 - Dumping an unordered questionnaire with no recommendations.
 - Asking the user for facts that the repo or docs can answer.
 - Acting or writing Spec before shared understanding is confirmed.

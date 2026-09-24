@@ -16,7 +16,7 @@ Canonical Spec：`docs/specs/YYYY-MM-DD--<topic>.md`（仅用户或 `AGENTS.md` 
 ## 路由
 
 - **Use**: 意图开放、标准或验证不清、要 grill。
-- **轻量入口**: 已想清且单会话可完成的短需求——Gate 四要素照快评（可一轮问完或全 waived），Spec 走 Thin Spec（`references/spec-drafting.md` Thin Spec 节）；不因入口在 brainstorm 就默认全框架访谈。
+- **轻量入口**: 仅当用户原话或材料已同时锚定目标、边界、完成判据（三锚点）且单会话可完成——首轮明示走轻量并附锚点出处，锚点不齐即全框架，不静默判「已想清」，用户可任一方向改判；Gate 四要素照快评（可一轮问完或全 waived），Spec 走 Thin Spec（`references/spec-drafting.md` Thin Spec 节）；不因入口在 brainstorm 就默认全框架访谈。
 - **Don't**: Spec 已批；单点小补丁；只要事实回答。
 - **Next**: Spec 批准 → `plan`；工作面缺口 →（Spec 批准后或用户明示）`harness-builder`。
 
@@ -28,7 +28,7 @@ Canonical Spec：`docs/specs/YYYY-MM-DD--<topic>.md`（仅用户或 `AGENTS.md` 
 
 ### 1. Frontier grill
 
-Gate 前不写 Spec。这是**一场 relentless interview**：每轮把全部未决 **frontier** 决策（会改变方案、前置已定、彼此独立）一次性编号提出，每题带 `➡️` 推荐答案，设计敏感题附一条具体压力场景（分支顺序见 `design-grill.md`）。事实缺口先自查仓库/文档；偏好、取舍、验证力度、范围边界不得 inferred 兜底，必须进 frontier。判空判据：每个设计分支要么用户已答或显式豁免，要么是仓库可证事实（记来源）——常识默认、业界惯例、可延后不构成免问。沿用已有明确需求、决策与授权，不设最少轮数。细节：`clarification-loop.md`。
+Gate 前不写 Spec。这是**一场 relentless interview**：每轮把全部未决 **frontier** 决策（会改变方案、前置已定、彼此独立）一次性编号提出，每题带 `➡️` 推荐答案，设计敏感题附一条具体压力场景（分支顺序见 `design-grill.md`）。事实缺口先自查仓库/文档；偏好、取舍、验证力度、范围边界不得 inferred 兜底，必须进 frontier。判空判据：每个设计分支要么用户已答或显式豁免，要么是仓库可证事实（记来源）——常识默认、业界惯例、可延后不构成免问；宣告判空的同条消息须附 Branch Order 八支一行对账（每支：已答/豁免/仓库证），未对账不判空。沿用已有明确需求、决策与授权，不设最少轮数。细节：`clarification-loop.md`。
 
 完成：Grill Gate 过 + assumption batch（若有，仅事实推断）+ shared understanding 已覆盖（完整 brief 与起草授权，或单次确认）。
 
@@ -45,26 +45,31 @@ Gate 前不写 Spec。这是**一场 relentless interview**：每轮把全部未
 - 存在未决偏好/取舍时，用户可见的第一条消息必须是编号 frontier 问题；禁止只发 Coverage 计分板或 assumption batch 代替提问。
 - 一条消息一个 frontier round；依赖题拆到后轮，独立题同轮发出。
 - 沉默 ≠ 批准；shared understanding 由完整 brief 与明确起草授权覆盖，否则单问一次，不重复索要相同确认。
+- 判空须对账：宣告 Gate 过 / frontier 空的同条消息附 Branch Order 八支一行对账；自评「已想清」或只报 Coverage 计分不构成判空。
 
 ## 输出
 
-回合模板唯一源在此：frontier 问题打头，Coverage 压成一行（账本是进度笔记，不是交付物）。
+回合模板唯一源在此：frontier 问题打头，每题带 Design branch 行、设计敏感题另附一行压力场景（纯 framing 题可省两条锚定行），Coverage 压成一行（账本是进度笔记，不是交付物）。
 
 ```text
 BRAINSTORM CLARIFICATION IN PROGRESS
 ❓ Q1 - <title>: <body; options if useful>
+Design branch: <Branch Order 支名>
+Stress scenario: <一条具体压力场景；设计敏感题必带>
 ➡️ <recommended answer>
 ❓ Q2 - <title>: <body>
+Design branch: <branch>
 ➡️ <recommended answer>
 Coverage: <confirmed+waived>/8; Gate: BLOCKED; Frontier: open
 Needs: frontier answers | shared understanding
 ```
 
-Gate 过后切换为：
+Gate 过后切换为（Branches 行即判空对账：豁免与仓库证当场可见，仓库证来源记入账本）：
 
 ```text
 BRAINSTORM SPEC READY
 Spec: <path>; Gate: PASSED; Frontier: empty
+Branches: actors✓ · happy✓ · failure 豁免 · data✓ · ifaces✓ · NFR 仓库证 · verify✓ · rejected✓
 Needs: approve Spec
 Next after approval: plan
 ```
@@ -74,6 +79,7 @@ Next after approval: plan
 ## 验收
 
 - [ ] Gate 过；purpose/scope/success/verification 为 confirmed 或 waived，不以 inferred 过闸
+- [ ] 判空宣告附八支一行对账（每支：已答/豁免/仓库证），自评不代替对账
 - [ ] 存在未决取舍时 Frontier 为 open 且本轮有编号问题
 - [ ] Shared understanding 已覆盖；Spec 已求批
 - [ ] 有恢复面项目：Spec 落盘时本轨道 work_index 行已指向该 Spec（项目确无恢复面则免）

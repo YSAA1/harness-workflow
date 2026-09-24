@@ -42,21 +42,11 @@ Walk branches in this order, skipping branches already settled — coverage row 
 7. **Verification hooks** — how each branch would be proven or falsified
 8. **Rejected alternatives** — paths intentionally not taken and why
 
-If one answer settles multiple branches, note it in each matching coverage row's Source/note before choosing the next frontier — no second status vocabulary.
+If one answer settles multiple branches, note it in each matching coverage row's Source/note before choosing the next frontier — no second status vocabulary. Emptiness declarations carry the one-line-per-branch reconciliation per the Grill Gate (see `clarification-loop.md`).
 
 ## Question Shape
 
-Prefer this shape for each design-sensitive frontier item:
-
-```text
-❓ **Qn** - **<title>**: <body>
-
-Design branch: <branch>
-Stress scenario: <one concrete case>
-➡️ <recommended answer>
-```
-
-For pure framing items (Purpose / Scope still open), a shorter recommendation-backed question is enough; add a stress scenario once behavior or boundaries are in play.
+The question shape has a single source: the Output section of `SKILL.md` — every question carries its `Design branch` line, design-sensitive items add a `Stress scenario` line; this file keeps no second template. Craft: pure framing items (Purpose / Scope still open) may omit the anchor lines; add the stress scenario as soon as behavior or boundaries come into play.
 
 ## Domain and ADR
 
