@@ -340,7 +340,7 @@ All four tools are **explicitly triggered** standalone entries and none of them 
 
 **The problem it solves**: the session is ending but the work isn't done. Open a new session cold and the new agent is blind; re-explain manually and you'll miss things. It compacts the current session into a handover artifact a **zero-context** agent can pick up.
 
-**The flow it walks you through**: with a recovery surface → the continuation point goes into the checkpoint file first (durable, resumable), key state and evidence into the evidence line; without one → the handover document goes to the system temp directory (never into the repo, avoiding orphan files) with the path told to you. Content discipline: a "suggested skills" section naming exactly which skills the next agent should call; no restating existing artifacts (paths only); secrets, credentials and personal data are never written.
+**The flow it walks you through**: the full handover document always goes to the system temp directory (e.g. /tmp; never into the repo or project directory, avoiding orphan files), with the path told to you; with a recovery surface, the continuation point also goes into the checkpoint file first (durable, resumable) and key state and evidence into the evidence line, and the full document is attached only when truly needed. Content discipline: a "suggested skills" section naming exactly which skills the next agent should call; no restating existing artifacts (paths only); secrets, credentials and personal data are never written.
 
 **Boundaries**: handover is an explicit act — it never hands off unless you ask.
 
