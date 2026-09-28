@@ -5,7 +5,7 @@ Enter Spec drafting only after the Grill Gate passes, any assumption batch is co
 ## Steps
 
 1. **Verification first** — baseline, automated checks, smoke/E2E, negative cases, fresh-evidence requirements, unverifiable items.
-2. **Compare 2-3 approaches** — positioning, tradeoffs, failure modes, verification impact. Record rejected options even when one approach is clearly best.
+2. **Record the approach comparison settled in the grill** — structurally different options, trade-offs, failure modes, and why each rejected one fell (high gear: per-option failure reasons; low gear: the one alternative considered). The comparison happened in the interview; the Spec records it, never re-decides it.
 3. **Confirm design segments** — goals/scope, behavior/interfaces, architecture boundaries, verification, non-goals, residual risks. Do not treat silence as approval.
 4. **Write Spec** — use `templates/spec.zh-CN.md` for Chinese users and `templates/spec.md` as the English/default template. For other user languages, translate human-facing headings from the default template while preserving protocol tokens in parentheses when useful. Canonical path is `docs/specs/YYYY-MM-DD--<topic>.md`. Do not write Spec to issue bodies, root `plan.md`, or ad-hoc docs just because they already exist. Override only when the current user explicitly names a path or `AGENTS.md` declares a canonical Spec surface, and record the override reason. Complex tasks should include suggested milestones and per-milestone acceptance hints; simple tasks should say why they are not needed.
 5. **Self-review** — use `spec-review-checklist.md`; fix TBDs, contradictions, unverifiable success criteria, and hidden capability gaps inline.
@@ -14,7 +14,7 @@ Enter Spec drafting only after the Grill Gate passes, any assumption batch is co
 
 ## Thin Spec（短路径）
 
-目标、边界与验收已由既有材料或用户直接给出时，Spec 只记录增量：新决策、与既有合同的差异、验证策略。不复述已知上下文，不制造 PRD 式铺陈。
+低档（或目标、边界与验收已由既有材料/用户直接给出的等价情形）走短路径，Spec 只记录增量：新决策、与既有合同的差异、验证策略。不复述已知上下文，不制造 PRD 式铺陈。
 改动可用一句话描述且无验证争议时，直接建议跳过 Spec/plan 转 `implement`，并在输出中说明跳过理由；用户仍要 Spec 时走完整路径。
 
 ## Review Gate Message

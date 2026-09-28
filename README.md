@@ -5,7 +5,7 @@
 **Task-scoped workflow skills for coding agents — entry, state, verification, recovery and cleanup discipline.**
 
 [![CI](https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml/badge.svg)](https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-0.13.0-blue)](https://github.com/YSAA1/harness-workflow/commits/master)
+[![Version](https://img.shields.io/badge/version-0.14.0-blue)](https://github.com/YSAA1/harness-workflow/commits/master)
 [![Skills](https://img.shields.io/badge/skills-17-blue)](#-skill-map)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -70,7 +70,7 @@ graph TD
 
 | Skill | What it does | How to call it (say to the agent) | Upstream ← / Downstream → |
 | --- | --- | --- | --- |
-| brainstorm | Converge a vague idea into an approved Spec | "I want to build X — let's discuss it first" | → plan; → harness-builder |
+| brainstorm | Grill a vague idea into a settled approach, then an approved Spec (low/medium/high depth gears) | "Help me brainstorm the approach" | → plan; → harness-builder |
 | plan | Execution plan; minimal recovery surface when needed | "Plan this against the Spec" | ← brainstorm; → implement / review / diagnose |
 | implement | Scoped changes, test-driven for behavior | "Implement this plan" | ← plan / ship / review (fix loop-back); drives tdd; → review / diagnose / cleanup |
 | diagnose | Evidence-based investigation of unknown failures | "Why is this error happening?" | ← implement / review; → implement |

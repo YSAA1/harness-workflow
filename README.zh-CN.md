@@ -5,7 +5,7 @@
 **给编码 agent 的任务级工作流技能 —— 入口、状态、验证、恢复与收尾纪律。**
 
 [![CI](https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml/badge.svg)](https://github.com/YSAA1/harness-workflow/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-0.13.0-blue)](https://github.com/YSAA1/harness-workflow/commits/master)
+[![Version](https://img.shields.io/badge/version-0.14.0-blue)](https://github.com/YSAA1/harness-workflow/commits/master)
 [![Skills](https://img.shields.io/badge/skills-17-blue)](#-技能地图)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -70,7 +70,7 @@ graph TD
 
 | 技能 | 干什么 | 怎么用（对 agent 说） | 上游 ← / 下游 → |
 | --- | --- | --- | --- |
-| brainstorm | 把模糊想法收敛成批准的 Spec | 「我想做个 X，先讨论清楚再动手」 | → plan；→ harness-builder |
+| brainstorm | 把模糊想法聊成定型方案，收敛成批准的 Spec（低/中/高三档拷问） | 「帮我聊聊方案」「这个瓶颈高档深挖一下」 | → plan；→ harness-builder |
 | plan | 执行计划，必要时建最小恢复面 | 「按这个 Spec 排个计划」 | ← brainstorm；→ implement / review / diagnose |
 | implement | 范围内修改，行为改动测试驱动 | 「实现这个计划」 | ← plan / ship / review（修复回边）；驱动 tdd；→ review / diagnose / cleanup |
 | diagnose | 根因未知的证据化调查 | 「这个报错为什么发生」 | ← implement / review；→ implement |

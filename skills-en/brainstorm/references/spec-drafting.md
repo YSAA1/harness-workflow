@@ -5,7 +5,7 @@ Enter Spec drafting only after the Grill Gate passes, any assumption batch is co
 ## Steps
 
 1. **Verification first** — baseline, automated checks, smoke/E2E, negative cases, fresh-evidence requirements, unverifiable items.
-2. **Compare 2-3 approaches** — positioning, tradeoffs, failure modes, verification impact. Record rejected options even when one approach is clearly best.
+2. **Record the approach comparison settled in the grill** — structurally different options, trade-offs, failure modes, and why each rejected one fell (high gear: per-option failure reasons; low gear: the one alternative considered). The comparison happened in the interview; the Spec records it, never re-decides it.
 3. **Confirm design segments** — goals/scope, behavior/interfaces, architecture boundaries, verification, non-goals, residual risks. Do not treat silence as approval.
 4. **Write Spec** — use `templates/spec.zh-CN.md` for Chinese users and `templates/spec.md` as the English/default template. For other user languages, translate human-facing headings from the default template while preserving protocol tokens in parentheses when useful. Canonical path is `docs/specs/YYYY-MM-DD--<topic>.md`. Do not write Spec to issue bodies, root `plan.md`, or ad-hoc docs just because they already exist. Override only when the current user explicitly names a path or `AGENTS.md` declares a canonical Spec surface, and record the override reason. Complex tasks should include suggested milestones and per-milestone acceptance hints; simple tasks should say why they are not needed.
 5. **Self-review** — use `spec-review-checklist.md`; fix TBDs, contradictions, unverifiable success criteria, and hidden capability gaps inline.
@@ -14,7 +14,7 @@ Enter Spec drafting only after the Grill Gate passes, any assumption batch is co
 
 ## Thin Spec (short path)
 
-When goals, boundaries, and acceptance are already given by existing material or directly by the user, the Spec records only the delta: new decisions, differences from the existing contract, verification strategy. Do not restate known context or produce PRD-style padding.
+Low gear (or the equivalent case where goals, boundaries, and acceptance are already given by existing material or directly by the user) takes the short path: the Spec records only the delta — new decisions, differences from the existing contract, verification strategy. Do not restate known context or produce PRD-style padding.
 
 When the change can be described in one sentence with no verification dispute, directly suggest skipping Spec/plan in favor of `implement` and state the skip reason in the output; if the user still wants a Spec, take the full path.
 

@@ -35,23 +35,31 @@ These skills give the agent working rules: **a clear entry (discuss before build
 
 ## Lane skills: the main roads of daily work
 
-### brainstorm — turn a fuzzy idea into a clear one
+### brainstorm — grill a fuzzy idea into a settled approach
 
-**The problem it solves**: you want a feature but have only said half a sentence. Let the agent start coding immediately and it will likely build in the wrong direction based on its own imagination — rework costs more than starting over.
+**The problem it solves**: you want a feature but have only said half a sentence. Let the agent start coding immediately and it will build in the wrong direction based on its own imagination — and "what the approach actually looks like" never gets discussed: what the candidates are, what each costs, why this one over that one.
 
-**What you say**: "I want to add a comments feature — let's discuss it before touching code", "This requirement is fuzzy, grill it first".
+**What you say**: "I want to add a comments feature — help me brainstorm the approach first", "This requirement is fuzzy, grill it first", "I've been stuck on this bottleneck forever — high gear, dig deep".
+
+**Pick a gear first** (you own the depth dial; retune with one word anytime):
+
+| Gear | When | What it feels like |
+| --- | --- | --- |
+| Low | small matter, mostly thought through, minimal interruption | questions narrowed to approach confirmation and the necessary decisions; converges fast |
+| Medium (default) | everyday needs | 2–3 structurally different approaches first (each with trade-offs and a recommended answer), you pick, then the branches get detailed |
+| High | research-grade innovation, a stuck bottleneck | bottleneck questions first (destination, the wall, constraints, scope line), a breadth-first fog sweep, candidates include non-obvious ones, and ungrillable debates get a throwaway artifact to look at |
 
 **The flow it walks you through**:
 
-1. **Frontier grill**: it lists every unresolved material question for you in one numbered batch — each with a recommended answer and the design branch it belongs to (design-sensitive ones add a concrete stress scenario), so you answer by number instead of composing essays. Questions cover goal, scope, trade-offs, success criteria and verification; code and docs it can look up itself, so what it asks you are only the decisions only you can make. What is already settled is not re-asked, and "industry convention" never decides for you.
-2. **Spec drafting**: when the questions hit zero, you first get a one-line eight-branch reconciliation (answered / waived / repo-backed), so any branch skipped over is visible on the spot; then it drafts a Spec for your review. Short needs where you already stated goal, boundaries and done-criteria take the lightweight Thin Spec — one round of questions, not a thesis defense; otherwise the full framework runs, and it never silently assumes "already thought through".
-3. **Await approval**: only your explicit "approved" hands over to `plan`. Silence does not count as approval; it will not proceed on its own.
+1. **Approach brainstorm (frontier grill)**: every unresolved decision comes to you in one numbered batch — the heart of it is the candidate approaches (with trade-offs, failure modes, recommended answers, and their design branches), and you answer by number. Code and docs it can look up itself, so what it asks you are only the decisions only you can make; "done criteria" questions come *after* the approach is picked, never first. Questions talking cannot settle (shape, feel, one page or three) get a throwaway artifact — a wireframe, demo, or spike — and come back as a one-line answer.
+2. **Spec drafting**: when the questions hit zero, you first get a one-line branch reconciliation (which approach won, why the others fell, what was waived — visible on the spot), then it drafts the Spec. The Spec only records what was settled in conversation; it never makes choices you were never asked.
+3. **Await approval**: only your explicit "approved" hands over to `plan`. Silence does not count as approval — in any gear.
 
-**What you get**: `docs/specs/date--topic.md`, a requirements document, plus the certainty that the direction is right.
+**What you get**: `docs/specs/date--topic.md`, a requirements document that records the settled approach and why the alternatives fell, plus the certainty that the approach was talked into shape rather than nodded into shape.
 
-**How it cooperates**: after approval it feeds `plan`; if the discussion exposes a missing workbench (no entry file at all, say), it offers `harness-builder`. One tip: don't spend the session answering "agreed, agreed, agreed" — what comes out tracks the quality of your answers, so say so when a question misses the mark.
+**How it cooperates**: after approval it feeds `plan`; if the discussion exposes a missing workbench (no entry file at all, say), it offers `harness-builder`. One tip: don't spend the session answering "agreed, agreed, agreed" — a grill where you rejected nothing was mostly a waste; what comes out tracks the quality of your answers, so say so when a question misses the mark.
 
-**Tip**: if the need is already fully thought through, or it is a tiny patch, skip brainstorm and get to work — it will say so itself.
+**Tip**: if the need is already fully thought through, or it is a tiny patch, skip brainstorm and get to work — it will say so itself. When questions keep getting smaller and worse across a session, the surface is usually too large: have it split the work into tracks first.
 
 > Protocol: [`skills/brainstorm/SKILL.md`](../skills-en/brainstorm/SKILL.md)
 
