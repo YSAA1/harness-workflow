@@ -17,6 +17,7 @@
 - `docs/plans/`: `plan` 默认 Executable Plan 产物目录，允许多份独立计划和恢复记录（目录按需重建）。
 - `docs/adr/`: 架构决策记录目录（目录按需重建）。
 - `docs/research/`、`docs/reviews/`: 调研日志与审查报告的默认落点（目录按需重建）。
+- `docs/out-of-scope/`: 不做清单——每个被拒想法一个文件（拒绝内容/理由/替代做法/来源），含改动门槛说明。
 - `.github/workflows/ci.yml`: GitHub Actions，运行结构检查、README 资产检查、Claude 插件可选校验与 harness-builder 脚本测试。
 - `scripts/check-plugin.mjs`: 仓库结构与安装面一致性的快速验证脚本。
 - `scripts/agent/check.sh`: agent-facing 快速验证入口，串联默认结构检查。
@@ -40,6 +41,7 @@
 - `harness-builder` 是 canonical 项目 harness skill；"bootstrap" 只能作为历史别名或触发词出现。
 - 每个 `SKILL.md` 必须保留 YAML frontmatter，并让 `name` 与目录名匹配。
 - 没有 fresh verification，不声明插件结构、流程图或方法论覆盖已经可用。
+- 修改 skill 行为须附观察到的失败（真实会话里跑了什么、技能做了什么、期望什么）；借鉴上游或纸面推演的改动在 commit/state 标注「未首跑」并写首跑观察点，首跑后回填。被拒想法落 `docs/out-of-scope/`，提议前先查。
 - 关键里程碑必须使用 Git commit，commit 信息使用中文，清晰简洁。
 
 ## 恢复面（Recovery surface）

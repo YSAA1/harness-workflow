@@ -61,6 +61,8 @@ These skills give the agent working rules: **a clear entry (discuss before build
 
 **Tip**: if the need is already fully thought through, or it is a tiny patch, skip brainstorm and get to work — it will say so itself. When questions keep getting smaller and worse across a session, the surface is usually too large: have it split the work into tracks first.
 
+**Signs it is working**: the first round states its gear; the alternative approaches differ structurally (not three tweaks of one); completion criteria and verification are asked only after the approach is settled; you have overruled at least one of its recommendations.
+
 > Protocol: [`skills/brainstorm/SKILL.md`](../skills-en/brainstorm/SKILL.md)
 
 ### plan — turn an agreed goal into an executable plan
@@ -81,6 +83,8 @@ These skills give the agent working rules: **a clear entry (discuss before build
 **How it cooperates**: upstream is an approved Spec from `brainstorm`; downstream routes by need — code changes to `implement`, deep checks to `review`, unknown failures to `diagnose`.
 
 **Tip**: small tasks (describable in one sentence, no cross-file dependencies) get no plan file — this skill does not manufacture documents for ceremony.
+
+**Signs it is working**: every work item carries dependency edges and is verifiable on its own; multi-stage plans state an overall acceptance criterion; small tasks get no plan file out of thin air.
 
 > Protocol: [`skills/plan/SKILL.md`](../skills-en/plan/SKILL.md)
 
@@ -104,6 +108,8 @@ These skills give the agent working rules: **a clear entry (discuss before build
 **How it cooperates**: driven by `plan`/`ship`/`review` (fix loop-back); in turn **drives `tdd`** while coding; hands off to `review` or `cleanup` by risk.
 
 **Tip**: when a required acceptance fails or is unknown, it will not say "done" — the single most important honesty clause in this whole set.
+
+**Signs it is working**: for behavior changes a failing test appears before the implementation; seams were agreed before coding; it closes with one verified commit.
 
 > Protocol: [`skills/implement/SKILL.md`](../skills-en/implement/SKILL.md)
 
@@ -129,6 +135,8 @@ These skills give the agent working rules: **a clear entry (discuss before build
 
 **Tip**: a small patch whose cause you already know does not need this — fix it directly; skill switching is not ceremony.
 
+**Signs it is working**: before any hypothesis, there is already a command that ran and goes red on this failure; after the fix the same command goes green; zero `[DEBUG-` prefixes remain.
+
 > Protocol: [`skills/diagnose/SKILL.md`](../skills/diagnose/SKILL.md)
 
 ### review — inspect the change and judge "is it actually done"
@@ -150,6 +158,8 @@ These skills give the agent working rules: **a clear entry (discuss before build
 **How it cooperates**: upstream `plan`/`implement`/`ship`; with authorized fixes it loops straight back to `implement`, then re-verifies only the affected parts. `verify` is its alias — saying verify enters here once, never twice.
 
 **Tip**: low-risk small changes need no dedicated review; `implement` self-review suffices — and this skill makes that call itself.
+
+**Signs it is working**: the output lists the standards sources it found; findings come in two sections, correctness & risk and acceptance evidence; every pass maps to actual run output, never a verbal claim.
 
 > Protocol: [`skills/review/SKILL.md`](../skills-en/review/SKILL.md)
 
@@ -175,6 +185,8 @@ These skills give the agent working rules: **a clear entry (discuss before build
 
 **How it cooperates**: it only orchestrates; each stage still runs its own protocol from `implement`/`review`/`cleanup`, with no extra gates or repeated confirmations added.
 
+**Signs it is working**: sequentially, all three stages run with no skipped cleanup; in parallel mode several implementer subagents run at once, every merge is a fast-forward, and only one broad review happens per run.
+
 > Protocol: [`skills/ship/SKILL.md`](../skills-en/ship/SKILL.md)
 
 ### cleanup — tidy the site after the work
@@ -199,6 +211,8 @@ These skills give the agent working rules: **a clear entry (discuss before build
 
 **Tip**: untracked files (never committed) are never deleted — the exits are "commit it" or "gitignore it", and the choice is yours.
 
+**Signs it is working**: the row flip and the retirement four steps share one commit; the report lists environment-improvement candidates or an explicit "nothing new"; nothing outside this task was touched.
+
 > Protocol: [`skills/cleanup/SKILL.md`](../skills-en/cleanup/SKILL.md)
 
 ### autoresearch — assign a goal, let it research-work-review-distill to completion
@@ -219,6 +233,8 @@ These skills give the agent working rules: **a clear entry (discuss before build
 **What you get**: one research log — the final answer plus every round's hypotheses, evidence and verdicts, fully traceable; a durable deliverable you can resume any time.
 
 **How it cooperates**: one-shot lookups are better served by lightweight `research`; conclusions turning into formal changes go to `plan`/`implement`.
+
+**Signs it is working**: the background section stays fixed from round one; every round has an adversarial review labelled independent/self; it ends in one of the five terminal states, with the conclusion written before closeout.
 
 > Protocol: [`skills/autoresearch/SKILL.md`](../skills-en/autoresearch/SKILL.md)
 
@@ -241,6 +257,8 @@ These skills give the agent working rules: **a clear entry (discuss before build
 **How it cooperates**: daily tasks **do not go through it** — per-task filing is done automatically by `plan`; call it only for a real missing or broken workbench.
 
 **Tip**: the first time you adopt this set in a new project, say "wire this project up with harness-builder" once — after that, daily work never needs it.
+
+**Signs it is working**: when the existing workbench suffices it returns straight to the original task without rebuilding; any verification command it creates actually runs.
 
 > Protocol: [`skills/harness-builder/SKILL.md`](../skills-en/harness-builder/SKILL.md)
 

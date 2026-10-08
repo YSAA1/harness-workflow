@@ -15,6 +15,11 @@
 - Tool Skill: sweep — on-demand repo-wide reconciliation (recovery-surface probe, six-bucket audit, mechanical fixes plus evidence-listed user adjudication, retirement four steps), routed from cleanup or explicitly invoked; not a workflow lane and not a task closeout.
 - Tool Skill: research — lightweight single-shot research (background legwork over primary sources, self-registered findings under docs/research/), explicitly invoked; not a workflow lane and not a task closeout.
 - Tool Skill: handoff — session handoff compacting the current conversation for the next agent (prefers track state when a recovery surface exists), explicitly invoked; not a workflow lane and not a task closeout.
+- Task graph: a plan whose work items carry dependency edges (`depends: #N`); the frontier is every item whose prerequisites are done, computed from what has actually merged.
+- Integration branch: the single branch that ship's parallel mode merges every item into; review runs once on it after everything lands.
+- Context pointer: a path, item number, commit or link handed to a subagent instead of a pasted summary.
+- Feedback loop: in diagnose, one already-run command that goes red on this failure (original symptom, deterministic, fast, agent-runnable); the gate before any hypothesis.
+- Observed failure: the bar for changing skill behavior (what ran, what the skill did, what was expected); rejected ideas live in docs/out-of-scope/.
 - Harness Recommendation Matrix: optional table for cross-surface gaps; recommendation priority is not action authorization.
 
 Stable behavior: docs/harness-method-contract.md. Historical plans and evaluation results describe their recorded version, not current instructions.

@@ -129,6 +129,8 @@ python3 -B skills/harness-builder/tests/test_scripts.py
 
 Structure checks do not replace model-behavior evaluation. No default MCP or hooks are installed. Third-party attributions: THIRD_PARTY_NOTICES.md.
 
+Scope and contributions: a change to skill behavior needs an observed failure (what you ran, what the skill did, what you expected); ideas already rejected, and why, live in [docs/out-of-scope/](docs/out-of-scope/README.md).
+
 ## 📚 Documentation
 
 | Doc | Contents |

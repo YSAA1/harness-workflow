@@ -129,6 +129,8 @@ python3 -B skills/harness-builder/tests/test_scripts.py
 
 结构检查不替代模型行为效果评测；不安装默认 MCP 或 hooks。第三方归属见 THIRD_PARTY_NOTICES.md。
 
+范围与贡献：修改技能行为须附观察到的失败（跑了什么、技能做了什么、期望什么）；已被拒绝的想法及理由见 [docs/out-of-scope/](docs/out-of-scope/README.md)。
+
 ## 📚 文档
 
 | 文档 | 内容 |
