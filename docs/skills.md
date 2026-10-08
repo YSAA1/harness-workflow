@@ -115,12 +115,13 @@ These skills give the agent working rules: **a clear entry (discuss before build
 
 **The flow it walks you through**:
 
-1. **Preserve the scene**: record the full command, working directory, environment, exit code, logs — photograph before operating.
-2. **Reproduce only when sensible**: one reproduction within reasonable cost; expensive GPU jobs and production systems are not run repeatedly to hit a quota.
-3. **Hypotheses**: when reproduction is hard, candidate explanations come from logs and source, explicitly marked as uncertain — guesses are never sold as conclusions.
-4. **Controlled experiments**: rank candidates, distinguish them with minimal checks; single experiments keep variables attributable, independent read-only checks run in parallel.
-5. **Minimal fix**: once evidence suffices, fix within authorization, then verify the **original symptom** and affected paths — not just "the line I changed".
-6. **Bank the lesson**: reusable root causes go into the project lessons file, so the next similar failure starts from the ledger.
+1. **Preserve the scene**: record the full command, working directory, environment, exit code, logs — photograph before operating; secrets are written as `<REDACTED>`.
+2. **Build a feedback loop first (the gate)**: before any theorising, one command that already ran once and goes red on *this* failure — asserting your original symptom, deterministic, fast, runnable by the agent unattended. Flaky bugs aim for a higher reproduction rate, not a clean repro. If an expensive GPU job or production system genuinely can't yield a loop, it says what it tried and what it needs from you; any conclusion then stays labelled "unverified hypothesis".
+3. **Reproduce and minimise**: confirm the red is *your* symptom, not a neighbouring failure, then cut the repro down until every remaining piece matters.
+4. **Falsifiable hypotheses**: several ranked candidates, each with a prediction ("if X, changing Y makes it vanish"); you see the list and can re-rank it, but it doesn't wait on you.
+5. **Targeted probes**: one variable at a time, tagged debug logs (`[DEBUG-xxxx]`) removed by a single grep at the end; performance gets a baseline before bisecting.
+6. **Fix plus regression test**: a failing test at a seam that reproduces the real failure shape, red → fix → green, then the original loop re-run. No good seam for it? That is itself reported as a finding for `cleanup`'s environment-improvement list.
+7. **Bank the lesson**: reusable root causes go into the project lessons file, and the confirmed hypothesis goes into the commit message.
 
 **What you get**: the failure description, confirmed/excluded hypotheses, the root cause (or an honest "undetermined"), the fix and its verification. Diagnosis-only engagements deliver bounded conclusions without touching code.
 
