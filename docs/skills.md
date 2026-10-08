@@ -72,7 +72,7 @@ These skills give the agent working rules: **a clear entry (discuss before build
 **The flow it walks you through**:
 
 1. Distills goal, scope and acceptance from materials you already have (request, approved Spec, issues) — it never asks you to write another requirements layer.
-2. Writes the plan: goal, scope, checkbox work items, per-item verification, dependencies — and for multi-stage tasks a **final overall acceptance criterion** (guarding against "every step passed but the whole is incoherent").
+2. Writes the plan: goal, scope, checkbox work items, per-item verification, dependencies — and for multi-stage tasks a **final overall acceptance criterion** (guarding against "every step passed but the whole is incoherent"). Work items are cut as vertical slices (each verifiable end to end, each fitting one session) with dependencies written as `depends: #N` edges, so the plan becomes a task graph; repo-wide mechanical changes like a rename go expand–contract (add the new, migrate in batches, delete the old); two items that would touch the same shared file get serialised or have their names fixed up front, so parallel work does not collide.
 3. If the task truly spans sessions and the project has no save system yet, it automatically creates the **minimal recovery surface** (one task index + one checkpoint file, plus a one-line pointer in the project entry) — automatic; you never have to decide in advance.
 4. Plan-only requests end at delivery. Already-authorized work continues straight into execution.
 
@@ -166,6 +166,8 @@ These skills give the agent working rules: **a clear entry (discuss before build
 3. **review** (by risk): substantive-risk changes get the deep check; low-risk mechanical changes self-review and go straight to closeout — no forced parade.
 4. **cleanup**: reconcile docs and leftovers, leave the recovery surface resumable by the next session; closing the task this round runs the retirement flow (see the cleanup entry).
 5. Delivery summary: change overview, evidence, closeout result, remaining items.
+
+**Parallel mode**: when the plan has dependency edges, at least two items are ready at once, and your agent supports background subagents and git worktrees, ship delivers along the task graph in parallel: one subagent per ready item, each in its own worktree, each merged into a single integration branch, with the next batch dispatched as soon as an item lands; one review runs after everything has merged, and only the fixed points are re-verified; only the orchestrator writes state files. Otherwise it runs sequentially as usual.
 
 **Sequence discipline**: a later stage never overturns an earlier one without cause; review findings redo only the affected parts; it neither skips closeout to claim credit early nor inflates closeout into a repo-wide sweep.
 

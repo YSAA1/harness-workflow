@@ -12,7 +12,10 @@ description: "用于多阶段、依赖复杂或需要跨会话恢复的任务，
 1. 从现有证据确定目标、范围、验收和依赖。只对影响结果的未定取舍询问，常规实现选择自行决定并说明必要假设。
 2. 优先更新项目现有 planning surface；无惯例且确需持久计划时用 `docs/plans/YYYY-MM-DD--<topic>-plan.md`。短任务可使用对话计划；改动可用一句话描述且无跨文件依赖时，不落盘计划文件。
 3. 写目标、范围、可执行工作项、验证方式、重要依赖或风险。多阶段任务写最终整体验收标准（`final_integration_claim`），不以每步通过替代整体成功。
-4. Markdown 工作项使用 checkbox；issue 或现有 tracker 保留其原生状态。按轨道标注当前项和依赖，独立工作可并行。
+4. Markdown 工作项使用 checkbox；issue 或现有 tracker 保留其原生状态。按轨道标注当前项。多工作项计划把依赖写成边：每项带 `依赖: #N`（无则写「无」），使计划成为任务图——前置全部完成的项即可开工，`ship` 并行模式据此派发。切分规则：
+   - **纵向切片**：每项贯穿所需各层、可独立验证、一个新上下文窗口装得下；需要的预重构排最前（先让改动变容易，再做容易的改动）。
+   - **全仓机械改动**（改名、改共享类型，一改即破大量调用点）不硬切纵向，走 **expand–contract**：先加新形式且不破坏旧的 → 按爆炸半径分批迁移调用点（每批一项，依赖 expand）→ 最后删旧形式（依赖全部迁移批）。
+   - **共享文件**：两项会改同一共享文件（配置表、消息目录、共享类型）时，加依赖边让它们串行，或在计划里预先定死各自新增的名字。
 5. 恢复面：项目已有恢复面（`.harness/`、tracker 等）→ 按需同步本轨道入口（`brainstorm` 已为本轨道登记者续用该行不新建，primary artifact 换指本计划文件，已批准 Spec 在 `state.md` 出链保持可达），仅在同一轨道明确换轨时替换旧计划状态，不关闭其他轨道。项目无恢复面且本任务确需跨会话恢复 → 建立最小面，并在项目 `AGENTS.md` 挂一行指针（读取顺序：lessons（若有）→ work_index active 行 → state）；指针行同时携带最小写侧纪律：翻行即退休一句话（行翻出 active 时同一 commit 走完翻行→lessons 继承→删本轨道 plan/Spec 文档，含未批准与放弃件（只删唯一引用自本轨道者，多入边翻指针不删）→state 同步）＋活判据指向（文档活 ⟺ 被恢复面状态文件或持久入口引用）：
    - `.harness/work_index.md`：表头 ID/标题/Status/Primary artifact/Last verified + 本任务 active 行（primary artifact 指向本计划文件）；维护规则：不删历史行、同轨道换轨更新旧入口、翻行即退休。
    - `.harness/state.md`：Objective / Status / Primary artifact / Evidence / Next / Limits 六字段。

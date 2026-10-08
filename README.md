@@ -75,7 +75,7 @@ graph TD
 | implement | Scoped changes, test-driven for behavior | "Implement this plan" | ← plan / ship / review (fix loop-back); drives tdd; → review / diagnose / cleanup |
 | diagnose | Evidence-based investigation of unknown failures | "Why is this error happening?" | ← implement / review; → implement |
 | review | Review and acceptance-evidence judgment | "Review this diff" | ← plan / implement / ship; → implement (authorized fixes) |
-| ship | End-to-end orchestration (implement→review→cleanup) | "This is authorized — take it all the way" | orchestrates implement / review / cleanup |
+| ship | End-to-end orchestration (implement→review→cleanup); parallel along the plan's task graph when the harness allows | "This is authorized — take it all the way" | orchestrates implement / review / cleanup |
 | cleanup | Task closeout: docs, leftovers, recovery state | "Wrap this up" | ← ship / implement / autoresearch; routes remove-deadcode-py / sweep |
 | autoresearch | Research-work loop: investigate, do, adversarially review, distill until done | "Research this open question until answered" | orchestrates plan / implement / review / cleanup; → brainstorm (design trade-offs) |
 | harness-builder | Build/fix a project's workbench | "Set up the workbench for this new project" | ← any skill (real gaps); routes find-skills / capability-recommender / writing-for-agents |

@@ -75,7 +75,7 @@ graph TD
 | implement | 范围内修改，行为改动测试驱动 | 「实现这个计划」 | ← plan / ship / review（修复回边）；驱动 tdd；→ review / diagnose / cleanup |
 | diagnose | 根因未知的证据化调查 | 「这个报错为什么发生」 | ← implement / review；→ implement |
 | review | 审查与验收证据判定 | 「审一下这个 diff」 | ← plan / implement / ship；→ implement（已授权修复） |
-| ship | 端到端编排（implement→review→cleanup） | 「这活授权了，干到底」 | 编排 implement / review / cleanup |
+| ship | 端到端编排（implement→review→cleanup）；宿主支持时按计划任务图并行 | 「这活授权了，干到底」 | 编排 implement / review / cleanup |
 | cleanup | 任务收尾：文档、遗留、恢复状态 | 「收尾」 | ← ship / implement / autoresearch；路由 remove-deadcode-py / sweep |
 | autoresearch | 研究-干活-审核-蒸馏来回循环，直到完成 | 「研究这个开放问题，查到有结论为止」 | 编排 plan / implement / review / cleanup；→ brainstorm（设计取舍） |
 | harness-builder | 在目标项目搭/修工作台 | 「新项目把工作台搭起来」 | ← 任意（真缺口）；路由 find-skills / capability-recommender / writing-for-agents |
