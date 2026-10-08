@@ -9,9 +9,9 @@ description: "审查 diff、方案或完成声明，检查正确性、风险和�
 
 ## 流程
 
-1. 明确审阅的 diff/版本、目标行为和所需验收。查看相关源码、测试、文档及已有证据，不以实现者的解释替代检查。
-2. 按具体故障路径检查正确性、合同、边界和回归。重要风险需要深入调查；无需凑 findings 或固定审查轮数。
-3. 当独立检查有价值且运行时允许时，使用有明确范围的只读 subagent；缺少 subagent 本身不是失败。若用户或项目明确要求独立审查，该条件未满足需如实标记。环境有 cli-delegate 等外部委派技能时，可跨模型 CLI 做只读独立复核；其 result 是 claim，证据仍回主树复验。
+1. 明确审阅的 diff/版本、目标行为和所需验收。查看相关源码、测试、文档及已有证据，不以实现者的解释替代检查。同时搜出仓库里所有记载代码应如何写的文件作为标准源清单：`CODING_STANDARDS.md`、`CONTRIBUTING.md` 存在即必列，另含 lint/格式约定说明、所涉区域 ADR、`CONTEXT.md` 术语；工具已强制的规则跳过。
+2. 按具体故障路径检查正确性、合同、边界和回归；对照标准源检查规范，并始终叠加 `references/smell-baseline.md` 的坏味基线（仓库无任何规范文档时也适用）。仓库明文规范优先，它认可的写法压制对应坏味；坏味永远是判断级（「疑似 Feature Envy」），不是硬违规。重要风险需要深入调查；无需凑 findings 或固定审查轮数。
+3. 当独立检查有价值且运行时允许时，使用有明确范围的只读 subagent；派多个审查轴（如规范轴与合同/正确性轴）时同一消息并行发出、前台等待，各轴报告分列汇总不合并不重排；缺少 subagent 本身不是失败。若用户或项目明确要求独立审查，该条件未满足需如实标记。环境有 cli-delegate 等外部委派技能时，可跨模型 CLI 做只读独立复核；其 result 是 claim，证据仍回主树复验。
 4. 将必需标准映射到 pass / fail / unknown。fresh evidence 指证据仍适用于当前相关代码、配置和输入；未受后续变更影响的实际输出可复用，不因换技能或已有 commit 自动失效。完成声明只以可运行检查的实际输出为 evidence；实现者复述或口头断言不算。
 5. 只补缺失或失效的检查。冷复核按证据歧义和风险使用，不要求再委派一名代理重跑同样测试。
 6. 判定具体完成声明：无未解决的阻断问题且必需标准全 pass 才可 ready。Critical/Important 的正确性、数据、权限或合同问题均需解决；非阻断建议单独列出。不为通过而删改测试或验收脚本，确需变更验收合同先经用户同意。
@@ -25,11 +25,12 @@ description: "审查 diff、方案或完成声明，检查正确性、风险和�
 
 ## 输出
 
-findings 分两节分列，不合并不重排：「正确性与风险」（可行动发现：严重度、位置、触发条件、影响）与「验收证据」（必需标准 pass/fail/unknown 映射）；然后给剩余缺口和结论。repo 未文档化验收标准时，正确性轴仍按通用缺陷类别（边界、合同、回归、数据/权限）审，不以「无标准」跳过。需要追踪时使用 REVIEW / VERIFICATION / READY，并注明审查方式为 self、subagent 或外部审阅及其范围；不强制空表。REVIEW / VERIFICATION / READY 是会话 token，不替代持久层——跨会话待处置发现按流程 7 持久化。
+findings 分两节分列，不合并不重排：「正确性与风险」（可行动发现：严重度、位置、触发条件、影响；规范类发现注明出处——标准源文件与条款，或基线坏味名——并区分硬违规与判断级）与「验收证据」（必需标准 pass/fail/unknown 映射）；然后给剩余缺口和结论。repo 未文档化验收标准时，正确性轴仍按通用缺陷类别（边界、合同、回归、数据/权限）审，不以「无标准」跳过。需要追踪时使用 REVIEW / VERIFICATION / READY，并注明审查方式为 self、subagent 或外部审阅及其范围；不强制空表。REVIEW / VERIFICATION / READY 是会话 token，不替代持久层——跨会话待处置发现按流程 7 持久化。
 
 ## 按需读取
 
 - 深入对抗审查：`references/adversarial-reviewer-prompt.md`、`references/attack-taxonomy.md`。
+- 坏味基线（第 2 步必读）：`references/smell-baseline.md`。
 - 验收证据：`references/evidence-ladder.md`；证据解释有争议时读 `references/cold-verifier-prompt.md`。
 - 对应风险存在时读 `references/cross-cutting-anti-patterns.md`、`references/premature-completion-patterns.md`；工具缺口见 `references/capability-recommendations.md`。
 

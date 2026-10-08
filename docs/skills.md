@@ -139,8 +139,8 @@ These skills give the agent working rules: **a clear entry (discuss before build
 
 **The flow it walks you through**:
 
-1. Establishes which version, what target behavior, which acceptance criteria.
-2. Checks correctness, boundaries, contracts and regressions along concrete failure paths — not a ceremonial skim.
+1. Establishes which version, what target behavior, which acceptance criteria — and searches the repo for every file that says how code should be written (`CONTRIBUTING.md` and friends) as the standards sources.
+2. Checks correctness, boundaries, contracts and regressions along concrete failure paths — not a ceremonial skim; conventions are checked against the standards sources plus a fixed baseline of 12 classic code smells (so a repo that documents nothing still has a floor; the repo always wins, and smells are judgement calls only).
 3. When valuable and the runtime allows, dispatches a **read-only independent subagent** for a cold second look ("author checks own work" is exactly the self-deception this method guards against).
 4. Maps every required criterion to **pass / fail / unknown**. Key rules: verbal assertions are not evidence; prior verification stays reusable while the related code is unchanged — no re-running for ritual.
 5. The verdict: ready only with no unresolved blocking findings and all required criteria passing. Critical/Important issues must be resolved; unknown never counts as pass.
