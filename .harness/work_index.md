@@ -34,7 +34,7 @@
 | 028 | brainstorm 拷问第二期修复（判空对账+轻量入口锚点化+模板消分叉） | complete | `skills/brainstorm/SKILL.md` | 2026-09-24 |
 | 029 | brainstorm 按 Matt grilling 重构（纪律进主文件、删三 references、消矩阵吸引子） | complete | `skills/brainstorm/SKILL.md` | 2026-09-24 |
 | 030 | brainstorm 0.14.0 方案头脑风暴+三档位（低/中/高，Matt 家族工艺全量吸收） | complete | `skills/brainstorm/SKILL.md` | 2026-09-24 |
-| 031 | 吸收 Matt 上游 09-24→10-08 更新（ship 并行模式、diagnose 反馈回路闸门、review 坏味基线、cleanup 环境改进、方针三项；0.15.0） | active | `docs/plans/2026-10-08--matt-upstream-sync-plan.md` | 2026-10-08 |
+| 031 | 吸收 Matt 上游 09-24→10-08 更新（ship 并行模式、diagnose 反馈回路闸门、review 坏味基线、cleanup 环境改进、方针三项；0.15.0） | complete | `skills/ship/SKILL.md` | 2026-10-08 |
 
 Status values: `active`, `blocked`, `complete`, `abandoned`
 
