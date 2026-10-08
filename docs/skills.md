@@ -177,7 +177,7 @@ These skills give the agent working rules: **a clear entry (discuss before build
 4. **cleanup**: reconcile docs and leftovers, leave the recovery surface resumable by the next session; closing the task this round runs the retirement flow (see the cleanup entry).
 5. Delivery summary: change overview, evidence, closeout result, remaining items.
 
-**Parallel mode**: when the plan has dependency edges, at least two items are ready at once, and your agent supports background subagents and git worktrees, ship delivers along the task graph in parallel: one subagent per ready item, each in its own worktree, each merged into a single integration branch, with the next batch dispatched as soon as an item lands; one review runs after everything has merged, and only the fixed points are re-verified; only the orchestrator writes state files. Otherwise it runs sequentially as usual.
+**Parallel mode**: when the plan has dependency edges, at least two items are ready at once, and your agent supports background subagents and git worktrees, ship delivers along the task graph in parallel: one subagent per ready item, each in its own worktree, each merged into a single integration branch, with the next batch dispatched as soon as an item lands; one review runs after everything has merged, and only the fixed points are re-verified; the integration branch then lands on the main branch, where closeout runs; only the orchestrator writes state files. Otherwise it runs sequentially as usual.
 
 **Sequence discipline**: a later stage never overturns an earlier one without cause; review findings redo only the affected parts; it neither skips closeout to claim credit early nor inflates closeout into a repo-wide sweep.
 

@@ -10,4 +10,4 @@
 - skills.sh 安装：拿到的是可编辑副本，自行改本地目录名与 `name:` 字段。
 - 其他宿主：用全名消歧（如 "use the harness-workflow implement skill"）；宿主完全无法到达改名或命名空间技能时，向宿主反馈。
 
-**来源**：本仓 `.harness/lessons.md` 同名顶位实测（2026-09-22）；上游 mattpocock/skills `.out-of-scope/harness-name-collisions.md` 同结论。
+**来源**：本仓任务 023 同名顶位实测（2026-09-22，本机 26+21+2 处冲突残骸）；上游 mattpocock/skills `.out-of-scope/harness-name-collisions.md` 同结论。

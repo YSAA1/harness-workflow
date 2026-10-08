@@ -9,4 +9,4 @@
 - 用档位（低/中/高）调问题面宽度与拷问强度，档位不是轮数配额。
 - 用户随时可叫停并接受当前方案，或让它收尾、总结、往下走——自然语言是预期的控制面。
 
-**来源**：本仓 `.harness/lessons.md` 任务 030 档位设计（2026-09-24）；上游 mattpocock/skills `.out-of-scope/question-limits.md` 同结论。
+**来源**：本仓任务 030 档位设计（2026-09-24，commit f469da3）；上游 mattpocock/skills `.out-of-scope/question-limits.md` 同结论。
