@@ -11,7 +11,7 @@ Tests verify behavior on public interfaces, not implementation details; the impl
 
 A seam is a public boundary for observing behavior: an interface where behavior changes are visible without digging into internals. Tests live only on seams and are never written against internals.
 
-**Test only on pre-agreed seams.** Before writing any test, write down the seams to be tested and confirm them with the user, or adopt the acceptance surface of an approved Spec/plan; write no tests on unconfirmed seams. How to ask: "What is the public interface? Which seams are worth testing?"
+**Test only on pre-agreed seams.** Before writing any test, write down the seams to be tested and confirm them with the user, or adopt the acceptance surface of an approved Spec/plan; write no tests on unconfirmed seams. How to ask: "What is the public interface? Which seams are worth testing?" Give each proposed seam a one-line note on what it catches and what it misses.
 
 A good test reads like a specification ("user can checkout with valid cart") and survives refactoring. Good/bad contrasts are in `references/tests.md`; mock boundaries are in `references/mocking.md`.
 

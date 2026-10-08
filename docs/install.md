@@ -22,6 +22,8 @@ npx skills@latest add YSAA1/harness-workflow
 
 建议：同一 agent 槽位同名技能只装一家；确要两套并用，用不同 agent、或项目级/用户级分层安装隔开。
 
+绕行：Claude Code 插件路径下每个技能都挂在插件命名空间下，可显式调用 `/harness-workflow:implement`、`/harness-workflow:review` 直达本套；skills.sh 安装得到的是可编辑副本，可自行改本地目录名与 `name:` 字段。本仓库不为避让其他套件或宿主内置命令而改名，理由见 [`out-of-scope/name-collision-renames.md`](out-of-scope/name-collision-renames.md)。
+
 ## 选择语言版本（skills/ 中文 · skills-en/ 英文）
 
 技能有两棵语言树：`skills/`（中文，默认）与 `skills-en/`（英文，完整镜像——harness-builder 的 tests/ 仅在中文树；`node scripts/check-plugin.mjs` 保证两树同名同数，整树缺席即红）。

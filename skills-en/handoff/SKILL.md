@@ -13,7 +13,7 @@ Write a handoff artifact so a new agent with zero context can keep going. Handof
 
 1. If the user passed an argument, tailor the handoff to it (the next session's focus); if not, write from the natural continuation point of the current work.
 2. Layered landing spots:
-   - The full handoff document always goes to the OS temp directory (e.g. /tmp; never into the repo or project directory, to avoid creating orphan files), and the path is told to the user explicitly.
+   - The full handoff document always goes to the OS temp directory (`$TMPDIR`, else `/tmp`; `%TEMP%` on Windows; resolved in the same order every run; never into the repo or project directory, to avoid creating orphan files), and the full path is told to the user explicitly.
    - Project has a recovery surface: write the continuation point into the Next line of this track's state first, and key status and evidence into the Evidence line (durable, recoverable); generate the full handoff document only when complete context is truly needed.
    - No recovery surface: the temp-directory document is the sole handoff artifact.
 3. Content discipline:

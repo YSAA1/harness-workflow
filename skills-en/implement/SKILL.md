@@ -9,7 +9,7 @@ The user request, project specs, a plan, or review findings can directly provide
 
 ## Process
 
-1. Read the relevant entries, source code, tests, and git diffs to determine the target behavior and the necessary verification; protect unrelated user changes.
+1. Read the relevant entries, source code, tests, and git diffs to determine the target behavior and the necessary verification; protect unrelated user changes. When the user passes an issue/plan/Spec reference, fetch it and state its title first; if the reference is ambiguous, ask.
 2. Determine the test seams: a seam is a public boundary for observing behavior, not an implementation interior. When the seams are unclear, agree on them with the user first, or adopt the acceptance surface recorded in the approved Spec/plan; read the `tdd` skill for the details.
 3. Execute behavior changes under `tdd` discipline: write the failing test first (red), then the implementation that makes exactly it pass (green), one vertical slice at a time; do not pre-write future tests or add speculative features. Documentation and low-risk configuration are not mechanically required to have a failing test written first.
 4. Verification cadence: typecheck runs often, single test files run often, the full suite runs once at the close. When new changes affect verified paths, re-run the corresponding checks; evidence that is already produced and still applicable can be reused — do not re-run it just because the skill changed.

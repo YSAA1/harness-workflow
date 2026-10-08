@@ -93,7 +93,7 @@ These skills give the agent working rules: **a clear entry (discuss before build
 **The flow it walks you through**:
 
 1. Reads the relevant code and tests, pins down target behavior and guardrails (never touching your unrelated uncommitted changes).
-2. Agrees on **seams** with you — the public boundaries where behavior is observable from outside (APIs, CLI output); tests live only on seams, never against internal details.
+2. Agrees on **seams** with you — the public boundaries where behavior is observable from outside (APIs, CLI output); tests live only on seams, never against internal details; each proposed seam comes with a one-line note on what it catches and what it misses.
 3. Behavior changes run the red-green loop: one failing test (red) → the minimal implementation that makes it pass (green) → one small slice at a time. Docs and low-risk config skip the ceremony.
 4. Verification has a rhythm: typecheck often, single-file tests often, full suite once at the end; already-verified parts are not re-run while their code is unchanged.
 5. Long tasks log evidence and decisions to the track's checkpoint file as they happen — no waiting for closeout.
@@ -348,7 +348,7 @@ All four tools are **explicitly triggered** standalone entries and none of them 
 
 **The problem it solves**: the session is ending but the work isn't done. Open a new session cold and the new agent is blind; re-explain manually and you'll miss things. It compacts the current session into a handover artifact a **zero-context** agent can pick up.
 
-**The flow it walks you through**: the full handover document always goes to the system temp directory (e.g. /tmp; never into the repo or project directory, avoiding orphan files), with the path told to you; with a recovery surface, the continuation point also goes into the checkpoint file first (durable, resumable) and key state and evidence into the evidence line, and the full document is attached only when truly needed. Content discipline: a "suggested skills" section naming exactly which skills the next agent should call; no restating existing artifacts (paths only); secrets, credentials and personal data are never written.
+**The flow it walks you through**: the full handover document always goes to the system temp directory (`$TMPDIR`, else `/tmp`; `%TEMP%` on Windows; never into the repo or project directory, avoiding orphan files), with the path told to you; with a recovery surface, the continuation point also goes into the checkpoint file first (durable, resumable) and key state and evidence into the evidence line, and the full document is attached only when truly needed. Content discipline: a "suggested skills" section naming exactly which skills the next agent should call; no restating existing artifacts (paths only); secrets, credentials and personal data are never written.
 
 **Boundaries**: handover is an explicit act — it never hands off unless you ask.
 

@@ -11,7 +11,7 @@ description: "测试驱动开发纪律。触发：行为改动要 test-first，�
 
 seam 是观察行为的公共边界：不深入内部就能看到行为变化的接口。测试只放在 seams 上，从不对着内部写。
 
-**只在预先商定的 seams 上测试。** 写任何测试前，先写下要测的 seams 并与用户确认，或采用已批准 Spec/plan 的验收面；未确认的 seam 上不写测试。问法："公共接口是什么？哪些 seams 值得测？"
+**只在预先商定的 seams 上测试。** 写任何测试前，先写下要测的 seams 并与用户确认，或采用已批准 Spec/plan 的验收面；未确认的 seam 上不写测试。问法："公共接口是什么？哪些 seams 值得测？"每个提议的 seam 附一行：它能抓到什么、漏掉什么。
 
 好测试读起来像规约（"user can checkout with valid cart"），能在重构后存活。好/坏对照见 `references/tests.md`；mock 边界见 `references/mocking.md`。
 
