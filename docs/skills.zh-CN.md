@@ -197,6 +197,8 @@
 
 **怎么配合**：被 `ship`/`implement`/`autoresearch` 在收尾阶段调用；你要显式全仓 Python 死代码清理它路由 `remove-deadcode-py`，显式全仓对账路由 `sweep`。
 
+**顺带的环境复盘**：落经验时它还会问一句「这个坑能不能做成自动检查」——机械性的失误优先提议 lint 规则、pre-commit 或 CI 检查，而不是多写一条文字规则；外加导航、指令膨胀、工具开销、信息获取、缺测试缝五类改进候选，按严重度列给你，装不装由你定。
+
 **小贴士**：untracked 的文件（没进 git 的）它一律不删——要么建议补 commit，要么建议补 .gitignore，处置权在你。
 
 > 协议原文：[`skills/cleanup/SKILL.md`](../skills/cleanup/SKILL.md)

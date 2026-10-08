@@ -15,6 +15,7 @@ description: "整理本次任务影响的文档、代码、生成物、临时文
 4. 任务关闭（complete/abandoned/blocked/换轨）走退休契约四步，同一 commit 内完成：翻行 → lessons 继承（本轨道计划/Spec 的非显然经验先蒸馏，含未批准/放弃件）→ 删本轨道 plan/Spec 文档，含未批准与放弃件（git 历史即归档）→ state 同步（保留最后快照，Status 随行翻转）。删除前置＝改动已 commit 进主树且 lessons 继承完成；入度守卫＝只删唯一入边来自本退休轨道的文档，多入边翻指针不删；既有归档目录（docs/archive/ 类）内容一律归 needs-review 待人裁，不入可删档；ADR 不删，补 superseded-by。文档活判据＝可达性（被恢复面状态文件或持久入口引用）。untracked 文件不走删除，处置出口＝补 commit 或补 .gitignore 二选一。非 harness backend（tracker/existing/feature-list 等）降级映射：翻行＝把 tracker 原生状态翻到对应终态，其余各步对应件（lessons、plan/Spec 文档、state）缺省即跳过该步，退休纪律不因缺件整体失效。四步按件适用：本轨道无 plan/Spec 文档 → 删除步为空；无带触发条件的非显然经验 → lessons 继承记「无新增」；翻行与 state 同步两步任何情形不省。
 5. 清理本任务创建且已无用途的 scratch。未知归属或仍有用途的文件保留并说明；不因为 untracked、旧日期或临时命名就删除。
 6. 生成物通过现有生成器更新，仅在输入变化时重建。无差异可零修改完成。本次新踩的坑（环境、流程、依赖）按 lessons 格式落笔到项目恢复面的 lessons；项目为 harness backend 而 lessons 文件不存在时，随首次落笔创建（三段式：触发 → 坑 → 正确做法），失效条目随手删。
+   **环境改进**（与 lessons 同一步）：先读仓库现有检查入口（check 脚本、lint/typecheck 命令、pre-commit、CI），再问——本次失误若是**机械性的**（固定语法模式、禁用 API、导入形态、文件位置规则），优先提议确定性检查（项目 linter 自定义规则、pre-commit、CI 任务或 check 脚本断言），不写成文字规则；只有判断级问题才进规范文档或 lessons。已存在但未接线或已坏的检查本身就是发现，不重造。另扫五类候选：导航（找文件慢→加导航指针）、持久指令膨胀（AGENTS.md 里该迁去规范/检查的规则、不改变行为的空规则）、工具开销（昂贵调用可精简）、信息获取（缺日志或只读访问）、无正确测试 seam（来自 `diagnose`）。候选只在报告中按严重度列出；落地检查或 hook 需用户授权。零候选记「无新增」。
 7. 报告任务状态、修改/归档、保留事项及恢复入口。不得把 cleanup 完成写成原任务已完成。
 
 ## 按需读取

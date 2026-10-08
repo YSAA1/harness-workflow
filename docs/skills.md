@@ -195,6 +195,8 @@ These skills give the agent working rules: **a clear entry (discuss before build
 
 **How it cooperates**: called by `ship`/`implement`/`autoresearch` at closeout; routes explicit repo-wide Python dead-code requests to `remove-deadcode-py` and explicit repo-wide audits to `sweep`.
 
+**Environment retro on the side**: when banking lessons it also asks "could this pitfall become an automated check?": mechanical mistakes get a proposed lint rule, pre-commit hook or CI check rather than one more written rule; plus five improvement categories (navigation, steering-file bloat, tool economy, information access, missing test seams), listed for you by severity. Whether to install anything is your call.
+
 **Tip**: untracked files (never committed) are never deleted — the exits are "commit it" or "gitignore it", and the choice is yours.
 
 > Protocol: [`skills/cleanup/SKILL.md`](../skills-en/cleanup/SKILL.md)
